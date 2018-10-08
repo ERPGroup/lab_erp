@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/bootstrap-theme.min.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/owl.carousel.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/styles.css' %} " />
+    <link rel="stylesheet" href="{% static 'assets/font-awesome.min.css' %} ">
+    <!--Zoom {% static 'images-->
+    <link rel="stylesheet" href="{% static 'assets/cloudzoom.css' %} ">
+    <link rel="stylesheet" href="{% static 'assets/jquery.bxslider.css' %} ">
+    <!--End zoom-->
+    <link rel="stylesheet" href="{% static 'assets/fotorama.css' %} ">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %} ">
+    <script type="text/javascript" src="{% static 'assets/jquery-2.2.4.min.js' %} "></script>
+</head>
+
+<body>
+    <!--Hotline-->
+    <a href="tel:09789 789 789" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" style="left: 0px; bottom: 0px;">
+        <div class="suntory-alo-ph-circle"></div>
+        <div class="suntory-alo-ph-circle-fill"></div>
+        <div class="suntory-alo-ph-img-circle"><i class="fa fa-phone"></i></div>
+    </a>
+    <!--End hotline-->
+    {% include "snippets/header.html" %}
+    {% block content %}
+    {% endblock %}
+    <!--footer section start-->
+    {% include "snippets/footer.html" %}
+    <!--End footer-->
+    <script src="{% static 'assets/owl.carousel.js' %} "></script>
+    <script src="{% static 'assets/bootstrap.min.js' %} "></script>
+    <script src="{% static 'assets/fotorama.js' %} "></script>
+    <script src="{% static 'assets/custom.js' %} "></script>
+    <script src="{% static 'assets/slider.js' %} "></script>
+    <!--Zoom image-->
+    <script src="{% static 'assets/jquery.bxslider.min.js' %} "></script>
+    <script src="{% static 'assets/cloudzoom.js' %} "></script>
+    <script src="{% static 'assets/product_script.js' %} "></script>
+    <!--End zoom-->
+</body>
+
+</html>

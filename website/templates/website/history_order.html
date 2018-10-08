@@ -1,0 +1,51 @@
+{% extends "pages/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Thông tin cá nhân
+{% endblock %}
+{% block content %}
+<div class="profile_user">
+    <div class="container">
+        <div class="row">
+            {% include "snippets/side-bar-product.html" %}
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="title_collection">
+                    <a href="/"><i class="fa fa-home"></i></a>
+                    <i class="fa fa-angle-right"></i><a href="#">Trang cá nhân</a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row" style="border-top: 1px solid #ebebeb;position:relative">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h2 class="a_center">Lịch sử mua hàng</h2>
+                    <div class="template_cart">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <table class="tbl_cart">
+                                <tr>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Tổng tiền</th>
+                                    <th class="hidden-xs">Ngày mua</th>
+                                    <th>Trạng thái</th>
+                                    <th>Chi tiết hoá đơn</th>
+                                </tr>
+                                <tr>
+                                    <td>HD001</td>
+                                    <td>10.790.000 ₫</td>
+                                    <td class="hidden-xs">12/12/2018</td>
+                                    <td> Đã giao</td>
+                                    <td><a href="#">Xem thêm</a></td>
+                                </tr>
+
+                            </table>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

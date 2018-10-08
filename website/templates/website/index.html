@@ -1,0 +1,24 @@
+{% extends "pages/base.html" %}
+{% block title %}
+Trang chủ
+{% endblock %}
+{% block content %}
+<div class="main_slider">
+    <div class="container">
+        <div class="row">
+            {% include "snippets/left-category.html" %}
+            {% include "snippets/slider.html" %}
+            {% include "snippets/right-banner.html" %}
+            {% include "snippets/section_banner.html" %}
+            {% include "snippets/section_hotdeal.html" %}
+            {% include "snippets/section_sales.html" %}
+            {% include "snippets/section_buymore.html" %}
+            {% include "snippets/section_mainbanner.html" %}
+            {% include "snippets/section_category_phone.html" %}
+            {% include "snippets/section_categoryIpad.html" %}
+            {% include "snippets/section_categorylaptop.html" %}
+            {% include "snippets/section_brand.html" %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

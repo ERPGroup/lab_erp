@@ -1,0 +1,16 @@
+{% load staticfiles %}
+    <!--Hot Deal-->
+    <div class="clearfix"></div>
+    <div class="hot_deal">
+        <div class="container">
+            <div class="row">
+                <h3 class="title_deal">Sản phẩm HOT hôm nay</h3>
+                <div class="owl-product-hot owl-carousel owl-theme" data-lg-items="4" data-nav="true" data-autoplay="true" data-autopause="true" data-loop="true" data-md-items="3" data-sm-items="3" data-xs-items="2" data-xss-items="2" data-margin="10">
+                    <div class="item">
+                       {% include "snippets/product-grid-item.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End hot deal-->

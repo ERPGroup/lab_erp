@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<div class="product_box">
+    <div class="title_box">
+        <a href="#">
+            <p class="name_product">Tablet Plaza</p>
+        </a>
+        <p class="poster_product">3 An Dương Vương, P3, Q5</p>
+        <p class="square_rating">8.0</p>
+    </div>
+    <div class="thumb_image_product">
+        <a href="/product"><img src="{% static 'images/product_1.jpg' %}"></a>
+    </div>
+    <div class="info_box">
+        <a href="/product" class="detail_product">
+            <p> Sansung Galaxy Tab A8.0 (2017) - T385</p>
+        </a>
+        <span class="price">
+            3.000.000 d
+        </span>
+        <br class="hidden_desktop">
+        <span class="disable_price">
+            4.000.000 d
+        </span>
+        <span class="sales_percent">
+            -15%
+        </span>
+    </div>
+    <div class="quick_view">
+        <form action="#" method="post">
+            <button onclick="alert('Đang cập nhập'); return false;" type="submit" class="btn_buy">
+                Mua hàng
+            </button>
+            <a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i
+                        class="fa fa-search"></i></button></a>
+        </form>
+    </div>
+</div>

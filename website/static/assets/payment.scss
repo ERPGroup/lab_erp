@@ -1,0 +1,94 @@
+.payment {
+  @media screen and (min-width: 320px) and (max-width: 767px) {
+    font-size: 13px;
+  }
+  .a_right {
+    a {
+      position: relative;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .name_payment,
+  .price_payment {
+    position: relative;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .frmPayment {
+    input {
+      margin: 15px 0px;
+    }
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin: 0px;
+      margin-bottom: 15px;
+    }
+    #detail_order
+    {
+      @media screen and (min-width:320px) and (max-width:767px) {
+        display:none;
+      }
+    }
+  }
+  .img_payment {
+    height: 50px;
+    position: relative;
+    img {
+      width: auto !important;
+      max-height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+  }
+  .logo {
+    height: 70px;
+    background: rgb(24, 53, 68);
+    margin-bottom: 15px;
+    img {
+      width: auto !important;
+      max-height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+  }
+}
+.a_right {
+  text-align: right !important;
+}
+.a-left {
+  text-align: left !important;
+}
+.border_top_bottom {
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+}
+.no_padding {
+  padding: 0px;
+}
+.border_top {
+  border-top: 1px solid #ebebeb;
+}
+.border_bottom {
+  border-bottom: 1px solid #ebebeb;
+}
+.border_around {
+  border: 1px solid #ebebeb;
+}
+.pull_right_desktop {
+  @media screen and (min-width: 1024px) {
+    float: right !important;
+  }
+}

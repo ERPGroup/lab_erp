@@ -1,0 +1,19 @@
+{% load staticfiles %}
+ <div class="clearfix"></div>
+    <!--Sales-->
+    <div class="sales">
+        <div class="container">
+            <div class="row">
+                <h3 class="title_deal">Sản phẩm khuyến mãi</h3>
+                <div class="owl-product-sales owl-carousel owl-theme">
+                    {% for i in "x"|rjust:"8" %}
+                        <div class="item">
+                            {% include "snippets/product-grid-item.html" %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--End sales-->

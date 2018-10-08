@@ -1,0 +1,162 @@
+{% load staticfiles %}
+{% include "snippets/quickview.html" %}
+<!--Fixed Menu-->
+    <div class="fixed_menu_top" id="fixed_menu_top" style="display:none;">
+        <div class="container">
+            <div class="row">
+                <div class="logo hidden-xs col-sm-3 col-md-3 col-lg-3">
+                    <a href="/index"><img src="{% static 'images/logo.png' %} "></a>
+                </div>
+                <span class="margin_center col-xs-2 hidden-sm hidden-md hidden-lg">
+                    <i id="click_drop_menu_fixed" class="fa fa-align-justify"></i>
+                </span>
+                <div class="search  col-xs-8 col-sm-7 col-md-7 col-lg-7">
+                    <form action="#" method="get">
+                        <input type="text" placeholder="Tìm kiếm ..." name="id">
+                        <button><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="margin_center col-xs-2 hidden-sm hidden-md hidden-lg">
+                    <div class="pull-right">
+                        <a href="/cart">
+                            <span class="quantity">0</span>
+                            <i style="color:white" class="fa fa-cart-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="cart hidden-xs col-sm-2 col-md-2 col-lg-2">
+                    <span class="icon">
+                        <i class="fa fa-cart-plus"></i>
+                        <a class="hidden-mobile" href="/cart"> (0) sản phẩm</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Header-->
+    <div class="banner_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 no_padding">
+                    <a href="#" alt=""> <img src="{% static 'images/banner-top.jpg' %} " alt="banner-top" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header_top">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-12 col-md-12 col-lg-12 no_padding">
+                    <ul>
+                        <li class="hidden-sm hidden-xs">
+                            <img src="{% static 'images/deal.png' %} " alt="">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Đặt mua ngay bây giờ</a>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/fire.png' %} " alt="">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Khuyến mãi HOT</a>
+                        </li>
+                        <li class="hidden-sm hidden-xs">
+                            <img src="{% static 'images/support.png' %} " alt="">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Chăm sóc khách hàng</a>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/m.png' %} " alt="">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Bán hàng cùng Tablet Plaza</a>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/call.png' %} " alt="">
+                            <a href="tel://">1900 199 199</a> - <a href="tel://">0989 155 155</a>
+                        </li>
+                        <li>
+                            <img src="{% static 'images/avatar.png' %} " alt="">
+                            <a href="/register">Đăng ký</a> |
+                            <a href="/login">Đăng nhập</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="middle-header">
+        <div class="container">
+            <div class="logo hidden-xs col-sm-3 col-md-3 col-lg-3">
+                <a href="/index"><img src="{% static 'images/logo.png' %} "></a>
+            </div>
+            <div class="search  hidden-xs col-sm-7 col-md-7 col-lg-7">
+                <form action="#" method="get">
+                    <input type="text" placeholder="Tìm kiếm ..." name="id">
+                    <button><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <div class="cart hidden-xs col-sm-2 col-md-2 col-lg-2">
+                <span class="icon">
+                    <i class="fa fa-cart-plus"></i>
+                    <a class="hidden-mobile" href="/cart"> (0) sản phẩm</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="mobile-header">
+        <div class="container">
+            <div class="row">
+                <span class="padding-10 col-xs-2 hidden-sm hidden-md hidden-lg">
+                    <i id="click_drop_menu" class="fa fa-align-justify"></i>
+                    <div id="sub-menu" class="mobile-menu" style="display:none;">
+                        <div class="mobile_logo">
+                            <a href="#">
+                                <img src="{% static 'images/user.png' %} " alt="">
+                            </a>
+                        </div>
+                        <div class="exit_menu">
+                            <i id="click_exit_menu" class="fa fa-window-close"></i>
+                        </div>
+                        <div style="text-align:center;padding:10px 0;">
+                            <a href="/register">
+                                Đăng ký </a> | <a href="/login">Đăng nhập
+                            </a>
+                        </div>
+                        <ul>
+                            <li style="border-top:#ebebeb 1px solid;">
+                                <a href="/index">Trang chủ</a>
+                            </li>
+                            <li>
+                                <a href="#">Tin tức</a>
+                            </li>
+                            <li>
+                                <a href="#">Liên hệ</a>
+                            </li>
+                            <li>
+                                <a href="/collection">Sản phẩm hot</a>
+                            </li>
+                            <li><a href="/collection">Sản phẩm VIP</a></li>
+                        </ul>
+                    </div>
+                </span>
+                <div class="col-xs-8 hidden-sm hidden-md hidden-lg">
+                    <div class="thumb_logo_mobile">
+                        <a href="#">
+                            <img src="{% static 'images/logo.png' %} " alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="padding-10 col-xs-2 hidden-sm hidden-md hidden-lg">
+                    <div class="pull-right">
+                        <a href="/cart">
+                            <span class="quantity">0</span>
+                            <i style="color:rgb(24, 53, 68);" class="fa fa-cart-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="search col-xs-12 hidden-sm hidden-md hidden-lg">
+                    <form action="#" method="get">
+                        <input type="text" placeholder="Tìm kiếm ..." name="id">
+                        <button><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End header-->

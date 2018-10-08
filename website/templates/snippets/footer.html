@@ -1,0 +1,110 @@
+{% load staticfiles %}
+<footer>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="footer-logo">
+               <a href="/index"> <img src="{% static 'images/logo.png' %} "></a>
+            </div>
+            <div class="foo-grids">
+                <div class="col-md-3 col-sm-6 col-xs-12 ">
+                    <h4 class="footer-head">Liên hệ<span onclick="clickShowFooter('footer_links_1');" class="plus_more pull-right"><i
+                                class="fa fa-plus"></i></span></h4>
+                    <table id="footer_links_1">
+                        <tr>
+                            <td>
+                                <span class="fa fa-map-marker"></span>
+                            </td>
+                            <td>
+                                56 Nguyễn Trải, Phường 3, Quận 5, Tp. HCM
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="fa fa-phone"></span>
+                            </td>
+                            <td>
+                                <a href="tel:0989789789">+84 989 789 789</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="fa fa-envelope"></span>
+                            </td>
+                            <td>
+                                <a href="mailto:info@example.com">mail@example.com</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 ">
+                    <h4 class="footer-head">Thông tin <span onclick="clickShowFooter('footer_links_2');" class="plus_more pull-right"><i
+                                class="fa fa-plus"></i></span></h4>
+                    <ul id="footer_links_2">
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="/index">Trang chủ</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Tin tức</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Liên hệ</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="/collection">Sản phẩm hot</a>
+                        </li>
+                        <li><i class="fa fa-arrow-right"></i> <a href="/collection">Sản phẩm VIP</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 ">
+                    <h4 class="footer-head">Chính sách <span onclick="clickShowFooter('footer_links_3');" class="plus_more pull-right"><i
+                                class="fa fa-plus"></i></span></h4>
+                    <ul id="footer_links_3">
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Chính sách giao hàng</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Chính sách thanh toán</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Chính sách trả hàng</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Chính sách đổi trả</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Chính sách bảo mật</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 ">
+                    <h4 class="footer-head">Chăm sóc khách hàng <span onclick="clickShowFooter('footer_links_4');"
+                            class="plus_more pull-right"><i class="fa fa-plus"></i></span></h4>
+                    <ul id="footer_links_4">
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Hướng dẫn mua hàng trực tuyến</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Giao hàng và nhận hàng</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Hướng dẫn thanh toán</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Câu hỏi thường gặp</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-arrow-right"></i> <a href="#">Tài khoản</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <hr />
+            <div class="copyrights">
+                <p> © 2018 Bản quyền thuộc về Tablet Plaza | Thiết kế bởi <a href="http://w3layouts.com/">IT_Team_DCT</a></p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</footer>
+<button onclick="topFunction()" id="btnTop" title="Go to top"><i class="fa fa-arrow-up"></i></button>
