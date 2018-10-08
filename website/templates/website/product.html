@@ -1,5 +1,11 @@
 {% extends "pages/base.html" %}
 {% load staticfiles %}
+{%block zoom_img%}
+<!--Zoom {% static 'images-->
+<link rel="stylesheet" href="{% static 'assets/cloudzoom.css' %} ">
+<link rel="stylesheet" href="{% static 'assets/jquery.bxslider.css' %} ">
+<!--End zoom-->
+{%endblock%}
 {% block title %}
 Chi tiết sản phẩm
 {% endblock %}
@@ -179,4 +185,11 @@ Chi tiết sản phẩm
     </div>
 </div>
 
+{% endblock %}
+{% block zoom_img_js %}
+<!--Zoom image-->
+<script src="{% static 'assets/jquery.bxslider.min.js' %} "></script>
+<script src="{% static 'assets/cloudzoom.js' %} "></script>
+<script src="{% static 'assets/product_script.js' %} "></script>
+<!--End zoom-->
 {% endblock %}

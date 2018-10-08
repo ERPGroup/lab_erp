@@ -12,10 +12,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/owl.carousel.css' %} " />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/styles.css' %} " />
     <link rel="stylesheet" href="{% static 'assets/font-awesome.min.css' %} ">
-    <!--Zoom {% static 'images-->
-    <link rel="stylesheet" href="{% static 'assets/cloudzoom.css' %} ">
-    <link rel="stylesheet" href="{% static 'assets/jquery.bxslider.css' %} ">
-    <!--End zoom-->
+    {%block zoom_img%}
+    {%endblock%}
     <link rel="stylesheet" href="{% static 'assets/fotorama.css' %} ">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %} ">
     <script type="text/javascript" src="{% static 'assets/jquery-2.2.4.min.js' %} "></script>
@@ -40,11 +38,8 @@
     <script src="{% static 'assets/fotorama.js' %} "></script>
     <script src="{% static 'assets/custom.js' %} "></script>
     <script src="{% static 'assets/slider.js' %} "></script>
-    <!--Zoom image-->
-    <script src="{% static 'assets/jquery.bxslider.min.js' %} "></script>
-    <script src="{% static 'assets/cloudzoom.js' %} "></script>
-    <script src="{% static 'assets/product_script.js' %} "></script>
-    <!--End zoom-->
+    {% block zoom_img_js %}
+    {% endblock %}
 </body>
 
 </html>
