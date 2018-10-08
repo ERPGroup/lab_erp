@@ -1,9 +1,9 @@
 {% extends "pages/base.html" %}
 {% load staticfiles %}
 {%block zoom_img%}
-<!--Zoom {% static 'images-->
-<link rel="stylesheet" href="{% static 'assets/cloudzoom.css' %} ">
-<link rel="stylesheet" href="{% static 'assets/jquery.bxslider.css' %} ">
+<!--Zoom {% static 'website/images-->
+<link rel="stylesheet" href="{% static 'website/assets/cloudzoom.css' %} ">
+<link rel="stylesheet" href="{% static 'website/assets/jquery.bxslider.css' %} ">
 <!--End zoom-->
 {%endblock%}
 {% block title %}
@@ -30,20 +30,20 @@ Chi tiết sản phẩm
                                     <li>
                                         <div class="thumb_image_quickview">
                                             <img class="cloudzoom" id="zoom1" data-cloudzoom="zoomSizeMode:'image',zoomPosition:'3', zoomOffsetX:0"
-                                                src="{% static 'images/product_2.png' %}" alt="#" />
+                                                src="{% static 'website/images/product_2.png' %}" alt="#" />
                                         </div>
                                     </li>
                                     <li>
                                         <div class="thumb_image_quickview">
                                             <img class="cloudzoom" id="zoom1" data-cloudzoom="zoomSizeMode:'image',zoomPosition:'3', zoomOffsetX:0"
-                                                src="{% static 'images/product_2.png' %}" alt="#" />
+                                                src="{% static 'website/images/product_2.png' %}" alt="#" />
                                         </div>
                                     </li>
                                 </ul>
                                 <div id="bx-pager" class="bx-pager owl-carousel" data-lg-items="4" data-nav="true" data-md-items="3" data-sm-items="4" data-xs-items="2" data-xss-items="2" data-margin="0">
-                                    <a data-slide-index="0" href=""><img src="{% static 'images/product_1.jpg' %}" alt="#"
+                                    <a data-slide-index="0" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
                                             class="img-responsive" /></a>
-                                    <a data-slide-index="1" href=""><img src="{% static 'images/product_1.jpg' %}" alt="#"
+                                    <a data-slide-index="1" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
                                             class="img-responsive" /></a>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@ Chi tiết sản phẩm
                                     sắc mới là màu Red nhằm kỉ niệm 10 năm hợp tác giữa Apple và (RED) – một tổ
                                     chức gây
                                     quỹ hỗ trợ phòng chống AIDS.
-                                    <img src="{% static 'images/detail_product.jpg' %}">
+                                    <img src="{% static 'website/images/detail_product.jpg' %}">
                                 </p>
                             </div>
                             <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 no_padding">
@@ -188,8 +188,8 @@ Chi tiết sản phẩm
 {% endblock %}
 {% block zoom_img_js %}
 <!--Zoom image-->
-<script src="{% static 'assets/jquery.bxslider.min.js' %} "></script>
-<script src="{% static 'assets/cloudzoom.js' %} "></script>
-<script src="{% static 'assets/product_script.js' %} "></script>
+<script src="{% static 'website/assets/jquery.bxslider.min.js' %} "></script>
+<script src="{% static 'website/assets/cloudzoom.js' %} "></script>
+<script src="{% static 'website/assets/product_script.js' %} "></script>
 <!--End zoom-->
 {% endblock %}

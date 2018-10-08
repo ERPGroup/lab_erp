@@ -7,16 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/bootstrap-theme.min.css' %} " />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/owl.carousel.css' %} " />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'assets/styles.css' %} " />
-    <link rel="stylesheet" href="{% static 'assets/font-awesome.min.css' %} ">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap-theme.min.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/styles.css' %} " />
+    <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
     {%block zoom_img%}
     {%endblock%}
-    <link rel="stylesheet" href="{% static 'assets/fotorama.css' %} ">
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %} ">
-    <script type="text/javascript" src="{% static 'assets/jquery-2.2.4.min.js' %} "></script>
+    <link rel="stylesheet" href="{% static 'website/assets/fotorama.css' %} ">
+    <link rel="shortcut icon" href="{% static 'website/images/favicon.ico' %} ">
+    <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
 </head>
 
 <body>
@@ -33,11 +33,11 @@
     <!--footer section start-->
     {% include "snippets/footer.html" %}
     <!--End footer-->
-    <script src="{% static 'assets/owl.carousel.js' %} "></script>
-    <script src="{% static 'assets/bootstrap.min.js' %} "></script>
-    <script src="{% static 'assets/fotorama.js' %} "></script>
-    <script src="{% static 'assets/custom.js' %} "></script>
-    <script src="{% static 'assets/slider.js' %} "></script>
+    <script src="{% static 'website/assets/owl.carousel.js' %} "></script>
+    <script src="{% static 'website/assets/bootstrap.min.js' %} "></script>
+    <script src="{% static 'website/assets/fotorama.js' %} "></script>
+    <script src="{% static 'website/assets/custom.js' %} "></script>
+    <script src="{% static 'website/assets/slider.js' %} "></script>
     {% block zoom_img_js %}
     {% endblock %}
 </body>
