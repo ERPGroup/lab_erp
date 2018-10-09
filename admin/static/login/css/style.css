@@ -128,7 +128,8 @@ h1 {
 .content-w3ls img.user-wthree {
 	width:150px;
 	height:auto;
-	margin:0 auto;
+    margin:0 auto;
+    margin: 25px 0px;
 }
 .form-group1-agile {
     position: relative;

@@ -3,83 +3,112 @@
 Đăng nhập
 {% endblock %}
 {% block content %}
-   <!--content register-->
-   <div class="register">
-        <div class="container">
-            <div class="row">
-                <div class="register_box">
-                    <div class="module_title">
-                        <div class="col-xs-12 no_padding">
-                            <span class="title is_active"><a href="{% url 'login' %}">Đăng nhập </a> </span> <span class="title "><a
-                                    href="{% url 'register' %}">Tạo tài khoản</a> </span>
+<!--content register-->
+
+<div class="register">
+    <div class="container">
+        <div class="row">
+            <div class="register_box">
+                <div class="module_title">
+                    <div class="col-xs-12 no_padding">
+                        <span class="title is_active"><a href="{% url 'login' %}">Đăng nhập </a> </span> <span class="title "><a
+                                href="{% url 'register' %}">Tạo tài khoản</a> </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="register_content">
+                    <form id="frm_register" action="#" method="post" class="frm_register">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Email: </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" id="inputUsername">
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                <div class="errors_id">
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="register_content">
-                        <form action="#" method="post" class="frm_register">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-sm-3 padding_label">
-                                    <label class="control-label">Tên tài khoản: </label>
-                                </div>
-                                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
-                                    <input type="text" class="form-control" id="inputUsername">
-                                </div>
-                                <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                    <div class="errors_id">
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Mật khẩu: </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                <input type="password" class="form-control" id="inputPassword">
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                <div class="errors_pw">
 
-                                    </div>
                                 </div>
                             </div>
-                            <div class="clearfix"></div>
-                            <div class="form-group">
-                                <div class="col-xs-12 col-sm-3 padding_label">
-                                    <label class="control-label">Mật khẩu: </label>
-                                </div>
-                                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
-                                    <input type="password" class="form-control" id="inputPassword">
-                                </div>
-                                <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                    <div class="errors_pw">
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group remember_me">
+                            <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-lg-3">
+                                <input type="checkbox" name="remember_me" id="remember_me">
+                                <label>Ghi nhớ đăng nhập</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                <a href="#" onclick="clickShowFooter('forgot_password'); clickShowFooter('frm_register'); return false;">Quên
+                                    mật khẩu</a>
+                            </div>
+                        </div>
 
-                                    </div>
-                                </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group group_button">
+                            <div class="col-xs-6 col-sm-6 col-xs-offset-3 ">
+                                <button class="btn_registier btn btn-warning" type="submit">Đăng nhập</button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="text-align: center">
+                            <label>Bạn muốn đăng nhập bằng dịch vụ</label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group group_button" style="margin-top:0px">
+                            <div class="col-xs-6 col-sm-6 col-sm-offset-3 ">
+                                <button class="btn_registier btn btn-danger" onclick="alert('Dịch vụ đang được nâng cấp'); return false;">
+                                    <i class="fa fa-google-plus"></i> Google</button>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-sm-offset-3  ">
+                                <button class="btn_registier btn btn-info" onclick="alert('Dịch vụ đang được nâng cấp'); return false;"><i
+                                        class="fa fa-facebook-f"></i> Facebook</button>
+                            </div>
+                        </div>
+                    </form>
+                    <form id="forgot_password" style="display:none;" action="#" method="post" class="frm_register">
+                        <div class="form-group">
+                            <label>Vui lòng cung cấp địa chỉ email để khôi phục mật khẩu. </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Email: </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" id="forgot_email">
                             </div>
                             <div class="clearfix"></div>
-                            <div class="form-group remember_me">
-                                <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-lg-3">
-                                    <input type="checkbox" name="remember_me" id="remember_me">
-                                    <label>Ghi nhớ đăng nhập</label>
-                                </div>
-                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                                    <a href="#">Quên mật khẩu</a>
+                            <div class="col-xs-12">
+                                <div class="errors_fe">
                                 </div>
                             </div>
-                            <div class="clearfix"></div>
-                            <div class="form-group group_button">
-                                <div class="col-xs-6 col-sm-6 col-xs-offset-3 ">
-                                    <button class="btn_registier btn btn-warning" type="submit">Đăng nhập</button>
-                                </div>
-                            </div>
-                            <div class="col-xs-12" style="text-align: center">
-                                <label>Bạn muốn đăng nhập bằng dịch vụ</label>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="form-group group_button" style="margin-top:0px">
-                                <div class="col-xs-6 col-sm-6 col-sm-offset-3 ">
-                                    <button class="btn_registier btn btn-danger" onclick="alert('Dịch vụ đang được nâng cấp'); return false;">
-                                        <i class="fa fa-google-plus"></i> Google</button>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-sm-offset-3  ">
-                                    <button class="btn_registier btn btn-info" onclick="alert('Dịch vụ đang được nâng cấp'); return false;"><i
-                                            class="fa fa-facebook-f"></i> Facebook</button>
-                                </div>
-                            </div>
-                        </form>
 
-                    </div>
+                        </div>
+                        <div class="form-group group_button">
+                            <div class="col-xs-6 col-sm-3 col-xs-offset-3 ">
+                                <button class="btn_registier btn btn-warning" type="submit">Gửi</button>
+                            </div>
+                            <div class="col-xs-6 col-sm-3  ">
+                                <button class="btn_registier btn" onclick="clickShowFooter('forgot_password'); clickShowFooter('frm_register'); return false;" ><i class="fa fa-arrow-left" style="padding-right:15px;"></i>Quay lại đăng nhập</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <!--End content-->
-    {% endblock %}
+</div>
+<!--End content-->
+{% endblock %}

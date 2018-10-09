@@ -1,0 +1,53 @@
+.statisical_home
+{
+    ul
+    {
+        padding-left:0px;
+        border-top:1px solid #ebebeb;
+        li
+        {
+            list-style: none;
+            padding:5px 0px;
+            border-bottom: #ebebeb 1px solid;
+            i
+            {
+                min-width:40px;
+            }
+            a{
+                line-height: 28px;
+                text-decoration: none;
+                color:#333;
+                &:hover{
+                color:black;
+                }
+                span
+                {
+                    font-weight: bold;
+                    color:#4CB1CF;
+                    padding: 0 5px;
+                }
+            }
+        }
+    }
+}
+.tbl_statistical
+{
+    min-height: 143px;
+    table
+    {
+        width:100%;
+        tr{
+            th{
+                text-align: center;
+            }
+            td{
+                padding:10px 0px;
+            }
+        }
+    }
+
+}
+.f_right
+{
+    float:right!important;
+}
