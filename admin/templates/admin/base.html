@@ -17,7 +17,13 @@
     <link href="{% static '/admin/assets/css/custom-styles.css' %} " rel="stylesheet" />
     <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
     <!-- Google Fonts-->
+    <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
+    
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        {% block dataTB %}
+        <!-- TABLE STYLES-->
+        {% endblock  %}
+    
 </head>
 
 <body>
@@ -47,6 +53,8 @@
     <script src="{% static '/admin/assets/js/morris/morris.js' %} "></script>
     <!--Custom Script -->
     <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
+    {% block data_table %}
+    {% endblock %}
 </body>
 
 </html>
