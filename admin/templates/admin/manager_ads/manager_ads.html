@@ -1,0 +1,96 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chủ
+{% endblock %}
+{% block dataTB %}
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block admin %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý quảng cáo
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới quảng cáo</a>
+            </div>
+        </h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Advanced Tables -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách quảng cáo
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Mã quảng cáo</th>
+                                <th>Tên quảng cáo</th>
+                                <th>Vị trí</th>
+                                <th>Giá tiền</th>
+                                <th>Hạn sử dụng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>QC001</td>
+                                <td>Quảng cáo banner</td>
+                                <td>Trên tiêu đề</td>
+                                <td>500.000 VNĐ</td>
+                                <td>15 ngày</td>
+                            </tr>
+                            <tr>
+                                <td>QC001</td>
+                                <td>Quảng cáo banner</td>
+                                <td>Trên tiêu đề</td>
+                                <td>500.000 VNĐ</td>
+                                <td>15 ngày</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--End Advanced Tables -->
+    </div>
+</div>
+{% endblock content %}
+{% block data_table %}
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable({
+            language: {
+                paginate: {
+                    previous: "<i class='fa fa-arrow-left'></i>",
+                    next: "<i class='fa fa-arrow-right'></i>"
+                },
+                sProcessing: "Đang xử lý...",
+                sLengthMenu: "Xem _MENU_ mục",
+                sZeroRecords: "Không tìm thấy dòng nào phù hợp",
+                sInfo: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
+                sInfoFiltered: "(được lọc từ _MAX_ mục)",
+                sInfoPostFix: "",
+                sSearch: "Tìm:",
+                sUrl: "",
+            },
+
+
+        });
+    });
+</script>
+{% endblock %}

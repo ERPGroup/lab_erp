@@ -8,4 +8,12 @@ urlpatterns = [
     path('',views.index,name='admin_index'),
     path('manager_users',views.users,name='manager_users'),
     path('manager_users/add',views.users_add,name='add users'),
+    path('manager_servies',views.servies,name='Manager Servies'),
+    path('manager_servies/add',views.servies_add,name='add servies'),
+    path('manager_pay',views.payment,name="payment"),
+    path('manager_payment_detail',views.payment_detail,name="payment_detail"),
+    path('manager_posted',views.post,name="payment"),
+    path('manager_posted/add',views.post_detail,name="payment"),
+    path('manager_ads',views.ads,name="ads"),
+    path('manager_ads/add',views.ads_detail,name="ads"),
 ]

@@ -1,0 +1,106 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết hóa đơn
+{% endblock %}
+{% block admin %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Chi tiết hóa đơn HD001
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa hóa đơn</a>
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="#" class="background_white" role="form">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <h3>Thông tin thanh toán</h3>
+                    <hr>
+                </div>
+                <div class="form-group">
+                    <label>Mã người mua:</label>
+                    <input type="email" class="form-control" value="KH001" disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>Họ tên người mua</label>
+                    <input name="inputPassword" class="form-control" value="Nguyễn Văn A" disabled="disabled"
+                        placeholder="">
+                </div>
+                <div class="form-group" id="checkPassword">
+                    <label>Tổng tiền</label>
+                    <input value="1.000.000 VNĐ" type="text" class="form-control" disabled="disabled" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Ngày thanh toán: </label>
+                    <input value="12/10/2018" disabled="disabled" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái hóa đơn</label>
+                    <select class="form-control">
+                        <option>Đã thanh toán</option>
+                        <option>Đang chuyển tiền</option>
+                        <option>Khởi tạo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hình thức thanh toán</label>
+                    <select class="form-control">
+                        <option>Trực tuyến Paypal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <h3>Thông tin đơn hàng</h3>
+                    <hr>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã gói tin</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá tiền</th>
+                                        <th>Loại tin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>GT001</td>
+                                        <td>1</td>
+                                        <td>400.000 VNĐ</td>
+                                        <td>Bạch kim</td>
+                                    </tr>
+                                    <tr>
+                                        <td>GT002</td>
+                                        <td>2</td>
+                                        <td>300.000 VNĐ</td>
+                                        <td>Vàng</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
+                <button type="reset" class="btn btn-default">Khôi phục</button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}

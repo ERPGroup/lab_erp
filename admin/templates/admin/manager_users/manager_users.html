@@ -7,7 +7,9 @@ Trang chủ
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
-
+{% block admin %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
@@ -35,26 +37,36 @@ Trang chủ
                                 <th>Email</th>
                                 <th>Họ và tên</th>
                                 <th>Loại tài khoản</th>
+                                <th>Đánh giá</th>
                                 <th>Trạng thái</th>
-                                <th>Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>admin@tabletplaza.com</td>
+                                <td> <a href="/admin/manager_users/add">admin@tabletplaza.com</a></td>
                                 <td>Nguyễn Văn Admin</td>
                                 <td>Quản lý</td>
+                                <td><i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </td>
                                 <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                            
                             </tr>
                             <tr>
-                                <td>demo@tabletplaza.com</td>
+                                <td><a href="/admin/manager_users/add">demo@gmail.com</a></td>
                                 <td>Nguyễn Văn Demo</td>
                                 <td>Người bán</td>
+                                <td><i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </td>
                                 <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                                
                             </tr>
                         </tbody>
                     </table>

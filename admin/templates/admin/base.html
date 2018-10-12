@@ -29,7 +29,10 @@
 <body>
     <div id="wrapper">
         {% include "snippets_admin/header.html" %}
-        {% include "snippets_admin/side_bar.html" %}
+        {% block admin %}
+        {% endblock %}
+        {% block merchant %}
+        {% endblock %}
         <div id="page-wrapper">
             <div id="page-inner">
                 {% block content %}

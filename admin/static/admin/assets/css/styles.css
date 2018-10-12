@@ -59,4 +59,32 @@
   border-radius: 5px;
   border: 1px solid #C7D1DD;
 }
+
+.frm_tags ul {
+  padding: 0px;
+  margin-top: 15px;
+}
+
+.frm_tags ul li {
+  list-style: none;
+  display: inline-block;
+}
+
+.frm_tags ul li a {
+  color: black;
+}
+
+.frm_tags ul li a:hover {
+  font-weight: bold;
+}
+
+.frm_tags ul li i {
+  padding: 0 10px;
+}
+
+.frm_tags ul li span {
+  background-color: #C7D1DD;
+  color: black;
+  padding: 5px;
+}
 /*# sourceMappingURL=styles.css.map */
