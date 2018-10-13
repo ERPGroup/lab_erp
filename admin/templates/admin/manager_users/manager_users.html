@@ -32,6 +32,37 @@ Trang chủ
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                        <div class="col-xs-12 no_padding" style="margin-bottom:10px;">
+                            <div class="col-xs-4 no_padding">
+                                <span>Trạng thái</span>
+                                <select style="width:50%;display:inline-block;" id="select_satus" class="form-control">
+                                    <option>Tất cả</option>
+                                    <option>Đang hoạt động</option>
+                                    <option>Không hoạt động</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 no_padding" style="text-align:center;">
+                                <span>Loại tài khoản</span>
+                                <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
+                                    <option>Tất cả</option>
+                                    <option>Quản lý</option>
+                                    <option>Người bán</option>
+                                    <option>Người mua</option>
+                                    <option>Khách hàng</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 no_padding" style="float:right;text-align:right;">
+                                <span>Đánh giá</span>
+                                <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
+                                    <option>Tất cả</option>
+                                    <option>Quản lý</option>
+                                    <option>Người bán</option>
+                                    <option>Người mua</option>
+                                    <option>Khách hàng</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
                         <thead>
                             <tr>
                                 <th>Email</th>
@@ -53,7 +84,7 @@ Trang chủ
                                     <i class="fa fa-star"></i>
                                 </td>
                                 <td>Đang hoạt động</td>
-                            
+
                             </tr>
                             <tr>
                                 <td><a href="/admin/manager_users/add">demo@gmail.com</a></td>
@@ -66,7 +97,18 @@ Trang chủ
                                     <i class="fa fa-star"></i>
                                 </td>
                                 <td>Đang hoạt động</td>
-                                
+                            </tr>
+                            <tr>
+                                <td><a href="/admin/manager_users/add">demo@gmail.com</a></td>
+                                <td>Nguyễn Văn Demo</td>
+                                <td>Người bán</td>
+                                <td><i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </td>
+                                <td>Đã bị khóa</td>
                             </tr>
                         </tbody>
                     </table>
@@ -84,12 +126,13 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
                     next: "<i class='fa fa-arrow-right'></i>"
                 },
+                bFilter: true,
                 sProcessing: "Đang xử lý...",
                 sLengthMenu: "Xem _MENU_ mục",
                 sZeroRecords: "Không tìm thấy dòng nào phù hợp",
@@ -100,8 +143,58 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "columnDefs": [
 
+                {
+                    "targets": [2],
 
+                },
+                {
+                    "targets": [3],
+                }
+            ],
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "createdRow": function (row, data, index) {
+                if (data[2] == "Quản lý") {
+                    $('td', row).eq(2).addClass('highlight');
+                }
+            },  
+        });
+        var tool_bar = '';
+        tool_bar+='<div class="column_hidden">Bật/Tắt cột hiển thị: '
+        tool_bar+= '<a class="toggle-vis" data-column="0">Email</a> - <a class="toggle-vis" data-column="1">Họ và tên</a> - ';
+        tool_bar+= '<a class="toggle-vis" data-column="2">Loại tài khoản</a> - <a class="toggle-vis" data-column="3">Đánh giá</a> - ';
+        tool_bar+= '<a class="toggle-vis" data-column="4">Trạng thái</a>';
+        tool_bar+='</div>'
+        $("div.toolbar").html(tool_bar);
+        $('a.toggle-vis').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the column API object
+            var column = table.api().column($(this).attr('data-column'));
+
+            // Toggle the visibility
+            column.visible(!column.visible());
+        });
+        $('#dataTables-example tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+        });
+        $('#select_status').change(function () {
+            if (this.value == "Tất cả") {
+                table.api().columns(4).search('').draw();
+            }
+            else {
+                table.api().columns(4).search(this.value).draw();
+            }
+        });
+        $('#select_position').change(function () {
+            if (this.value == "Tất cả") {
+                table.api().columns(2).search('').draw();
+            }
+            else {
+                table.api().columns(2).search(this.value).draw();
+            }
         });
     });
 </script>

@@ -57,7 +57,7 @@
   background: white;
   margin: 15px 0;
   border-radius: 5px;
-  border: 1px solid #C7D1DD;
+  border: 1px solid #c7d1dd;
 }
 
 .frm_tags ul {
@@ -83,8 +83,60 @@
 }
 
 .frm_tags ul li span {
-  background-color: #C7D1DD;
+  background-color: #c7d1dd;
   color: black;
   padding: 5px;
+}
+
+.thumb_img_ads {
+  height: 74px;
+  position: relative;
+}
+
+.thumb_img_ads img {
+  width: auto !important;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 100%;
+}
+
+.no_padding {
+  padding: 0px;
+}
+
+.highlight {
+  color: #f58634;
+  font-weight: bold;
+}
+
+table.dataTable tbody tr.selected {
+  background-color: #c7d1dd;
+}
+
+.dataTables_filter {
+  display: inline;
+}
+
+.toolbar {
+  width: 75%;
+  display: inline-block;
+}
+
+.column_hidden {
+  line-height: 28px;
+}
+
+.column_hidden a {
+  color: #333;
+}
+
+.column_hidden a:hover {
+  cursor: pointer;
+  color: black;
 }
 /*# sourceMappingURL=styles.css.map */

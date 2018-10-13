@@ -14,9 +14,9 @@ Trang chủ
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý quảng cáo
+            Quản lý gói tin
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới quảng cáo</a>
+                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới người dùng</a>
             </div>
         </h1>
 
@@ -27,34 +27,36 @@ Trang chủ
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách quảng cáo
+                Danh sách gói tin
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã quảng cáo</th>
-                                <th>Tên quảng cáo</th>
-                                <th>Vị trí</th>
-                                <th>Giá tiền</th>
-                                <th>Hạn sử dụng</th>
+                                <th>Email</th>
+                                <th>Họ và tên</th>
+                                <th>Loại tài khoản</th>
+                                <th>Trạng thái</th>
+                                <th>Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/admin/manager_ads/add">QC001</a></td>
-                                <td>Quảng cáo banner</td>
-                                <td>Trên tiêu đề</td>
-                                <td>500.000 VNĐ</td>
-                                <td>15 ngày</td>
+                                <td>admin@tabletplaza.com</td>
+                                <td>Nguyễn Văn Admin</td>
+                                <td>Quản lý</td>
+                                <td>Đang hoạt động</td>
+                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
                             </tr>
                             <tr>
-                                <td><a href="/admin/manager_ads/add">QC002</a></td>
-                                <td>Quảng cáo banner</td>
-                                <td>Trên tiêu đề</td>
-                                <td>500.000 VNĐ</td>
-                                <td>15 ngày</td>
+                                <td>demo@tabletplaza.com</td>
+                                <td>Nguyễn Văn Demo</td>
+                                <td>Người bán</td>
+                                <td>Đang hoạt động</td>
+                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
                             </tr>
                         </tbody>
                     </table>

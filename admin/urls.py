@@ -16,4 +16,6 @@ urlpatterns = [
     path('manager_posted/add',views.post_detail,name="payment"),
     path('manager_ads',views.ads,name="ads"),
     path('manager_ads/add',views.ads_detail,name="ads"),
+    path('manager_ads/register',views.ads_register,name="ads"),
+    path('manager_ads/register_detail',views.ads_register_detail,name="ads"),
 ]

@@ -25,3 +25,7 @@ def ads(request):
     return render(request,'admin/manager_ads/manager_ads.html')
 def ads_detail(request):
     return render(request,'admin/manager_ads/manager_ads_detail.html')
+def ads_register(request):
+    return render(request,'admin/manager_ads/manager_ads_register.html')
+def ads_register_detail(request):
+    return render(request,'admin/manager_ads/manager_ads_register_detail.html')

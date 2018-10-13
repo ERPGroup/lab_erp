@@ -10,9 +10,9 @@ Trang chi tiết người dùng
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý quảng cáo <small>Thêm mới</small>
+            Quản lý quảng cáo
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa quảng cáo</a>
+                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa người dùng</a>
             </div>
         </h1>
     </div>
@@ -22,60 +22,49 @@ Trang chi tiết người dùng
         <form method="post" action="#" class="background_white" role="form">
             <div class="col-lg-6">
                 <div class="form-group">
-                    <h3>Thông tin quảng cáo</h3>
+                    <h3>Thông tin đăng ký</h3>
                     <hr>
                 </div>
                 <div class="form-group">
-                    <label>Mã quảng cáo:</label>
+                    <label>Mã quảng cáo</label>
                     <input type="text" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Tên quảng cáo:</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group" id="checkPassword">
-                    <label>Vị trí:</label>
+                    <label>Mã khách hàng</label>
                     <input type="text" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Giá tiền:</label>
+                    <label>Họ tên khách hàng</label>
                     <input type="text" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Hạn sử dụng</label>
+                    <label>Vị trí đặt quảng cáo</label>
                     <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control">
+                        <option>Đang xử lý</option>
+                        <option>Cho thuê</option>
+                        <option>Không cho thuê</option>
+                    </select>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <h3>Hình thức quảng cáo</h3>
+                    <h3>Nội dung quảng cáo</h3>
                     <hr>
                 </div>
                 <div class="form-group">
-                    <label>Kiểu dữ liệu</label>
-                    <input type="text" class="form-control">
+                    <label>Hình ảnh</label>
+                    <input type="file" class="form-control">
+                    <div class="thumb_img_ads">
+                        <img src="{% static 'admin/assets/img/banner-top.jpg' %}">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Nội dung</label>
-                    <input type="tel" class="form-control">
-                </div>
-                <div class="form-group" id="checkPassword">
-                    <label>Trạng thái</label>
-                    <select class="form-control">
-                        <option>Đang sử dụng</option>
-                        <option>Không sử dụng</option>
-                        <option>Không cho thuê</option>
-                    </select>
-                </div>
-                <div class="form-group frm_tags">
-                    <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
-                    <input type="text" class="form-control" placeholder="Nhập tags cho gói tin">
-                    <ul>
-                        <li>
-                            <span>Demo test<a href="#"><i class="fa fa-remove"></i></a></span>
-                        </li>
-                        <li><span>Deme test<a href="#"><i class="fa fa-remove"></i></a></span></li>
-                    </ul>
+                    <textarea class="form-control" rows="4"></textarea>
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
