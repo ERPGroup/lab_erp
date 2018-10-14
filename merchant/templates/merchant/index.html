@@ -3,7 +3,7 @@
 Trang chủ
 {% endblock %}
 {% block merchant %}
-    {% include "snippets/side_bar_merchant.html" %}
+{% include "snippets/side_bar_merchant.html" %}
 {% endblock merchant %}
 {% block content %}
 <div class="row">
@@ -13,4 +13,217 @@ Trang chủ
         </h1>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="panel panel-primary text-center no-boder bg-color-green">
+            <div class="panel-body">
+                <i class="fa fa-file-o fa-5x"></i>
+                <h3>8,457</h3>
+            </div>
+            <div class="panel-footer back-footer-green">
+                Đơn hàng hôm nay
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="panel panel-primary text-center no-boder bg-color-blue">
+            <div class="panel-body">
+                <i class="fa fa-money fa-5x"></i>
+                <h3>52,160 </h3>
+            </div>
+            <div class="panel-footer back-footer-blue">
+                Doanh thu hôm nay
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="panel panel-primary text-center no-boder bg-color-brown">
+            <div class="panel-body">
+                <i class="fa fa-user fa-5x"></i>
+                <h3>1 </h3>
+            </div>
+            <div class="panel-footer back-footer-brown">
+                Tin đăng sắp hết hạn
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="panel panel-primary text-center no-boder bg-color-red">
+            <div class="panel-body">
+                <i class="fa fa-users fa-5x"></i>
+                <h3>10 </h3>
+            </div>
+            <div class="panel-footer back-footer-red">
+                Lượt đánh giá hôm nay
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Thống kê
+            </div>
+            <div class="panel-body statisical_home">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-money fa-2x"></i> <span>2</span> Đơn hàng chưa thanh toán
+                            <i class="f_right fa fa-angle-right fa-2x"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-truck fa-2x"></i> <span>5</span> Đơn hàng chưa giao
+                            <i class="f_right fa fa-angle-right fa-2x"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-file-o fa-2x"></i> <span>5</span>Đơn hàng chưa hoàn tất
+                            <i class="f_right fa fa-angle-right fa-2x"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-remove fa-2x"></i> <span>5</span>Đơn hàng hủy
+                            <i class="f_right fa fa-angle-right fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Thống kê sản phẩm bán chạy
+            </div>
+            <div class="panel-body">
+                <div class="tbl_statistical">
+                    <table>
+                        <tr>
+                            <td>Sản phẩm A: </td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Sản phẩm B: </td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Sản phẩm C: </td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Sản phẩm C: </td>
+                            <td>1</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /. ROW  -->
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Hoạt động cần duyệt
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <span class="badge">Đánh giá: 48%</span>
+                        <i class="fa fa-fw fa-buysellads"></i> Tài khoản A có đánh giá dưới 50%
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 2 ngày</span>
+                        <i class="fa fa-fw fa-buysellads"></i> Gói quảng cáo A sắp hết hạn
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 1 ngày</span>
+                        <i class="fa fa-fw fa-buysellads"></i> Gói quảng cáo B sắp hết hạn
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 1 ngày</span>
+                        <i class="fa fa-fw fa-user"></i> Tài khoản C sắp hết hạn khóa
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 1 ngày</span>
+                        <i class="fa fa-fw fa-file-text-o"></i> Tin đăng sản phẩm A sắp hết hạn
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 1 ngày</span>
+                        <i class="fa fa-fw fa-file-text-o"></i> Tin đăng sản phẩm B sắp hết hạn
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">còn 1 ngày</span>
+                        <i class="fa fa-fw fa-file-text-o"></i> Tin đăng sản phẩm A sắp hết hạn
+                    </a>
+                </div>
+                <div class="text-right">
+                    <a href="#">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nhật ký hoạt động
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+
+                    <a href="#" class="list-group-item">
+                        <span class="badge">7 phút trước</span>
+                        <i class="fa fa-fw fa-user"></i> Một tài khoản đã được tạo
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">36 phút trước</span>
+                        <i class="fa fa-fw fa-globe"></i> 5 gói tin vừa được mua
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">7 phút trước</span>
+                        <i class="fa fa-fw fa-user"></i> Một tài khoản đã được tạo
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">36 phút trước</span>
+                        <i class="fa fa-fw fa-globe"></i> 5 gói tin vừa được mua
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">36 phút trước</span>
+                        <i class="fa fa-fw fa-globe"></i> 5 gói tin vừa được mua
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">36 phút trước</span>
+                        <i class="fa fa-fw fa-globe"></i> 5 gói tin vừa được mua
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <span class="badge">36 phút trước</span>
+                        <i class="fa fa-fw fa-globe"></i> 5 gói tin vừa được mua
+                    </a>
+                </div>
+                <div class="text-right">
+                    <a href="#">Xem thêm <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /. ROW  -->
+
+
 {% endblock %}

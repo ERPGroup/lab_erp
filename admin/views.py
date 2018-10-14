@@ -29,3 +29,11 @@ def ads_register(request):
     return render(request,'admin/manager_ads/manager_ads_register.html')
 def ads_register_detail(request):
     return render(request,'admin/manager_ads/manager_ads_register_detail.html')
+def products(request):
+    return render(request,'admin/manager_product/manager_product.html')
+def products_detail(request):
+    return render(request,'admin/manager_product/manager_product_detail.html')
+def categories(request):
+    return render(request,'admin/manager_product/manager_category.html')
+def category_detail(request):
+    return render(request,'admin/manager_product/manager_category_detail.html')

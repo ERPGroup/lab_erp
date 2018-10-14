@@ -68,6 +68,7 @@
 .frm_tags ul li {
   list-style: none;
   display: inline-block;
+  margin-bottom: 15px;
 }
 
 .frm_tags ul li a {
@@ -138,5 +139,42 @@ table.dataTable tbody tr.selected {
 .column_hidden a:hover {
   cursor: pointer;
   color: black;
+}
+
+.tbl_manager_product tr td {
+  vertical-align: middle !important;
+}
+
+.tbl_manager_product .tbl_thumb_product {
+  height: 74px;
+  position: relative;
+}
+
+.tbl_manager_product .tbl_thumb_product img {
+  width: auto !important;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 100%;
+}
+
+.add_image {
+  float: right;
+  font-size: 17px;
+  line-height: 28px;
+}
+
+.attribute input {
+  max-width: 100%;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.padding_top_15 {
+  padding-top: 15px;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -27,36 +27,42 @@ Trang chủ
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách gói tin
+                Danh sách sản phẩm
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Email</th>
-                                <th>Họ và tên</th>
-                                <th>Loại tài khoản</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Mô tả ngắn</th>
+                                <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
-                                <th>Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>admin@tabletplaza.com</td>
-                                <td>Nguyễn Văn Admin</td>
-                                <td>Quản lý</td>
-                                <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                                <td><a href="/admin/manager_product_detail">SP001</a></td>
+                                <td>Iphone5s</td>
+                                <td>Sản phẩm demo được hỗ trợ bởi ABC</td>
+                                <td>
+                                    <div class="tbl_thumb_product">
+                                        <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="center">Kích hoạt</td>
                             </tr>
                             <tr>
-                                <td>demo@tabletplaza.com</td>
-                                <td>Nguyễn Văn Demo</td>
-                                <td>Người bán</td>
-                                <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                                <td><a href="/admin/manager_product_detail">SP002</a></td>
+                                <td>Iphone5s</td>
+                                <td>Sản phẩm demo được hỗ trợ bởi ABC</td>
+                                <td>
+                                    <div class="tbl_thumb_product">
+                                        <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="center">Kích hoạt</td>
                             </tr>
                         </tbody>
                     </table>
