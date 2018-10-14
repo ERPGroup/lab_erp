@@ -1,0 +1,98 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chủ
+{% endblock %}
+{% block dataTB %}
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block admin %}
+{% include "snippets/side_bar_merchant.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý kho
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/merchant/manager_product_detail" class="btn btn-info">Thêm mới sản phẩm</a>
+            </div>
+        </h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Advanced Tables -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách sản phẩm
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Hình ảnh</th>
+                                <th>Số lượng</th>
+                                <th>Cập nhập số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="/merchant/manager_product_detail">SP001</a></td>
+                                <td>Iphone5s</td>
+                                <td>
+                                    <div class="tbl_thumb_product">
+                                        <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="center">5</td>
+                                <td class="quantity_warehose">
+                                    <div class="center">
+                                        <button class="btn btn-default">Thêm</button>
+                                        <button class="btn btn-default">Đặt</button>
+                                        <input type="number" name="quantity" value="0" size="3" maxlength="3" style="max-width:65px;" id="quantity"/>
+                                        <button class="btn btn-info">Cập nhập</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--End Advanced Tables -->
+    </div>
+</div>
+{% endblock content %}
+{% block data_table %}
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').dataTable({
+            language: {
+                paginate: {
+                    previous: "<i class='fa fa-arrow-left'></i>",
+                    next: "<i class='fa fa-arrow-right'></i>"
+                },
+                sProcessing: "Đang xử lý...",
+                sLengthMenu: "Xem _MENU_ mục",
+                sZeroRecords: "Không tìm thấy dòng nào phù hợp",
+                sInfo: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
+                sInfoFiltered: "(được lọc từ _MAX_ mục)",
+                sInfoPostFix: "",
+                sSearch: "Tìm:",
+                sUrl: "",
+            },
+        });
+    });
+</script>
+{% endblock %}
