@@ -143,6 +143,7 @@ table.dataTable tbody tr.selected {
 
 .table tr td {
   vertical-align: middle !important;
+  min-width: 133px;
 }
 
 .table tr td i {

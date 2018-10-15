@@ -55,10 +55,10 @@ Trang chi tiết người dùng
                     <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
                     <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }" type="text" class="form-control" placeholder="Nhập tags cho gói tin">
                     <ul >
-                        <li>
-                            <span>Demo test<a href="#"><i class="fa fa-remove"></i></a></span>
-                        </li>
-                        <li><span>Deme test<a href="#"><i class="fa fa-remove"></i></a></span></li>
+                            <li id="demo1">
+                                    <span>Demo test<a href="#"><i onclick="subtract_tags('demo1'); return false;" class="fa fa-remove"></i></a></span>
+                                </li>
+                                <li id="demo2"><span>Deme test<a href="#"><i onclick="subtract_tags('demo2'); return false;" class="fa fa-remove"></i></a></span></li>
                         <div id="tags_add">
 
                         </div>
@@ -132,13 +132,6 @@ Trang chi tiết người dùng
         var x = document.getElementById('add_more');
         var attribute = '';
         attribute+='<div class="form-group"><div class="col-lg-3"><input type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-9"><input type="text" placeholder="Giá trị"></div><div class="clearfix"></div></div>';
-        x.innerHTML += attribute;
-    }
-    function addmore_tags(a)
-    {
-        var x = document.getElementById('tags_add');
-        var attribute = '';
-        attribute+=' <li><span>'+a+'<a href="#"><i class="fa fa-remove"></i></a></span></li>';
         x.innerHTML += attribute;
     }
 </script>

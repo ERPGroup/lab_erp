@@ -28,7 +28,8 @@ Trang chủ
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables_posted">
+
                         <thead>
                             <tr>
                                 <th>Mã tin đăng</th>
@@ -40,19 +41,21 @@ Trang chủ
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/admin/manager_posted_detail">TD001</a></td>
+                                <td><a href="/admin/manager_posted_detail">TD00</a></td>
                                 <td>Demo</td>
                                 <td class="center">5</td>
                                 <td>18/12/2018</td>
                                 <td>Bạch kim</td>
                             </tr>
+                            {% for i in "x"|rjust:"10" %}
                             <tr>
-                                <td><a href="/admin/manager_posted_detail">TD002</a></td>
-                                <td>Demo</td>
-                                <td class="center">5</td>
-                                <td>18/12/2018</td>
-                                <td>Bạch kim</td>
+                                <td><a href="/admin/manager_posted_detail">TD0{{forloop.counter}}</a></td>
+                                <td>Demo{{forloop.counter}}</td>
+                                <td class="center">{{forloop.counter}}</td>
+                                <td>{{forloop.counter}}/12/2018</td>
+                                {% if forloop.counter > 6 %}<td>Bạc</td> {% else %}<td>Vàng</td> {% endif %}
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -67,9 +70,25 @@ Trang chủ
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
+
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables_posted').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -82,11 +101,36 @@ Trang chủ
                 sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
                 sInfoFiltered: "(được lọc từ _MAX_ mục)",
                 sInfoPostFix: "",
-                sSearch: "Tìm:",
+                sSearch: "Tìm kiếm: ",
                 sUrl: "",
             },
+            "dom": '<"toolbar">frtip',
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
+                { "type": 'date-eu', targets: 3 }
+            ]
 
-
+        });
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Loại tin: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Bạch kim</option>';
+        tool_bar += '<option>Vàng</option>';
+        tool_bar += '<option>Bạc</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(4).search('').draw();
+            }
+            else {
+                table.api().columns(4).search(regExSearch, true, false).draw();
+            }
         });
     });
 </script>

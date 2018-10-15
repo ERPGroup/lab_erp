@@ -31,35 +31,7 @@
     mainApp.initFunction()
   })
 }(jQuery))
-/* Plugin Datatables */
-  /* Create an array with the values of all the input boxes in a column */
-  $.fn.dataTable.ext.order['dom-text'] = function (settings, col) {
-    return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
-        return $('input', td).val();
-    });
-}
 
-/* Create an array with the values of all the input boxes in a column, parsed as numbers */
-$.fn.dataTable.ext.order['dom-text-numeric'] = function (settings, col) {
-    return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
-        return $('input', td).val() * 1;
-    });
-}
-
-/* Create an array with the values of all the select options in a column */
-$.fn.dataTable.ext.order['dom-select'] = function (settings, col) {
-    return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
-        return $('select', td).val();
-    });
-}
-
-/* Create an array with the values of all the checkboxes in a column */
-$.fn.dataTable.ext.order['dom-checkbox'] = function (settings, col) {
-    return this.api().column(col, { order: 'index' }).nodes().map(function (td, i) {
-        return $('input', td).prop('checked') ? '1' : '0';
-    });
-}
-/* End */
 function checkPassword () {
   var password = document.getElementById('inputPassword')
   var repassword = document.getElementById('inputRePassword')
@@ -70,27 +42,43 @@ function checkPassword () {
     checkPassword.classList.remove('has-error')
   }
 }
-function checkEmail() {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var email = document.getElementById('email');
-    var result = document.getElementById('re_email');
-    if(re.test(String(email.value).toLowerCase()))
-    {
-        result.classList.remove('has-error');
-    }
-    else{
-        result.classList.add('has-error');
-    }
+function checkEmail () {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  var email = document.getElementById('email')
+  var result = document.getElementById('re_email')
+  if (re.test(String(email.value).toLowerCase())) {
+    result.classList.remove('has-error')
+  }else {
+    result.classList.add('has-error')
+  }
 }
-function checkPhone(){
-    var ph = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-    var phone = document.getElementById('phone');
-    var result = document.getElementById('re_phone');
-    if(ph.test(String(phone.value)))
-    {
-        result.classList.remove('has-error');
-    }
-    else{
-        result.classList.add('has-error');
-    }
+function checkPhone () {
+  var ph = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+  var phone = document.getElementById('phone')
+  var result = document.getElementById('re_phone')
+  if (ph.test(String(phone.value))) {
+    result.classList.remove('has-error')
+  }else {
+    result.classList.add('has-error')
+  }
+}
+function checkNumber (a) {
+  var pattern = /^\d+$/
+  var number = document.getElementById(a)
+  var result = document.getElementById('re_' + a)
+  if (pattern.test(String(number.value))) {
+    result.classList.remove('has-error')
+  }else {
+    result.classList.add('has-error')
+  }
+}
+function addmore_tags (a) {
+  var x = document.getElementById('tags_add')
+  var attribute = ''
+  attribute += ' <li id="' + a + '" style=""><span>' + a + '<a href="#"><i onclick="subtract_tags(\'' + a + '\'); return false;" class="fa fa-remove"></i></a></span></li>'
+  x.innerHTML += attribute
+}
+function subtract_tags (a) {
+  var x = document.getElementById(a)
+  x.outerHTML = ''
 }
