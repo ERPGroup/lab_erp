@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Trang quản lý người dùng
 {% endblock %}
 {% block dataTB %}
 <!-- TABLE STYLES-->
@@ -16,7 +16,7 @@ Trang chủ
         <h1 class="page-header">
             Quản lý người dùng
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới người dùng</a>
+                <a href="/admin/manager_users_detail" class="btn btn-info">Thêm mới người dùng</a>
             </div>
         </h1>
 
@@ -31,28 +31,19 @@ Trang chủ
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="tbl_manager_users">
                         <div class="col-xs-12 no_padding" style="margin-bottom:10px;">
-                            <div class="col-xs-4 no_padding">
+                            <div class="col-xs-6 no_padding">
                                 <span>Trạng thái</span>
-                                <select style="width:50%;display:inline-block;" id="select_satus" class="form-control">
+                                <select style="width:50%;display:inline-block;" id="select_status" class="form-control">
                                     <option>Tất cả</option>
-                                    <option>Đang hoạt động</option>
-                                    <option>Không hoạt động</option>
+                                    <option>Kích hoạt</option>
+                                    <option>Không kích hoạt</option>
+                                    <option>Đã bị khóa</option>
                                 </select>
                             </div>
-                            <div class="col-xs-4 no_padding" style="text-align:center;">
+                            <div class="col-xs-6 no_padding" style="text-align:right;">
                                 <span>Loại tài khoản</span>
-                                <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
-                                    <option>Tất cả</option>
-                                    <option>Quản lý</option>
-                                    <option>Người bán</option>
-                                    <option>Người mua</option>
-                                    <option>Khách hàng</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-4 no_padding" style="float:right;text-align:right;">
-                                <span>Đánh giá</span>
                                 <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
                                     <option>Tất cả</option>
                                     <option>Quản lý</option>
@@ -77,39 +68,49 @@ Trang chủ
                                 <td> <a href="/admin/manager_users_detail">admin@tabletplaza.com</a></td>
                                 <td>Nguyễn Văn Admin</td>
                                 <td>Quản lý</td>
-                                <td><i class="fa fa-star"></i>
+                                <td>
+                                    <input type="hidden" name="rating" value="5" id="rating">
+                                    <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </td>
-                                <td>Đang hoạt động</td>
+                                <td>Kích hoạt</td>
 
                             </tr>
-                            <tr>
-                                <td><a href="/admin/manager_users_detail">demo@gmail.com</a></td>
-                                <td>Nguyễn Văn Demo</td>
+                            {% for i in "x"|rjust:"13" %}
+                            {% if forloop.counter < 6 %} <tr>
+                                <td><a href="/admin/manager_users_detail">demo{{forloop.counter}}@gmail.com</a></td>
+                                <td>Nguyễn Văn Demo {{forloop.counter}}</td>
                                 <td>Người bán</td>
-                                <td><i class="fa fa-star"></i>
+                                <td>
+                                    <input type="hidden" name="rating" id="rating" value="{% if forloop.counter < 5 %}{{forloop.counter}}{% else %}3{% endif %}">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
                                 </td>
-                                <td>Đang hoạt động</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_users_detail">demo@gmail.com</a></td>
-                                <td>Nguyễn Văn Demo</td>
-                                <td>Người bán</td>
-                                <td><i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </td>
-                                <td>Đã bị khóa</td>
-                            </tr>
+                                <td>Không kích hoạt</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td><a href="/admin/manager_users_detail">gialap{{forloop.counter}}@gmail.com</a></td>
+                                    <td>Nguyễn Văn Tí {{forloop.counter}}</td>
+                                    <td>Người mua</td>
+                                    <td>
+                                        <input type="hidden" name="rating" id="rating" value="{% if forloop.counter < 5 %}{{forloop.counter}}{% else %}3{% endif %}">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </td>
+                                    <td>Đã bị khóa</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -126,7 +127,7 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
     $(document).ready(function () {
-        var table = $('#dataTables-example').dataTable({
+        var table = $('#tbl_manager_users').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -140,52 +141,48 @@ Trang chủ
                 sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
                 sInfoFiltered: "(được lọc từ _MAX_ mục)",
                 sInfoPostFix: "",
-                sSearch: "Tìm:",
+                sSearch: "Tìm kiếm:",
                 sUrl: "",
             },
-            "columnDefs": [
-
-                {
-                    "targets": [2],
-
-                },
-                {
-                    "targets": [3],
-                }
-            ],
             "dom": '<"toolbar">frtip',
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "createdRow": function (row, data, index) {
                 if (data[2] == "Quản lý") {
-                    $('td', row).eq(2).addClass('highlight');
+                    $('td', row).addClass('highlight');
                 }
-            },  
+            },
+            "columns": [
+                null,
+                null,
+                null,
+                { "orderDataType": "dom-text-numeric" },
+                null,
+            ]
         });
         var tool_bar = '';
-        tool_bar+='<div class="column_hidden">Bật/Tắt cột hiển thị: '
-        tool_bar+= '<a class="toggle-vis" data-column="0">Email</a> - <a class="toggle-vis" data-column="1">Họ và tên</a> - ';
-        tool_bar+= '<a class="toggle-vis" data-column="2">Loại tài khoản</a> - <a class="toggle-vis" data-column="3">Đánh giá</a> - ';
-        tool_bar+= '<a class="toggle-vis" data-column="4">Trạng thái</a>';
-        tool_bar+='</div>'
+        tool_bar += '<div class="column_hidden">Bật/Tắt cột hiển thị: '
+        tool_bar += '<a class="toggle-vis" data-column="0">Email</a> - <a class="toggle-vis" data-column="1">Họ và tên</a> - ';
+        tool_bar += '<a class="toggle-vis" data-column="2">Loại tài khoản</a> - <a class="toggle-vis" data-column="3">Đánh giá</a> - ';
+        tool_bar += '<a class="toggle-vis" data-column="4">Trạng thái</a>';
+        tool_bar += '</div>'
         $("div.toolbar").html(tool_bar);
         $('a.toggle-vis').on('click', function (e) {
             e.preventDefault();
-
             // Get the column API object
             var column = table.api().column($(this).attr('data-column'));
-
             // Toggle the visibility
             column.visible(!column.visible());
         });
-        $('#dataTables-example tbody').on('click', 'tr', function () {
+        $('#tbl_manager_users tbody').on('click', 'tr', function () {
             $(this).toggleClass('selected');
         });
         $('#select_status').change(function () {
+            regExSearch = '^' + this.value +'$';
             if (this.value == "Tất cả") {
                 table.api().columns(4).search('').draw();
             }
             else {
-                table.api().columns(4).search(this.value).draw();
+                table.api().columns(4).search(regExSearch,true,false).draw();
             }
         });
         $('#select_position').change(function () {

@@ -10,4 +10,6 @@ urlpatterns = [
    path('manager_post',views.posted,name='product'),
    path('manager_post_detail',views.posted_detail,name='product'),
    path('manager_warehose',views.warehose,name='warehose'),
+   path('order',views.order,name='order'),
+   path('order_detail',views.order_detail,name='order'),
 ]

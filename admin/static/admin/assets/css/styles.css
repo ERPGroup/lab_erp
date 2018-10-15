@@ -124,7 +124,7 @@ table.dataTable tbody tr.selected {
 }
 
 .toolbar {
-  width: 75%;
+  width: 60%;
   display: inline-block;
 }
 
@@ -141,16 +141,20 @@ table.dataTable tbody tr.selected {
   color: black;
 }
 
-.tbl_manager_product tr td {
+.table tr td {
   vertical-align: middle !important;
 }
 
-.tbl_manager_product .tbl_thumb_product {
+.table tr td i {
+  color: #f58634;
+}
+
+.table .tbl_thumb_product {
   height: 74px;
   position: relative;
 }
 
-.tbl_manager_product .tbl_thumb_product img {
+.table .tbl_thumb_product img {
   width: auto !important;
   max-height: 100%;
   position: absolute;
@@ -176,5 +180,14 @@ table.dataTable tbody tr.selected {
 
 .padding_top_15 {
   padding-top: 15px;
+}
+
+.quantity_warehose input {
+  text-align: center;
+  max-width: 65px;
+  border-radius: 5px;
+  height: 34px;
+  line-height: 34px;
+  border: 1px solid #e2e2e2;
 }
 /*# sourceMappingURL=styles.css.map */

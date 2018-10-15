@@ -6,6 +6,11 @@ Trang chi tiết người dùng
 {% block admin %}
 {% include "snippets_admin/side_bar.html" %}
 {% endblock %}
+{% block dataTB %}
+<!--Datetime Picker-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<!--End-->
+{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
@@ -18,16 +23,16 @@ Trang chi tiết người dùng
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
-            <div class="col-lg-6">
+    <div class="col-md-12 background_white">
+        <form method="post" action="#" role="form">
+            <div class="col-lg-6 background_white">
                 <div class="form-group">
                     <h3>Thông tin đăng nhập</h3>
                     <hr>
                 </div>
                 <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" class="form-control">
+                    <label>Tên đăng nhập:</label>
+                    <input type="username" id="username" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Mật khẩu</label>
@@ -41,6 +46,11 @@ Trang chi tiết người dùng
                 <div class="form-group">
                     <label>Tên cửa hàng (Nếu có):</label>
                     <input type="text" class="form-control">
+                </div>
+
+                <div class="form-group" id="re_email">
+                    <label>Địa chỉ Email:</label>
+                    <input type="email" id="email" class="form-control" onkeyup="checkEmail();">
                 </div>
                 <div class="form-group">
                     <label>Loại tài khoản</label>
@@ -56,7 +66,7 @@ Trang chi tiết người dùng
                     </label>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 background_white">
                 <div class="form-group">
                     <h3>Thông tin cá nhân</h3>
                     <hr>
@@ -65,9 +75,9 @@ Trang chi tiết người dùng
                     <label>Họ và tên:</label>
                     <input type="text" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="re_phone">
                     <label>Số điện thoại</label>
-                    <input type="tel" class="form-control">
+                    <input type="tel" id="phone" class="form-control" onkeyup="checkPhone();">
                 </div>
                 <div class="form-group" id="checkPassword">
                     <label>Địa chỉ</label>
@@ -75,28 +85,70 @@ Trang chi tiết người dùng
                 </div>
                 <div class="form-group" id="checkPassword">
                     <label>Ngày sinh</label>
-                    <input class="form-control" type="datetime-local" placeholder="">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="select_status" class="form-control">
+                        <option>Đang hoạt động</option>
+                        <option>Không hoạt động</option>
+                        <option>Đã bị khóa</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
                     <div class="clearfix"></div>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1"
-                            checked="">Nam
+                        <input type="radio" name="Sex" id="Sex1" value="Nam" checked="">Nam
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">Nữ
+                        <input type="radio" name="Sex" id="Sex2" value="Nữ">Nữ
                     </label>
                 </div>
+
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info">Thêm người dùng</button>
+                <button type="submit" onclick="if(checkfrm('username')) return false;" class="btn btn-info">Thêm người dùng</button>
                 <button type="reset" class="btn btn-default">Khôi phục</button>
             </div>
+            <script>
+                function checkfrm(a)
+                {
+                    var x = document.getElementById(a);
+                    if(x.value == '')
+                    {
+                        alert('Vui lòng nhập đầy đủ thông tin');
+                        return true;
+                    }
+                }
+            </script>
             <div class="clearfix"></div>
         </form>
     </div>
 </div>
 
 <div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<!--Date time picker-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/vi.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date('2010-12-30'),
+            date: new Date('1990-12-30'),
+        });
+    });
+</script>
+<!--End-->
 {% endblock %}

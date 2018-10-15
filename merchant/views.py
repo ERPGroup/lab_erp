@@ -15,3 +15,7 @@ def posted_detail(request):
     return render(request,'merchant/manager_posted/manager_post_detail.html')
 def warehose(request):
     return render(request,'merchant/manager_product/manager_warehose.html')
+def order(request):
+    return render(request,'merchant/manager_order/manager_pay.html')
+def order_detail(request):
+    return render(request,'merchant/manager_order/manager_pay_detail.html')

@@ -27,6 +27,3 @@ def register (request):
         return HttpResponse("You're submit form! %s" % email)
     return render(request, 'website/register.html')
 
-def category_produect(request):
-    return
-
