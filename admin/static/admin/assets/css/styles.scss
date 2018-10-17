@@ -89,56 +89,48 @@
     left: 0;
     right: 0;
     margin: auto;
-    max-width:100%;
+    max-width: 100%;
   }
 }
-.no_padding
-{
-  padding:0px;
+.no_padding {
+  padding: 0px;
 }
-.highlight
-{
+.highlight {
   color: #f58634;
-  font-weight:bold;
+  font-weight: bold;
 }
-table.dataTable tbody tr.selected{
-  background-color:#c7d1dd;
+table.dataTable tbody tr.selected {
+  background-color: #c7d1dd;
 }
-.dataTables_filter
-{
-  display:inline;
+.dataTables_filter {
+  display: inline;
 }
-.toolbar
-{
+.toolbar {
   width: 60%;
   display: inline-block;
 }
-.column_hidden
-{
+.column_hidden {
   line-height: 28px;
-  a{
-    color:#333;
-    &:hover{
+  a {
+    color: #333;
+    &:hover {
       cursor: pointer;
-      color:black;
+      color: black;
     }
   }
 }
 
-.table
-{
-  tr
-  {
-    td{
-      vertical-align: middle!important;
-      min-width:133px;
-      i{
+.table {
+  tr {
+    td {
+      vertical-align: middle !important;
+      min-width: 133px;
+      i {
         color: #f58634;
       }
     }
   }
-  .tbl_thumb_product
-  {
+  .tbl_thumb_product {
     height: 74px;
     position: relative;
     img {
@@ -150,37 +142,64 @@ table.dataTable tbody tr.selected{
       left: 0;
       right: 0;
       margin: auto;
-      max-width:100%;
+      max-width: 100%;
     }
   }
 }
-.add_image
-{
-  float:right;
-  font-size:17px;
-  line-height:28px;
+.add_image {
+  float: right;
+  font-size: 17px;
+  line-height: 28px;
 }
-.attribute
-{
-  input{
-    max-width:100%;
-    border-radius:5px;
-    padding:5px;
+.attribute {
+  input {
+    max-width: 100%;
+    border-radius: 5px;
+    padding: 5px;
   }
 }
-.padding_top_15
-{
-  padding-top:15px;
+.padding_top_15 {
+  padding-top: 15px;
 }
-.quantity_warehose
-{
-  input
-  {
-    text-align:center;
-    max-width:65px;
+.quantity_warehose {
+  input {
+    text-align: center;
+    max-width: 65px;
     border-radius: 5px;
     height: 34px;
     line-height: 34px;
     border: 1px solid #e2e2e2;
+  }
+}
+.library_image {
+  .thumb_img {
+    height: 100px;
+    position: relative;
+    img {
+      width: auto !important;
+      max-height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      max-width: 100%;
+    }
+  }
+  ul {
+    li {
+      display: inline-block;
+      list-style: none;
+    }
+  }
+}
+.tbl_product_detail {
+  max-width: 100%;
+  width: 100%;
+  tr {
+    td {
+      min-width: 70px;
+    }
   }
 }

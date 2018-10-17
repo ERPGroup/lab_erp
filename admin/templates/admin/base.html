@@ -18,15 +18,14 @@
     <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
     <!-- Google Fonts-->
     <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
-    
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        {% block dataTB %}
-        <!-- TABLE STYLES-->
-        {% endblock  %}
-    {% block product %}
-    
+    {% block dataTB %}
+    <!-- TABLE STYLES-->
     {% endblock %}
-    
+    {% block product %}
+
+    {% endblock %}
+
 </head>
 
 <body>
@@ -53,15 +52,15 @@
     <!-- Bootstrap Js -->
     <script src="{% static '/admin/assets/js/bootstrap.min.js' %} "></script>
     <!-- Metis Menu Js -->
+    
     <script src="{% static '/admin/assets/js/jquery.metisMenu.js' %} "></script>
     <!-- Morris Chart Js -->
     <script src="{% static '/admin/assets/js/morris/raphael-2.1.0.min.js' %} "></script>
     <script src="{% static '/admin/assets/js/morris/morris.js' %} "></script>
     <!--Custom Script -->
-    <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
     {% block data_table %}
     {% endblock %}
-        
+    <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
 </body>
 
 </html>

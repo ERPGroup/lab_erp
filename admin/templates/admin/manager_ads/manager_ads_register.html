@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Quản lý đăng ký
 {% endblock %}
 {% block dataTB %}
 <!-- TABLE STYLES-->
@@ -14,7 +14,7 @@ Trang chủ
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý quảng cáo
+            Quản lý đăng ký
         </h1>
 
     </div>
@@ -40,19 +40,35 @@ Trang chủ
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC001</a></td>
+                                <td><a href="/admin/manager_ads/register_detail">QC015</a></td>
                                 <td>KH001</td>
                                 <td>500.000 VNĐ</td>
-                                <td>12/10/2018</td>
-                                <td>Đang xử lý</td>
+                                <td>12/12/2018</td>
+                                <td>Duyệt</td>
                             </tr>
                             <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC002</a></td>
+                                <td><a href="/admin/manager_ads/register_detail">QC019</a></td>
                                 <td>KH001</td>
                                 <td>300.000 VNĐ</td>
-                                <td>12/10/2018</td>
+                                <td>12/9/2018</td>
+                                <td>Không duyệt</td>
+                            </tr>
+                            <tr>
+                                <td><a href="/admin/manager_ads/register_detail">QC016</a></td>
+                                <td>KH001</td>
+                                <td>300.000 VNĐ</td>
+                                <td>12/9/2018</td>
+                                <td>Chưa thanh toán</td>
+                            </tr>
+                            {% for i in "x"|rjust:"10" %}
+                            <tr>
+                                <td><a href="/admin/manager_ads/register_detail">QC0{{forloop.counter}}</a></td>
+                                <td>KH0{{forloop.counter}}</td>
+                                <td>{{forloop.counter}}00.000 VNĐ</td>
+                                <td>{{forloop.counter}}/10/2018</td>
                                 <td>Đang xử lý</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -67,9 +83,24 @@ Trang chủ
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -85,8 +116,32 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
-
-
+            "dom": '<"toolbar">frtip',
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
+                { "type": 'date-eu', targets: 3 }
+            ]
+        });
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Trạng thái: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Đang xử lý</option>';
+        tool_bar += '<option>Không duyệt</option>';
+        tool_bar += '<option>Duyệt</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(4).search('').draw();
+            }
+            else {
+                table.api().columns(4).search(regExSearch, true, false).draw();
+            }
         });
     });
 </script>

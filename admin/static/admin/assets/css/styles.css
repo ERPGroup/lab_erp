@@ -191,4 +191,35 @@ table.dataTable tbody tr.selected {
   line-height: 34px;
   border: 1px solid #e2e2e2;
 }
+
+.library_image .thumb_img {
+  height: 100px;
+  position: relative;
+}
+
+.library_image .thumb_img img {
+  width: auto !important;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 100%;
+}
+
+.library_image ul li {
+  display: inline-block;
+  list-style: none;
+}
+
+.tbl_product_detail {
+  max-width: 100%;
+  width: 100%;
+}
+
+.tbl_product_detail tr td {
+  min-width: 70px;
+}
 /*# sourceMappingURL=styles.css.map */

@@ -36,27 +36,39 @@ Trang chủ
                             <tr>
                                 <th>Mã sản phẩm</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Mô tả ngắn</th>
+                                <th>Giá</th>
                                 <th>Hình ảnh</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/admin/manager_product_detail">SP001</a></td>
+                                <td><a href="/admin/manager_product_detail">SP00</a></td>
                                 <td>Iphone5s</td>
-                                <td>Sản phẩm demo được hỗ trợ bởi ABC</td>
+                                <td>3.900.000 VNĐ</td>
                                 <td>
                                     <div class="tbl_thumb_product">
                                         <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
                                     </div>
                                 </td>
-                                <td class="center">Kích hoạt</td>
+                                <td class="center">Bị khóa</td>
                             </tr>
                             <tr>
-                                <td><a href="/admin/manager_product_detail">SP002</a></td>
-                                <td>Iphone5s</td>
-                                <td>Sản phẩm demo được hỗ trợ bởi ABC</td>
+                                    <td><a href="/admin/manager_product_detail">SP16</a></td>
+                                    <td>Iphone5s</td>
+                                    <td>3.900.000 VNĐ</td>
+                                    <td>
+                                        <div class="tbl_thumb_product">
+                                            <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                        </div>
+                                    </td>
+                                    <td class="center">Đang xử lý</td>
+                                </tr>
+                            {% for i in "x"|rjust:"10" %}
+                            <tr>
+                                <td><a href="/admin/manager_product_detail">SP0{{forloop.counter}}</a></td>
+                                <td>Iphone 5s {{forloop.counter}}</td>
+                                <td>3.900.000 VNĐ</td>
                                 <td>
                                     <div class="tbl_thumb_product">
                                         <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
@@ -64,6 +76,7 @@ Trang chủ
                                 </td>
                                 <td class="center">Kích hoạt</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -79,8 +92,23 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
+
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -96,8 +124,33 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
+            ]
 
-
+        });
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Trạng thái: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Kích hoạt</option>';
+        tool_bar += '<option>Đang xử lý</option>';
+        tool_bar += '<option>Bị khóa</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(4).search('').draw();
+            }
+            else {
+                table.api().columns(4).search(regExSearch, true, false).draw();
+            }
         });
     });
 </script>
