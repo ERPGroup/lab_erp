@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Quản lý danh mục sản phẩm
 {% endblock %}
 {% block dataTB %}
 <!-- TABLE STYLES-->
@@ -14,9 +14,9 @@ Trang chủ
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý gói tin
+            Quản lý danh mục
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới người dùng</a>
+                <a href="/admin/manager_category_detail" class="btn btn-info">Thêm mới người dùng</a>
             </div>
         </h1>
 
@@ -27,37 +27,40 @@ Trang chủ
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách gói tin
+                Danh sách danh mục sản phẩm
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Email</th>
-                                <th>Họ và tên</th>
-                                <th>Loại tài khoản</th>
+                                <th>Mã danh mục</th>
+                                <th>Tên danh mục</th>
+                                <th>Số lượng</th>
                                 <th>Trạng thái</th>
-                                <th>Tác vụ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>admin@tabletplaza.com</td>
-                                <td>Nguyễn Văn Admin</td>
-                                <td>Quản lý</td>
-                                <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                                <td><a href="/admin/manager_category_detail">DM00</a></td>
+                                <td>Sản phẩm hot</td>
+                                <td>10</td>
+                                <td class="center">Bị khóa</td>
                             </tr>
                             <tr>
-                                <td>demo@tabletplaza.com</td>
-                                <td>Nguyễn Văn Demo</td>
-                                <td>Người bán</td>
-                                <td>Đang hoạt động</td>
-                                <td class="center"><a href="#"><i style="color:#4cb1cf" class="glyphicon glyphicon-edit"></i></a>
-                                    <a href="#"><i style="color:crimson" class="glyphicon glyphicon-remove"></i></a></td>
+                                    <td><a href="/admin/manager_category_detail">DM16</a></td>
+                                    <td>Sản phẩm mới</td>
+                                    <td>10</td>
+                                    <td class="center">Đang xử lý</td>
+                                </tr>
+                            {% for i in "x"|rjust:"3" %}
+                            <tr>
+                                <td><a href="/admin/manager_category_detail">DM0{{forloop.counter}}</a></td>
+                                <td>Danh mục {{forloop.counter}}</td>
+                                <td>10</td>
+                                <td class="center">Kích hoạt</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -73,8 +76,23 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
+
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -90,8 +108,33 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
+            ]
 
-
+        });
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Trạng thái: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Kích hoạt</option>';
+        tool_bar += '<option>Đang xử lý</option>';
+        tool_bar += '<option>Bị khóa</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(3).search('').draw();
+            }
+            else {
+                table.api().columns(3).search(regExSearch, true, false).draw();
+            }
         });
     });
 </script>

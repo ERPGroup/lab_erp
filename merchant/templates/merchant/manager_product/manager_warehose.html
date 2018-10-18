@@ -13,7 +13,7 @@ Trang chủ
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header">
+        <h1 class="page-header" >
             Quản lý kho
             <div style="display:inline-block; text-align:right;float:right;">
                 <a href="/merchant/manager_product_detail" class="btn btn-info">Thêm mới sản phẩm</a>
@@ -51,11 +51,10 @@ Trang chủ
                                     </div>
                                 </td>
                                 <td class="center">5</td>
-                                <td class="quantity_warehose">
+                                <td class="quantity_warehose" id="re_number">
                                     <div class="center">
-                                        <button class="btn btn-default">Thêm</button>
-                                        <button class="btn btn-default">Đặt</button>
-                                        <input type="number" name="quantity" value="0" size="3" maxlength="3" style="max-width:65px;" id="quantity"/>
+                                        <input type="text" id="number" onkeyup="checkNumber('number');" name="quantity"
+                                            value="0" size="3" maxlength="3" style="max-width:65px;" id="quantity" />
                                         <button class="btn btn-info">Cập nhập</button>
                                     </div>
                                 </td>
@@ -75,8 +74,23 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
+
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -92,7 +106,14 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 3 },
+            ]
         });
+       
     });
 </script>
 {% endblock %}

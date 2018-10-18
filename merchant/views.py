@@ -19,3 +19,9 @@ def order(request):
     return render(request,'merchant/manager_order/manager_pay.html')
 def order_detail(request):
     return render(request,'merchant/manager_order/manager_pay_detail.html')
+def statistical_post(request):
+    return render(request,'merchant/manager_posted/manager_statistical_post.html')
+def service_post(request):
+    return render(request,'merchant/manager_service/service_post.html')
+def service_ads(request):
+    return render(request,'merchant/manager_service/service_ads.html')

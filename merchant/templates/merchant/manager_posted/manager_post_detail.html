@@ -20,11 +20,13 @@ Trang chi tiết người dùng
 <div class="row">
     <div class="col-md-12">
         <form method="post" action="#" class="background_white" role="form">
-            <div class="col-lg-6">
-                <div class="form-group">
+            <div class="col-lg-12">
+                <div class="form-group" style="text-align:center;">
                     <h3>Thông tin tin đăng</h3>
                     <hr>
                 </div>
+            </div>
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label>Mã tin:</label>
                     <input type="text" class="form-control" value="TD001" disabled="disabled">
@@ -33,9 +35,10 @@ Trang chi tiết người dùng
                     <label>Mã người bán:</label>
                     <input type="text" class="form-control" value="Demo" disabled="disabled">
                 </div>
-                <div class="form-group">
-                    <label>Số lượng sản phẩm tồn:</label>
-                    <input type="text" class="form-control" value="10" disabled="disabled">
+                <div class="form-group" id="re_number">
+                    <label>Số lượng sản phẩm:</label>
+                    <input type="text" onkeyup="checkNumber('number');" id="number" class="form-control" value="10"
+                        disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Ngày đăng</label>
@@ -44,16 +47,23 @@ Trang chi tiết người dùng
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <h3>Thông tin bổ sung</h3>
-                    <hr>
+                    <label>Hạn sử dụng</label>
+                    <input type="text" class="form-control" value="12/10/2018" disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Loại tin</label>
-                    <input type="text" class="form-control" value="Bạch kim" disabled="disabled">
+                    <select class="form-control">
+                        <option>SP001</option>
+                        <option>SP002</option>
+                    </select>
                 </div>
+
                 <div class="form-group">
-                    <label>Hạn sử dụng</label>
-                    <input type="text" class="form-control" value="12/10/2018" disabled="disabled">
+                    <label>Sản phẩm</label>
+                    <select class="form-control">
+                        <option>SP001</option>
+                        <option>SP002</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -64,7 +74,42 @@ Trang chi tiết người dùng
                     </select>
                 </div>
             </div>
-
+            <div class="col-lg-12">
+                <div class="form-group" style="text-align:center;">
+                    <h3>Thông tin sản phẩm</h3>
+                    <hr>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Giá tiền</th>
+                                        <th>Mô tả ngắn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="/merchant/manager_product_detail">SP001</a></td>
+                                        <td>Iphone5s</td>
+                                        <td>
+                                            <div class="tbl_thumb_product">
+                                                <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                            </div>
+                                        </td>
+                                        <td>3.900.000 VNĐ</td>
+                                        <td>Đây là sản phẩm demo cho mọi người xem thôi, chứ khong6 có gì đâu</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
                 <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
                 <button type="reset" class="btn btn-default">Khôi phục</button>

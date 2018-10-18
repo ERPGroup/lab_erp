@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from  passlib.hash import pbkdf2_sha256
 
 def index (request):
-    return HttpResponse("You're looking at question.")
+    return render(request, 'website/index.html')
 
 
 def login (request):

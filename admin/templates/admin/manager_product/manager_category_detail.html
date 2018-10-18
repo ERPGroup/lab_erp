@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chi tiết người dùng
+Trang chi tiết danh mục
 {% endblock %}
 {% block admin %}
 {% include "snippets_admin/side_bar.html" %}
@@ -10,92 +10,49 @@ Trang chi tiết người dùng
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý người dùng <small>Thêm mới</small>
+            Quản lý danh mục <small>Chi tiết</small>
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa người dùng</a>
+                <a href="/admin/manager_category_detail" class="btn btn-danger">Xóa danh mục</a>
             </div>
         </h1>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <h3>Thông tin đăng nhập</h3>
-                    <hr>
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Mật khẩu</label>
-                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="">
-                </div>
-                <div class="form-group" id="checkPassword">
-                    <label>Nhập lại mật khẩu</label>
-                    <input type="password" onkeyup="checkPassword();" id="inputRePassword" name="inputRePassword" class="form-control"
-                        placeholder="">
-                </div>
-                <div class="form-group">
-                    <label>Tên cửa hàng (Nếu có):</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Loại tài khoản</label>
-                    <div class="clearfix"></div>
-                    <label class="radio-inline">
-                        <input type="radio" name="type_user" id="type_user1" value="option1" checked="">Người bán
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="type_user" id="type_user2" value="option2">Người mua
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="type_user" id="type_user3" value="option3">Khách hàng
-                    </label>
-                </div>
+
+    <form method="post" action="#" class="background_white col-lg-12" role="form">
+        <div class="col-lg-6 col-xs-offset-3">
+            <div class="form-group">
+                <h3>Thông tin danh mục</h3>
+                <hr>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <h3>Thông tin cá nhân</h3>
-                    <hr>
-                </div>
-                <div class="form-group">
-                    <label>Họ và tên:</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input type="tel" class="form-control">
-                </div>
-                <div class="form-group" id="checkPassword">
-                    <label>Địa chỉ</label>
-                    <input class="form-control" type="text" placeholder="">
-                </div>
-                <div class="form-group" id="checkPassword">
-                    <label>Ngày sinh</label>
-                    <input class="form-control" type="datetime-local" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label>Giới tính</label>
-                    <div class="clearfix"></div>
-                    <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1"
-                            checked="">Nam
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">Nữ
-                    </label>
-                </div>
+            <div class="form-group">
+                <label>Mã danh mục:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Tên danh mục:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group" id="re_number3">
+                <label>Số lượng: </label>
+                <input type="text" id="number3" maxlength="3" onkeyup="checkNumber('number3');" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Trạng thái danh mục</label>
+                <select class="form-control">
+                    <option>Kích hoạt</option>
+                    <option>Không kích hoạt</option>
+                    <option>Đang khóa</option>
+                </select>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info">Thêm người dùng</button>
+                <button type="submit" class="btn btn-info">Thêm danh mục</button>
                 <button type="reset" class="btn btn-default">Khôi phục</button>
             </div>
             <div class="clearfix"></div>
-        </form>
-    </div>
+        </div>
+    </form>
+
 </div>
 
 <div class="clearfix"></div>

@@ -37,29 +37,28 @@ Trang chủ
                                 <th>Mã gói tin</th>
                                 <th>Tên gói</th>
                                 <th>Số lượng tin còn lại</th>
-                                <th>Hạn sử dụng</th>
-                                <th>Giá tiền</th>
+                                <th>Hạn sử dụng (Mỗi tin)</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="/admin/manager_servies_detail">GT001</a></td>
+                                <td>GT001</td>
                                 <td>Bạch kim</td>
                                 <td>10 tin</td>
                                 <td>15 ngày</td>
-                                <th>400.000 VNĐ</th>
+
                             </tr>
                             <tr>
-                                <td><a href="/admin/manager_servies_detail">GT002</a></td>
+                                <td>GT002</td>
                                 <td>Vàng</td>
-                                <td>10 tin</td>
+                                <td>15 tin</td>
                                 <td>15 ngày</td>
-                                <th>300.000 VNĐ</th>
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
         <!--End Advanced Tables -->
@@ -71,6 +70,20 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "formatted-num-pre": function (a) {
+            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+            return parseFloat(a);
+        },
+
+        "formatted-num-asc": function (a, b) {
+            return a - b;
+        },
+
+        "formatted-num-desc": function (a, b) {
+            return b - a;
+        }
+    });
     $(document).ready(function () {
         $('#dataTables-example').dataTable({
             language: {
@@ -88,7 +101,12 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
+                { "type": 'formatted-num', targets: 3 },
 
+            ]
 
         });
     });

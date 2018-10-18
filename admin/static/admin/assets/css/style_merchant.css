@@ -1,0 +1,249 @@
+.demo {
+  background: #77c0fd;
+}
+
+.pricingTable {
+  font-family: "Open Sans", sans-serif;
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+  padding-bottom: 40px;
+  margin: 0 15px;
+  border-top: 10px solid #00b2fc;
+  position: relative;
+  -webkit-clip-path: polygon(100% 0, 100% 90%, 50% 100%, 0 90%, 0 0);
+  clip-path: polygon(100% 0, 100% 90%, 50% 100%, 0 90%, 0 0);
+}
+
+.pricingTable .pricingTable-header {
+  color: #00b6ff;
+  background-color: #006ec8;
+  text-align: left;
+  text-transform: uppercase;
+  padding: 10px 15px;
+  margin-bottom: 55px;
+  display: block;
+}
+
+.pricingTable .title {
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  color: white;
+}
+
+.pricingTable .price-value {
+  color: #fff;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #2fc4f9,
+    #2fc4f9 7px,
+    #08b5fa 7px,
+    #08b5fa 15px
+  );
+  height: 100px;
+  width: 100px;
+  padding: 22px 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.pricingTable .amount {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 40px;
+  display: block;
+}
+
+.pricingTable .month {
+  font-size: 18px;
+  display: block;
+}
+
+.pricingTable .pricing-content {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: left;
+  line-height: 40px;
+  padding: 10px 0 25px 30px;
+  list-style: none;
+  position: relative;
+}
+
+.pricingTable .pricing-content li {
+  color: #0087de;
+  background-color: #e7e7e7;
+  padding-left: 50px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.pricingTable .pricing-content li:before {
+  content: "\f00c";
+  color: #fff;
+  background-color: #0087de;
+  font-size: 20px;
+  font-family: "FontAwesome";
+  font-weight: 900;
+  text-align: center;
+  height: 100%;
+  width: 40px;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.pricingTable .pricing-content li.disable {
+  color: #acabb2;
+}
+
+.pricingTable .pricing-content li.disable:before {
+  content: "\f00d";
+  background-color: #acabb2;
+}
+
+.pricingTable .pricingTable-signup {
+  color: #fff;
+  background-color: #01b8ff;
+  font-size: 50px;
+  line-height: 60px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-top: 10px solid #006ec8;
+  padding: 30px 20px 60px;
+  margin: 0 30px;
+  display: block;
+  position: relative;
+  -webkit-clip-path: polygon(100% 0, 100% 75%, 50% 100%, 0 75%, 0 0);
+  clip-path: polygon(100% 0, 100% 75%, 50% 100%, 0 75%, 0 0);
+  transition: all 0.3s ease 0s;
+}
+
+.pricingTable .pricingTable-signup:hover {
+  text-shadow: 0 0 10px #505050;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7) inset;
+}
+
+.pricingTable.orange {
+  border-top-color: #fda424;
+}
+
+.pricingTable.orange .pricingTable-header {
+  background-color: #f66214;
+  color: #fda524;
+}
+
+.pricingTable.orange .price-value {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #f8b75e,
+    #f8b75e 7px,
+    #fca426 7px,
+    #fca426 15px
+  );
+}
+
+.pricingTable.orange .pricing-content li {
+  color: #ff6813;
+}
+
+.pricingTable.orange .pricing-content li:before {
+  background-color: #ff6813;
+}
+
+.pricingTable.orange .pricing-content li.disable {
+  color: #98959c;
+}
+
+.pricingTable.orange .pricing-content li.disable:before {
+  background-color: #98959c;
+}
+
+.pricingTable.orange .pricingTable-signup {
+  background-color: #fda424;
+  border-top-color: #fd5e19;
+}
+
+.pricingTable.green {
+  border-top-color: #32c287;
+}
+
+.pricingTable.green .pricingTable-header {
+  background-color: #0f7b5b;
+  color: #32c287;
+}
+
+.pricingTable.green .price-value {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #52cd9d,
+    #52cd9d 7px,
+    #30c08a 7px,
+    #30c08a 15px
+  );
+}
+
+.pricingTable.green .pricing-content li {
+  color: #159b73;
+}
+
+.pricingTable.green .pricing-content li:before {
+  background-color: #159b73;
+}
+
+.pricingTable.green .pricing-content li.disable {
+  color: #98959c;
+}
+
+.pricingTable.green .pricing-content li.disable:before {
+  background-color: #98959c;
+}
+
+.pricingTable.green .pricingTable-signup {
+  background-color: #32c287;
+  border-top-color: #0f7b5b;
+}
+
+@media only screen and (max-width: 990px) {
+  .pricingTable {
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .pricingTable {
+    margin: 0 0 30px;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  .pricingTable .pricingTable-header {
+    margin-bottom: 110px;
+  }
+
+  .pricingTable .price-value {
+    top: 45px;
+  }
+
+  .pricingTable .pricing-content {
+    padding: 0 0 25px;
+  }
+}
+.ads_top {
+    background-color: white;
+    height: 90px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 90px;
+}
+.ads_top a{
+    color:black;
+}
+.ads_top a:hover{
+    font-weight:bold;
+}
