@@ -7,277 +7,354 @@ Trang chi tiết sản phẩm
 {% include "snippets/side_bar_merchant.html" %}
 {% endblock %}
 {% block content %}
-{% block product %} 
+{% block product %}
 <script src="https://cdn.ckeditor.com/4.10.1/standard/ckeditor.js"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
 {% endblock %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px;">
             Quản lý sản phẩm <small>Thêm mới</small>
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa sản phẩm</a>
+                <a href="/merchant/manager_product_detail" class="btn btn-danger">Xóa sản phẩm</a>
             </div>
         </h1>
     </div>
 </div>
 <div class="row">
-        <div class="col-md-12">
-            <form method="post" action="#" class="background_white" role="form">
-                <div class="form-group">
-                    <h3 style="text-align:center;">Thông tin sản phẩm</h3>
-                    <hr>
-                </div>
-                <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
-                    <div class="col-lg-8">
-                        <div class="form-group">
-                            <label>Mã sản phẩm:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Tên sản phẩm:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mô tả ngắn:</label>
-                            <textarea name="editor1" class="form-control" rows="4"></textarea>
-                        </div>
+    <div class="col-md-12">
+        <form method="post" action="#" class="background_white" role="form">
+            <div class="form-group">
+                <h3 style="text-align:center;">Thông tin sản phẩm</h3>
+                <hr>
+            </div>
+            <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label>Mã sản phẩm:</label>
+                        <input type="text" class="form-control">
                     </div>
-                    <div class="col-lg-4">
-                        <div class="form-goup" id="re_number3">
-                            <label>Giá :</label>
-                            <input type="text" id="number3" maxlength="11" onkeyup="checkNumber('number3');" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Danh mục sản phẩm:</label>
-                            <input type="text" autocomplete="" class="form-control">
-                        </div>
-                        <div class="form-group frm_tags">
-                            <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
-                            <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
-                                type="text" class="form-control" placeholder="Nhập tags cho gói tin">
-                            <ul>
-                                <li id="demo1">
-                                    <span>Demo test<a href="#"><i onclick="subtract_tags('demo1'); return false;" class="fa fa-remove"></i></a></span>
-                                </li>
-                                <li id="demo2"><span>Deme test<a href="#"><i onclick="subtract_tags('demo2'); return false;"
-                                                class="fa fa-remove"></i></a></span></li>
-                                <div id="tags_add">
-    
-                                </div>
-                            </ul>
-                        </div>
+                    <div class="form-group">
+                        <label>Tên sản phẩm:</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả ngắn:</label>
+                        <textarea name="editor1" class="form-control" rows="4"></textarea>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <h3>Ảnh sản phẩm<a class="add_image" href="#">Thêm ảnh</a></h3>
-                            <hr>
-                        </div>
-                        <div class="form-group">
-                            <div id="sync1" class="owl-carousel">
-                                <div class="item">
-                                    <a href="#">
-                                        <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                                </div>
-                                <div class="item">
-                                    <a href="#">
-                                        <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                                </div>
+                <div class="col-lg-4">
+                    <div class="form-group" id="re_number3">
+                        <label>Giá :</label>
+                        <input type="text" id="number3" maxlength="11" onkeyup="checkNumber('number3');" class="form-control">
+                    </div>
+                    <div class="form-group" style="position:relative;">
+                        <label>Danh mục sản phẩm:</label>
+                        <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
+                        <i class="fa fa-search" style="position: absolute;top: 35px;left: 15px;"></i>
+                        <ul class="dropdown-menu">
+                            <input type="hidden" name="cate1" id="cate1" value="Sản phẩm bán chạy">
+                            <li><a href="#" onclick="clickcategory('cate1'); return false;">Sản phẩm bán chạy</a></li>
+                            <li><a href="#">Sản phẩm khuyến mãi</a></li>
+                            <li><a href="#">Sản phẩm hot</a></li>
+                        </ul>
+                        <div id="value_category"></div>
+                    </div>
+                    <script>
+                        function clickcategory(a) {
+                            var x = document.getElementById(a);
+                            var result = document.getElementById('value_category');
+                            var html = '';
+                            html += '<div class="col-lg-12 category_search" id="value_category' + a + '" onclick="this.innerHTML=\'\';this.removeAttribute(\'class\');this.removeAttribute(\'id\')">' + x.value + '</div>'
+                            result.innerHTML += html;
+                        }
+                    </script>
+                    <div class="form-group frm_tags">
+                        <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
+                        <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
+                            type="text" class="form-control" placeholder="Nhập tags cho gói tin">
+                        <ul>
+                            <div id="tags_add">
+
                             </div>
-                            <div id="sync2" class="owl-carousel">
-                                <div class="item">
-                                    <a href="#">
-                                        <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                                </div>
-                                <div class="item">
-                                    <a href="#">
-                                        <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                                </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <h3>Ảnh sản phẩm<a class="add_image" href="#">Thêm ảnh</a></h3>
+                        <hr>
+                    </div>
+                    <div class="form-group">
+                        <div id="sync1" class="owl-carousel">
+                            <div class="item">
+                                <a href="#">
+                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
+                            </div>
+                            <div class="item">
+                                <a href="#">
+                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
+                            </div>
+                        </div>
+                        <div id="sync2" class="owl-carousel">
+                            <div class="item">
+                                <a href="#">
+                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
+                            </div>
+                            <div class="item">
+                                <a href="#">
+                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 attribute">
-                        <div class="form-group">
-                            <h3>Thêm thuộc tính<a class="add_image" href="#">Thêm thuộc tính</a></h3>
-                            <hr>
+                </div>
+                <div class="col-lg-8 attribute">
+                    <div class="form-group">
+                        <h3>Thêm thuộc tính<a class="add_image" href="#">Thêm thuộc tính</a></h3>
+                        <hr>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <label>Tên thuộc tính</label>
+                        </div>
+                        <div class="col-lg-8">
+                            <label>Giá trị thuộc tính</label>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="form-group">
-                            <div class="col-lg-3">
-                                <label>Tên thuộc tính</label>
-                            </div>
-                            <div class="col-lg-9">
-                                <label>Giá trị thuộc tính</label>
-                            </div>
-                            <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <input type="text" value="Dung lượng bộ nhớ" placeholder="Tên thuộc tính">
                         </div>
-                        <div class="form-group">
-                            <div class="col-lg-3">
-                                <input type="text" placeholder="Tên thuộc tính">
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" placeholder="Giá trị">
-                            </div>
-                            <div class="clearfix"></div>
+                        <div class="col-lg-8">
+                            <input type="text" placeholder="Giá trị" width="100%" style="width:100%" onkeypress="if (event.keyCode==13) {addmore_att(this.value,'value_attribute1'); this.value=''; return false; }">
                         </div>
-                        <div id="add_more">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-lg-8 col-xs-offset-4" id="value_attribute1" style="max-width:100%">
                         </div>
-                        <div class="form-group ">
-                            <div class="col-lg-6">
-                                <a onclick="addmore_attribute(); return false;" class="btn btn-default">Thêm thuộc tính
-                                    khác</a>
-                            </div>
-                            <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <input type="text" value="Màu sắc" placeholder="Tên thuộc tính">
                         </div>
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="table-responsive">
-                                            <table class="tbl_product_detail table table-striped table-bordered table-hover"
-                                                id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Phiên bản</th>
-                                                        <th>Giá</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <input type="hidden" name="attribute_id" value="">
-                                                        <input type="hidden" name="attribute_name" value="">
-                                                        <td>Đỏ</td>
-                                                        <td><input type="text" maxlength="10" value="3.900.000VNĐ"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                        <div class="col-lg-8">
+                            <input type="text" placeholder="Giá trị" width="100%" style="width:100%" onkeypress="if (event.keyCode==13) {addmore_att(this.value,'value_attribute2'); this.value=''; return false; }">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-8 col-xs-offset-4" id="value_attribute2" style="max-width:100%">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <script>
+                        function addmore_att(a, b) {
+                            var x = document.getElementById(b);
+                            var uuid = guid();
+                            var attribute = ''
+                            attribute += '<div class="label label-info ' + b + '" id="' + uuid + '">' + a + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load(); return false;"><i class="fa fa-remove"></i></a></div>';
+                            x.innerHTML += attribute;
+                            load();
+                        }
+                    </script>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="tbl_product_detail table table-striped table-bordered table-hover"
+                                            id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th>Phiên bản</th>
+                                                    <th>Giá</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="result_attribute">
+                                                <tr>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                    <button type="submit" class="btn btn-info">Thêm sản phẩm</button>
-                    <button type="reset" class="btn btn-default">Khôi phục</button>
-                </div>
-                <div class="clearfix"></div>
-            </form>
-        </div>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button type="submit" class="btn btn-info">Thêm sản phẩm</button>
+                <button type="reset" class="btn btn-default">Khôi phục</button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
     </div>
-    <div class="clearfix"></div>
-    <script>
-        CKEDITOR.replace('editor1',
-            {
-                // Define the toolbar groups as it is a more accessible solution.
-                toolbarGroups: [
-                    { "name": "basicstyles", "groups": ["basicstyles"] },
-                    { "name": "links", "groups": ["links"] },
-                    { "name": "paragraph", "groups": ["list", "blocks"] },
-                    { "name": "document", "groups": ["mode"] },
-                    { "name": "insert", "groups": ["insert"] },
-                    { "name": "styles", "groups": ["styles"] },
-                    { "name": "about", "groups": ["about"] }
-                ],
-                // Remove the redundant buttons from toolbar groups defined above.
-                removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-    
-            }
-        );
-        function addmore_attribute() {
-            var x = document.getElementById('add_more');
-            var attribute = '';
-            attribute += '<div class="form-group"><div class="col-lg-3"><input type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-9"><input type="text" placeholder="Giá trị"></div><div class="clearfix"></div></div>';
-            x.innerHTML += attribute;
+</div>
+<div class="clearfix"></div>
+<script>
+    CKEDITOR.replace('editor1',
+        {
+            // Define the toolbar groups as it is a more accessible solution.
+            toolbarGroups: [
+                { "name": "basicstyles", "groups": ["basicstyles"] },
+                { "name": "links", "groups": ["links"] },
+                { "name": "paragraph", "groups": ["list", "blocks"] },
+                { "name": "document", "groups": ["mode"] },
+                { "name": "insert", "groups": ["insert"] },
+                { "name": "styles", "groups": ["styles"] },
+            ],
+            // Remove the redundant buttons from toolbar groups defined above.
+            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
         }
-    </script>
-    {% endblock %}
-    {% block data_table %}
-    <script src="{% static 'website/assets/owl.carousel.js' %} "></script>
-    <script>
-        $(document).ready(function () {
-    
-            var sync1 = $("#sync1");
-            var sync2 = $("#sync2");
-            var slidesPerPage = 4; //globaly define number of elements per page
-            var syncedSecondary = true;
-    
-            sync1.owlCarousel({
-                items: 1,
-                slideSpeed: 2000,
-                nav: true,
-                autoplay: true,
-                dots: true,
-                loop: true,
-                responsiveRefreshRate: 200,
-                navText: ['<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
-            }).on('changed.owl.carousel', syncPosition);
-    
-            sync2
-                .on('initialized.owl.carousel', function () {
-                    sync2.find(".owl-item").eq(0).addClass("current");
-                })
-                .owlCarousel({
-                    items: slidesPerPage,
-                    dots: true,
-                    nav: true,
-                    smartSpeed: 200,
-                    slideSpeed: 500,
-                    slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
-                    responsiveRefreshRate: 100
-                }).on('changed.owl.carousel', syncPosition2);
-    
-            function syncPosition(el) {
-                //if you set loop to false, you have to restore this next line
-                //var current = el.item.index;
-    
-                //if you disable loop you have to comment this block
-                var count = el.item.count - 1;
-                var current = Math.round(el.item.index - (el.item.count / 2) - .5);
-    
-                if (current < 0) {
-                    current = count;
-                }
-                if (current > count) {
-                    current = 0;
-                }
-    
-                //end block
-    
-                sync2
-                    .find(".owl-item")
-                    .removeClass("current")
-                    .eq(current)
-                    .addClass("current");
-                var onscreen = sync2.find('.owl-item.active').length - 1;
-                var start = sync2.find('.owl-item.active').first().index();
-                var end = sync2.find('.owl-item.active').last().index();
-    
-                if (current > end) {
-                    sync2.data('owl.carousel').to(current, 100, true);
-                }
-                if (current < start) {
-                    sync2.data('owl.carousel').to(current - onscreen, 100, true);
-                }
+    );
+    function load() {
+        var x = document.getElementById('result_attribute');
+        x.innerHTML = '';
+        $(".value_attribute1").get().forEach(function (entry1, index1, array1) {
+            if ($(".value_attribute2").length > 0) {
+                $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
+                    var html = '';
+                    html += '<tr>';
+                    html += '<td><span style="color:red">' + array1[index1].textContent + '</span> | <span style="color:blue">' + array2[index2].textContent + '</span></td>';
+                    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+                    html += '</tr>';
+                    x.innerHTML += html;
+                });
             }
-    
-            function syncPosition2(el) {
-                if (syncedSecondary) {
-                    var number = el.item.index;
-                    sync1.data('owl.carousel').to(number, 100, true);
-                }
+            else {
+                var html = '';
+                html += '<tr>';
+                html += '<td>' + array1[index1].textContent + '</td>';
+                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+                html += '</tr>';
+                x.innerHTML += html;
             }
-    
-            sync2.on("click", ".owl-item", function (e) {
-                e.preventDefault();
-                var number = $(this).index();
-                sync1.data('owl.carousel').to(number, 300, true);
-            });
         });
-    
-    </script>
-    {% endblock %}
+        if ($(".value_attribute2").length > 0 && $(".value_attribute1").length == 0) {
+            $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
+                var html = '';
+                html += '<tr>';
+                html += '<td>' + array2[index2].textContent + '</td>';
+                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+                html += '</tr>';
+                x.innerHTML += html;
+            })
+        }
+    }
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+    function addmore_attribute() {
+        var x = document.getElementById('add_more');
+        var uuid = guid();
+        var attribute = '';
+        attribute += '<div class="form-group"><div class="col-lg-3"><input type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-9"><input type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'value_attribute' + uuid + '\'); this.value=\'\'; return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>';
+        attribute += '<div class="clearfix"></div></div>';
+        attribute += '<div class="form-group">';
+        attribute += '<div class="col-lg-9 col-xs-offset-3" id="value_attribute' + uuid + '"></div><div class="clearfix"></div>';
+        attribute += '</div>';
+        x.innerHTML += attribute;
+    }
+</script>
+{% endblock %}
+{% block data_table %}
+<script src="{% static 'website/assets/owl.carousel.js' %} "></script>
+<script>
+    $(document).ready(function () {
+
+        var sync1 = $("#sync1");
+        var sync2 = $("#sync2");
+        var slidesPerPage = 4; //globaly define number of elements per page
+        var syncedSecondary = true;
+
+        sync1.owlCarousel({
+            items: 1,
+            slideSpeed: 2000,
+            nav: true,
+            autoplay: true,
+            dots: true,
+            loop: true,
+            responsiveRefreshRate: 200,
+            navText: ['<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
+        }).on('changed.owl.carousel', syncPosition);
+
+        sync2
+            .on('initialized.owl.carousel', function () {
+                sync2.find(".owl-item").eq(0).addClass("current");
+            })
+            .owlCarousel({
+                items: slidesPerPage,
+                dots: true,
+                nav: true,
+                smartSpeed: 200,
+                slideSpeed: 500,
+                slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
+                responsiveRefreshRate: 100
+            }).on('changed.owl.carousel', syncPosition2);
+
+        function syncPosition(el) {
+            //if you set loop to false, you have to restore this next line
+            //var current = el.item.index;
+
+            //if you disable loop you have to comment this block
+            var count = el.item.count - 1;
+            var current = Math.round(el.item.index - (el.item.count / 2) - .5);
+
+            if (current < 0) {
+                current = count;
+            }
+            if (current > count) {
+                current = 0;
+            }
+
+            //end block
+
+            sync2
+                .find(".owl-item")
+                .removeClass("current")
+                .eq(current)
+                .addClass("current");
+            var onscreen = sync2.find('.owl-item.active').length - 1;
+            var start = sync2.find('.owl-item.active').first().index();
+            var end = sync2.find('.owl-item.active').last().index();
+
+            if (current > end) {
+                sync2.data('owl.carousel').to(current, 100, true);
+            }
+            if (current < start) {
+                sync2.data('owl.carousel').to(current - onscreen, 100, true);
+            }
+        }
+
+        function syncPosition2(el) {
+            if (syncedSecondary) {
+                var number = el.item.index;
+                sync1.data('owl.carousel').to(number, 100, true);
+            }
+        }
+
+        sync2.on("click", ".owl-item", function (e) {
+            e.preventDefault();
+            var number = $(this).index();
+            sync1.data('owl.carousel').to(number, 300, true);
+        });
+    });
+
+</script>
+{% endblock %}

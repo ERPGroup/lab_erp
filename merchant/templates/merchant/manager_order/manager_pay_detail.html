@@ -13,7 +13,7 @@ Trang chi tiết hóa đơn
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header">
+        <h1 class="page-header" style="margin:0px;">
             Chi tiết hóa đơn HD001
             <div style="display:inline-block; text-align:right;float:right;">
                 <a href="/admin/manager_users/add" class="btn btn-danger">Xóa hóa đơn</a>
@@ -144,7 +144,22 @@ Trang chi tiết hóa đơn
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "formatted-num-pre": function (a) {
+                a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+                return parseFloat(a);
+            },
+
+            "formatted-num-asc": function (a, b) {
+                return a - b;
+            },
+
+            "formatted-num-desc": function (a, b) {
+                return b - a;
+            }
+        });
+
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -160,9 +175,15 @@ Trang chi tiết hóa đơn
                 sSearch: "Tìm:",
                 sUrl: "",
             },
-
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "columnDefs": [
+                { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 3 },
+                { "type": 'formatted-num', targets: 4 },
+            ]
 
         });
     });
 </script>
-{% endblock %}  
+{% endblock %}

@@ -156,6 +156,8 @@ table.dataTable tbody tr.selected {
     max-width: 100%;
     border-radius: 5px;
     padding: 5px;
+    border: 1px solid #e2e2e2;
+    width:100%;
   }
 }
 .padding_top_15 {
@@ -202,4 +204,7 @@ table.dataTable tbody tr.selected {
       min-width: 70px;
     }
   }
+}
+.page-header{
+  margin:0px; margin-bottom:25px;
 }

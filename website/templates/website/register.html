@@ -2,6 +2,13 @@
 {% block title %}
 Đăng ký
 {% endblock %}
+{% block style_current %}
+<style>
+    .form-group{
+        margin-bottom:0px;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <!--content register-->
 <div class="register">
@@ -20,18 +27,19 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label">
-                                <label class="control-label">Email: </label>
+                                <label class="control-label">Tên tài khoản: </label>
                             </div>
                             <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
-                                <input type="text" class="form-control" name="inputEmail" id="inputEmail">
+                                <input type="text" class="form-control" name="inputUsername" id="inputUsername">
                             </div>
                             <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
                                 <div class="errors_id">
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label">
                                 <label class="control-label">Mật khẩu: </label>
@@ -44,8 +52,9 @@
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group" id="checkPassword">
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
                                 <label class="control-label">Nhập lại mật khẩu: </label>
@@ -58,8 +67,22 @@
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Email: </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" name="inputEmail" id="inputEmail">
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                <div class="errors_id">
+
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
                                 <label class="control-label">Họ và tên: </label>
@@ -72,8 +95,73 @@
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
+                                <label class="control-label">Loại tài khoản: </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                <select class="form-control" id="select_type_user">
+                                    <option>Người mua</option>
+                                    <option>Người bán</option>
+                                    <option>Mua quảng cáo</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                <div class="errors_fn">
+
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div id="type_users_selected">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
+                                    <label class="control-label">Số điện thoại: </label>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                    <input type="text" class="form-control" name="input_tel" id="input_tel">
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                    <div class="errors_fn">
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
+                                    <label class="control-label">Địa chỉ: </label>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                    <input type="text" class="form-control" name="input_address" id="input_address">
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                    <div class="errors_fn">
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
+                                    <label class="control-label">Tên cửa hàng: </label>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
+                                    <input type="text" class="form-control" name="input_store" id="input_store">
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
+                                    <div class="errors_fn">
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
                         <div class="form-group mail_to">
                             <div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-6 col-lg-6">
                                 <input checked="checked" type="checkbox" name="register_mail" id="register_mail">
@@ -82,8 +170,8 @@
                                     giao dịch mua bán theo
                                     <a href="#">điều kiện sử dụng và chính sách của Tablet Plaza.</a></label>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
                                 <button class="btn_registier btn btn-warning" type="submit">Đăng ký</button>
@@ -97,4 +185,18 @@
     </div>
 </div>
 <!--End content-->
+{% endblock %}
+{% block zoom_img_js %}
+<script>
+    $('#select_type_user').change(function () {
+        var result = document.getElementById('type_users_selected');
+        if (this.value == "Người mua") {
+            result.style.display = 'none';
+        }
+        else
+        {
+            result.style.display = 'block';
+        }
+    })
+</script>
 {% endblock %}

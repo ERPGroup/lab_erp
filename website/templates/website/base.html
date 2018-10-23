@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/styles.css' %} " />
     <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
+    {% block style_current %}
+    {% endblock %}
     {%block zoom_img%}
     {%endblock%}
     <link rel="stylesheet" href="{% static 'website/assets/fotorama.css' %} ">
