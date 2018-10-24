@@ -203,12 +203,14 @@ Trang chi tiết sản phẩm
             removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
         }
     );
+    var colors = new Array("#39b3d7","#d9534f","#5cb85c","#ec971f","#286090","#e6e6e6","#39b3d7","#d9534f","#5cb85c","#ec971f","#286090","#e6e6e6");
     function combination(a, b) {
         var count = 0;
         var result = new Array();
         for (var i = 0; i < a.length; i++) {
             for (var j = 1; j < b.length; j++) {
-                result[count] = a[i] +" | "+ b[j].textContent;
+                
+                result[count] = '<span style="color:'+colors[i]+'">' + a[i] + '</span> | ' + b[j].textContent;
                 count++;
             }
         }
@@ -235,7 +237,7 @@ Trang chi tiết sản phẩm
             var html = '';
             html += '<tr>';
             html += '<td><span style="color:red">' + result[i] + '</span></td>';
-            html += '<td><input type="text" name="price_product'+(i+1)+'" maxlength="10" value=""></td>'
+            html += '<td><input type="text" name="price_product_' + (i + 1) + '" maxlength="10" value=""></td>'
             html += '</tr>';
             x.innerHTML += html;
         }
@@ -248,41 +250,6 @@ Trang chi tiết sản phẩm
         x.innerHTML += attribute;
         load_2();
     }
-/*
-    function load() {
-        var x = document.getElementById('result_attribute');
-        x.innerHTML = '';
-        $(".value_attribute1").get().forEach(function (entry1, index1, array1) {
-            if ($(".value_attribute2").length > 0) {
-                $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
-                    var html = '';
-                    html += '<tr>';
-                    html += '<td><span style="color:red">' + array1[index1].textContent + '</span> | <span style="color:blue">' + array2[index2].textContent + '</span></td>';
-                    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                    html += '</tr>';
-                    x.innerHTML += html;
-                });
-            }
-            else {
-                var html = '';
-                html += '<tr>';
-                html += '<td>' + array1[index1].textContent + '</td>';
-                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                html += '</tr>';
-                x.innerHTML += html;
-            }
-        });
-        if ($(".value_attribute2").length > 0 && $(".value_attribute1").length == 0) {
-            $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
-                var html = '';
-                html += '<tr>';
-                html += '<td>' + array2[index2].textContent + '</td>';
-                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                html += '</tr>';
-                x.innerHTML += html;
-            })
-        }
-    }*/
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -390,6 +357,41 @@ Trang chi tiết sản phẩm
             sync1.data('owl.carousel').to(number, 300, true);
         });
     });
-
+/*
+function load() {
+var x = document.getElementById('result_attribute');
+x.innerHTML = '';
+$(".value_attribute1").get().forEach(function (entry1, index1, array1) {
+if ($(".value_attribute2").length > 0) {
+$(".value_attribute2").get().forEach(function (entry2, index2, array2) {
+var html = '';
+html += '<tr>';
+    html += '<td><span style="color:red">' + array1[index1].textContent + '</span> | <span style="color:blue">' +
+            array2[index2].textContent + '</span></td>';
+    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+    html += '</tr>';
+x.innerHTML += html;
+});
+}
+else {
+var html = '';
+html += '<tr>';
+    html += '<td>' + array1[index1].textContent + '</td>';
+    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+    html += '</tr>';
+x.innerHTML += html;
+}
+});
+if ($(".value_attribute2").length > 0 && $(".value_attribute1").length == 0) {
+$(".value_attribute2").get().forEach(function (entry2, index2, array2) {
+var html = '';
+html += '<tr>';
+    html += '<td>' + array2[index2].textContent + '</td>';
+    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
+    html += '</tr>';
+x.innerHTML += html;
+})
+}
+}*/
 </script>
 {% endblock %}
