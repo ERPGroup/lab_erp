@@ -129,45 +129,30 @@ Trang chi tiết sản phẩm
                     </div>
                     <div class="form-group">
                         <div class="col-lg-4">
-                            <input type="text" value="Dung lượng bộ nhớ" placeholder="Tên thuộc tính">
+                            <input type="text" id="name_attribute_0" value="Dung lượng bộ nhớ" placeholder="Tên thuộc tính">
                         </div>
                         <div class="col-lg-8">
-                            <input type="text" placeholder="Giá trị" width="100%" style="width:100%" onkeypress="if (event.keyCode==13) {addmore_att(this.value,'value_attribute1'); this.value=''; return false; }">
+                            <input type="text" class="count_value this_value_0" placeholder="Giá trị" width="100%"
+                                style="width:100%" onkeypress="if (event.keyCode==13) {addmore_att(this.value,'this_value_0'); this.value=''; return false; }">
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
                     <div class="form-group">
-                        <div class="col-lg-8 col-xs-offset-4" id="value_attribute1" style="max-width:100%">
+                        <div class="col-lg-8 col-xs-offset-4" id="this_value_0" style="max-width:100%">
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="form-group">
-                        <div class="col-lg-4">
-                            <input type="text" value="Màu sắc" placeholder="Tên thuộc tính">
-                        </div>
-                        <div class="col-lg-8">
-                            <input type="text" placeholder="Giá trị" width="100%" style="width:100%" onkeypress="if (event.keyCode==13) {addmore_att(this.value,'value_attribute2'); this.value=''; return false; }">
+                    <div class="attribute_demo" id="add_more">
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-lg-6">
+                            <a onclick="addmore_attribute(); return false;" class="btn btn-default">Thêm thuộc tính
+                                khác</a>
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-lg-8 col-xs-offset-4" id="value_attribute2" style="max-width:100%">
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <script>
-                        function addmore_att(a, b) {
-                            var x = document.getElementById(b);
-                            var uuid = guid();
-                            var attribute = ''
-                            attribute += '<div class="label label-info ' + b + '" id="' + uuid + '">' + a + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load(); return false;"><i class="fa fa-remove"></i></a></div>';
-                            x.innerHTML += attribute;
-                            load();
-                        }
-                    </script>
                     <div class="form-group">
                         <div class="col-lg-12">
                             <div class="panel panel-default">
@@ -218,6 +203,52 @@ Trang chi tiết sản phẩm
             removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
         }
     );
+    function combination(a, b) {
+        var count = 0;
+        var result = new Array();
+        for (var i = 0; i < a.length; i++) {
+            for (var j = 1; j < b.length; j++) {
+                result[count] = a[i] +" | "+ b[j].textContent;
+                count++;
+            }
+        }
+        return result;
+    }
+    function load_2() {
+        var input = document.getElementsByClassName('count_value');
+        var this_value = document.getElementsByClassName('this_value_0');
+        var result = new Array();
+        var i_count = 0;
+        for (var i = 1; i < this_value.length; i++) {
+            result[i_count] = this_value[i].textContent;
+            i_count++;
+        }
+        if (input.length > 1) {
+            for (var i = 1; i < input.length; i++) {
+                var input_2 = document.getElementsByClassName("this_value_" + i);
+                result = combination(result, input_2)
+            }
+        }
+        var x = document.getElementById('result_attribute');
+        x.innerHTML = '';
+        for (var i = 0; i < result.length; i++) {
+            var html = '';
+            html += '<tr>';
+            html += '<td><span style="color:red">' + result[i] + '</span></td>';
+            html += '<td><input type="text" name="price_product'+(i+1)+'" maxlength="10" value=""></td>'
+            html += '</tr>';
+            x.innerHTML += html;
+        }
+    }
+    function addmore_att(a, b) {
+        var x = document.getElementById(b);
+        var uuid = guid();
+        var attribute = ''
+        attribute += '<div class="label label-info ' + b + '" id="' + uuid + '">' + a + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_2(); return false;"><i class="fa fa-remove"></i></a></div>';
+        x.innerHTML += attribute;
+        load_2();
+    }
+/*
     function load() {
         var x = document.getElementById('result_attribute');
         x.innerHTML = '';
@@ -251,7 +282,7 @@ Trang chi tiết sản phẩm
                 x.innerHTML += html;
             })
         }
-    }
+    }*/
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -263,17 +294,21 @@ Trang chi tiết sản phẩm
     function addmore_attribute() {
         var x = document.getElementById('add_more');
         var uuid = guid();
+        var count_value = document.getElementsByClassName('count_value');
+        var new_value = 'this_value_' + count_value.length;
+        var new_name = 'name_attribute_' + count_value.length;
         var attribute = '';
-        attribute += '<div class="form-group"><div class="col-lg-3"><input type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-9"><input type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'value_attribute' + uuid + '\'); this.value=\'\'; return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>';
+        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\'; return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>';
         attribute += '<div class="clearfix"></div></div>';
         attribute += '<div class="form-group">';
-        attribute += '<div class="col-lg-9 col-xs-offset-3" id="value_attribute' + uuid + '"></div><div class="clearfix"></div>';
+        attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>';
         attribute += '</div>';
         x.innerHTML += attribute;
     }
 </script>
 {% endblock %}
 {% block data_table %}
+<!--Slide trượt-->
 <script src="{% static 'website/assets/owl.carousel.js' %} "></script>
 <script>
     $(document).ready(function () {
