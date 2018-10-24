@@ -284,3 +284,20 @@
 .attribute .form-group{
   margin-bottom:10px;
 }
+.open > .dropdown-menu {
+  right:0px;
+}
+.upload_photo {
+  cursor: pointer;
+  /* Style as you please, it will become the visible UI component. */
+}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+.count_image
+{
+  height:148px;
+}

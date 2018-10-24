@@ -9,8 +9,28 @@ Trang chi tiết sản phẩm
 {% block content %}
 {% block product %}
 <script src="https://cdn.ckeditor.com/4.10.1/standard/ckeditor.js"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
+<style>
+    #gallery {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .gallerie-control
+        {
+            line-height: 20px;
+            width: 40px;
+            height: 40px;
+        }
+        .gallerie-imagebox
+        {
+            height: 70%!important;
+        }
+        .gallerie-imagebox img {
+            width: auto!important;
+            height: 100%!important;
+        }
+</style>
 {% endblock %}
 <div class="row">
     <div class="col-md-12">
@@ -86,30 +106,14 @@ Trang chi tiết sản phẩm
             <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <h3>Ảnh sản phẩm<a class="add_image" href="#">Thêm ảnh</a></h3>
+                        <h3>Ảnh sản phẩm <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
+                            <input type="file" name="photo" id="upload-photo" onchange="readURL(this);" /></h3>
                         <hr>
                     </div>
                     <div class="form-group">
-                        <div id="sync1" class="owl-carousel">
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                        </div>
-                        <div id="sync2" class="owl-carousel">
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                        </div>
+                        <ul id="lightgallery" class="list-unstyled row">
+                            
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-8 attribute">
@@ -203,14 +207,14 @@ Trang chi tiết sản phẩm
             removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
         }
     );
-    var colors = new Array("#39b3d7","#d9534f","#5cb85c","#ec971f","#286090","#e6e6e6","#39b3d7","#d9534f","#5cb85c","#ec971f","#286090","#e6e6e6");
+    var colors = new Array("#39b3d7", "#286090", "#5cb85c", "#ec971f", "#d9534f", "#39b3d7", "#d9534f", "#5cb85c", "#ec971f", "#286090");
     function combination(a, b) {
         var count = 0;
         var result = new Array();
         for (var i = 0; i < a.length; i++) {
             for (var j = 1; j < b.length; j++) {
-                
-                result[count] = '<span style="color:'+colors[i]+'">' + a[i] + '</span> | ' + b[j].textContent;
+
+                result[count] = '<span style="color:' + colors[i] + '">' + a[i] + '</span> | ' + b[j].textContent;
                 count++;
             }
         }
@@ -276,87 +280,39 @@ Trang chi tiết sản phẩm
 {% endblock %}
 {% block data_table %}
 <!--Slide trượt-->
-<script src="{% static 'website/assets/owl.carousel.js' %} "></script>
+<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-pager.js/master/dist/lg-pager.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-autoplay.js/master/dist/lg-autoplay.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-fullscreen.js/master/dist/lg-fullscreen.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-hash.js/master/dist/lg-hash.js"></script>
+<script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
+
 <script>
-    $(document).ready(function () {
+    function scrollto(id) {
+        var etop = $('#' + id).offset().top;
+        $(window).scrollTop(etop);
+    }
+    var el = document.getElementById("lightgallery");
+    lightGallery(el);
+    function readURL(input) {
 
-        var sync1 = $("#sync1");
-        var sync2 = $("#sync2");
-        var slidesPerPage = 4; //globaly define number of elements per page
-        var syncedSecondary = true;
-
-        sync1.owlCarousel({
-            items: 1,
-            slideSpeed: 2000,
-            nav: true,
-            autoplay: true,
-            dots: true,
-            loop: true,
-            responsiveRefreshRate: 200,
-            navText: ['<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
-        }).on('changed.owl.carousel', syncPosition);
-
-        sync2
-            .on('initialized.owl.carousel', function () {
-                sync2.find(".owl-item").eq(0).addClass("current");
-            })
-            .owlCarousel({
-                items: slidesPerPage,
-                dots: true,
-                nav: true,
-                smartSpeed: 200,
-                slideSpeed: 500,
-                slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
-                responsiveRefreshRate: 100
-            }).on('changed.owl.carousel', syncPosition2);
-
-        function syncPosition(el) {
-            //if you set loop to false, you have to restore this next line
-            //var current = el.item.index;
-
-            //if you disable loop you have to comment this block
-            var count = el.item.count - 1;
-            var current = Math.round(el.item.index - (el.item.count / 2) - .5);
-
-            if (current < 0) {
-                current = count;
-            }
-            if (current > count) {
-                current = 0;
-            }
-
-            //end block
-
-            sync2
-                .find(".owl-item")
-                .removeClass("current")
-                .eq(current)
-                .addClass("current");
-            var onscreen = sync2.find('.owl-item.active').length - 1;
-            var start = sync2.find('.owl-item.active').first().index();
-            var end = sync2.find('.owl-item.active').last().index();
-
-            if (current > end) {
-                sync2.data('owl.carousel').to(current, 100, true);
-            }
-            if (current < start) {
-                sync2.data('owl.carousel').to(current - onscreen, 100, true);
-            }
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var result_1 = '';
+                /*result_1 = '<a href="' + e.target.result + '"><img src="' + e.target.result + '" width="40%"></a>' */
+                //result_1 = '<a href="{% static "website/images/detail_product.jpg" %}"><img src="{% static "website/images/detail_product.jpg" %}" width="40%"></a>'
+                result_1 = '<li class="col-xs-6 col-sm-6 col-md-6 no_padding count_image" data-src="' + e.target.result + '"><a href=""><img class="img-responsive" src="' + e.target.result + '" alt="Thumb-1"></a></li>'
+                el.insertAdjacentHTML('beforeend', result_1);
+                window.lgData[el.getAttribute('lg-uid')].destroy(true);
+                lightGallery(el);
+                scrollto('lightgallery');
+            };
+            reader.readAsDataURL(input.files[0]);
         }
-
-        function syncPosition2(el) {
-            if (syncedSecondary) {
-                var number = el.item.index;
-                sync1.data('owl.carousel').to(number, 100, true);
-            }
-        }
-
-        sync2.on("click", ".owl-item", function (e) {
-            e.preventDefault();
-            var number = $(this).index();
-            sync1.data('owl.carousel').to(number, 300, true);
-        });
-    });
+    }
 /*
 function load() {
 var x = document.getElementById('result_attribute');
@@ -393,5 +349,6 @@ x.innerHTML += html;
 })
 }
 }*/
+
 </script>
 {% endblock %}
