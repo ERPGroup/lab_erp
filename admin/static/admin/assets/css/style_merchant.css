@@ -301,3 +301,21 @@
 {
   height:148px;
 }
+#gallery {
+  margin-left: auto;
+  margin-right: auto;
+}
+.gallerie-control
+{
+  line-height: 20px;
+  width: 40px;
+  height: 40px;
+}
+.gallerie-imagebox
+{
+  height: 70%!important;
+}
+.gallerie-imagebox img {
+  width: auto!important;
+  height: 100%!important;
+}
