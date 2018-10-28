@@ -1,29 +1,233 @@
-from django.shortcuts import render
+import random
+from django.shortcuts import render, redirect
 from .models import *
 
 # Create your views here.
 from django.http import HttpResponse
 from  passlib.hash import pbkdf2_sha256
+from sender import Mail, Message
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
+
+
+def check_session(request):
+    if 'user' in request.session:
+        return 1
+    return 0
+
+def role_user_session(account):
+    # account = Account.objects.get(email=email)
+    role = []
+    if account.is_admin:
+        role.append(0)
+    if account.activity_account:
+        role.append(1)
+    if account.activity_merchant:
+        role.append(2)
+    if account.activity_advertiser:
+        role.append(3)
+    return role
+
+def random_code_activity(length):
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(length))
 
 def index (request):
     return render(request, 'website/index.html')
 
 
 def login (request):
+    if check_session(request):
+        messages.warning(request, message='You were login system', extra_tags='alert')
+        return redirect('/')
+    if request.method == 'POST':
+        email = request.POST.get('inputEmail')
+        password = request.POST.get('inputPassword')
+        try:
+            account = Account.objects.get(email=email)
+            if pbkdf2_sha256.verify(password, account.password):
+                if account.activity_account == True:
+                    request.session['user'] = {
+                        'email': account.email,
+                        'role': role_user_session(account),
+                    }
+                    messages.success(request, message='Login Success!', extra_tags='alert')
+                    return redirect('/') 
+                else:
+                    return HttpResponse('You dont active email!')
+            return HttpResponse('Wrong Pass')
+        except ObjectDoesNotExist:
+            return HttpResponse('Wrong Email!')
+        return
     return render(request, 'website/login.html')
 
+def logout (request):
+    if check_session(request):
+        del request.session['user']
+        messages.success(request, message='Logout Success!', extra_tags='alert')
+        return redirect('/')
+    else:
+        messages.warning(request, message='You didnt login', extra_tags='alert')
+        return redirect('/')
 
 def register (request):
+    if check_session(request):
+        messages.warning(request, message='You were login system', extra_tags='alert')
+        return redirect('/')
+
     if request.method  == 'POST':
+        username = request.POST.get('inputUsername')
         email = request.POST.get('inputEmail')
         password = request.POST.get('inputPassword')
         name = request.POST.get('inputFullname')
+        code = random_code_activity(40)
         new_account = Account(
+            username = username,
             email=email,
             password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
             name=name,
+            code_act_account=code,
         )
         new_account.save()
+        try:
+            mail = Mail(
+                'smtp.gmail.com', 
+                port='465', 
+                username='dinhtai018@gmail.com', 
+                password='wcyfglkfcshkxoaa',
+                use_ssl=True,
+                use_tls=False,
+                debug_level=False
+            )
+            msg = Message('Register Website c2c')
+            msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+            msg.to = email
+            msg.body = "This is email activity account!"
+            msg.html = '<h1>This link activity: <a href="http://localhost:8000/activity/%s/%s">Verify</a></h1>' % (email, code)
+            msg.reply_to = 'no-reply@gmail.com'
+            msg.charset = 'utf-8'
+            msg.extra_headers = {}
+            msg.mail_options = []
+            msg.rcpt_options = []
+            mail.send(msg)
+        except:
+            print('error')
+        
         return HttpResponse("You're submit form! %s" % email)
     return render(request, 'website/register.html')
 
+def activity_account(request, email, code):
+    try:
+        account = Account.objects.get(email=email)
+        if account.activity_account == 1:
+            return HttpResponse('You actived your account')
+        else:
+            if account.code_act_account == code:
+
+                account.activity_account = True
+                account.save()
+
+                account = Account.objects.get(email=email)
+                request.session['user'] = {
+                    'email': account.email,
+                    'role': role_user_session(account),
+                }
+                return HttpResponse('Okay!')
+            else:
+                return HttpResponse('Wrong!')
+    except ObjectDoesNotExist:
+        return HttpResponse('NOT activity!')
+    return 
+
+def request_new_password(request):
+    email = request.POST.get('forgot_email')
+    try:
+        account = Account.objects.get(email=email)
+        return HttpResponse('Da gui thong tin qua email')
+    except ObjectDoesNotExist:
+        return HttpResponse('Email khong ton tai')
+    return
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('inputEmail')
+    return
+
+def change_password(request):
+    return
+
+def category_product(request):
+    return
+
+
+def request_merchant(request):
+    if check_session(request) == 0:
+        return redirect('/login')
+
+    print(request.session.get('user'))
+
+    if 2 in request.session.get('user')['role']:
+        messages.warning(request, message='You were a merchant!', extra_tags='alert')
+        return redirect('/')
+
+    if request.method == 'POST':
+        account = Account.objects.get(email=request.session.get('user')['email'])
+
+        code = random_code_activity(40)
+        email = account.email
+
+        account.code_act_merchant = code
+        account.save()
+
+        try:
+            mail = Mail(
+                'smtp.gmail.com', 
+                port='465', 
+                username='dinhtai018@gmail.com', 
+                password='wcyfglkfcshkxoaa',
+                use_ssl=True,
+                use_tls=False,
+                debug_level=False
+            )
+            msg = Message('Request Mechant Website c2c')
+            msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+            msg.to = email
+            msg.body = "This is email Request Merchant!"
+            msg.html = '<h1>This link Request Merchant: <a href="http://localhost:8000/activity_merchant/%s/%s">Verify</a></h1>' % (email, code)
+            msg.reply_to = 'no-reply@gmail.com'
+            msg.charset = 'utf-8'
+            msg.extra_headers = {}
+            msg.mail_options = []
+            msg.rcpt_options = []
+            mail.send(msg)
+        except:
+            print('error')
+        messages.success(request, message='Request Success! Please check email!', extra_tags='alert')
+        return redirect('/')
+    return render(request, 'website/request_merchant.html')
+
+def activity_merchant(request, email, code):
+    try:
+        account = Account.objects.get(email=email)
+        if account.activity_merchant == 1:
+            return HttpResponse('You actived your merchant')
+        else:
+            if account.code_act_merchant == code:
+                account.activity_merchant = True
+                account.save()
+
+                account = Account.objects.get(email=email)
+                print(role_user_session(account))
+                request.session['user'] = {
+                    'email': account.email,
+                    'role': role_user_session(account),
+                }
+                return HttpResponse('Okay!')
+            else:
+                return HttpResponse('Wrong!')
+    except ObjectDoesNotExist:
+        return HttpResponse('NOT activity!')
+    return
+
+def resend_code(request):
+    return
