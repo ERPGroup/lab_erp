@@ -1,0 +1,16 @@
+{% extends "website/base.html" %}
+{% block title %}
+Request Merchant
+{% endblock %}
+{% block content %}
+<div class="main_slider">
+    <div class="container">
+        <div class="row">
+            <form action="{% url 'request_merchant' %}" class="frm_register" method="POST">
+                    {% csrf_token %}
+                <button class="btn_registier btn btn-warning" id='request'>I want to become a Merchant!</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

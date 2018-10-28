@@ -13,7 +13,7 @@ Trang chủ
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header" >
+        <h1 class="page-header" style="margin:0px;margin-bottom:25px;">
             Quản lý kho
             <div style="display:inline-block; text-align:right;float:right;">
                 <a href="/merchant/manager_product_detail" class="btn btn-info">Thêm mới sản phẩm</a>
@@ -88,7 +88,6 @@ Trang chủ
             return b - a;
         }
     });
-
     $(document).ready(function () {
         var table = $('#dataTables-example').dataTable({
             language: {
@@ -113,7 +112,17 @@ Trang chủ
                 { "type": 'formatted-num', targets: 3 },
             ]
         });
-       
+     
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Số uợng sản phẩm: </span>';
+        tool_bar +='<input type="text" id="min" class="form-control">'
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#min').keyup(function () {
+            table.fnFilter(this.value,3);
+        })
     });
+   
 </script>
 {% endblock %}

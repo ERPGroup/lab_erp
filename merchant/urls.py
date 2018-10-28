@@ -15,4 +15,5 @@ urlpatterns = [
    path('statistial_post',views.statistical_post,name='statis'),
    path('service_post',views.service_post,name='servies'),
    path('service_ads',views.service_ads,name='servies'),
+   path('ads_register',views.service_ads_register, name='ads')
 ]

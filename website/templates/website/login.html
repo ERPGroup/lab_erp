@@ -14,24 +14,9 @@
                         <span class="title is_active"><a href="/login">Đăng nhập </a> </span> <span class="title "><a
                                 href="/register">Tạo tài khoản</a> </span>
                     </div>
-<<<<<<< Updated upstream
-                </div>
-                <div class="clearfix"></div>
-                <div class="register_content">
-                    <form id="frm_register" action="#" method="post" class="frm_register">
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-3 padding_label">
-                                <label class="control-label">Email: </label>
-                            </div>
-                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
-                                <input type="text" class="form-control" id="inputUsername">
-                            </div>
-                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                <div class="errors_id">
-=======
                     <div class="clearfix"></div>
                     <div class="register_content">
-                        <form action="{% url 'login' %}" method="post" class="frm_register">
+                        <form action="{% url 'login-website' %}" method="post" class="frm_register">
                             {% csrf_token %}
                             <div class="form-group">
                                 <div class="col-xs-12 col-sm-3 padding_label">
@@ -42,23 +27,8 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
                                     <div class="errors_id">
->>>>>>> Stashed changes
-
                                 </div>
                             </div>
-<<<<<<< Updated upstream
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-3 padding_label">
-                                <label class="control-label">Mật khẩu: </label>
-                            </div>
-                            <div class="col-xs-12 col-sm-9 col-md-6 col-lg-6">
-                                <input type="password" class="form-control" id="inputPassword">
-                            </div>
-                            <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                <div class="errors_pw">
-=======
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-sm-3 padding_label">
@@ -69,8 +39,6 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
                                     <div class="errors_pw">
->>>>>>> Stashed changes
-
                                 </div>
                             </div>
                         </div>
@@ -107,7 +75,7 @@
                             </div>
                         </div>
                     </form>
-                    <form id="forgot_password" style="display:none;" action="#" method="post" class="frm_register">
+                    <form id="forgot_password" style="display:none;" action="" method="post" class="frm_register">
                         <div class="form-group">
                             <label style="font-style:italic">Vui lòng cung cấp địa chỉ email để khôi phục mật khẩu. </label>
                         </div>
@@ -116,7 +84,7 @@
                                 <label class="control-label">Email: </label>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <input type="text" class="form-control" id="forgot_email">
+                                <input type="text" class="form-control" name="forgot_email" id="forgot_email">
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-xs-12">

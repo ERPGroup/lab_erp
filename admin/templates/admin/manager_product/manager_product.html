@@ -54,16 +54,16 @@ Quản lý sản phẩm
                                 <td class="center">Bị khóa</td>
                             </tr>
                             <tr>
-                                    <td><a href="/admin/manager_product_detail">SP16</a></td>
-                                    <td>Iphone5s</td>
-                                    <td>3.900.000 VNĐ</td>
-                                    <td>
-                                        <div class="tbl_thumb_product">
-                                            <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
-                                        </div>
-                                    </td>
-                                    <td class="center">Đang xử lý</td>
-                                </tr>
+                                <td><a href="/admin/manager_product_detail">SP16</a></td>
+                                <td>Iphone5s</td>
+                                <td>3.900.000 VNĐ</td>
+                                <td>
+                                    <div class="tbl_thumb_product">
+                                        <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="center">Đang xử lý</td>
+                            </tr>
                             {% for i in "x"|rjust:"10" %}
                             <tr>
                                 <td><a href="/admin/manager_product_detail">SP0{{forloop.counter}}</a></td>
