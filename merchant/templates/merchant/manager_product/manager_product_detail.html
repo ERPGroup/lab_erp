@@ -4,12 +4,12 @@
 Trang chi tiết sản phẩm
 {% endblock %}
 {% block admin %}
-{% include "snippets/side_bar_merchant.html" %}
+{% include "snippets/side_bar_merchant.html" with active='active' %}
 {% endblock %}
 {% block content %}
 {% block product %}
-<script src="https://cdn.ckeditor.com/4.10.1/standard/ckeditor.js"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
+<script src="{% static 'merchant/ckeditor.js' %}"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
 {% endblock %}
 <div class="row">
@@ -54,19 +54,18 @@ Trang chi tiết sản phẩm
                         <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
                         <i class="fa fa-search" style="position: absolute;top: 35px;left: 15px;"></i>
                         <ul class="dropdown-menu">
-                            <input type="hidden" name="cate1" id="cate1" value="Sản phẩm bán chạy">
-                            <li><a href="#" onclick="clickcategory('cate1'); return false;">Sản phẩm bán chạy</a></li>
-                            <li><a href="#">Sản phẩm khuyến mãi</a></li>
-                            <li><a href="#">Sản phẩm hot</a></li>
+                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm bán chạy</a></li>
+                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm khuyến mãi</a></li>
+                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm hot</a></li>
                         </ul>
                         <div id="value_category"></div>
                     </div>
                     <script>
                         function clickcategory(a) {
-                            var x = document.getElementById(a);
+                            var uuid = guid();
                             var result = document.getElementById('value_category');
                             var html = '';
-                            html += '<div class="col-lg-12 category_search" id="value_category' + a + '" onclick="this.innerHTML=\'\';this.removeAttribute(\'class\');this.removeAttribute(\'id\')">' + x.value + '</div>'
+                            html += '<div class="col-lg-12 category_search" id="' + uuid + '" onclick="$(\'#' + uuid + '\').remove();">' + a + '</div>'
                             result.innerHTML += html;
                         }
                     </script>
@@ -86,29 +85,12 @@ Trang chi tiết sản phẩm
             <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <h3>Ảnh sản phẩm<a class="add_image" href="#">Thêm ảnh</a></h3>
+                        <h3>Ảnh sản phẩm <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
+                            <input type="file" name="photo" id="upload-photo" onchange="readURL(this);" /></h3>
                         <hr>
                     </div>
                     <div class="form-group">
-                        <div id="sync1" class="owl-carousel">
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                        </div>
-                        <div id="sync2" class="owl-carousel">
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
-                            <div class="item">
-                                <a href="#">
-                                    <img src="{% static 'website/images/product_1.jpg' %} " width="40%"></a>
-                            </div>
+                        <div id="lightgallery">
                         </div>
                     </div>
                 </div>
@@ -187,209 +169,48 @@ Trang chi tiết sản phẩm
     </div>
 </div>
 <div class="clearfix"></div>
-<script>
-    CKEDITOR.replace('editor1',
-        {
-            // Define the toolbar groups as it is a more accessible solution.
-            toolbarGroups: [
-                { "name": "basicstyles", "groups": ["basicstyles"] },
-                { "name": "links", "groups": ["links"] },
-                { "name": "paragraph", "groups": ["list", "blocks"] },
-                { "name": "document", "groups": ["mode"] },
-                { "name": "insert", "groups": ["insert"] },
-                { "name": "styles", "groups": ["styles"] },
-            ],
-            // Remove the redundant buttons from toolbar groups defined above.
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
-        }
-    );
-    function combination(a, b) {
-        var count = 0;
-        var result = new Array();
-        for (var i = 0; i < a.length; i++) {
-            for (var j = 1; j < b.length; j++) {
-                result[count] = a[i] +" | "+ b[j].textContent;
-                count++;
-            }
-        }
-        return result;
-    }
-    function load_2() {
-        var input = document.getElementsByClassName('count_value');
-        var this_value = document.getElementsByClassName('this_value_0');
-        var result = new Array();
-        var i_count = 0;
-        for (var i = 1; i < this_value.length; i++) {
-            result[i_count] = this_value[i].textContent;
-            i_count++;
-        }
-        if (input.length > 1) {
-            for (var i = 1; i < input.length; i++) {
-                var input_2 = document.getElementsByClassName("this_value_" + i);
-                result = combination(result, input_2)
-            }
-        }
-        var x = document.getElementById('result_attribute');
-        x.innerHTML = '';
-        for (var i = 0; i < result.length; i++) {
-            var html = '';
-            html += '<tr>';
-            html += '<td><span style="color:red">' + result[i] + '</span></td>';
-            html += '<td><input type="text" name="price_product'+(i+1)+'" maxlength="10" value=""></td>'
-            html += '</tr>';
-            x.innerHTML += html;
-        }
-    }
-    function addmore_att(a, b) {
-        var x = document.getElementById(b);
-        var uuid = guid();
-        var attribute = ''
-        attribute += '<div class="label label-info ' + b + '" id="' + uuid + '">' + a + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_2(); return false;"><i class="fa fa-remove"></i></a></div>';
-        x.innerHTML += attribute;
-        load_2();
-    }
-/*
-    function load() {
-        var x = document.getElementById('result_attribute');
-        x.innerHTML = '';
-        $(".value_attribute1").get().forEach(function (entry1, index1, array1) {
-            if ($(".value_attribute2").length > 0) {
-                $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
-                    var html = '';
-                    html += '<tr>';
-                    html += '<td><span style="color:red">' + array1[index1].textContent + '</span> | <span style="color:blue">' + array2[index2].textContent + '</span></td>';
-                    html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                    html += '</tr>';
-                    x.innerHTML += html;
-                });
-            }
-            else {
-                var html = '';
-                html += '<tr>';
-                html += '<td>' + array1[index1].textContent + '</td>';
-                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                html += '</tr>';
-                x.innerHTML += html;
-            }
-        });
-        if ($(".value_attribute2").length > 0 && $(".value_attribute1").length == 0) {
-            $(".value_attribute2").get().forEach(function (entry2, index2, array2) {
-                var html = '';
-                html += '<tr>';
-                html += '<td>' + array2[index2].textContent + '</td>';
-                html += '<td><input type="text" name="price_product" maxlength="10" value=""></td>'
-                html += '</tr>';
-                x.innerHTML += html;
-            })
-        }
-    }*/
-    function guid() {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
-    function addmore_attribute() {
-        var x = document.getElementById('add_more');
-        var uuid = guid();
-        var count_value = document.getElementsByClassName('count_value');
-        var new_value = 'this_value_' + count_value.length;
-        var new_name = 'name_attribute_' + count_value.length;
-        var attribute = '';
-        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\'; return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>';
-        attribute += '<div class="clearfix"></div></div>';
-        attribute += '<div class="form-group">';
-        attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>';
-        attribute += '</div>';
-        x.innerHTML += attribute;
-    }
-</script>
 {% endblock %}
 {% block data_table %}
 <!--Slide trượt-->
-<script src="{% static 'website/assets/owl.carousel.js' %} "></script>
+<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+<script src="{% static 'merchant/lightgallery.js' %}"></script>
+<script src="{% static 'merchant/lg-pager.js' %} "></script>
+<script src="{% static 'merchant/lg-autoplay.js' %}"></script>
+<script src="{% static 'merchant/lg-fullscreen.js' %}"></script>
+<script src="{% static 'merchant/lg-zoom.js' %}"></script>
+<script src="{% static 'merchant/lg-hash.js' %}"></script>
+<script src="{% static 'merchant/lg-share.js' %}"></script>
+<script src="{% static 'merchant/lg-thumbnail.js' %}"></script>
+<script src="{% static 'merchant/lg-deletebutton.js' %}"></script>
 <script>
-    $(document).ready(function () {
-
-        var sync1 = $("#sync1");
-        var sync2 = $("#sync2");
-        var slidesPerPage = 4; //globaly define number of elements per page
-        var syncedSecondary = true;
-
-        sync1.owlCarousel({
-            items: 1,
-            slideSpeed: 2000,
-            nav: true,
-            autoplay: true,
-            dots: true,
-            loop: true,
-            responsiveRefreshRate: 200,
-            navText: ['<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
-        }).on('changed.owl.carousel', syncPosition);
-
-        sync2
-            .on('initialized.owl.carousel', function () {
-                sync2.find(".owl-item").eq(0).addClass("current");
-            })
-            .owlCarousel({
-                items: slidesPerPage,
-                dots: true,
-                nav: true,
-                smartSpeed: 200,
-                slideSpeed: 500,
-                slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
-                responsiveRefreshRate: 100
-            }).on('changed.owl.carousel', syncPosition2);
-
-        function syncPosition(el) {
-            //if you set loop to false, you have to restore this next line
-            //var current = el.item.index;
-
-            //if you disable loop you have to comment this block
-            var count = el.item.count - 1;
-            var current = Math.round(el.item.index - (el.item.count / 2) - .5);
-
-            if (current < 0) {
-                current = count;
-            }
-            if (current > count) {
-                current = 0;
-            }
-
-            //end block
-
-            sync2
-                .find(".owl-item")
-                .removeClass("current")
-                .eq(current)
-                .addClass("current");
-            var onscreen = sync2.find('.owl-item.active').length - 1;
-            var start = sync2.find('.owl-item.active').first().index();
-            var end = sync2.find('.owl-item.active').last().index();
-
-            if (current > end) {
-                sync2.data('owl.carousel').to(current, 100, true);
-            }
-            if (current < start) {
-                sync2.data('owl.carousel').to(current - onscreen, 100, true);
-            }
-        }
-
-        function syncPosition2(el) {
-            if (syncedSecondary) {
-                var number = el.item.index;
-                sync1.data('owl.carousel').to(number, 100, true);
-            }
-        }
-
-        sync2.on("click", ".owl-item", function (e) {
-            e.preventDefault();
-            var number = $(this).index();
-            sync1.data('owl.carousel').to(number, 300, true);
-        });
+    var $el = $('#lightgallery');
+    $el.lightGallery({
+        selector: '.item',
     });
-
+    function reload() {
+        $el.data('lightGallery').destroy(true);
+        $el.lightGallery();
+    }
+    function readURL(input) {
+        var uuid = guid()
+        if (input.files && input.files[0]) {
+            var reader = new FileReader()
+            reader.onload = function (e) {
+                var result_1 = ''
+                result_1 = '<div class="col-lg-6 no_padding ' + uuid + ' count_image item" data-src="' + e.target.result + '">'
+                result_1 += '<img src="' + e.target.result + '" />'
+                result_1 += '<div class="action_image">'
+                result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
+                result_1 += '<a href="#" onclick="$(\'.' + uuid + '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
+                result_1 += '</div>'
+                result_1 += '</div>'
+                $el.append(result_1);
+                $el.data('lightGallery').destroy(true);
+                $el.lightGallery();
+            }
+            reader.readAsDataURL(input.files[0])
+        }
+    }
 </script>
+<script src="{% static 'merchant/merchant_product.js' %}"></script>
 {% endblock %}

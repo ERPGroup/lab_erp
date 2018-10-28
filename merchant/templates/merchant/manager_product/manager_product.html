@@ -8,7 +8,7 @@ Tablet Plaza - Danh sách sản phẩm
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block admin %}
-{% include "snippets/side_bar_merchant.html" %}
+{% include "snippets/side_bar_merchant.html" with active='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -68,7 +68,7 @@ Tablet Plaza - Danh sách sản phẩm
                             <tr>
                                 <td><a href="/merchant/manager_product_detail">SP0{{forloop.counter}}</a></td>
                                 <td>Iphone 5s {{forloop.counter}}</td>
-                                <td>3.900.000 VNĐ</td>
+                                <td>{{forloop.counter}}.900.000 VNĐ</td>
                                 <td>
                                     <div class="tbl_thumb_product">
                                         <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">

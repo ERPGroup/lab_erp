@@ -233,3 +233,5 @@ def service_ads(request):
     return render(request,'merchant/manager_service/service_ads.html')
 def service_ads_register(request):
     return render(request,'merchant/manager_service/manager_ads_register_detail.html')
+from django import template
+

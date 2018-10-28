@@ -72,13 +72,19 @@ function checkNumber (a) {
     result.classList.add('has-error')
   }
 }
+function guid () {
+  function s4 () {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1)
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
+}
 function addmore_tags (a) {
   var x = document.getElementById('tags_add')
   var attribute = ''
-  attribute += ' <li id="' + a + '" style=""><span>' + a + '<a href="#"><i onclick="subtract_tags(\'' + a + '\'); return false;" class="fa fa-remove"></i></a></span></li>'
+  var uuid = guid();
+  attribute += ' <li id="' + uuid + '"><span class="value_tags">' + a + '<a href="#"><i onclick="$(\'#'+uuid+'\').remove(); return false;" class="fa fa-remove"></i></a></span></li>'
   x.innerHTML += attribute
 }
-function subtract_tags (a) {
-  var x = document.getElementById(a)
-  x.outerHTML = ''
-}
+
