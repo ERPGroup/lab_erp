@@ -402,9 +402,9 @@ img {
   position: relative;
   margin-top: 20px;
   .banner_right_2 {
-    margin-top: 45px;
+    margin-top: 25px;
     @media screen and (max-width: 1199px) and (min-width: 992px) {
-      margin-top: 38px;
+      margin-top: 18px;
     }
   }
 }
@@ -1875,3 +1875,19 @@ footer {
 {
   display:none;
 }
+.thumb_slider
+{
+  position: relative;
+  height: 365px;
+  img{
+    width: auto !important;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
+
