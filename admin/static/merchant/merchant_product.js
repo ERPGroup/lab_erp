@@ -21,6 +21,11 @@ function combination (a, b) {
     for (var j = 1; j < b.length; j++) {
       result[count] = a[i] + " | " + b[j].textContent
       count++
+      // if(count>10)
+      // {
+      //   alert('Hệ thống chỉ hỗ trợ tối đa 10 phiên bản');
+      //   return false;
+      // }
     }
   }
   return result

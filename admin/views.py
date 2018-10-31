@@ -102,3 +102,6 @@ def category_detail(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_product/manager_category_detail.html')
+
+def statistical(request):
+    return render(request,'admin/statistical_report/statistical_report.html')
