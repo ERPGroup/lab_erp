@@ -42,7 +42,6 @@ class Product (models.Model):
 class Category (models.Model):
     name_category = models.CharField(max_length=200)
     quantity = models.IntegerField()
-    is_activity = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name_category
@@ -76,10 +75,15 @@ class Discount (models.Model):
     def __str__(self):
         return self.product_id__name
 
-class Image (models.Model):
+class Product_Image(models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    image_link = models.ImageField(upload_to='website/product/')
-    is_default = models.BooleanField()
+    image_id = models.ForeignKey('Image', on_delete=models.CASCADE)
+
+
+class Image (models.Model):
+    image_link = models.ImageField(upload_to='merchant/product/')
+    is_default = models.BooleanField(default=False)
+    user_id = models.ForeignKey('Account', on_delete=models.CASCADE)
 
 
 class Link_Type(models.Model):

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from . import functions
 
 urlpatterns = [
    path('', views.index, name='index'),
@@ -15,5 +16,12 @@ urlpatterns = [
    path('statistial_post',views.statistical_post,name='statis'),
    path('service_post',views.service_post,name='servies'),
    path('service_ads',views.service_ads,name='servies'),
-   path('ads_register',views.service_ads_register, name='ads')
+   path('ads_register',views.service_ads_register, name='ads'),
+
+
+    #function urls
+   path('categorys', functions.categorys, name='categorys'),
+   path('category/<id_category>', functions.category, name='category'),
+   path('category', functions.category_add, name='category_add'),
+   path('upload_image', functions.upload_image, name='upload_image'),
 ]

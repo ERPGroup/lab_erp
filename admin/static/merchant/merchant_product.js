@@ -52,14 +52,27 @@ function load_2 () {
   }
   return result;
 }
-function addmore_att (a, b) {
-  var x = document.getElementById(b)
-  var uuid = guid()
-  var attribute = ''
-  attribute += '<div class="label label-info ' + b + '" id="' + uuid + '">' + a + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_2(); return false;"><i class="fa fa-remove"></i></a></div>'
-  x.innerHTML += attribute
-  load_2()
+
+
+function addmore_att (content, name_tag) {
+  m = $('#' + name_tag + ' > div')
+  list_value = []
+  for (i = 0 ; i < m.length; i++){
+    list_value.push(m[i].textContent);
+  }
+  if (list_value.includes(content)){
+    alert('Loi! tag bi trung');
+    load_2();
+  }else{
+    var x = document.getElementById(name_tag);
+    var uuid = guid();
+    var attribute = '';
+    attribute += '<div class="label label-info ' + name_tag + '" id="' + uuid + '">' + content + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_2(); return false;"><i class="fa fa-remove"></i></a></div>';
+    x.innerHTML += attribute;
+    load_2();
+  }
 }
+
 function guid () {
   function s4 () {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -68,22 +81,62 @@ function guid () {
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 }
+
 function addmore_attribute () {
-  var x = document.getElementById('add_more')
-  var uuid = guid()
-  var count_value = document.getElementsByClassName('count_value')
-  var new_value = 'this_value_' + count_value.length
-  var new_name = 'name_attribute_' + count_value.length
+  var uuid = guid();
+  var count_value = $('.count_value').length;
+  var new_value = 'this_value_' + count_value;
+  var new_name = 'name_attribute_' + count_value;
   var attribute = ''
   attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" placeholder="Tên thuộc tính"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\'; return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
   attribute += '<div class="clearfix"></div></div>'
   attribute += '<div class="form-group">'
   attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>'
   attribute += '</div>'
-  x.innerHTML += attribute
+  $("#add_more").append(attribute)
 }
+
 function scrollto (id) {
   var etop = $('#' + id).offset().top
   $(window).scrollTop(etop)
 }
 
+
+$(document).ready(function(){
+  $('#upload-photo').change(function(){
+    data = new FormData();
+    files = $('#upload-photo').get(0).files;
+
+    if (files.length > 0){
+      data.append('photo', files[0]);
+    }
+    $.ajax({
+      url: 'http://localhost:8000/merchant/upload_image',
+      method: 'POST',
+      contentType: false,
+      processData: false,
+      data: data,
+      success: function(response){
+        alert(response);
+        var reader = new FileReader()
+        reader.onload = function (e) {
+            var result_1 = ''
+            result_1 = '<div class="col-lg-6 no_padding ' + response + ' count_image item" data-src="' + e.target.result + '">'
+            result_1 += '<img src="' + e.target.result + '" />'
+            result_1 += '<div class="action_image">'
+            result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
+            result_1 += '<a href="#" onclick="$(\'.' + response + '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
+            result_1 += '</div>'
+            result_1 += '</div>'
+            $el.append(result_1);
+            $el.data('lightGallery').destroy(true);
+            $el.lightGallery();
+        }
+        reader.readAsDataURL(files[0]);
+      },
+      error: function(jqXHR){
+        alert(jqXHR.responseText);
+      }
+    });
+  });
+});
