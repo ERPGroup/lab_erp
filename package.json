@@ -1,0 +1,10 @@
+{
+  "name": "lab_erp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "dinh truong <dinhtruong018@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lightgallery": "^1.6.11",
+  }
+}

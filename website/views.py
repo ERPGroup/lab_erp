@@ -48,6 +48,7 @@ def login (request):
             if pbkdf2_sha256.verify(password, account.password):
                 if account.activity_account == True:
                     request.session['user'] = {
+                        'id': account.id,
                         'email': account.email,
                         'role': role_user_session(account),
                     }
@@ -80,41 +81,70 @@ def register (request):
         email = request.POST.get('inputEmail')
         password = request.POST.get('inputPassword')
         name = request.POST.get('inputFullname')
-        code = random_code_activity(40)
-        new_account = Account(
-            username = username,
-            email=email,
-            password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
-            name=name,
-            code_act_account=code,
-        )
-        new_account.save()
-        try:
-            mail = Mail(
-                'smtp.gmail.com', 
-                port='465', 
-                username='dinhtai018@gmail.com', 
-                password='wcyfglkfcshkxoaa',
-                use_ssl=True,
-                use_tls=False,
-                debug_level=False
+        
+        option_acc = request.POST.get('inputOptionAcc')
+        if int(option_acc) == 0:
+            code = random_code_activity(40)
+            new_account = Account(
+                username = username,
+                email=email,
+                password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
+                name=name,
+                code_act_account=code,
             )
-            msg = Message('Register Website c2c')
-            msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
-            msg.to = email
-            msg.body = "This is email activity account!"
-            msg.html = '<h1>This link activity: <a href="http://localhost:8000/activity/%s/%s">Verify</a></h1>' % (email, code)
-            msg.reply_to = 'no-reply@gmail.com'
-            msg.charset = 'utf-8'
-            msg.extra_headers = {}
-            msg.mail_options = []
-            msg.rcpt_options = []
-            mail.send(msg)
-        except:
-            print('error')
+            new_account.save()
+            send_mail_register('activity', email, code)
+
+        elif int(option_acc) == 1:
+            cmnd = request.POST.get('inputID')
+            phone = request.POST.get('inputTel')
+            address = request.POST.get('inputAddress')
+            store = request.POST.get('inputStore')
+            code_act_merchant = random_code_activity(40)
+            new_account = Account(
+                username = username,
+                email = email,
+                password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
+                name=name,
+                code_act_merchant=code_act_merchant,
+                activity_account=True,
+                id_card=cmnd,
+                phone=phone,
+                address=address,    
+                name_shop=store,
+            )
+            new_account.save()
+            send_mail_register('activity_merchant', email, code_act_merchant)
+        elif int(option_acc) == 2:
+            code_act_ads = random_code_activity(40)
         
         return HttpResponse("You're submit form! %s" % email)
     return render(request, 'website/register.html')
+
+def send_mail_register(slug_url, email, code):
+    try:
+        mail = Mail(
+            'smtp.gmail.com', 
+            port='465', 
+            username='dinhtai018@gmail.com', 
+            password='wcyfglkfcshkxoaa',
+            use_ssl=True,
+            use_tls=False,
+            debug_level=False
+        )
+        msg = Message('Register Website c2c')
+        msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+        msg.to = email
+        msg.body = "This is email activity account!"
+        msg.html = '<h1>This link activity: <a href="http://localhost:8000/%s/%s/%s">Verify</a></h1>' % (slug_url, email, code)
+        msg.reply_to = 'no-reply@gmail.com'
+        msg.charset = 'utf-8'
+        msg.extra_headers = {}
+        msg.mail_options = []
+        msg.rcpt_options = []
+        mail.send(msg)
+    except:
+        print('error')
 
 def activity_account(request, email, code):
     try:
@@ -129,6 +159,7 @@ def activity_account(request, email, code):
 
                 account = Account.objects.get(email=email)
                 request.session['user'] = {
+                    'id': account.id,
                     'email': account.email,
                     'role': role_user_session(account),
                 }
@@ -178,30 +209,7 @@ def request_merchant(request):
 
         account.code_act_merchant = code
         account.save()
-
-        try:
-            mail = Mail(
-                'smtp.gmail.com', 
-                port='465', 
-                username='dinhtai018@gmail.com', 
-                password='wcyfglkfcshkxoaa',
-                use_ssl=True,
-                use_tls=False,
-                debug_level=False
-            )
-            msg = Message('Request Mechant Website c2c')
-            msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
-            msg.to = email
-            msg.body = "This is email Request Merchant!"
-            msg.html = '<h1>This link Request Merchant: <a href="http://localhost:8000/activity_merchant/%s/%s">Verify</a></h1>' % (email, code)
-            msg.reply_to = 'no-reply@gmail.com'
-            msg.charset = 'utf-8'
-            msg.extra_headers = {}
-            msg.mail_options = []
-            msg.rcpt_options = []
-            mail.send(msg)
-        except:
-            print('error')
+        send_mail_register('activity_merchant', email, code)
         messages.success(request, message='Request Success! Please check email!', extra_tags='alert')
         return redirect('/')
     return render(request, 'website/request_merchant.html')
@@ -219,6 +227,7 @@ def activity_merchant(request, email, code):
                 account = Account.objects.get(email=email)
                 print(role_user_session(account))
                 request.session['user'] = {
+                    'id': account.id,
                     'email': account.email,
                     'role': role_user_session(account),
                 }
