@@ -22,4 +22,5 @@ urlpatterns = [
     path('manager_product_detail',views.products_detail,name="products"),
     path('manager_category',views.categories,name="products"),
     path('manager_category_detail',views.category_detail,name="products"),
+    path('statistical',views.statistical,name="statistical"),
 ]

@@ -1,0 +1,119 @@
+{% extends "admin/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+Báo cáo thống kê
+{% endblock %}
+
+{% block dataTB %}
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/morris/morris-0.4.3.min.css' %} " rel="stylesheet" />
+{% endblock %}
+
+{% block admin %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+
+{% block content %}
+<!-- /. NAV SIDE  -->
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Thống kê báo cáo
+        </h1>
+
+    </div>
+</div>
+<!-- /. ROW  -->
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Điều kiện thống kê
+            </div>
+            <div class="panel-body">
+                <div class="col-xs-4 no_padding">
+                    <span>Loại thống kê</span>
+                    <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
+                        <option>Doanh thu</option>
+                        <option>Lượng truy cập</option>
+                        <option>Người bán</option>
+                        <option>Người mua</option>
+                    </select>
+                </div>
+                <div class="col-xs-1">
+                    <span style="line-height:34px;">Từ: </span>
+                </div>
+                <div class="col-xs-3">
+                    <div class='input-group date' id='idStart'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+                    <span style="line-height:34px;">Đến: </span>
+                </div>
+                <div class="col-xs-3">
+                    <div class='input-group date' id='idEnd'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Biểu đồ miền
+            </div>
+            <div class="panel-body">
+                <div id="morris-area-chart"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block data_table %}
+<!--Date time picker-->
+<script src="{% static 'admin/assets/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/vi.js' %}"></script>
+<script src="{% static 'admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#idStart').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date(),
+            date: new Date(),
+            minDate: new Date('01/01/2000')
+        });
+    });
+    $(function () {
+        $('#idEnd').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date(),
+            date: new Date(),
+            minDate: new Date('01/01/2000')
+        });
+    });
+</script>
+<!--End-->
+<script src="{% static 'admin/assets/js/morris/morris.js' %}"></script>
+<script src="{% static 'admin/assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/chart_custom.js' %}"></script>
+{% endblock %}

@@ -496,12 +496,12 @@ img {
 }
 
 .banner_right .banner_right_2 {
-  margin-top: 45px;
+  margin-top: 25px;
 }
 
 @media screen and (max-width: 1199px) and (min-width: 992px) {
   .banner_right .banner_right_2 {
-    margin-top: 38px;
+    margin-top: 18px;
   }
 }
 
@@ -2324,5 +2324,21 @@ footer .copyrights a {
 
 #type_users_selected {
   display: none;
+}
+
+.thumb_slider {
+  position: relative;
+  height: 365px;
+}
+
+.thumb_slider img {
+  width: auto !important;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 /*# sourceMappingURL=styles.css.map */
