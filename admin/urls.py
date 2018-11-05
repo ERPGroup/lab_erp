@@ -22,4 +22,6 @@ urlpatterns = [
     path('manager_product_detail',views.products_detail,name="products"),
     path('manager_category',views.categories,name="products"),
     path('manager_category_detail',views.category_detail,name="products"),
+    path('manager_attribute',views.manager_attribute,name="attribute"),
+    path('manager_attribute_detail',views.manager_attribute_detail,name="products"),
 ]
