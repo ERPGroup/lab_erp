@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect
-
+from django.http import JsonResponse
+from website.models import *
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 
 def check_rule(request):
-    if 'user' in request.session:
-        user = request.session.get('user')
-        print(user['role'])
-        if 0 in user['role']:
-            print(user)
-            return 1
-        return 0
-    return 0
-
+    # if 'user' in request.session:
+    #     user = request.session.get('user')
+    #     print(user['role'])
+    #     if 0 in user['role']:
+    #         print(user)
+    #         return 1
+    #     return 0
+    # return 0
+    return 1
 # Create your views here.
 def login (request):
     if check_rule(request) == 1:
@@ -105,3 +106,19 @@ def category_detail(request):
 
 def statistical(request):
     return render(request,'admin/statistical_report/statistical_report.html')
+
+
+# def get_last_ads(id):
+#     #Lấy quảng cáo có thời gian bắt đầu nhỏ nhất trong hợp đồng, theo ma quang cao.  
+#     return
+# def get_ads_current(id):
+#     #Lấy quảng cáo hiện tại theo mã quảng cáo
+#     return
+# def update_ads(request):
+#     if request.method == "POST":
+#         id_ads = request.POST.get('id_ads')
+#         current_ads = get_ads_current(id_ads)
+#         new_ads = get_last_ads(id_ads)
+#         #Cap nhap quang cao hien tai. thay the' bang quang cao tiep theo
+#         current_ads = new_ads
+#         return JsonResponse(new_ads.TenQuangCao)

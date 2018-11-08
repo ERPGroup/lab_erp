@@ -23,4 +23,6 @@ urlpatterns = [
     path('manager_category',views.categories,name="products"),
     path('manager_category_detail',views.category_detail,name="products"),
     path('statistical',views.statistical,name="statistical"),
+
+    path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
 ]
