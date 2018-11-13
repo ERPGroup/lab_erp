@@ -383,8 +383,8 @@ def products(request):
             products_dict['code'] = item.code
             products_dict['name'] = item.name
             products_dict['price'] = item.price
-            products_dict['detail'] = 'Test'
-            products_dict['origin'] = 'Test'
+            products_dict['detail'] = item.detail
+            products_dict['origin'] = item.origin
             products.append(products_dict)
         return  HttpResponse(json.dumps(products), content_type="application/json")
     return  HttpResponse(1)
