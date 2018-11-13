@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 {% load staticfiles %}
+
 {% block load_tag %}
 {% endblock %}
+
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +15,7 @@
     <link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link href="{% static '/admin/assets/css/font-awesome.min.css' %} " rel="stylesheet" /> -->
     <!-- Morris Chart Styles-->
     <link href="{% static '/admin/assets/js/morris/morris-0.4.3.min.css' %} " rel="stylesheet" />
     <!-- Custom Styles-->
@@ -19,12 +23,13 @@
     <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
     <!-- Google Fonts-->
     <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    
     {% block dataTB %}
     <!-- TABLE STYLES-->
     {% endblock %}
-    {% block product %}
 
+    {% block product %}
     {% endblock %}
 
 </head>
@@ -32,15 +37,22 @@
 <body>
     <div id="wrapper">
         {% include "snippets_admin/header.html" %}
+
         {% block admin %}
         {% endblock %}
+
         {% block merchant %}
         {% endblock %}
+
         <div id="page-wrapper">
             <div id="page-inner">
+
                 {% block content %}
                 {% endblock content %}
+
+
                 {% include "snippets_admin/footer.html" %}
+
             </div>
             <!-- /. PAGE INNER  -->
         </div>
@@ -58,8 +70,10 @@
     <!-- Morris Chart Js -->
 
     <!--Custom Script -->
+
     {% block data_table %}
     {% endblock %}
+    
     <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
 </body>
 

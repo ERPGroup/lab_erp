@@ -26,11 +26,19 @@ class Account(models.Model):
     def __str__(self):
         return self.email
 
+class Account_Service(models.Model):
+    account = models.ForeignKey('Account', on_delete=models.CASCADE)
+    service = models.ForeignKey('Service', on_delete=models.CASCADE)
+    remain = models.IntegerField(default=0)
+
+
 class Product (models.Model):
     name = models.CharField(max_length=200)
     detail = models.TextField(max_length=2000)
     origin = models.CharField(max_length=200)
     type_product = models.BooleanField()
+    price = models.IntegerField()
+    code = models.CharField(max_length=200)
     is_visible = models.BooleanField(default=True)
     is_activity = models.BooleanField(default=True)
     archive = models.BooleanField(default=False)
@@ -96,46 +104,56 @@ class Tag(models.Model):
     tag_value =models.CharField(max_length=200)
 
 
-# class Post_Product (models.Model):
-#     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-#     quantity = models.IntegerField()
-#     created = models.DateTimeField(auto_now=True)
-#     is_vip = models.BooleanField()
-#     is_activity = models.BooleanField()
 
-#     def __str__(self):
-#         return self.product_id__name
+class Post_Product (models.Model):
+    product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    post_type = models.ForeignKey('Service', on_delete=models.CASCADE)
+    is_index = models.BooleanField()
+    created = models.DateTimeField(auto_now=True)
+    expire = models.DateTimeField()
+    is_activity = models.BooleanField(default=True)
+    creator_id = models.ForeignKey('Account', on_delete=models.CASCADE)
+    visable_vip = models.BooleanField()
+    expire_visable_page_home = models.DateTimeField()
 
-# class Rating (models.Model):
-#     customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
-#     merchant =  models.ForeignKey('Account', on_delete=models.CASCADE)
-#     num_of_star = models.IntegerField()
-#     comment = models.CharField(max_length=2000)
-#     is_activity = models.BooleanField()
+    def __str__(self):
+        return self.product_id__name
 
-#     def __str__(self):
-#         return self.customer.name
+class Rating (models.Model):
+    customer =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Customer')
+    merchant =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Merchant')
+    num_of_star = models.IntegerField()
+    comment = models.CharField(max_length=2000)
+    is_activity = models.BooleanField()
+
+    def __str__(self):
+        return self.customer.name
 
 
-# class Order (models.Model):
-#     customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
-#     amount = models.IntegerField()
-#     address = models.CharField(max_length=200)
-#     phone = models.CharField(max_length=12)
-#     state = models.CharField()
-#     manner = models.CharField()
-#     is_paid = models.BooleanField()
-#     is_activity = models.BooleanField()
-#     archive = models.BooleanField()
+class Order (models.Model):
+    customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    address = models.CharField(max_length=200)
+    phone = models.CharField(max_length=12)
+    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'Packing'), ('3', 'Transporting'))
+    state = models.CharField(max_length=1, choices=CHOICES_STATE)
+    manner = models.CharField(max_length=200)
+    is_paid = models.BooleanField()
+    is_activity = models.BooleanField()
+    archive = models.BooleanField()
+    canceler_id = models.IntegerField(null=True)
 
-# class Order_Detail (models.Model):
-#     order = models.ForeignKey('Order', on_delete=models.CASCADE)
-#     product = models.ForeignKey('Product', on_delete=models.CASCADE)
-#     merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
-#     quantity = models.IntegerField()
-#     price = models.IntegerField()
-#     CHOISE_STATE = (('1', 'Success'), ('0', 'Cancel'))
-#     state = models.CharField()
+class Order_Detail (models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.IntegerField()
+    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'Packing'), ('3', 'Transporting'))
+    state = models.CharField(max_length=1, choices=CHOICES_STATE)
+    confirm_of_merchant = models.BooleanField(null=True)
+    canceler_id = models.IntegerField(null=True)
 
 
 # class Email_Template(models.Model):
@@ -143,3 +161,38 @@ class Tag(models.Model):
 #     type_template = models.IntegerField()
 #     content = models.TextField()
 #     state = models.BooleanField(default=True)
+
+
+class Service(models.Model):
+    service_name = models.CharField(max_length=200)
+    amount = models.IntegerField()
+    value = models.IntegerField()
+    quantity_product = models.IntegerField()
+    created = models.DateTimeField(auto_now=True)
+    day_limit = models.IntegerField()
+    day_visable_page_home = models.IntegerField()
+    visable_vip = models.BooleanField()
+    is_active = models.BooleanField(default=True)
+    archive = models.BooleanField(default=False)
+    creator_id = models.IntegerField()
+    canceler_id = models.IntegerField(null=True)
+
+class Purchase_Service(models.Model):
+    purchase_name = models.CharField(max_length=200)
+    merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)
+    service_id = models.ForeignKey('Service', on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    state = models.IntegerField()
+    success_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    archive = models.BooleanField(default=False)
+
+# class Paypal(models.Model):
+#     paypal_name = models.CharField(max_length=200)
+#     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
+#     detail = models.CharField(max_length=1000)
+
+
+# class Purchase_Service_Detail(models.Model):
+#     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
+#     service_id = models.ForeignKey('Service', on_delete=models.CASCADE)

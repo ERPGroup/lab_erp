@@ -91,11 +91,10 @@ function addmore_att (content, name_tag) {
     load_vesion_product();
     check_button_submit();
   }else{
-    var x = document.getElementById(name_tag);
     var uuid = guid();
     var attribute = '';
     attribute += '<div class="label label-info ' + name_tag + '" id="' + uuid + '">' + content + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_vesion_product(); return false;"><i class="fa fa-remove"></i></a></div>';
-    x.innerHTML += attribute;
+    $('#' + name_tag).append(attribute);
     load_vesion_product();
     check_button_submit();
   }
@@ -238,107 +237,22 @@ function clickcategory(name, id) {
   }
 }
 
-
-// Add product
-$(document).ready(function(){
-  $('#submit').click(function(){
-    version_value = get_verison()
-    list_version = new Array()
-    for (item= 0; item < version_value.length; item++){
-      if ($('#check_vesion_' + item).is(':checked')){
-        version = {
-          'value': version_value[item],
-          'price': $('#price_product_' + item).val(),
-        }
-        list_version.push(version);
-      }
-    }
-
-    list_category  = new Array();
-    values_category = $('#value_category > div');
-    for (item = 0; item < values_category.length; item++){
-      list_category.push(values_category[item].id)
-    }
-
-    list_image = new Array();
-    values_image = $('#lightgallery > div')
-    if (list_image.length == 0){
-      return -1
-    }
-    for (item = 0; item < values_image.length; item++){
-      list_image.push(values_image[item].id)
-    }
-
-    var data = {
-      'inputName': $('#inputName').val(),
-      'inputDetail': CKEDITOR.instances['inputDetail'].getData(),
-      'inputPrice': $('#inputPrice').val(),
-      'inputOrigin': $('#inputOrigin').val(),
-      'inputCategory': list_category,
-      'inputImage': list_image,
-      'inputVersion': list_version,
-      'inputCountProduct': list_version.length,
-    }
-
-    $.ajax({
-      url: 'http://localhost:8000/merchant/product',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      data: data,
-      success: function(response){
-        console.log(response);
-        if(response == 1){
-          alert('da them san pham');
-        }
-      },
-    });
-  });
-});
-
 function check_button_submit(){
-  count_product_vesion = $("#result_attribute > tr").length;
-  if (count_product_vesion == 0){
-    $('#submit').attr('disabled', 'disabled');
+    count_product_vesion = $("#result_attribute > tr").length;
+    if (count_product_vesion == 0){
+      $('#submit').attr('disabled', 'disabled');
+    }
+    else {
+      $('#submit').removeAttr('disabled');
+    }
   }
-  else {
-    $('#submit').removeAttr('disabled');
-  }
-}
-
-$(document).ready(function(){
-  count_product_vesion = $("#result_attribute > tr").length;
-  if (count_product_vesion == 0){
-    $('#submit').attr('disabled', 'disabled');
-  }
-  else {
-    $('#submit').removeAttr('disabled');
-  }
-});
-
-
-// Edit Product
-
-// $(document).ready(function(){
-//   var check_url = $(location).attr('pathname').split('/');
-//   if($.inArray('edit', check_url)){
-//     $.ajax({
-//       url: 'http://localhost:8000/merchant/product/' + check_url[check_url.length - 1],
-//       method: 'GET',
-//       contentType: 'application/json',
-//       success: function(response){
-//         console.log(response);
-//         $('#inputName').val(response.name);
-//         $('#inputOrigin').val(response.origin);
-//         for(var i = 0; i < response.list_category.length; i++){
-//           clickcategory(response.list_category[i].name_category, response.list_category[i].id )
-//         }
-//         for(var  i= 0; i < response.list_attr.length; i++){
-//           for(var j = 0; j < response.list_attr[i].length; j++){
-//             console.log('this_value_'+i);
-//             addmore_att(response.list_attr[i][j], 'this_value_'+i);
-//           }
-//         }
-//       },
-//     })
-//   }
-// });
+  
+  $(document).ready(function(){
+    count_product_vesion = $("#result_attribute > tr").length;
+    if (count_product_vesion == 0){
+      $('#submit').attr('disabled', 'disabled');
+    }
+    else {
+      $('#submit').removeAttr('disabled');
+    }
+  });

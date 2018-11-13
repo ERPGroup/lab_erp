@@ -17,7 +17,7 @@ Trang chủ
         </h1>
     </div>
 </div>
-<div class="row">
+<div class="row" id="item">
     <div class="col-md-6 col-sm-6 background_white">
         <div class="pricingTable green  ">
             <div class="pricingTable-header">
@@ -56,10 +56,8 @@ Trang chủ
             <a href="#" class="pricingTable-signup"><span>Mua Ngay</span></a>
         </div>
     </div>
-    <div class="clearfix"></div>
-    <div class="col-md-6 col-sm-6 col-xs-offset-3" style="background: white;
-    border-radius: 5px;
-    border: 1px solid #c7d1dd;">
+    
+    <div class="col-md-6 col-sm-6 background_white">
         <div class="pricingTable">
             <div class="pricingTable-header">
                 <h3 class="title">Gói bạc</h3>
@@ -80,3 +78,7 @@ Trang chủ
     </div>
 </div>
 {% endblock content %}
+
+{% block data_table %}
+    <script src="{% static 'merchant/src/js/service/manager_service.js' %} "></script>
+{% endblock data_table %}

@@ -1,0 +1,170 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết sản phẩm
+{% endblock %}
+{% block admin %}
+{% include "snippets/side_bar_merchant.html" with active='active' %}
+{% endblock %}
+{% block content %}
+{% block product %}
+<script src="{% static 'merchant/ckeditor.js' %}"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
+{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header" style="margin:0px;">
+            Quản lý sản phẩm <small>Chỉnh sửa</small>
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/merchant/manager_product_detail" class="btn btn-danger">Xóa sản phẩm</a>
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+            <div class="form-group">
+                <h3 style="text-align:center;">Thông tin sản phẩm</h3>
+                <hr>
+            </div>
+            <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label>Mã sản phẩm:</label>
+                        <input type="text" id="inputCode" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Tên sản phẩm:</label>
+                        <input type="text" id="inputName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả ngắn:</label>
+                        <textarea name="editor1" id="inputDetail" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group" id="re_number3">
+                        <label>Giá :</label>
+                        <input type="text" id="inputPrice" maxlength="11" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Nguồn gốc :</label>
+                        <input type="text" id="inputOrigin" class="form-control">
+                    </div>
+                    <div class="form-group" style="position:relative;">
+                        <label>Danh mục sản phẩm:</label>
+                        <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
+                        <i class="fa fa-search" style="position: absolute;top: 35px;left: 15px;"></i>
+                        <ul class="dropdown-menu" id="list-category">
+                        </ul>
+                        <div id="value_category"></div>
+                    </div>
+                    <div class="form-group frm_tags">
+                        <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
+                        <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
+                            type="text" class="form-control" placeholder="Nhập tags cho gói tin">
+                        <ul>
+                            <div id="tags_add">
+
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <h3>Ảnh sản phẩm <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
+                            <input type="file" name="photo" id="upload-photo" /></h3>
+                        <hr>
+                    </div>
+                    <div class="form-group">
+                        <div id="lightgallery">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 attribute">
+                    <div class="form-group">
+                        <h3>Thêm thuộc tính</h3>
+                        <hr>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <label>Tên thuộc tính</label>
+                        </div>
+                        <div class="col-lg-8">
+                            <label>Giá trị thuộc tính</label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="attribute_demo" id="add_more">
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-lg-6">
+                            <a onclick="addmore_attribute(); return false;" class="btn btn-default">Thêm thuộc tính
+                                khác</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="tbl_product_detail table table-striped table-bordered table-hover"
+                                            id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Phiên bản</th>
+                                                    <th>Giá</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="result_attribute">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button type="submit" id="edit" class="btn btn-info">Sửa sản phẩm</button>
+                <button type="reset" onclick="location.reload()" class="btn btn-default">Khôi phục</button>
+            </div>
+            <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<!--Slide trượt-->
+<script src="{% static 'merchant/picturefill.min.js' %}"></script>
+<script src="{% static 'merchant/lightgallery.js' %}"></script>
+<script src="{% static 'merchant/lg-pager.js' %} "></script>
+<script src="{% static 'merchant/lg-autoplay.js' %}"></script>
+<script src="{% static 'merchant/lg-fullscreen.js' %}"></script>
+<script src="{% static 'merchant/lg-zoom.js' %}"></script>
+<script src="{% static 'merchant/lg-hash.js' %}"></script>
+<script src="{% static 'merchant/lg-share.js' %}"></script>
+<script src="{% static 'merchant/lg-thumbnail.js' %}"></script>
+<script src="{% static 'merchant/lg-deletebutton.js' %}"></script>
+<script>
+    var $el = $('#lightgallery');
+    $el.lightGallery({
+        selector: '.item',
+    });
+    function reload() {
+        $el.data('lightGallery').destroy(true);
+        $el.lightGallery();
+    }
+</script>
+<script src="{% static 'merchant/src/js/product/general.js' %}"></script>
+<script src="{% static 'merchant/src/js/product/product_edit.js' %}"></script>
+{% endblock %}

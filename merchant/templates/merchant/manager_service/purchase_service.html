@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chủ
+{% endblock %}
+{% block dataTB %}
+<link href="{% static '/admin/assets/css/style_merchant.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block admin %}
+{% include "snippets/side_bar_merchant.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header" style="margin:0px;"> 
+            Dịch vụ gói tin
+        </h1>
+    </div>
+</div>
+<div class="row" id="item">
+    <div class="col-md-6 col-sm-6 background_white col-xs-offset-3">
+        <div class="pricingTable green  ">
+            <div class="pricingTable-header">
+                <h3 class="title">Gói bạch kim</h3>
+            </div>
+            <div class="price-value">
+                <span class="amount">400.000</span>
+                <span class="month">VNĐ/gói</span>
+            </div>
+            <ul class="pricing-content">
+                <li>15 tin đăng</li>
+                <li>15 sản phẩm mỗi tin</li>
+                <li>10 ngày sử dụng mỗi tin</li>
+                <li>4 ngày hiển thị trang chủ</li>
+                <li>Hiển thị trên khu vực VIP</li>
+            </ul>
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block data_table %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="{% static 'merchant/src/js/service/purchase.js' %} "></script>
+{% endblock data_table %}

@@ -3,14 +3,15 @@ from django.shortcuts import render, redirect
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 
 def check_rule(request):
-    if 'user' in request.session:
-        user = request.session.get('user')
-        print(user['role'])
-        if 0 in user['role']:
-            print(user)
-            return 1
-        return 0
-    return 0
+    # if 'user' in request.session:
+    #     user = request.session.get('user')
+    #     print(user['role'])
+    #     if 0 in user['role']:
+    #         print(user)
+    #         return 1
+    #     return 0
+    # return 0
+    return 1
 
 # Create your views here.
 def login (request):
@@ -41,7 +42,7 @@ def servies(request):
 def servies_add(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
-    return render(request,'admin/manager_servies_post/manager_servies_post_detail.html')
+    return render(request,'admin/manager_servies_post/service_add.html')
 
 def payment(request):
     if check_rule(request) == 0:         
