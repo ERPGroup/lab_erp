@@ -1,8 +1,19 @@
-{% extends "pages/base.html" %}
+{% extends "website/base.html" %}
 {% load staticfiles %}
 {% block title %}
 Thông tin cá nhân
 {% endblock %}
+{%block zoom_img%}
+<!--Datetime Picker-->
+<style>
+    .form-group{
+        margin-bottom:0px;
+    }
+</style>
+<link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<!--End-->
+{%endblock%}
 {% block content %}
 <div class="profile_user">
     <div class="container">
@@ -32,8 +43,9 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label no_padding">
                                 <label class="control-label">Mật khẩu: </label>
@@ -46,8 +58,9 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group" id="checkPassword">
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding padding_label">
                                 <label class="control-label">Nhập lại mật khẩu: </label>
@@ -61,8 +74,9 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
                                 <br>
@@ -73,7 +87,7 @@ Thông tin cá nhân
                             <div class="clearfix"></div>
                         </div>
                     </form>
-                    <div class="clearfix"></div>
+
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no_padding_desktop_1280">
@@ -91,8 +105,9 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label">
                                 <label class="control-label">Địa chỉ </label>
@@ -105,8 +120,9 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label">
                                 <label class="control-label">Số điện thoại </label>
@@ -120,22 +136,27 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
-                                <label class="control-label">Ngày sinh </label>
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Ngày sinh</label>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <input class="form-control" type="datetime-local" id="inputBirthday">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 input-group date" style="padding:0 15px;" id="datetimepicker1">
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding_desktop_1280">
-                                <div class="errors_birthday">
+                                <div class="errors_tel">
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
                                 <label class="control-label">Giới tính </label>
@@ -155,9 +176,10 @@ Thông tin cá nhân
 
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
+
                         </div>
-                        <div class="clearfix"></div>
-                        <div class="clearfix"></div>
+
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
                                 <br>
@@ -170,8 +192,25 @@ Thông tin cá nhân
                 </div>
             </div>
             <div class="clearfix"></div>
+            <div style="margin-bottom:35px;"></div>
         </div>
     </div>
 </div>
 
+{% endblock %}
+{% block zoom_img_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/vi.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date('2010-12-30'),
+            date: new Date('1990-12-30'),
+        });
+    });
+</script>
 {% endblock %}

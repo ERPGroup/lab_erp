@@ -158,10 +158,14 @@ $(document).ready(function(){
     data = new FormData();
     files = $('#upload-photo').get(0).files;
 
+$(document).ready(function(){
+  $('#upload-photo').change(function(){
+    data = new FormData();
+    files = $('#upload-photo').get(0).files;
+
     if (files.length > 0){
       data.append('photo', files[0]);
     }
-
     $.ajax({
       url: 'http://localhost:8000/merchant/upload_image',
       method: 'POST',
@@ -169,33 +173,22 @@ $(document).ready(function(){
       processData: false,
       data: data,
       success: function(response){
-        // alert(response);
-        if (response > 0){
-          var reader = new FileReader()
-          reader.onload = function (e) {
-              var result_1 = ''
-              result_1 = '<div class="col-lg-6 no_padding ' + response + ' count_image item" id="'+ response +'" data-src="' + e.target.result + '">'
-              result_1 += '<img src="' + e.target.result + '" />'
-              result_1 += '<div class="action_image">'
-              result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
-              result_1 += '<a href="#" onclick="$(\'#' + response + '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
-              result_1 += '</div>'
-              result_1 += '</div>'
-              $el.append(result_1);
-              $el.data('lightGallery').destroy(true);
-              $el.lightGallery();
-          }
-          reader.readAsDataURL(files[0]);
+        alert(response);
+        var reader = new FileReader()
+        reader.onload = function (e) {
+            var result_1 = ''
+            result_1 = '<div class="col-lg-6 no_padding ' + response + ' count_image item" data-src="' + e.target.result + '">'
+            result_1 += '<img src="' + e.target.result + '" />'
+            result_1 += '<div class="action_image">'
+            result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
+            result_1 += '<a href="#" onclick="$(\'.' + response + '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
+            result_1 += '</div>'
+            result_1 += '</div>'
+            $el.append(result_1);
+            $el.data('lightGallery').destroy(true);
+            $el.lightGallery();
         }
-        if (response == 0){
-          alert('Do khong phai file anh');
-        }
-        if (response == -2){
-          alert('Dung luong anh khong duoc vuot qua 2MB');
-        }
-        if (response == -1){
-          alert('Xay ra loi');
-        }
+        reader.readAsDataURL(files[0]);
       },
       error: function(jqXHR){
         alert(jqXHR.responseText);
@@ -203,142 +196,3 @@ $(document).ready(function(){
     });
   });
 });
-
-
-// List Categorys
-$(document).ready(function(){
-  $.ajax({
-    url: 'http://localhost:8000/merchant/categorys',
-    method: 'GET',
-    contentType: 'application/json',
-    success: function(response){
-
-      for (var item = 0; item < response.length; item++){
-        html = '<li><a href="#" data-id-category='+ response[item].pk +' onclick="clickcategory($(this).text(), $(this).attr(\'data-id-category\'));">'+ response[item].fields.name_category +'</a></li>'
-        $("#list-category").append(html)
-      }
-      // console.log(response);
-    },  
-  })
-});
-
-// Choose Category
-function clickcategory(name, id) {
-  var category_search = $('.category_search')
-  var check = false;
-  for( var i = 0; i < category_search.length; i++){
-    if(category_search[i].id == id){
-      check = true;
-    }
-  }
-  if (check == false){
-    var html = '';
-    html += '<div class="col-lg-12 category_search" id="' + id + '" onclick="$(this).remove();">' + name + '</div>'
-    $('#value_category').append(html);
-  }
-}
-
-
-// Add product
-$(document).ready(function(){
-  $('#submit').click(function(){
-    version_value = get_verison()
-    list_version = new Array()
-    for (item= 0; item < version_value.length; item++){
-      if ($('#check_vesion_' + item).is(':checked')){
-        version = {
-          'value': version_value[item],
-          'price': $('#price_product_' + item).val(),
-        }
-        list_version.push(version);
-      }
-    }
-
-    list_category  = new Array();
-    values_category = $('#value_category > div');
-    for (item = 0; item < values_category.length; item++){
-      list_category.push(values_category[item].id)
-    }
-
-    list_image = new Array();
-    values_image = $('#lightgallery > div')
-    if (list_image.length == 0){
-      return -1
-    }
-    for (item = 0; item < values_image.length; item++){
-      list_image.push(values_image[item].id)
-    }
-
-    var data = {
-      'inputName': $('#inputName').val(),
-      'inputDetail': CKEDITOR.instances['inputDetail'].getData(),
-      'inputPrice': $('#inputPrice').val(),
-      'inputOrigin': $('#inputOrigin').val(),
-      'inputCategory': list_category,
-      'inputImage': list_image,
-      'inputVersion': list_version,
-      'inputCountProduct': list_version.length,
-    }
-
-    $.ajax({
-      url: 'http://localhost:8000/merchant/product',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      data: data,
-      success: function(response){
-        console.log(response);
-        if(response == 1){
-          alert('da them san pham');
-        }
-      },
-    });
-  });
-});
-
-function check_button_submit(){
-  count_product_vesion = $("#result_attribute > tr").length;
-  if (count_product_vesion == 0){
-    $('#submit').attr('disabled', 'disabled');
-  }
-  else {
-    $('#submit').removeAttr('disabled');
-  }
-}
-
-$(document).ready(function(){
-  count_product_vesion = $("#result_attribute > tr").length;
-  if (count_product_vesion == 0){
-    $('#submit').attr('disabled', 'disabled');
-  }
-  else {
-    $('#submit').removeAttr('disabled');
-  }
-});
-
-
-// Edit Product
-
-// $(document).ready(function(){
-//   var check_url = $(location).attr('pathname').split('/');
-//   if($.inArray('edit', check_url)){
-//     $.ajax({
-//       url: 'http://localhost:8000/merchant/product/' + check_url[check_url.length - 1],
-//       method: 'GET',
-//       contentType: 'application/json',
-//       success: function(response){
-//         console.log(response);
-//         $('#inputName').val(response.name);
-//         $('#inputOrigin').val(response.origin);
-//         for(var i = 0; i < response.list_category.length; i++){
-//           clickcategory(response.list_category[i].name_category, response.list_category[i].id )
-//         }
-//         for(var  i= 0; i < response.list_attr.length; i++){
-//           for(var j = 0; j < response.list_attr[i].length; j++){
-//             console.log('this_value_'+i);
-//             addmore_att(response.list_attr[i][j], 'this_value_'+i);
-//           }
-//         }
-//       },
-//     })
-//   }
-// });
