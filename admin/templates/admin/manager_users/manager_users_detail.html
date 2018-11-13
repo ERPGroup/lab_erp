@@ -3,13 +3,11 @@
 {% block title %}
 Trang chi tiết người dùng
 {% endblock %}
-{% block admin %}
-{% include "snippets_admin/side_bar.html" %}
-{% endblock %}
-{% block dataTB %}
-<!--Datetime Picker-->
+{% block styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-<!--End-->
+{% endblock %}
+{% block side-bar %}
+{% include "snippets_admin/side_bar.html" %}
 {% endblock %}
 {% block content %}
 <div class="row">

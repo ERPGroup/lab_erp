@@ -3,15 +3,18 @@
 {% block title %}
 Trang chi tiết sản phẩm
 {% endblock %}
-{% block admin %}
-{% include "snippets_admin/side_bar.html" %}
-{% endblock %}
-{% block content %}
-{% block product %}
+
+{% block styles %}
 <script src="{% static 'merchant/ckeditor.js' %}"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
 {% endblock %}
+
+{% block side-bar %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px;">

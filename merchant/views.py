@@ -9,14 +9,15 @@ from django.contrib import messages
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
-    if 'user' in request.session:
-        user = request.session.get('user')
-        print(user['role'])
-        if 2 in user['role']:
-            print(user)
-            return 1
-        return 0
-    return 0
+    # if 'user' in request.session:
+    #     user = request.session.get('user')
+    #     print(user['role'])
+    #     if 2 in user['role']:
+    #         print(user)
+    #         return 1
+    #     return 0
+    # return 0
+    return 1
 
 def login (request):
     if check_rule(request) == 1:

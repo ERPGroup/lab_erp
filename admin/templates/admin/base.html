@@ -5,31 +5,24 @@
 {% block load_tag %}
 {% endblock %}
 
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}
-        {% endblock title %}</title>
+        {% endblock title %}
+    </title>
     <!-- Bootstrap Styles-->
     <link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
     <!-- FontAwesome Styles-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link href="{% static '/admin/assets/css/font-awesome.min.css' %} " rel="stylesheet" /> -->
+    <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
     <!-- Morris Chart Styles-->
-    <link href="{% static '/admin/assets/js/morris/morris-0.4.3.min.css' %} " rel="stylesheet" />
     <!-- Custom Styles-->
     <link href="{% static '/admin/assets/css/custom-styles.css' %} " rel="stylesheet" />
     <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
     <!-- Google Fonts-->
     <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
-
-    
-    {% block dataTB %}
-    <!-- TABLE STYLES-->
-    {% endblock %}
-
-    {% block product %}
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    {% block styles %}
     {% endblock %}
 
 </head>
@@ -37,13 +30,9 @@
 <body>
     <div id="wrapper">
         {% include "snippets_admin/header.html" %}
+        {% block side-bar %}
 
-        {% block admin %}
         {% endblock %}
-
-        {% block merchant %}
-        {% endblock %}
-
         <div id="page-wrapper">
             <div id="page-inner">
 
@@ -65,10 +54,9 @@
     <!-- Bootstrap Js -->
     <script src="{% static '/admin/assets/js/bootstrap.min.js' %} "></script>
     <!-- Metis Menu Js -->
-    
+
     <script src="{% static '/admin/assets/js/jquery.metisMenu.js' %} "></script>
     <!-- Morris Chart Js -->
-
     <!--Custom Script -->
 
     {% block data_table %}

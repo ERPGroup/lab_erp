@@ -3,11 +3,12 @@
 {% block title %}
 Trang quản lý người dùng
 {% endblock %}
-{% block dataTB %}
-<!-- TABLE STYLES-->
+<!--Script Style-->
+{% block styles %}
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
-{% block admin %}
+<!--End Style-->
+{% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
 {% endblock %}
 {% block content %}

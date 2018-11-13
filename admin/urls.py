@@ -30,4 +30,6 @@ urlpatterns = [
     path('service', functions.service_add, name="service_add"),
     path('manager_attribute',views.manager_attribute,name="attribute"),
     path('manager_attribute_detail',views.manager_attribute_detail,name="products"),
+
+   # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
 ]
