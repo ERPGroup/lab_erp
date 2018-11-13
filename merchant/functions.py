@@ -12,6 +12,17 @@ from django.core.files.storage import FileSystemStorage, Storage
 
 import json
 
+# 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
+def check_rule(request):
+    if 'user' in request.session:
+        user = request.session.get('user')
+        print(user['role'])
+        if 2 in user['role']:
+            print(user)
+            return 1
+        return 0
+    return 0
+
 def categorys(request):
     return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
 
@@ -179,7 +190,7 @@ def upload_image(request):
             return HttpResponse(-2)
 
         if myfile.content_type in validate_image:
-            fs = FileSystemStorage(location=settings.BASE_DIR + '/media/merchant/product')
+            fs = FileSystemStorage(location=settings.BASE_DIR + '/media/product')
             filename = fs.save(myfile.name, myfile)
             image = Image(
                 image_link=myfile.name,
@@ -193,27 +204,31 @@ def upload_image(request):
         
 @csrf_exempt
 def del_image(request, id_image):
-    if request.method == 'POST':
-        image = Image.objects.get(pk=id_image)
-        path = settings.BASE_DIR + '/media/merchant/product/' + image.image_link
-        image.delete()
-        if Storage.exists(path):
+    if request.method == 'DELETE':
+        image = Image.objects.get(pk=int(id_image))
+        path = settings.BASE_DIR + '/media/product' + image.image_link.url
+        if Storage.exists(name=path):
             Storage.delete(path)
+            image.delete()
+        return HttpResponse('1')
         
 @csrf_exempt   
 def product_add(request):
     if request.method == "POST":
         print(request.POST)
+        code = request.POST.get('inputCode')
         name = request.POST.get('inputName')
         detail = request.POST.get('inputDetail')
         price_origin = request.POST.get('inputPrice')
         origin = request.POST.get('inputOrigin')
         account_created = Account.objects.get(pk=request.session.get('user')['id'])
         product_config = Product(
+            code=code,
             name= name,
             detail=detail,
             origin=origin,
             type_product=True,
+            price=price_origin,
             is_visible=True,
             is_activity=True,
             archive=False,
@@ -221,29 +236,32 @@ def product_add(request):
         )
         product_config.save()
 
-        list_category = request.POST.get('inputCategory[]')
-        for item in list_category:
+        count_category = request.POST.get('inputCountCategory')
+        for i in range(int(count_category)):
+            id = request.POST.get('inputCategory['+ str(i) +']')
             product_category = Product_Category(
                 product_id = product_config,
-                category_id = Category.objects.get(pk=item)
+                category_id = Category.objects.get(pk=int(id))
             )
             product_category.save()
 
-        list_images = request.POST.get('inputImage[]') #edit input
-        for item in list_images:
+        count_images = request.POST.get('inputCountImage') #edit input
+        for i in range(int(count_images)):
+            id = request.POST.get('inputImage['+ str(i) +']')
             image = Product_Image(
                 product_id = product_config,
-                image_id = Image.objects.get(pk=item)
+                image_id = Image.objects.get(pk=int(id))
             )
             image.save()
 
         count_product = request.POST.get('inputCountProduct')
         for i in range(int(count_product)):
-
             product = Product(
+                code=code,
                 name=name,
                 detail=detail,
                 origin=origin,
+                price=request.POST.get('inputVersion['+ str(i) +'][price]'),
                 type_product=False,
                 is_visible=True,
                 is_activity=True,
@@ -293,6 +311,8 @@ def product(request, id_product):
         product_detail['name'] = product_config[0].name
         product_detail['detail'] = product_config[0].detail
         product_detail['origin'] = product_config[0].origin
+        product_detail['code'] = product_config[0].code
+        product_detail['price_origin'] = product_config[0].price
 
         product_category = Product_Category.objects.filter(product_id=int(id_product))
         list_category  = []
@@ -305,13 +325,13 @@ def product(request, id_product):
             list_category.append(category_dict)
         product_detail['list_category'] = list_category
 
-        product_iamge = Product_Image.objects.filter(product_id=int(id_product))
+        product_image = Product_Image.objects.filter(product_id=int(id_product)).order_by('image_id_id')
         list_image = []
-        for item in product_iamge:
+        for item in product_image:
             image_dict = dict()
             image = Image.objects.get(pk=item.image_id.id)
             image_dict['id']  = image.id
-            image_dict['image_link'] = settings.BASE_DIR + '/media/merchant/product' + image.image_link.url
+            image_dict['image_link'] =  '/product' + image.image_link.url
             image_dict['is_default'] = image.is_default
             image_dict['user_id'] = image.user_id.id
             list_image.append(image_dict)
@@ -319,26 +339,74 @@ def product(request, id_product):
 
         #lay ra danh sach phien ban
         link_type = Link_Type.objects.filter(parent_product=product_config[0].id)
-
-        list_atrr = []
+        list_attr = []
+        list_price = []
         for item in link_type:
             list_tmp = []
+            list_price.append(item.product_id.price)
             product_attr = Product_Attribute.objects.filter(product_id=item.product_id.id).order_by('attribute_id')
             for item in product_attr:
                 list_tmp.append(item.value)
-            list_atrr.append(list_tmp)
-
+            list_attr.append(list_tmp)
+    
         #su dung matrix de tra ve danh sach gia tri cho tung thuoc tinh
-        len_atr = len(list_atrr[0])
-        len_verison = len(list_atrr)
+        len_atr = len(list_attr[0])
+        len_verison = len(list_attr)
         list_value_attr = []
         for i in range(len_atr):
             list_temp = []
             for j in range(len_verison):
-                if list_atrr[j][i] not in list_temp:
-                    list_temp.append(list_atrr[j][i])
+                if list_attr[j][i] not in list_temp:
+                    list_temp.append(list_attr[j][i])
             list_value_attr.append(list_temp)
 
-        product_detail['list_atrr'] = list_value_attr
+        product_detail['list_attr'] = list_value_attr
+        product_detail['list_price'] = list_price
 
         return  HttpResponse(json.dumps(product_detail), content_type="application/json")
+
+    if request.method == 'POST':
+        return
+
+    if request.method == 'DELETE':
+        return
+
+
+
+def services(request):
+    return HttpResponse(serialize('json', Service.objects.filter(is_active=True)), content_type="application/json")
+
+
+def service(request, id_service):
+    # if check_rule(request) == 0:
+    #     return HttpResponse('Error')
+    
+    if request.method == "GET":
+        return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
+
+
+@csrf_exempt        
+def purchase_service(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+
+    if request.method == 'POST':
+        purchase_name = request.POST.get('inputPurchaseName')
+        merchant_id = Account.objects.get(pk=request.session.get('user')['id'])
+        service_id = request.POST.get('inputServiceId')
+        amount = request.POST.get('inputAmount')
+        state = request.POST.get('inputState')
+
+        try:
+            purchase_service = Purchase_Service(
+               purchase_name=purchase_name,
+               merchant_id=merchant_id,
+               service_id=Service.objects.get(pk=service_id),
+               amount=amount,
+               state=int(state),
+            )
+            purchase_service.save()
+            return HttpResponse('Success!')
+        except:
+            return HttpResponse('Error!')
+    return HttpResponse('Error Add Purchase!')
