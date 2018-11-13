@@ -32,7 +32,7 @@ urlpatterns = [
    path('attributes', functions.attributes, name='attributes'),
    path('product', functions.product_add, name='product_add'),
    path('product/<int:id_product>', functions.product, name='product'),
-
+   path('products', functions.products, name='products'),
 
    path('services', functions.services, name='services'),
    path('service/<int:id_service>', functions.service, name='service'),

@@ -371,8 +371,25 @@ def product(request, id_product):
     if request.method == 'DELETE':
         return
 
+@csrf_exempt
+def products(request):     
+    if request.method == 'GET':
+        products = []
+        products_config = Product.objects.filter(type_product=True)
+        if products_config.count() == 0:
+            return HttpResponse(-1)
+        for item in products_config:
+            products_dict = dict()
+            products_dict['code'] = item.code
+            products_dict['name'] = item.name
+            products_dict['price'] = item.price
+            products_dict['detail'] = 'Test'
+            products_dict['origin'] = 'Test'
+            products.append(products_dict)
+        return  HttpResponse(json.dumps(products), content_type="application/json")
+    return  HttpResponse(1)
 
-
+     
 def services(request):
     return HttpResponse(serialize('json', Service.objects.filter(is_active=True)), content_type="application/json")
 
@@ -410,3 +427,6 @@ def purchase_service(request):
         except:
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')
+
+
+

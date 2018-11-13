@@ -129,9 +129,25 @@ Tablet Plaza - Danh sách sản phẩm
             "columnDefs": [
                 { "type": 'formatted-num', targets: 0 },
                 { "type": 'formatted-num', targets: 2 },
-            ]
+            ],
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://127.0.0.1:8000/merchant/products",
+                "dataSrc": ""
+            },
+
+            "columns": [
+                    { "data": "code" },
+                    { "data": "name" },
+                    { "data": "price" },
+                    { "data": "detail" },
+                    { "data": "origin" },
+                ],
 
         });
+
+
         var tool_bar = '';
         tool_bar += '<div class="col-xs-8 no_padding">';
         tool_bar += '<span>Trạng thái: </span>';
