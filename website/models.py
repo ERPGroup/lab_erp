@@ -191,8 +191,3 @@ class Purchase_Service(models.Model):
 #     paypal_name = models.CharField(max_length=200)
 #     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
 #     detail = models.CharField(max_length=1000)
-
-
-# class Purchase_Service_Detail(models.Model):
-#     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
-#     service_id = models.ForeignKey('Service', on_delete=models.CASCADE)

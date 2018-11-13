@@ -136,7 +136,7 @@ def send_mail_register(slug_url, email, code):
         msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
         msg.to = email
         msg.body = "This is email activity account!"
-        msg.html = '<h1>This link activity: <a href="http://localhost:8000/%s/%s/%s">Verify</a></h1>' % (slug_url, email, code)
+        msg.html = '<h1>This link activity: <a href="http://localhost:8000/%s/%s/%s/">Verify</a></h1>' % (slug_url, email, code)
         msg.reply_to = 'no-reply@gmail.com'
         msg.charset = 'utf-8'
         msg.extra_headers = {}

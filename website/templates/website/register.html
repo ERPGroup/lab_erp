@@ -1,4 +1,5 @@
 {% extends "website/base.html" %}
+{% load staticfiles %}
 {% block title %}
 Đăng ký
 {% endblock %}
@@ -17,8 +18,8 @@
             <div class="register_box">
                 <div class="module_title">
                     <div class="col-xs-12 no_padding">
-                        <span class="title "><a href="/login">Đăng nhập </a> </span> <span class="title is_active"><a
-                                href="/register">Tạo tài khoản</a> </span>
+                        <span class="title "><a href="/login/">Đăng nhập </a> </span> <span class="title is_active"><a
+                                href="/register/">Tạo tài khoản</a> </span>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -203,16 +204,5 @@
 <!--End content-->
 {% endblock %}
 {% block zoom_img_js %}
-<script>
-    $('#select_type_user').change(function () {
-        var result = document.getElementById('type_users_selected');
-        if (this.value == "Người mua") {
-            result.style.display = 'none';
-        }
-        else
-        {
-            result.style.display = 'block';
-        }
-    })
-</script>
+<script src="{% static '/website/src/js/register/register.js' %}"></script>
 {% endblock %}
