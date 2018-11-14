@@ -38,4 +38,5 @@ urlpatterns = [
    path('service/<int:id_service>', functions.service, name='service'),
    path('purchase_service', functions.purchase_service, name='fun_purchase_service'),
 
+
 ]

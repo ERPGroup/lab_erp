@@ -8,7 +8,7 @@ Trang chủ
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_ads='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -16,10 +16,9 @@ Trang chủ
         <h1 class="page-header">
             Quản lý quảng cáo
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-info">Thêm mới quảng cáo</a>
+                <a href="/admin/manager_ads_created" class="btn btn-info">Thêm mới quảng cáo</a>
             </div>
         </h1>
-
     </div>
 </div>
 <div class="row">
@@ -34,32 +33,18 @@ Trang chủ
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã quảng cáo</th>
                                 <th>Tên quảng cáo</th>
-                                <th>Vị trí</th>
-                                <th>Giá tiền</th>
+                                <th>Loại quảng cáo</th>
                                 <th>Hạn sử dụng</th>
+                                <th>Giá tiền</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="/admin/manager_ads_detail">QC001</a></td>
-                                <td>Quảng cáo banner</td>
-                                <td>Trên tiêu đề</td>
-                                <td>500.000 VNĐ</td>
-                                <td>15 ngày</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_ads_detail">QC002</a></td>
-                                <td>Quảng cáo banner</td>
-                                <td>Trên tiêu đề</td>
-                                <td>500.000 VNĐ</td>
-                                <td>15 ngày</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
         <!--End Advanced Tables -->
@@ -88,7 +73,19 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
-
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://localhost:8000/admin/getAllAds",
+                "dataSrc": ""
+            },
+            "columns": [
+                    { "data": "service_name" },
+                    { "data": "type_service" },
+                    { "data": "day_limit" },
+                    { "data": "amount" },
+                    { "data": "is_active" },
+                ],
 
         });
     });

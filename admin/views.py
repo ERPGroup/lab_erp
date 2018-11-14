@@ -68,12 +68,22 @@ def post_detail(request):
 def ads(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads.html')
     
-def ads_detail(request):
+    return render(request,'admin/manager_ads/manager_ads.html')
+def ads_created(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads_detail.html')
+    ads = Service_Ads.objects.all().last()
+    ads_id = ads.id+1
+    return render(request,'admin/manager_ads/manager_ads_detail.html',{'ads_id':ads_id})
+def ads_detail(request,id):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if id is None:
+        return render(request,'admin/manager_ads/manager_ads_detail.html')
+    else:
+        ads = Service_Ads.objects.filter(id=id).first()
+        return render(request,'admin/manager_ads/manager_ads_detail.html', {'ads': ads})
 
 def ads_register(request):
     if check_rule(request) == 0:         

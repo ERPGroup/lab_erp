@@ -10,7 +10,7 @@ Quản lý danh mục sản phẩm
 {% endblock %}
 
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_product='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">

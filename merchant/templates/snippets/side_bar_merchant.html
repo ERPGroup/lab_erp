@@ -2,7 +2,7 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
             <li>
-                <a href="/merchant"><i class="fa fa-dashboard"></i> Trang tổng quan</a>
+                <a {% if index %}class="active-menu"{% endif %} href="/merchant"><i class="fa fa-dashboard"></i> Trang tổng quan</a>
             </li>
             <li>
                 <a {% if active_product %} class="active-menu" {% endif %} href="/merchant/manager_product"><i class="fa fa-product-hunt"></i> Quản lý sản phẩm</a>

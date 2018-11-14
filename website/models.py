@@ -191,3 +191,17 @@ class Purchase_Service(models.Model):
 #     paypal_name = models.CharField(max_length=200)
 #     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
 #     detail = models.CharField(max_length=1000)
+
+class Service_Ads(models.Model):
+    service_name = models.CharField(max_length=200)
+    type_service = (('1', 'Slide'), ('2', 'Image'))
+    position = models.CharField(max_length=200)
+    amount = models.IntegerField()
+    created = models.DateTimeField(auto_now=True)
+    day_limit = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+    archive = models.BooleanField(default=False)
+    creator_id = models.IntegerField()
+    canceler_id = models.IntegerField(null=True)
+
+

@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from website.models import *
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
-
+import re
 import json
 
 def check_rule(request):
@@ -60,3 +60,60 @@ def service_add(request):
         
         return HttpResponse('Check')
     return HttpResponse('Error Add Service!')
+
+#Servies Ads
+@csrf_exempt
+def getAllAds(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')     
+    if request.method == 'GET':
+        ads = []
+        for item in Service_Ads.objects.all():
+            ads_dict = dict()
+            ads_dict['service_name'] = "<a href='/admin/manager_ads_detail/"+str(item.pk)+"'>"+item.service_name+"</a>"
+            ads_dict['type_service'] = item.type_service
+            ads_dict['amount'] = item.amount
+            ads_dict['day_limit'] = item.day_limit
+            if item.is_active:
+                ads_dict['is_active'] = "<label class='label label-info'>Kích hoạt</label>"
+            else:
+                ads_dict['is_active'] = "<label class='label label-warning'>Không kích hoạt</label>"
+            ads.append(ads_dict)
+        return  HttpResponse(json.dumps(ads), content_type="application/json")
+    return  HttpResponse(1)
+@csrf_exempt
+def AddService(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        _is_active = False
+        if request.POST.get('inputStatus') == "Kích hoạt":
+            _is_active = True
+        _amount = int(request.POST.get('inputAmount').replace(',', ''))
+        _date = int(re.sub('\D','',request.POST.get('inpuLimit')))
+        obj, created = Service_Ads.objects.update_or_create(
+            id = request.POST.get('inputId'),
+            defaults = {
+                'service_name' : request.POST.get('inputName'),
+                'position' : request.POST.get('inputPosition'),
+                'amount' : _amount,
+                'day_limit' : _date,
+                'is_active' : _is_active,
+                'creator_id' : 1,
+            }
+        )
+        ads = Service_Ads.objects.filter(service_name=request.POST.get('inputName')).first()
+        if ads is None:
+            return HttpResponse(created)
+    return HttpResponse(obj)
+def RemoveService(request,id):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    ads = Service_Ads.objects.filter(id=id).first()
+    if ads is None:
+        return HttpResponse("Loi khong tim thay service")
+    else:
+        ads.delete()
+    return HttpResponse("Success")
+
+       
