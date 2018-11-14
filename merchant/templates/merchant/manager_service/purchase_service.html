@@ -1,24 +1,24 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Đặt mua gói tin
 {% endblock %}
-{% block dataTB %}
+{% block styles %}
 <link href="{% static '/admin/assets/css/style_merchant.css' %} " rel="stylesheet" />
 {% endblock %}
-{% block admin %}
+{% block side-bar %}
 {% include "snippets/side_bar_merchant.html" %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px;"> 
-            Dịch vụ gói tin
+            Gói tin bạn lựa chọn
         </h1>
     </div>
 </div>
 <div class="row" id="item">
-    <div class="col-md-6 col-sm-6 background_white col-xs-offset-3">
+    <div class="col-xs-offset-3 col-md-6 col-sm-6 " style="margin-top:50px; background: white; border-radius: 5px; border: 1px solid #c7d1dd;">
         <div class="pricingTable green  ">
             <div class="pricingTable-header">
                 <h3 class="title">Gói bạch kim</h3>
@@ -28,11 +28,11 @@ Trang chủ
                 <span class="month">VNĐ/gói</span>
             </div>
             <ul class="pricing-content">
-                <li>15 tin đăng</li>
+                <!-- <li>15 tin đăng</li>
                 <li>15 sản phẩm mỗi tin</li>
                 <li>10 ngày sử dụng mỗi tin</li>
                 <li>4 ngày hiển thị trang chủ</li>
-                <li>Hiển thị trên khu vực VIP</li>
+                <li>Hiển thị trên khu vực VIP</li> -->
             </ul>
             <div id="paypal-button-container"></div>
         </div>

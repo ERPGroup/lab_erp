@@ -35,15 +35,24 @@ def users_add(request):
         return redirect('/admin/login')
     return render(request,'admin/manager_users/manager_users_detail.html')
 
-def servies(request):
+
+def services(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_servies_post/manager_servies_post.html')
 
-def servies_add(request):
+def service_add(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_servies_post/service_add.html')
+
+def service_edit(request, id_service):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if Service.objects.filter(pk=id_service).count() == 0:
+        # messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
+        return redirect('/admin/')
+    return render(request,'admin/manager_servies_post/service_edit.html')
 
 def payment(request):
     if check_rule(request) == 0:         
@@ -95,19 +104,40 @@ def products_detail(request):
         return redirect('/admin/login')
     return render(request,'admin/manager_product/manager_product_detail.html')
 
+
 def categories(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
-    return render(request,'admin/manager_product/manager_category.html')
+    return render(request,'admin/manager_product/category/manager_categories.html')
 
-def category_detail(request):
+def category_add(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'admin/manager_product/category/category_add.html')
+
+def category_edit(request,id_category):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if Category.objects.filter(pk=id_category).count() == 0:
+        # messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
+        return redirect('/admin/')
+    return render(request,'admin/manager_product/category/category_edit.html')
+
+def category_detail(request):# function nay khong can sua
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_product/manager_category_detail.html')
+
+# lam tuong tu Category voi Attribute
+# viet view nho viet url, function
+
 def manager_attribute(request):
     return render(request,'admin/manager_product/manager_attribute.html')
-def manager_attribute_detail(request):
+
+def manager_attribute_detail(request):# function nay khong can sua
     return render(request,'admin/manager_product/manager_attribute_detail.html')
+
+# -------------------- Ket thuc khu vuc lam viec cua Phuc
 
 def statistical(request):
     return render(request,'admin/statistical_report/statistical_report.html')

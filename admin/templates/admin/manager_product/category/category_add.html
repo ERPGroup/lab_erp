@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết danh mục
+{% endblock %}
+{% block side-bar %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý danh mục <small>Chi tiết</small>
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/admin/manager_category_detail" class="btn btn-danger">Xóa danh mục</a>
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+
+    <form method="post" action="#" class="background_white col-lg-12" role="form">
+        <div class="col-lg-6 col-xs-offset-3">
+            <div class="form-group">
+                <h3>Thông tin danh mục</h3>
+                <hr>
+            </div>
+            <div class="form-group">
+                <label>Mã danh mục:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Tên danh mục:</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group" id="re_number3">
+                <label>Số lượng: </label>
+                <input type="text" id="number3" maxlength="3" onkeyup="checkNumber('number3');" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Trạng thái danh mục</label>
+                <select class="form-control">
+                    <option>Kích hoạt</option>
+                    <option>Không kích hoạt</option>
+                    <option>Đang khóa</option>
+                </select>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button type="submit" class="btn btn-info">Thêm danh mục</button>
+                <button type="reset" class="btn btn-default">Khôi phục</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}

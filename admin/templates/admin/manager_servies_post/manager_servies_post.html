@@ -16,7 +16,7 @@ Admin - Quản lý gói tin
         <h1 class="page-header">
             Quản lý gói tin
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_servies_detail" class="btn btn-info">Thêm gói tin mới</a>
+                <a href="/admin/service/add" class="btn btn-info">Thêm gói tin mới</a>
             </div>
         </h1>
     </div>
@@ -33,35 +33,15 @@ Admin - Quản lý gói tin
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="tbl_manager_servies">
                         <thead>
                             <tr>
-                                <th>Mã gói tin</th>
                                 <th>Tên gói</th>
                                 <th>Số lượng tin</th>
                                 <th>Hạn sử dụng (Mỗi tin)</th>
                                 <th>Giá tiền</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="/admin/manager_servies_detail">GT001</a></td>
-                                <td>Bạch kim</td>
-                                <td>10 tin</td>
-                                <td>15 ngày</td>
-                                <th>400.000 VNĐ</th>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_servies_detail">GT002</a></td>
-                                <td>Vàng</td>
-                                <td>10 tin</td>
-                                <td>15 ngày</td>
-                                <th>300.000 VNĐ</th>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_servies_detail">GT003</a></td>
-                                <td>Bạc</td>
-                                <td>10 tin</td>
-                                <td>15 ngày</td>
-                                <th>150.000 VNĐ</th>
-                            </tr>
+                        <tbody id="content_table">
+                            
                         </tbody>
                     </table>
                 </div>
@@ -76,31 +56,5 @@ Admin - Quản lý gói tin
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
-<script>
-    $(document).ready(function () {
-        var table = $('#tbl_manager_servies').dataTable({
-            language: {
-                paginate: {
-                    previous: "<i class='fa fa-arrow-left'></i>",
-                    next: "<i class='fa fa-arrow-right'></i>"
-                },
-                bFilter: true,
-                sProcessing: "Đang xử lý...",
-                sLengthMenu: "Xem _MENU_ mục",
-                sZeroRecords: "Không tìm thấy dòng nào phù hợp",
-                sInfo: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
-                sInfoFiltered: "(được lọc từ _MAX_ mục)",
-                sInfoPostFix: "",
-                sSearch: "Tìm kiếm:",
-                sUrl: "",
-            },
-            "dom": '<"toolbar">frtip',
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "columnDefs": [
-            { "type": "numeric-comma", targets: 4 }
-        ]
-        });
-    });
-</script>
+<script src="{% static '/admin/src/js/service/manager_service.js' %} "></script>
 {% endblock %}

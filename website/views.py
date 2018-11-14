@@ -214,6 +214,8 @@ def request_merchant(request):
         return redirect('/')
     return render(request, 'website/request_merchant.html')
 
+
+#Can them cac dich vu cho tai khoan nguoi ban
 def activity_merchant(request, email, code):
     try:
         account = Account.objects.get(email=email)

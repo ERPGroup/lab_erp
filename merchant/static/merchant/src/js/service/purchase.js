@@ -1,4 +1,6 @@
 // Purchase Post
+
+
 $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
     var id_service = check_url[check_url.length - 1]
@@ -8,6 +10,42 @@ $(document).ready(function(){
         contentType: 'application/json',
         success: function(response){
             service = response[0]['fields']
+
+            $('.title').text(service.service_name);
+            $('.amount').text(service.amount);
+
+            var box = ''; 
+            if(service.value != 0)
+                box +='<li>'+ service.value +' tin đăng</li>';
+            else
+                box +='<li class="disable">'+ service.value +' tin đăng</li>';
+            
+            if(service.quantity_product != 0)
+                box +='<li>'+ service.quantity_product +' sản phẩm mỗi tin</li>';
+            else
+                box +='<li class="disable">'+ service.quantity_product +' sản phẩm mỗi tin</li>';
+
+            // setup day_limit
+            if(service.day_limit != 0)
+                box +='<li>'+ service.day_limit +' ngày sử dụng mỗi tin</li>';
+            else
+                box +='<li class="disable">'+ service.day_limit +' ngày sử dụng mỗi tin</li>';
+            
+            // setup day_visable_page_home
+            if(service.day_visable_page_home != 0)
+                box +='<li>'+ service.day_visable_page_home +' ngày hiển thị trang chủ</li>';
+            else
+                box +='<li class="disable">'+ service.day_visable_page_home +' ngày hiển thị trang chủ</li>';
+            
+            // setup visable_vip
+            if(service.visable_vip == true)
+                box +='<li>Hiển thị trên khu vực VIP</li>';
+            else
+                box +='<li class="disable">Không hiển thị trên khu vực VIP</li>';
+            $('.pricing-content').append(box);
+
+
+
             // Render the PayPal button
             paypal.Button.render({
                 // Set your environment
@@ -59,21 +97,24 @@ $(document).ready(function(){
                 onAuthorize: function (data, actions) {
                 return actions.payment.execute()
                     .then(function () {
+                        //Save info of payment
                         data_info = {
                             'inputPurchaseName': data.paymentID,
                             'inputServiceId': id_service,
                             'inputAmount': service.amount,
                             'inputState': 1,
                         }
+
                         $.ajax({
                             url: 'http://localhost:8000/merchant/purchase_service',
                             method: 'POST',
                             contentType: 'application/x-www-form-urlencoded',
                             data: data_info,
                             success: function(response){
-
+                                alert(response);
                             }
                         })
+
                     window.alert('Payment Complete!');
                     console.log(data);
                     });

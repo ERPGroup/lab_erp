@@ -398,15 +398,22 @@ def purchase_service(request):
         state = request.POST.get('inputState')
 
         try:
+            service = Service.objects.get(pk=service_id)
             purchase_service = Purchase_Service(
-               purchase_name=purchase_name,
-               merchant_id=merchant_id,
-               service_id=Service.objects.get(pk=service_id),
-               amount=amount,
-               state=int(state),
+                purchase_name=purchase_name,
+                merchant_id=merchant_id,
+                service_id=service,
+                amount=amount,
+                state=int(state),
             )
             purchase_service.save()
-            return HttpResponse('Success!')
+
+            account_service = Account_Service.objects.filter(account__id=merchant_id.id, service__id=service.id)
+            if account_service.count() == 1:
+                remain = account_service[0].remain
+                account_service.update(remain=remain+service.value)
+                return HttpResponse('Success!')
+            return HttpResponse('Error!')
         except:
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')

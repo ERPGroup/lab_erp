@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Thêm gói tin
+Sửa gói tin
 {% endblock %}
 {% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
@@ -10,7 +10,10 @@ Thêm gói tin
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý gói tin <small>Thêm mới</small>
+            Quản lý gói tin <small>Chỉnh sửa</small>
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a id="delete" class="btn btn-danger">Ngưng bán gói tin</a>
+            </div>
         </h1>
     </div>
 </div>
@@ -24,43 +27,43 @@ Thêm gói tin
             <div class="col-lg-6">
                 <div class="form-group">
                     <label>Tên gói: </label>
-                    <input type="text" id="inputServiceName" class="form-control">
+                    <input type="text" id="inputServiceName" class="form-control" readonly>
                 </div>
                 <div class="form-group" id="re_number">
                     <label>Số lượng tin: </label>
-                    <input type="text" id="inputValue" maxlength="3"  class="form-control">
+                    <input type="text" id="inputValue" maxlength="3"  class="form-control" readonly>
                 </div>
                 <div class="form-group" id="re_number1">
                     <label>Số lượng sản phẩm: </label>
-                    <input type="text" id="inputQuantityProduct" maxlength="3"  class="form-control">
+                    <input type="text" id="inputQuantityProduct" maxlength="3"  class="form-control" readonly>
                 </div>
                 <div class="form-group" id="re_number2">
                     <label>Hạn sử dụng: (Đơn vị: Ngày) </label>
-                    <input type="text" id="inputDayLimit" maxlength="3"  class="form-control">
+                    <input type="text" id="inputDayLimit" maxlength="3"  class="form-control" readonly>
                 </div>
 
                 <div class="form-group" id="re_number3">
                     <label>Số ngày hiên thị trên trang chủ:</label>
-                    <input type="text" id="inputDayVisablePageHome" maxlength="3"  class="form-control">
+                    <input type="text" id="inputDayVisablePageHome" maxlength="3"  class="form-control" readonly>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group" id="re_number4">
                     <label>Giá tiền: (Đơn vi: VNĐ))</label>
-                    <input type="text" id="inputAmount" maxlength="11"  class="form-control">
+                    <input type="text" id="inputAmount" maxlength="11"  class="form-control" readonly>
                 </div>
                 <div class="form-group">
                     <label>Hiển thị tại khu vực VIP</label>
-                    <select class="form-control" id="inputVisableVip"> 
-                        <option value="1">Có</option>
-                        <option value="0">Không</option>
+                    <select class="form-control" id="inputVisableVip" disabled> 
+                        <!-- <option value="1">Có</option>
+                        <option value="0">Không</option> -->
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Trạng thái</label>
                     <select class="form-control" id="inputIsActive"> 
-                        <option value="1">Sử dụng</option>
-                        <option value="0">Không sử dụng</option>
+                        <!-- <option value="1">Sử dụng</option>
+                        <option value="0">Không sử dụng</option> -->
                     </select>
                 </div>
                 <div class="form-group frm_tags">
@@ -80,7 +83,7 @@ Thêm gói tin
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" id="submit" class="btn btn-info">Thêm mới</button>
+                <button type="submit" id="edit" class="btn btn-info">Cập nhật</button>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -91,5 +94,5 @@ Thêm gói tin
 {% endblock %}
 
 {% block data_table %}
-<script src="{% static 'admin/src/js/service/service_add.js' %}"></script>
+<script src="{% static 'admin/src/js/service/service_edit.js' %}"></script>
 {% endblock %}

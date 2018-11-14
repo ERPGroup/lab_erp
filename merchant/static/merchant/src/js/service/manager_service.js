@@ -18,33 +18,36 @@ $(document).ready(function(){
                 box +='<span class="month">VNĐ/gói</span>'
                 box +='</div>'
                 box +='<ul class="pricing-content">'
-                if(item.value != 0){
+                if(item.value != 0)
                     box +='<li>'+ item.value +' tin đăng</li>'
-                }else{
+                else
                     box +='<li class="disable">'+ item.value +' tin đăng</li>'
-                }
+                
+                if(item.quantity_product != 0)
+                    box +='<li>'+ item.quantity_product +' sản phẩm mỗi tin</li>'
+                else
+                    box +='<li class="disable">'+ item.quantity_product +' sản phẩm mỗi tin</li>'
 
-                box +='<li>15 sản phẩm mỗi tin</li>'
                 // setup day_limit
-                if(item.day_limit != 0){
+                if(item.day_limit != 0)
                     box +='<li>'+ item.day_limit +' ngày sử dụng mỗi tin</li>'
-                }else{
+                else
                     box +='<li class="disable">'+ item.day_limit +' ngày sử dụng mỗi tin</li>'
-                }
+                
                 // setup day_visable_page_home
-                if(item.day_visable_page_home != 0){
+                if(item.day_visable_page_home != 0)
                     box +='<li>'+ item.day_visable_page_home +' ngày hiển thị trang chủ</li>'
-                }else{
+                else
                     box +='<li class="disable">'+ item.day_visable_page_home +' ngày hiển thị trang chủ</li>'
-                }
+                
                 // setup visable_vip
-                if(item.visable_vip == true){
+                if(item.visable_vip == true)
                     box +='<li>Hiển thị trên khu vực VIP</li>'
-                }else{
-                    box +='<li  class="disable">Không hiển thị trên khu vực VIP</li>'
-                }
+                else
+                    box +='<li class="disable">Không hiển thị trên khu vực VIP</li>'
+                
                 box +='</ul>'
-                box +='<a href="#" class="pricingTable-signup"><span>Mua Ngay</span></a>'
+                box +='<a href="/merchant/purchase_service/'+ response[i]['pk'] +'" class="pricingTable-signup"><span>Mua Ngay</span></a>'
                 box +='</div>'
                 box +='</div>'
                 $("#item").append(box);

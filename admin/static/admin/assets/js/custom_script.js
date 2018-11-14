@@ -88,3 +88,6 @@ function addmore_tags (a) {
   x.innerHTML += attribute
 }
 
+function pageRedirect(url) {
+  window.location.replace(url);
+}
