@@ -3,13 +3,15 @@
 {% block title %}
 Quản lý thuộc tính
 {% endblock %}
-{% block dataTB %}
+
+{% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
-{% block admin %}
+
+{% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
-{% endblock %}
+{% endblock %} 
 {% block content %}
 <div class="row">
     <div class="col-md-12">

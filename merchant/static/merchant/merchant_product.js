@@ -89,7 +89,7 @@ function addmore_att (content, name_tag) {
   if (list_value.includes(content)){
     alert('Loi! tag bi trung');
     load_vesion_product();
-    check_button_submit();
+   // check_button_submit();
   }else{
     var x = document.getElementById(name_tag);
     var uuid = guid();
@@ -97,7 +97,7 @@ function addmore_att (content, name_tag) {
     attribute += '<div class="label label-info ' + name_tag + '" id="' + uuid + '">' + content + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_vesion_product(); return false;"><i class="fa fa-remove"></i></a></div>';
     x.innerHTML += attribute;
     load_vesion_product();
-    check_button_submit();
+   // check_button_submit();
   }
 }
 
@@ -153,10 +153,6 @@ function scrollto (id) {
 }
 
 // Upload image
-$(document).ready(function(){
-  $('#upload-photo').change(function(){
-    data = new FormData();
-    files = $('#upload-photo').get(0).files;
 
 $(document).ready(function(){
   $('#upload-photo').change(function(){
@@ -195,4 +191,4 @@ $(document).ready(function(){
       }
     });
   });
-});
+})

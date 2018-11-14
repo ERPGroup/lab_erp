@@ -70,8 +70,14 @@
                         </li>
                         <li>
                             <img src="{% static 'website/images/avatar.png' %} " alt="">
+                            {% if 'user' in request.session %}
+                            <a href="/">Tài khoản</a> | 
+                            <a href="/logout/">Đăng xuất</a>
+ 
+                            {% else %}
                             <a href="/register/">Đăng ký</a> |
                             <a href="/login/">Đăng nhập</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -114,9 +120,14 @@
                             <i id="click_exit_menu" class="fa fa-window-close"></i>
                         </div>
                         <div style="text-align:center;padding:10px 0;">
-                            <a href="/register">
-                                Đăng ký </a> | <a href="/login">Đăng nhập
-                            </a>
+                                {% if 'user' in request.session %}
+                                <a href="/">Tài khoản</a> | 
+                                <a href="/logout/">Đăng xuất</a>
+     
+                                {% else %}
+                                <a href="/register/">Đăng ký</a> |
+                                <a href="/login/">Đăng nhập</a>
+                                {% endif %}
                         </div>
                         <ul>
                             <li style="border-top:#ebebeb 1px solid;">
