@@ -360,6 +360,10 @@ img {
   }
 }
 
+.slider .info_slider {
+  padding-left: 15px;
+}
+
 .slider .info_slider .name_product {
   font-weight: bold;
   padding-bottom: 10px;

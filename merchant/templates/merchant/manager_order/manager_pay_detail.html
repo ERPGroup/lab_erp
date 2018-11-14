@@ -8,7 +8,7 @@ Trang chi tiết hóa đơn
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets/side_bar_merchant.html" %}
+{% include "snippets/side_bar_merchant.html" with active_order='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">

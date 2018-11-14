@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 
+
 def check_session(request):
     if 'user' in request.session:
         return 1

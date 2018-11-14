@@ -152,7 +152,7 @@ class Order_Detail (models.Model):
     price = models.IntegerField()
     CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'Packing'), ('3', 'Transporting'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
-    confirm_of_merchant = models.BooleanField(null=True)
+    confirm_of_merchant = models.BooleanField()
     canceler_id = models.IntegerField(null=True)
 
 
