@@ -242,3 +242,19 @@ def activity_merchant(request, email, code):
 
 def resend_code(request):
     return
+
+#Product - collection - detail
+def detail_product(request):
+    return render(request,'website/product.html')
+
+def collections(request):
+    return render(request,'website/collection.html')
+
+def payment(request):
+    return render(request,'website/payment.html')
+
+def profile(request):
+    return render(request,'website/payment')
+
+def cart(request):
+    return render(request,'website/cart')
