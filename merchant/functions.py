@@ -13,6 +13,8 @@ from django.core.files.storage import FileSystemStorage, Storage
 import json
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
+
+
 def check_rule(request):
     if 'user' in request.session:
         user = request.session.get('user')
@@ -23,8 +25,10 @@ def check_rule(request):
         return 0
     return 0
 
+
 def categorys(request):
     return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
+
 
 def category(request, id_category):
     if request.method == "GET":
@@ -49,16 +53,15 @@ def category(request, id_category):
             return
         return
 
-        #Delete Category
+        # Delete Category
         if request.method == 'DELETE':
             try:
                 category = Category.objects.get(id=id_category)
                 category.delete()
                 return HttpResponse('Success!')
-            except: 
+            except:
                 return
         return
-
 
 
 # @csrf_exempt
@@ -108,12 +111,14 @@ def category_add(request):
 #             category = Category.objects.get(id=id_category)
 #             category.delete()
 #             return HttpResponse('Success!')
-#         except: 
+#         except:
 #             return
 #     return
 
+
 def attributes(request):
     return HttpResponse(serialize('json', Attribute.objects.filter(is_required=True)), content_type="application/json")
+
 
 def attribute_add(request):
     if check_rule(request) == 0:
@@ -138,9 +143,10 @@ def attribute_add(request):
             return HttpResponse('Success!')
         except:
             return HttpResponse('Error!')
-        
+
         return HttpResponse('Check')
     return HttpResponse('Error Add Attribute!')
+
 
 def attribute_edit(request, id_attribute):
     if check_rule(request) == 0:
@@ -167,6 +173,7 @@ def attribute_edit(request, id_attribute):
             return HttpResponse('Error!')
     return HttpResponse('Error Edit Attribute!')
 
+
 def attribute_del(request, id_attribute):
     if check_rule(request) == 0:
         return HttpResponse('Error')
@@ -176,9 +183,10 @@ def attribute_del(request, id_attribute):
             attribute = Attribute.objects.get(id=id_attribute)
             attribute.delete()
             return HttpResponse('Success!')
-        except: 
+        except:
             return
     return
+
 
 @csrf_exempt
 def upload_image(request):
@@ -190,18 +198,21 @@ def upload_image(request):
             return HttpResponse(-2)
 
         if myfile.content_type in validate_image:
-            fs = FileSystemStorage(location=settings.BASE_DIR + '/media/product')
+            fs = FileSystemStorage(
+                location=settings.BASE_DIR + '/media/product')
             filename = fs.save(myfile.name, myfile)
             image = Image(
                 image_link=myfile.name,
-                user_id=Account.objects.get(pk=request.session.get('user')['id']),
+                user_id=Account.objects.get(
+                    pk=request.session.get('user')['id']),
             )
             image.save()
             return HttpResponse(image.id)
         else:
             return HttpResponse(0)
     return HttpResponse(-1)
-        
+
+
 @csrf_exempt
 def del_image(request, id_image):
     if request.method == 'DELETE':
@@ -211,8 +222,9 @@ def del_image(request, id_image):
             Storage.delete(path)
             image.delete()
         return HttpResponse('1')
-        
-@csrf_exempt   
+
+
+@csrf_exempt
 def product_add(request):
     if request.method == "POST":
         print(request.POST)
@@ -221,10 +233,11 @@ def product_add(request):
         detail = request.POST.get('inputDetail')
         price_origin = request.POST.get('inputPrice')
         origin = request.POST.get('inputOrigin')
-        account_created = Account.objects.get(pk=request.session.get('user')['id'])
+        account_created = Account.objects.get(
+            pk=request.session.get('user')['id'])
         product_config = Product(
             code=code,
-            name= name,
+            name=name,
             detail=detail,
             origin=origin,
             type_product=True,
@@ -238,19 +251,19 @@ def product_add(request):
 
         count_category = request.POST.get('inputCountCategory')
         for i in range(int(count_category)):
-            id = request.POST.get('inputCategory['+ str(i) +']')
+            id = request.POST.get('inputCategory[' + str(i) + ']')
             product_category = Product_Category(
-                product_id = product_config,
-                category_id = Category.objects.get(pk=int(id))
+                product_id=product_config,
+                category_id=Category.objects.get(pk=int(id))
             )
             product_category.save()
 
-        count_images = request.POST.get('inputCountImage') #edit input
+        count_images = request.POST.get('inputCountImage')  # edit input
         for i in range(int(count_images)):
-            id = request.POST.get('inputImage['+ str(i) +']')
+            id = request.POST.get('inputImage[' + str(i) + ']')
             image = Product_Image(
-                product_id = product_config,
-                image_id = Image.objects.get(pk=int(id))
+                product_id=product_config,
+                image_id=Image.objects.get(pk=int(id))
             )
             image.save()
 
@@ -261,7 +274,7 @@ def product_add(request):
                 name=name,
                 detail=detail,
                 origin=origin,
-                price=request.POST.get('inputVersion['+ str(i) +'][price]'),
+                price=request.POST.get('inputVersion[' + str(i) + '][price]'),
                 type_product=False,
                 is_visible=True,
                 is_activity=True,
@@ -269,10 +282,11 @@ def product_add(request):
                 account_created=account_created,
             )
             product.save()
-            
-            Link_Type.objects.create(product_id=product, parent_product=product_config.id)
 
-            data = request.POST.get('inputVersion['+ str(i) +'][value]')
+            Link_Type.objects.create(
+                product_id=product, parent_product=product_config.id)
+
+            data = request.POST.get('inputVersion[' + str(i) + '][value]')
             list_attr = data.split(' | ')
             attr = Attribute.objects.filter(is_required=True)
             index = 0
@@ -283,8 +297,7 @@ def product_add(request):
                     value=item,
                 )
                 product_attr.save()
-                index = index + 1 
-
+                index = index + 1
 
             # percent = request.POST.get('inputAttribute') #edit input
             # date_start = request.POST.get('inputAttribute')  #edit input
@@ -299,12 +312,12 @@ def product_add(request):
         return HttpResponse(1)
 
 
-
 @csrf_exempt
 def product(request, id_product):
     if request.method == 'GET':
         product_detail = dict()
-        product_config = Product.objects.filter(id=int(id_product), type_product=True)
+        product_config = Product.objects.filter(
+            id=int(id_product), type_product=True)
         if product_config.count() == 0:
             return HttpResponse(-1)
 
@@ -314,8 +327,9 @@ def product(request, id_product):
         product_detail['code'] = product_config[0].code
         product_detail['price_origin'] = product_config[0].price
 
-        product_category = Product_Category.objects.filter(product_id=int(id_product))
-        list_category  = []
+        product_category = Product_Category.objects.filter(
+            product_id=int(id_product))
+        list_category = []
         for item in product_category:
             category_dict = dict()
             category = Category.objects.get(pk=item.category_id.id)
@@ -325,31 +339,34 @@ def product(request, id_product):
             list_category.append(category_dict)
         product_detail['list_category'] = list_category
 
-        product_image = Product_Image.objects.filter(product_id=int(id_product)).order_by('image_id_id')
+        product_image = Product_Image.objects.filter(
+            product_id=int(id_product)).order_by('image_id_id')
         list_image = []
         for item in product_image:
             image_dict = dict()
             image = Image.objects.get(pk=item.image_id.id)
-            image_dict['id']  = image.id
-            image_dict['image_link'] =  '/product' + image.image_link.url
+            image_dict['id'] = image.id
+            image_dict['image_link'] = '/product' + image.image_link.url
             image_dict['is_default'] = image.is_default
             image_dict['user_id'] = image.user_id.id
             list_image.append(image_dict)
         product_detail['list_image'] = list_image
 
-        #lay ra danh sach phien ban
-        link_type = Link_Type.objects.filter(parent_product=product_config[0].id)
+        # lay ra danh sach phien ban
+        link_type = Link_Type.objects.filter(
+            parent_product=product_config[0].id)
         list_attr = []
         list_price = []
         for item in link_type:
             list_tmp = []
             list_price.append(item.product_id.price)
-            product_attr = Product_Attribute.objects.filter(product_id=item.product_id.id).order_by('attribute_id')
+            product_attr = Product_Attribute.objects.filter(
+                product_id=item.product_id.id).order_by('attribute_id')
             for item in product_attr:
                 list_tmp.append(item.value)
             list_attr.append(list_tmp)
-    
-        #su dung matrix de tra ve danh sach gia tri cho tung thuoc tinh
+
+        # su dung matrix de tra ve danh sach gia tri cho tung thuoc tinh
         len_atr = len(list_attr[0])
         len_verison = len(list_attr)
         list_value_attr = []
@@ -363,14 +380,13 @@ def product(request, id_product):
         product_detail['list_attr'] = list_value_attr
         product_detail['list_price'] = list_price
 
-        return  HttpResponse(json.dumps(product_detail), content_type="application/json")
+        return HttpResponse(json.dumps(product_detail), content_type="application/json")
 
     if request.method == 'POST':
         return
 
     if request.method == 'DELETE':
         return
-
 
 
 def services(request):
@@ -380,12 +396,12 @@ def services(request):
 def service(request, id_service):
     # if check_rule(request) == 0:
     #     return HttpResponse('Error')
-    
+
     if request.method == "GET":
         return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
 
 
-@csrf_exempt        
+@csrf_exempt
 def purchase_service(request):
     if check_rule(request) == 0:
         return HttpResponse('Error')
@@ -410,3 +426,35 @@ def purchase_service(request):
         except:
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')
+
+# Lý Thành
+
+
+def f(x):
+    return {
+        1: "Đầu trang",
+        2: "Giữa trang",
+        3: "Cuối trang",
+        4: "Slide",
+        5: "Bên phải slide 1",
+        6: "Bên phải slide 2",
+    }[x]
+
+
+def get_my_choices(id):
+    _list = Service_Ads.objects.filter(position=f(id))
+    return _list
+@csrf_exempt
+def get_my_choices_2(request):  
+    if request.method == 'GET':
+        ads = []
+        for item in Service_Ads.objects.all():
+            ads_dict = dict()
+            ads_dict['id'] = item.id
+            ads_dict['service_name'] = item.service_name
+            ads_dict['type_service'] = item.type_service
+            ads_dict['amount'] = item.amount
+            ads_dict['day_limit'] = item.day_limit
+            ads.append(ads_dict)
+        return  HttpResponse(json.dumps(ads), content_type="application/json")
+    return  HttpResponse(1)

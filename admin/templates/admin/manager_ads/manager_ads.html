@@ -8,7 +8,7 @@ Trang chủ
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" with active_ads='active'  %}
+{% include "snippets_admin/side_bar.html" with active_ads='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -28,6 +28,9 @@ Trang chủ
             <div class="panel-heading">
                 Danh sách quảng cáo
             </div>
+            {% if success == "success" %}
+            <h5 class="alert alert-success" style="margin:0px;">Xóa thành công</h5>
+            {% endif %}
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
@@ -37,11 +40,11 @@ Trang chủ
                                 <th>Loại quảng cáo</th>
                                 <th>Hạn sử dụng</th>
                                 <th>Giá tiền</th>
-                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -57,7 +60,7 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script>
     $(document).ready(function () {
-        $('#dataTables-example').dataTable({
+        var table = $('#dataTables-example').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -73,6 +76,8 @@ Trang chủ
                 sSearch: "Tìm:",
                 sUrl: "",
             },
+            "dom": '<"toolbar">frtip',
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "processing": true,
             "ajax": {
                 "processing": true,
@@ -80,13 +85,32 @@ Trang chủ
                 "dataSrc": ""
             },
             "columns": [
-                    { "data": "service_name" },
-                    { "data": "type_service" },
-                    { "data": "day_limit" },
-                    { "data": "amount" },
-                    { "data": "is_active" },
-                ],
+                { "data": "service_name" },
+                { "data": "type_service" },
+                { "data": "day_limit" },
+                { "data": "amount" },
+                { "data": "is_active" },
+            ],
 
+        });
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Trạng thái: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Kích hoạt</option>';
+        tool_bar += '<option>Bị khóa</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(4).search('').draw();
+            }
+            else {
+                table.api().columns(4).search(regExSearch, true, false).draw();
+            }
         });
     });
 </script>

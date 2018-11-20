@@ -77,7 +77,7 @@ def getAllAds(request):
             if item.is_active:
                 ads_dict['is_active'] = "<label class='label label-info'>Kích hoạt</label>"
             else:
-                ads_dict['is_active'] = "<label class='label label-warning'>Không kích hoạt</label>"
+                ads_dict['is_active'] = "<label class='label label-warning'>Bị khóa</label>"
             ads.append(ads_dict)
         return  HttpResponse(json.dumps(ads), content_type="application/json")
     return  HttpResponse(1)
@@ -104,16 +104,19 @@ def AddService(request):
         )
         ads = Service_Ads.objects.filter(service_name=request.POST.get('inputName')).first()
         if ads is None:
-            return HttpResponse(created)
-    return HttpResponse(obj)
+            return render(request,'admin/manager_ads/manager_ads_detail.html',{'error':error})
+    success = "success"
+    return render(request,'admin/manager_ads/manager_ads_detail.html',{'success':success,'ads':obj})
 def RemoveService(request,id):
     if check_rule(request) == 0:
         return HttpResponse('Error')
     ads = Service_Ads.objects.filter(id=id).first()
     if ads is None:
-        return HttpResponse("Loi khong tim thay service")
+        error = "error"
+        return render(request,'admin/manager_ads/manager_ads_detail.html',{'error':error})
     else:
         ads.delete()
-    return HttpResponse("Success")
+    success = "success"
+    return render(request,'admin/manager_ads/manager_ads.html',{'success':success})
 
        

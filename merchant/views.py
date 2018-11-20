@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
 from website.models import *
-
+from . import functions
 from django.contrib import messages
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
@@ -82,7 +82,12 @@ def purchase_service(request, id_service):
 
 def service_ads(request):
     return render(request,'merchant/manager_service/service_ads.html')
-def service_ads_register(request):
-    return render(request,'merchant/manager_service/manager_ads_register_detail.html')
+
+def service_ads_register(request,id_ads):
+    if functions.get_my_choices(id_ads):
+        return render(request,'merchant/manager_service/manager_ads_register_detail.html',{ 'list':functions.get_my_choices(id_ads) })
+    else:
+        return HttpResponse("Loi")
+
 from django import template
 
