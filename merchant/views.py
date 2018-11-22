@@ -89,5 +89,8 @@ def service_ads_register(request,id_ads):
     else:
         return HttpResponse("Loi")
 
+def post_ads(request):
+    return render(request,'merchant/manager_service/service_ads_post.html')
+
 from django import template
 

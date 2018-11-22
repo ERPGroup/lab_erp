@@ -1,0 +1,138 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết người dùng
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_service='active' %}
+{% endblock %}
+{% block styles %}
+<script src="{% static 'merchant/ckeditor.js' %}"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header" style="margin:0px; padding-top:15px;">
+            Đăng nội dung quảng cáo
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa nội dung</a>
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="#" class="background_white" role="form">
+            <h3 style="text-align:center;">Nội dung quảng cáo</h3>
+            <hr>
+            <div class="col-lg-4 form-group">
+                <label>Đường dẫn quảng cáo</label>
+                <input value="https://google.com" type="text" class="form-control">
+            </div>
+            <div class="col-lg-4 form-group">
+                <label>Nội dung quảng cáo</label>
+                <input value="Đây là quảng cáo" type="text" class="form-control">
+            </div>
+            <div class="col-lg-4 form-group">
+                <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
+                    <input type="file" name="photo" id="upload-photo" /></h3>
+                <hr>
+            </div>
+            <div class="col-lg-12 form-group">
+
+                <div id="lightgallery">
+                </div>
+
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button type="submit" class="btn btn-info">Đăng nội dung</button>
+                <button type="reset" class="btn btn-default">Khôi phục</button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<!--Slide trượt-->
+<script src="{% static 'merchant/picturefill.min.js' %}"></script>
+<script src="{% static 'merchant/lightgallery.js' %}"></script>
+<script src="{% static 'merchant/lg-pager.js' %} "></script>
+<script src="{% static 'merchant/lg-autoplay.js' %}"></script>
+<script src="{% static 'merchant/lg-fullscreen.js' %}"></script>
+<script src="{% static 'merchant/lg-zoom.js' %}"></script>
+<script src="{% static 'merchant/lg-hash.js' %}"></script>
+<script src="{% static 'merchant/lg-share.js' %}"></script>
+<script src="{% static 'merchant/lg-thumbnail.js' %}"></script>
+<script src="{% static 'merchant/lg-deletebutton.js' %}"></script>
+<script>
+    var $el = $('#lightgallery');
+    $el.lightGallery({
+        selector: '.item',
+    });
+
+    function reload() {
+        $el.data('lightGallery').destroy(true);
+        $el.lightGallery();
+    }
+</script>
+<script>
+    // Upload image
+    $(document).ready(function () {
+        $('#upload-photo').change(function () {
+            data = new FormData();
+            files = $('#upload-photo').get(0).files;
+            if (files.length > 0) {
+                data.append('photo', files[0]);
+            }
+            $.ajax({
+                url: 'http://localhost:8000/merchant/upload_image',
+                method: 'POST',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (response) {
+                    // alert(response);
+                    if (response > 0) {
+                        var reader = new FileReader()
+                        reader.onload = function (e) {
+                            var result_1 = ''
+                            result_1 = '<div class="col-lg-6 no_padding ' + response +
+                                ' count_image item" id="' + response + '" data-src="' +
+                                e.target.result + '">'
+                            result_1 += '<img src="' + e.target.result + '" />'
+                            result_1 += '<div class="action_image">'
+                            result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
+                            result_1 += '<a href="#" onclick="$(\'#' + response +
+                                '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
+                            result_1 += '</div>'
+                            result_1 += '</div>'
+                            $el.append(result_1);
+                            $el.data('lightGallery').destroy(true);
+                            $el.lightGallery();
+                        }
+                        reader.readAsDataURL(files[0]);
+                    }
+                    if (response == 0) {
+                        alert('Do khong phai file anh');
+                    }
+                    if (response == -2) {
+                        alert('Dung luong anh khong duoc vuot qua 2MB');
+                    }
+                    if (response == -1) {
+                        alert('Xay ra loi');
+                    }
+                },
+                error: function (jqXHR) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

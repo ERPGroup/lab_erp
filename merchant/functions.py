@@ -10,6 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage, Storage
 
+import pandas as pd
+from datetime import datetime  
+from datetime import timedelta  
+
 import json
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
@@ -444,6 +448,58 @@ def f(x):
 def get_my_choices(id):
     _list = Service_Ads.objects.filter(position=f(id))
     return _list
+
+def findByValue(input,value):
+    for i in range(len(input)):
+        if input[i]['value'] == value:
+            return i
+    return -1
+
+@csrf_exempt
+def getDateAvailable(request,position,id_ads):
+    if request.method == 'GET':
+        infor_ads = Service_Ads.objects.get(pk=id_ads)
+        _list = Purchase_Service_Ads.objects.filter(service_ads_id__position=position)
+        _input1 = []
+        for item in _list:
+            date_dict = dict()
+            date_dict['start'] = item.date_start
+            date_dict['end'] = item.date_start + timedelta(days=item.service_ads_id.day_limit)
+            _input1.append(date_dict)
+        max_date = (datetime.now()+timedelta(days=120))
+        min_date = datetime.now()
+        step = timedelta(days=1)
+        check = []
+        while min_date <= max_date:
+            date_dict = dict()
+            date_dict['check'] = True
+            date_dict['value'] = min_date.strftime('%Y-%m-%d')
+            check.append(date_dict)
+            min_date += step
+        for item in _input1:
+            while item['start'] < item['end']:
+                check[findByValue(check,item['start'].strftime('%Y-%m-%d'))] ['check'] = False
+                item['start'] += step
+        max_date = (datetime.now()+timedelta(days=120))
+        min_date = datetime.now()
+        result = []
+        while min_date <= max_date:
+            flag = True
+            if check[findByValue(check,min_date.strftime('%Y-%m-%d'))]['check']:
+                tempdate = min_date
+                for i in range(infor_ads.day_limit):
+                    if tempdate >= max_date:
+                        break
+                    if check[findByValue(check,tempdate.strftime('%Y-%m-%d'))] ['check'] == False :
+                        flag = False
+                        break
+                    tempdate += step
+                if flag :
+                    result.append(min_date.strftime('%Y-%m-%d'))
+            min_date += step
+        return HttpResponse(json.dumps(result), content_type="application/json")
+    return  HttpResponse(-1)
+
 @csrf_exempt
 def get_my_choices_2(request):  
     if request.method == 'GET':
@@ -453,8 +509,10 @@ def get_my_choices_2(request):
             ads_dict['id'] = item.id
             ads_dict['service_name'] = item.service_name
             ads_dict['type_service'] = item.type_service
+            ads_dict['position'] = item.position
             ads_dict['amount'] = item.amount
             ads_dict['day_limit'] = item.day_limit
             ads.append(ads_dict)
         return  HttpResponse(json.dumps(ads), content_type="application/json")
     return  HttpResponse(1)
+

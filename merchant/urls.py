@@ -40,5 +40,7 @@ urlpatterns = [
 
     #Ly Thanh
     path('getListAds/',functions.get_my_choices_2,name="remove"),
+    path('getDateAvailable/<position>&<int:id_ads>',functions.getDateAvailable,name="get_avail"),
+    path('post_ads/',views.post_ads,name="ads"),
 
 ]

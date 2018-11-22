@@ -204,4 +204,31 @@ class Service_Ads(models.Model):
     creator_id = models.IntegerField()
     canceler_id = models.IntegerField(null=True)
 
+class Service_Ads_Post(models.Model):
+    service_name = models.CharField(max_length=200)
+    purchase_service_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
+    customer_id = models.ForeignKey('Account',on_delete=models.CASCADE)
+    image_1 = models.CharField(max_length=200)
+    image_1_url = models.CharField(max_length=200)
+    image_1_content = models.CharField(max_length=200)
+    image_2 = models.CharField(max_length=200)
+    image_2_url = models.CharField(max_length=200)
+    image_2_content = models.CharField(max_length=200)
+    image_3 = models.CharField(max_length=200)
+    image_3_url = models.CharField(max_length=200)
+    image_3_content = models.CharField(max_length=200)
+    expiried = models.DateTimeField()
+    is_active = models.BooleanField(default=False)
+
+class Purchase_Service_Ads(models.Model):
+    purchase_name = models.CharField(max_length=200)
+    merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)
+    service_id = models.ForeignKey('Service', on_delete=models.CASCADE,blank=True,null=True)
+    service_ads_id = models.ForeignKey('Service_Ads',on_delete=models.CASCADE,blank=True,null=True)
+    amount = models.IntegerField()
+    state = models.IntegerField()
+    date_start = models.DateTimeField(blank=True,null=True)
+    success_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    archive = models.BooleanField(default=False)
 
