@@ -516,3 +516,43 @@ def get_my_choices_2(request):
         return  HttpResponse(json.dumps(ads), content_type="application/json")
     return  HttpResponse(1)
 
+@csrf_exempt
+def upload_image_ads(request):
+    if request.method == 'POST' and request.FILES['photo']:
+        myfile = request.FILES['photo']
+        validate_image = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif']
+        print(myfile.size)
+        if myfile.size > 1000000:
+            return HttpResponse(-2)
+
+        if myfile.content_type in validate_image:
+            fs = FileSystemStorage(
+                location=settings.BASE_DIR + '/media/ads')
+            filename = fs.save(myfile.name, myfile)
+            image = Image(
+                image_link=myfile.name,
+                user_id=Account.objects.get(
+                    pk=request.session.get('user')['id']),
+            )
+            image.save()
+            return HttpResponse(image.id)
+        else:
+            return HttpResponse(0)
+    return HttpResponse(-1)
+
+@csrf_exempt
+def del_image_ads(request, id_image):
+    if request.method == 'DELETE':
+        image = Image.objects.get(pk=int(id_image))
+        path = settings.BASE_DIR + '/media/ads' + image.image_link.url
+        if Storage.exists(name=path):
+            Storage.delete(path)
+            image.delete()
+        return HttpResponse('1')
+
+def getServiceAdsAvailable(id):
+    result = Purchase_Service_Ads.objects.filter(merchant_id__id=id)
+    if result:
+        return result
+    return None
+

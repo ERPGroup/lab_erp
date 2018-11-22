@@ -42,5 +42,6 @@ urlpatterns = [
     path('getListAds/',functions.get_my_choices_2,name="remove"),
     path('getDateAvailable/<position>&<int:id_ads>',functions.getDateAvailable,name="get_avail"),
     path('post_ads/',views.post_ads,name="ads"),
-
+    path('upload_image_ads', functions.upload_image_ads, name='upload_image'),
+    path('delete_image_ads/<int:id_image>', functions.del_image_ads, name='delete_image'),
 ]

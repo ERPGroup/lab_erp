@@ -27,24 +27,35 @@ Trang chi tiết người dùng
         <form method="post" action="#" class="background_white" role="form">
             <h3 style="text-align:center;">Nội dung quảng cáo</h3>
             <hr>
-            <div class="col-lg-4 form-group">
+
+            <div class="col-lg-6 form-group">
+                <label>Tên quảng cáo</label>
+                <select class="form-control" id="select_type">
+                    {% for item in list %}
+                    <option value="{{item}}">{{item.service_ads_id.service_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label>Hạn sử dụng</label>
+                <input type="text" class="form-control" value="21/12/2018" name="input" id="">
+            </div>
+            <div class="col-lg-6 form-group">
                 <label>Đường dẫn quảng cáo</label>
                 <input value="https://google.com" type="text" class="form-control">
             </div>
-            <div class="col-lg-4 form-group">
+            <div class="col-lg-6 form-group">
                 <label>Nội dung quảng cáo</label>
                 <input value="Đây là quảng cáo" type="text" class="form-control">
             </div>
-            <div class="col-lg-4 form-group">
+            <div class="col-lg-12 form-group">
                 <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
                     <input type="file" name="photo" id="upload-photo" /></h3>
                 <hr>
             </div>
             <div class="col-lg-12 form-group">
-
                 <div id="lightgallery">
                 </div>
-
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
                 <button type="submit" class="btn btn-info">Đăng nội dung</button>
@@ -90,7 +101,7 @@ Trang chi tiết người dùng
                 data.append('photo', files[0]);
             }
             $.ajax({
-                url: 'http://localhost:8000/merchant/upload_image',
+                url: 'http://localhost:8000/merchant/upload_image_ads',
                 method: 'POST',
                 contentType: false,
                 processData: false,

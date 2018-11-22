@@ -90,7 +90,9 @@ def service_ads_register(request,id_ads):
         return HttpResponse("Loi")
 
 def post_ads(request):
-    return render(request,'merchant/manager_service/service_ads_post.html')
+    user = request.session.get('user')
+    result = functions.getServiceAdsAvailable(user['id'])
+    return render(request,'merchant/manager_service/service_ads_post.html',{'list':result})
 
 from django import template
 
