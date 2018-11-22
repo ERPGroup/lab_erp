@@ -35,13 +35,21 @@ urlpatterns = [
     path('manager_product_detail',views.products_detail,name="products"),
 
     path('manager_category',views.categories,name="products"),
+    path('category/add', views.category_add, name='category_add'),
+    path('category/edit/<int:id_category>', views.category_edit, name='category_edit'),
     # PHUC: viet 2 url cua add va edit category sao comment nay
     # chu y function la "views.<ten function>""
     path('manager_category_detail',views.category_detail,name="products"),
+   
+
+
 
     #tuong tu viet cac url cua attribute giong category ben duoi comment nay
-    path('manager_attribute',views.manager_attribute,name="attribute"),
+    path('manager_attribute',views.attributes,name="attribute"),
     path('manager_attribute_detail',views.manager_attribute_detail,name="products"),
+    path('attribute/add', views.attribute_add, name='attribute_add'),
+    path('attribute/edit/<int:id_attribute>', views.attribute_edit, name='attribute_edit'),
+
 
     path('statistical',views.statistical,name="statistical"),
 
@@ -52,10 +60,16 @@ urlpatterns = [
     path('services', functions.services, name='services'),
     path('service', functions.service_add, name="service_add"),
     path('service/<int:id_service>', functions.service, name="service"),
-
+    
     # Phuc tham khao url Serive o tren va viet url Category va Attribute ben duoi comment
 
+    path('categories',functions.categories, name='categories'),
+    path('category',functions.category_add, name="category_add"),
+    path('category/<int:id_category>',functions.category, name="category"),
 
+    path('attributes',functions.attributes, name='attributes'),
+    path('attribute',functions.attribute_add, name="attribute_add"),
+    path('attribute/<int:id_attribute>',functions.attribute, name="attribute"),
 
    # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
 ]
