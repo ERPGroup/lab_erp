@@ -109,3 +109,147 @@ def service(request, id_service):
 
 # Code Category va Attribute dua theo Serive ben duoc comment nay
 # Viet funtion nho viet URL va views
+def categories(request):
+    if request.method == 'GET':
+        categories = []
+        categories_all = Category.objects.all()
+        for item in categories_all:
+            category = []
+            category.append('<a href="/admin/category/edit/'+ str(item.id) +'">'+ str(item.id) +'</a>'),
+            category.append('<a href="/admin/category/edit/'+ str(item.id) +'">'+ str(item.name_category) +'</a>'),         
+            category.append(str(item.quantity))
+            if item.is_active == True:
+                category.append('<b style="color:green">Kích hoạt</b>')
+            else:
+                category.append('<b style="color:red">Đang khoá</b>')
+            categories.append(category)
+        return HttpResponse(json.dumps(categories), content_type="application/json")
+    return HttpResponse('error')
+
+
+@csrf_exempt    
+def category_add(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+
+    if request.method == 'POST':
+        print(request.POST)
+        name_category = request.POST.get('inputName')
+        quantity = request.POST.get('inputQuantity')
+        is_active = request.POST.get('inputIsActive')
+        #try:
+        category = Category(
+            name_category = name_category,
+            quantity = quantity,
+            is_active = is_active,
+        )
+        category.save()
+        return HttpResponse(1)
+        # except :
+        #     return HttpResponse(0)
+        return HttpResponse('Check')
+    return HttpResponse('Error Add Category!')
+
+@csrf_exempt  
+def category(request, id_category):
+    if request.method == 'GET':
+        return HttpResponse(serialize('json', Category.objects.filter(pk=id_category)), content_type="application/json")
+    if request.method == 'POST':
+        try:
+            name_category = request.POST.get('inputName')
+            quantity = request.POST.get('inputQuantity')
+            is_active = request.POST.get('inputIsActive')
+            category = Category.objects.get(id=id_category)
+            category.name_category = name_category
+            category.quantity = quantity
+            category.is_active = is_active
+            category.save()
+            return HttpResponse(1)
+        except:
+            return HttpResponse(0)
+    if request.method == 'DETELE':
+        category = Category.objects.get(id=id_category)
+        category.is_active = False
+        category.save()
+        return HttpResponse(1)
+
+    return HttpResponse(0)
+
+def attributes(request):
+    if request.method == 'GET':
+        attributes = []
+        attributes_all = Attribute.objects.all()
+        for item in attributes_all:
+            attribute = []
+            attribute.append('<a href="/admin/attribute/edit/'+ str(item.id) +'">'+ str(item.code) +'</a>'),
+            attribute.append('<a href="/admin/attribute/edit/'+ str(item.id) +'">'+ str(item.label) +'</a>'),         
+            attribute.append(str(item.type_attr))
+            if item.is_required == True:
+                attribute.append('<b style="color:green">Có</b>')
+            else:
+                attribute.append('<b style="color:red">Không</b>')
+            if item.is_unique == True:
+                attribute.append('<b style="color:green">Có</b>')
+            else:
+                attribute.append('<b style="color:red">Không</b>')
+
+            attributes.append(attribute)
+        return HttpResponse(json.dumps(attributes), content_type="application/json")
+    return HttpResponse('error')
+
+
+@csrf_exempt    
+def attribute_add(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+
+    if request.method == 'POST':
+        print(request.POST)
+        code = request.POST.get('inputCode')
+        label = request.POST.get('inputLabel')
+        type_attr = request.POST.get('inputType')
+        is_required = request.POST.get('inputIsRequired')
+        is_unique = request.POST.get('inputIsUnique')
+        #try:
+        attribute = Attribute(
+            code = code,
+            label = label,
+            type_attr = type_attr,
+            is_required = is_required,
+            is_unique = is_unique,
+        )
+        attribute.save()
+        return HttpResponse(1)
+        # except :
+        #     return HttpResponse(0)
+        return HttpResponse('Check')
+    return HttpResponse('Error Add !')
+
+@csrf_exempt  
+def attribute(request, id_attribute):
+    if request.method == 'GET':
+        return HttpResponse(serialize('json', Attribute.objects.filter(pk=id_attribute)), content_type="application/json")
+    if request.method == 'POST':
+        try:
+            code = request.POST.get('inputCode')
+            label = request.POST.get('inputLabel')
+            type_attr = request.POST.get('inputType')
+            is_required = request.POST.get('inputIsRequired')
+            is_unique = request.POST.get('inputIsUnique')
+
+            attribute = Attribute.objects.get(id=id_attribute)
+            attribute.code = code
+            attribute.label = label
+            attribute.type_attr = type_attr
+            attribute.is_required = is_required
+            attribute.is_unique = is_unique      
+            attribute.save()
+            return HttpResponse(1)
+        except:
+            return HttpResponse(0)
+    if request.method == 'DETELE':
+        Attribute.objects.filter(pk=id_attribute).delete()
+        return HttpResponse(1)
+
+    return HttpResponse(0)
+ 

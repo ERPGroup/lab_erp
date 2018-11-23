@@ -17,7 +17,7 @@ def check_rule(request):
 # Create your views here.
 def login (request):
     if check_rule(request) == 1:
-        return redirect('/admin/index')
+        return redirect('/admin/index.html')
     return render(request,'login/Login.html')
 
 def index(request):
@@ -131,8 +131,24 @@ def category_detail(request):# function nay khong can sua
 # lam tuong tu Category voi Attribute
 # viet view nho viet url, function
 
-def manager_attribute(request):
-    return render(request,'admin/manager_product/manager_attribute.html')
+def attributes(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'admin/manager_product/attribute/manager_attributes.html')
+
+def attribute_add(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'admin/manager_product/attribute/attribute_add.html')
+
+def attribute_edit(request,id_attribute):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if Attribute.objects.filter(pk=id_attribute).count() == 0:
+        # messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
+        return redirect('/admin/')
+    return render(request,'admin/manager_product/attribute/attribute_edit.html')
+
 
 def manager_attribute_detail(request):# function nay khong can sua
     return render(request,'admin/manager_product/manager_attribute_detail.html')

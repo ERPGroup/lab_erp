@@ -3,11 +3,11 @@
 {% block title %}
 Quản lý thuộc tính
 {% endblock %}
-{% block dataTB %}
+{% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
-{% block admin %}
+{% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
 {% endblock %}
 {% block content %}
@@ -16,10 +16,9 @@ Quản lý thuộc tính
         <h1 class="page-header">
             Quản lý thuộc tính
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_category_detail" class="btn btn-info">Thêm mới người dùng</a>
+                <a href="/admin/attribute/add" class="btn btn-info">Thêm mới thuộc tính</a>
             </div>
         </h1>
-
     </div>
 </div>
 <div class="row">
@@ -27,11 +26,11 @@ Quản lý thuộc tính
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách thuôc tính
+                Danh sách thuộc tính
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="tbl_manager_attributes">
                         <thead>
                             <tr>
                                 <th>Mã thuộc tính</th>
@@ -41,30 +40,7 @@ Quản lý thuộc tính
                                 <th>Duy nhất</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="/admin/manager_attribute_detail">ATT00</a></td>
-                                <td>Màu sắc</td>
-                                <td>Varchar</td>
-                                <td class="center">Không</td>
-                                <td class="center">Không</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_attribute_detail">ATT01</a></td>
-                                <td>Kích thước</td>
-                                <td>Varchar</td>
-                                <td class="center">Không</td>
-                                <td class="center">Không</td>
-                            </tr>
-                            {% for i in "x"|rjust:"3" %}
-                            <tr>
-                                <td><a href="/admin/manager_attribute_detail">ATT00</a></td>
-                                <td>Dung lượng</td>
-                                <td>Varchar</td>
-                                <td class="center">Không</td>
-                                <td class="center">Không</td>
-                            </tr>
-                            {% endfor %}
+                        <tbody id="content_table">                       
                         </tbody>
                     </table>
                 </div>
@@ -79,7 +55,8 @@ Quản lý thuộc tính
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
-<script>
+<script src="{% static '/admin/src/js/attribute/manager_attribute.js' %} "></script>
+{% comment %} <script>
     jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         "formatted-num-pre": function (a) {
             a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
@@ -96,7 +73,7 @@ Quản lý thuộc tính
     });
 
     $(document).ready(function () {
-        var table = $('#dataTables-example').dataTable({
+        var table = $('#tbl_manager_categories').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -116,9 +93,30 @@ Quản lý thuộc tính
             "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
             "columnDefs": [
                 { "type": 'formatted-num', targets: 0 },
+                { "type": 'formatted-num', targets: 2 },
             ]
+        });
 
+        var tool_bar = '';
+        tool_bar += '<div class="col-xs-8 no_padding">';
+        tool_bar += '<span>Trạng thái: </span>';
+        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
+        tool_bar += '<option>Tất cả</option>';
+        tool_bar += '<option>Kích hoạt</option>';
+        tool_bar += '<option>Đang xử lý</option>';
+        tool_bar += '<option>Bị khóa</option>';
+        tool_bar += '</select>';
+        tool_bar += '</div>';
+        $("div.toolbar").html(tool_bar);
+        $('#select_type').change(function () {
+            regExSearch = '^' + this.value + '$';
+            if (this.value == "Tất cả") {
+                table.api().columns(3).search('').draw();
+            }
+            else {
+                table.api().columns(3).search(regExSearch, true, false).draw();
+            }
         });
     });
-</script>
+</script>  {% endcomment %}
 {% endblock %}

@@ -3,12 +3,10 @@
 {% block title %}
 Quản lý danh mục sản phẩm
 {% endblock %}
-
 {% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
-
 {% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
 {% endblock %}
@@ -18,10 +16,9 @@ Quản lý danh mục sản phẩm
         <h1 class="page-header">
             Quản lý danh mục
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_category_detail" class="btn btn-info">Thêm mới người dùng</a>
+                <a href="/admin/category/add" class="btn btn-info">Thêm mới danh mục</a>
             </div>
         </h1>
-
     </div>
 </div>
 <div class="row">
@@ -33,7 +30,7 @@ Quản lý danh mục sản phẩm
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                    <table class="tbl_manager_product table table-striped table-bordered table-hover" id="tbl_manager_categories">
                         <thead>
                             <tr>
                                 <th>Mã danh mục</th>
@@ -42,27 +39,7 @@ Quản lý danh mục sản phẩm
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="/admin/manager_category_detail">DM00</a></td>
-                                <td>Sản phẩm hot</td>
-                                <td>10</td>
-                                <td class="center">Bị khóa</td>
-                            </tr>
-                            <tr>
-                                    <td><a href="/admin/manager_category_detail">DM16</a></td>
-                                    <td>Sản phẩm mới</td>
-                                    <td>10</td>
-                                    <td class="center">Đang xử lý</td>
-                                </tr>
-                            {% for i in "x"|rjust:"3" %}
-                            <tr>
-                                <td><a href="/admin/manager_category_detail">DM0{{forloop.counter}}</a></td>
-                                <td>Danh mục {{forloop.counter}}</td>
-                                <td>10</td>
-                                <td class="center">Kích hoạt</td>
-                            </tr>
-                            {% endfor %}
+                        <tbody id="content_table">                       
                         </tbody>
                     </table>
                 </div>
@@ -77,7 +54,8 @@ Quản lý danh mục sản phẩm
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
-<script>
+<script src="{% static '/admin/src/js/category/manager_category.js' %} "></script>
+{% comment %} <script>
     jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         "formatted-num-pre": function (a) {
             a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
@@ -94,7 +72,7 @@ Quản lý danh mục sản phẩm
     });
 
     $(document).ready(function () {
-        var table = $('#dataTables-example').dataTable({
+        var table = $('#tbl_manager_categories').dataTable({
             language: {
                 paginate: {
                     previous: "<i class='fa fa-arrow-left'></i>",
@@ -116,8 +94,8 @@ Quản lý danh mục sản phẩm
                 { "type": 'formatted-num', targets: 0 },
                 { "type": 'formatted-num', targets: 2 },
             ]
-
         });
+
         var tool_bar = '';
         tool_bar += '<div class="col-xs-8 no_padding">';
         tool_bar += '<span>Trạng thái: </span>';
@@ -139,5 +117,5 @@ Quản lý danh mục sản phẩm
             }
         });
     });
-</script>
+</script>  {% endcomment %}
 {% endblock %}

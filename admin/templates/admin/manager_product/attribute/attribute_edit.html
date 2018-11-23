@@ -3,7 +3,7 @@
 {% block title %}
 Trang chi tiết thuộc tính
 {% endblock %}
-{% block admin %}
+{% block side-bar %}
 {% include "snippets_admin/side_bar.html" %}
 {% endblock %}
 {% block content %}
@@ -12,54 +12,60 @@ Trang chi tiết thuộc tính
         <h1 class="page-header">
             Quản lý thuộc tính <small>Chi tiết</small>
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_attribute_detail" class="btn btn-danger">Xóa thuộc tính</a>
+                <a id="delete" class="btn btn-danger">Xóa thuộc tính</a>
             </div>
         </h1>
     </div>
 </div>
 <div class="row">
 
-    <form method="post" action="#" class="background_white col-lg-12" role="form">
-        <div class="col-lg-6 col-xs-offset-3">
-            <div class="form-group">
-                <h3>Thông tin chi tiết</h3>
+    <div class="col-md-12">
+        <div class="background_white" role="form">
+            <div class="form-group" style="text-align:center">
+                <h3>Thông tin thuộc tính</h3>
                 <hr>
             </div>
-            <div class="form-group">
-                <label>Mã thuộc tính</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Tên thuộc tính</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Loại dữ liệu</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Duy nhất</label>
-                <select class="form-control">
-                    <option>Có</option>
-                    <option>Không</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Bắt buộc</label>
-                <select class="form-control">
-                    <option>Có</option>
-                    <option>Không</option>
-                </select>
-            </div>
-            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info">Chỉnh sửa thuộc tính</button>
-                <button type="reset" class="btn btn-default">Khôi phục</button>
+            <div class="col-lg-6 col-xs-offset-3">
+                <div class="form-group">
+                    <label>Mã thuộc tính</label>
+                    <input type="text" id="inputCode" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Tên thuộc tính</label>
+                    <input type="text" id="inputLabel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Loại dữ liệu</label>
+                    <input type="text" id="inputType" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Bắt buộc</label>
+                    <select class="form-control" id="inputIsRequired">
+                        {% comment %} <option value="1">Có</option>
+                        <option value="0">Không</option> {% endcomment %}                      
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duy nhất</label>
+                    <select class="form-control" id="inputIsUnique">
+                        {% comment %} <option value="1">Có</option>
+                        <option value="0">Không</option> {% endcomment %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                    <button type="submit" id="edit" class="btn btn-info">Cập nhật thuộc tính</button>
+       {% comment %}<button type="reset" class="btn btn-default">Khôi phục</button> {% endcomment %}
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
-    </form>
+    </div>
 
 </div>
 
 <div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<script src="{% static 'admin/src/js/attribute/attribute_edit.js' %}"></script>
 {% endblock %}
