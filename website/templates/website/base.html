@@ -15,6 +15,24 @@
     {% endblock %}
     {%block zoom_img%}
     {%endblock%}
+    <style>
+        #hidden_profile{
+            position: absolute;
+            z-index: 999;
+            background: #f5f5f5;
+            right: 0px;
+            left: 88%;
+            border-radius: 3%;
+            display:none;
+        }
+        #hidden_profile li{
+            display:block;
+            list-style:circle;
+        }
+        #hidden_profile li i {
+            padding:0px 9px;
+        }
+    </style>
     <link rel="stylesheet" href="{% static 'website/assets/fotorama.css' %} ">
     <link rel="shortcut icon" href="{% static 'website/images/favicon.ico' %} ">
     <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
@@ -42,5 +60,4 @@
     {% block zoom_img_js %}
     {% endblock %}
 </body>
-
 </html>
