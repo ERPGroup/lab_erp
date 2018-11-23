@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Danh sách tin đăng
 {% endblock %}
 {% block styles %}
 <!-- TABLE STYLES-->
@@ -16,7 +16,7 @@ Trang chủ
         <h1 class="page-header">
             Quản lý đăng tin
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/merchant/manager_post_detail" class="btn btn-info">Đăng tin mới</a>
+                <a href="/merchant/post/add" class="btn btn-info">Đăng tin mới</a>
             </div>
         </h1>
 
@@ -112,7 +112,13 @@ Trang chủ
                 { "type": 'formatted-num', targets: 0 },
                 { "type": 'formatted-num', targets: 2 },
                 { "type": 'date-eu', targets: 3 }
-            ]
+            ],
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://localhost:8000/merchant/posts",
+                "dataSrc": ""
+            },
 
         });
         var tool_bar = '';

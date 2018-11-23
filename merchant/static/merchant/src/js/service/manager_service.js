@@ -34,12 +34,6 @@ $(document).ready(function(){
                 else
                     box +='<li class="disable">'+ item.day_limit +' ngày sử dụng mỗi tin</li>'
                 
-                // setup day_visable_page_home
-                if(item.day_visable_page_home != 0)
-                    box +='<li>'+ item.day_visable_page_home +' ngày hiển thị trang chủ</li>'
-                else
-                    box +='<li class="disable">'+ item.day_visable_page_home +' ngày hiển thị trang chủ</li>'
-                
                 // setup visable_vip
                 if(item.visable_vip == true)
                     box +='<li>Hiển thị trên khu vực VIP</li>'

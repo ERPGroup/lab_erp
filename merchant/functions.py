@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage, Storage
 
+from datetime import datetime, timedelta
 import json
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
@@ -22,6 +23,64 @@ def check_rule(request):
             return 1
         return 0
     return 0
+
+
+############
+#############
+###########
+############
+############
+####
+####
+########
+
+def account_services(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyen truy cap bi tu choi')
+
+    if request.method == 'GET':
+        if request.GET.get('service') == 'available':
+            if request.GET.get('table') == 'true':
+                list_acc_ser = []
+                account_services = Account_Service.objects.filter(account__id=request.session.get('user')['id'], remain__gt=0)
+                for item in account_services:
+                    acc_ser = []
+                    acc_ser.append('<a href="/merchant/purchase_service/'+ str(item.service_id) +'"> TD'+ str(item.service_id) +'</a>')
+                    acc_ser.append(item.service.service_name)
+                    acc_ser.append(str(item.remain)+ ' tin')
+                    acc_ser.append(str(item.service.day_limit) + ' ngày')
+                    list_acc_ser.append(acc_ser)
+                return HttpResponse(json.dumps(list_acc_ser), content_type="application/json")
+
+            account_services = Account_Service.objects.filter(account__id=request.session.get('user')['id'], remain__gt=0)
+            list_account_service = []
+            for account_service in account_services:
+                dict_account_service = dict()
+                dict_account_service['post_id'] = account_service.pk
+                dict_account_service['account_id'] = account_service.account_id
+                dict_account_service['service_id'] = account_service.service_id
+                dict_account_service['service_name'] = Service.objects.get(pk=account_service.service_id).service_name
+                dict_account_service['remain'] = account_service.remain
+                list_account_service.append(dict_account_service)
+            return HttpResponse(json.dumps(list_account_service), content_type="application/json")
+    return HttpResponse('Error')
+
+
+
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
 
 def categorys(request):
     return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
@@ -179,6 +238,17 @@ def attribute_del(request, id_attribute):
         except: 
             return
     return
+
+####  _______________Product
+####
+####
+####
+####
+####
+####
+####
+####
+####
 
 @csrf_exempt
 def upload_image(request):
@@ -371,7 +441,30 @@ def product(request, id_product):
     if request.method == 'DELETE':
         return
 
+def products(request):
+    if request.method == 'GET':
+        if request.GET.get('posted') == 'false':
+            if 'include' in request.GET: 
+                # http://localhost:8000/merchant/products?posted=false&include=id_product
+                # lay danh sach san chua dang san pham do
+                list_id = Post_Product.objects.values_list('product_id__id').filter(is_activity=True, is_lock=False).exclude(product_id__id=request.GET.get('include'))
+                return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True)), content_type="application/json")
+            list_id = Post_Product.objects.values_list('product_id__id').filter(is_activity=True, is_lock=False)
+            return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True)), content_type="application/json")
+        return HttpResponse(0)
+    return HttpResponse(0)
 
+
+### ----------------------Service
+###
+###
+###
+###
+###
+###
+###
+###
+###
 
 def services(request):
     return HttpResponse(serialize('json', Service.objects.filter(is_active=True)), content_type="application/json")
@@ -380,7 +473,6 @@ def services(request):
 def service(request, id_service):
     # if check_rule(request) == 0:
     #     return HttpResponse('Error')
-    
     if request.method == "GET":
         return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
 
@@ -389,7 +481,6 @@ def service(request, id_service):
 def purchase_service(request):
     if check_rule(request) == 0:
         return HttpResponse('Error')
-
     if request.method == 'POST':
         purchase_name = request.POST.get('inputPurchaseName')
         merchant_id = Account.objects.get(pk=request.session.get('user')['id'])
@@ -417,3 +508,116 @@ def purchase_service(request):
         except:
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')
+
+
+### -------  Post Product
+###
+###
+###
+###
+###
+###
+###
+###
+###
+
+
+
+@csrf_exempt 
+def post_add(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+
+    if request.method == 'POST':
+        product_id = request.POST.get('inputProduct')
+        # check  product 
+
+        if Post_Product.objects.filter(product_id__id=product_id, is_activity=True, is_lock=False).exists():
+            return HttpResponse('Error! This product was used in the Post other!')
+
+        service_id = request.POST.get('inputService')
+        service = Service.objects.get(pk=service_id)
+        creator = Account.objects.get(pk=request.session.get('user')['id'])
+        value = request.POST.get('inputValue')
+
+        if int(value) > service.value:
+            return HttpResponse('So luong san pham khong duoc lon hon %s'.service.value)
+        if int(value) <= 0:
+            return HttpResponse('So luong san pham phai lon hon 0')
+
+        try:
+            post_product = Post_Product(
+                product_id = Product.objects.get(pk=product_id),
+                post_type = service,
+                creator_id = creator,
+                quantity = int(value),
+                visable_vip = service.visable_vip,
+                expire = datetime.now() + timedelta(days=service.day_limit),
+            )
+            post_product.save()
+            account_service = Account_Service.objects.filter(account_id=request.session.get('user')['id'], service_id=post_product.post_type_id)
+            if account_service.count() == 1:        
+                remain = account_service[0].remain
+                account_service.update(remain=remain-1)
+                return HttpResponse('Success')
+            return HttpResponse('Error Account servive sub remain')
+        except:
+            return HttpResponse('Error except')
+    return HttpResponse('Error')
+
+
+def check_expire_post(id_post):
+    post = Post_Product.objects.get(pk=id_post)
+    if post.expire.replace(tzinfo=None) <= datetime.now():
+        post.update(is_lock=True, is_activity=False)
+
+
+@csrf_exempt 
+def post(request, id_post):
+    if request.method == 'GET':
+        return HttpResponse(serialize('json', Post_Product.objects.filter(pk=id_post)), content_type="application/json")
+
+    if request.method == 'POST':
+
+        if Post_Product.objects.filter(pk=id_post).exists() == False and Post_Product.objects.filter(pk=id_post).count == 1:
+            return HttpResponse('Tin dang khong ton tai!')
+
+        post = Post_Product.objects.get(pk=id_post)
+        if post.is_lock == True:
+            return HttpResponse('Tin dang da het hang, Khong duoc phep sua!')
+
+        quantity = request.POST.get('inputValue')
+        if int(quantity) > post.post_type.value:
+            return HttpResponse('So luong san pham khong duoc lon hon {}'.format(str(post.post_type.value)))
+        if int(quantity) <= 0 or quantity == '':
+            return HttpResponse('So luong san pham phai lon hon 0')
+        post.quantity = quantity
+        post.is_activity = request.POST.get('inputIsActivity')
+        post.save()
+        return HttpResponse('Thuc hien thanh cong!')
+    if request.method == 'DELETE':
+        if Post_Product.objects.filter(pk=id_post).exists() == False and Post_Product.objects.filter(pk=id_post).count == 1:
+            return HttpResponse('Tin dang khong ton tai!')
+        post = Post_Product.objects.get(pk=id_post)
+        if post.is_lock == True:
+            return HttpResponse('Tin dang da het han!')
+        if post.is_activity == False:
+            return HttpResponse('Thuc hien that bai!\nTin dang da tat hien thi ')
+        post.is_activity = False
+        post.save()
+        return HttpResponse('Thuc hien thanh cong!\nTin dang da tat che do hien thi!')
+    return
+    
+def posts(request):
+    if request.method == 'GET':
+        posts = []
+        post_all = Post_Product.objects.filter(creator_id__id=request.session.get('user')['id'])
+        for item in post_all:
+            post = []
+            post.append('<a href="/merchant/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>')
+            post.append('<a href="/merchant/product/edit/'+ str(item.product_id_id) +'"> SP'+ str(item.product_id_id) +'</a>')
+            post.append('15')
+            post.append(item.expire.replace(tzinfo=None).strftime("%d/%m/%Y %H:%M"))
+            post.append(item.post_type.service_name)
+            posts.append(post)
+        return HttpResponse(json.dumps(posts), content_type="application/json")

@@ -14,7 +14,7 @@ $(document).ready(function(){
             $('#inputValue').val(service.value);
             $('#inputQuantityProduct').val(service.quantity_product);
             $('#inputDayLimit').val(service.day_limit);
-            $('#inputDayVisablePageHome').val(service.day_visable_page_home);
+            // $('#inputDayVisablePageHome').val(service.day_visable_page_home);
             $('#inputAmount').val(service.amount);
             var option_active = ''
             if(service.is_active == true){
