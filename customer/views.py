@@ -9,8 +9,10 @@ def change_password(request):
 
 def history_order(request):
     return render(request, 'website/history_order.html')
+
 def profile(request):
     return render(request,'website/profile.html')
+    
 def history_order_detail(request):
     return render(request,'website/order_detail.html')
 

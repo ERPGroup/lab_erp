@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'customer',
     'merchant',
     'website',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,7 @@ STATICFILES_DIRS =[
 
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Carton
+CART_PRODUCT_MODEL = 'website.models.Product'

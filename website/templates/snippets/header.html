@@ -71,7 +71,7 @@
                         <li>
                             <img src="{% static 'website/images/avatar.png' %} " alt="">
                             {% if 'user' in request.session %}
-                            <a href="/">Tài khoản</a> | 
+                            <a href="/customer/profile">Tài khoản</a> | 
                             <a href="/logout/">Đăng xuất</a>
  
                             {% else %}
@@ -121,9 +121,8 @@
                         </div>
                         <div style="text-align:center;padding:10px 0;">
                                 {% if 'user' in request.session %}
-                                <a href="/">Tài khoản</a> | 
+                                <a href="/customer/profile">Tài khoản</a> | 
                                 <a href="/logout/">Đăng xuất</a>
-     
                                 {% else %}
                                 <a href="/register/">Đăng ký</a> |
                                 <a href="/login/">Đăng nhập</a>

@@ -51,16 +51,37 @@ def product_add(request):
 def product_edit(request, id_product):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
-    if Product.objects.filter(pk=int(id_product), type_product=True).count() == 0:
+    if Product.objects.filter(pk=int(id_product), type_product=True, account_created=request.session.get('user')['id']).count() == 0:
         messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
         return redirect('/merchant/')
     return render(request, 'merchant/manager_product/product_edit.html')
 
-
+## ----- POST product
 def posted(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_posted/manager_post.html')
+
 def posted_detail(request):
     return render(request,'merchant/manager_posted/manager_post_detail.html')
+
+def post_add(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
+    return render(request,'merchant/manager_posted/post_add.html')
+
+
+def post_edit(request, id_post):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
+    print(Post_Product.objects.filter(pk=id_post, creator_id_id=request.session.get('user')['id']))
+    if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).count() == 0:
+        messages.warning(request, message='Khong ton tai tin dang', extra_tags='alert')
+        return redirect('/merchant/')
+    return render(request,'merchant/manager_posted/post_edit.html')
+
+# ------- End
+
 def warehose(request):
     return render(request,'merchant/manager_product/manager_warehose.html')
 def order(request):
@@ -69,7 +90,8 @@ def order_detail(request):
     return render(request,'merchant/manager_order/manager_pay_detail.html')
 def statistical_post(request):
     return render(request,'merchant/manager_posted/manager_statistical_post.html')
-    
+
+# ---- Service
 def service_post(request):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
@@ -79,6 +101,7 @@ def purchase_service(request, id_service):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
     return render(request,'merchant/manager_service/purchase_service.html')
+# ------ End
 
 def service_ads(request):
     return render(request,'merchant/manager_service/service_ads.html')

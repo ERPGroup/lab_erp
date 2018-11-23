@@ -9,13 +9,13 @@ class Account(models.Model):
     password = models.CharField(max_length=200)
     name = models.CharField(max_length=100)
     birthday = models.DateField(null=True)
-    phone = models.CharField(max_length=12)
-    id_card = models.CharField(max_length=15)
-    address = models.CharField(max_length=200)
+    phone = models.CharField(max_length=12, null=True)
+    id_card = models.CharField(max_length=15, null=True)
+    address = models.CharField(max_length=200, null=True)
+    name_shop = models.CharField(max_length=200, null=True)
     activity_account = models.BooleanField(default=False)
     activity_merchant = models.BooleanField(default=False)
     activity_advertiser = models.BooleanField(default=False)
-    name_shop = models.CharField(max_length=200)
     q_post = models.IntegerField(default=0)
     q_vip = models.IntegerField(default=0)
     code_act_account = models.CharField(max_length=60)
@@ -107,18 +107,18 @@ class Tag(models.Model):
 
 class Post_Product (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    quantity = models.IntegerField()
     post_type = models.ForeignKey('Service', on_delete=models.CASCADE)
-    is_index = models.BooleanField()
-    created = models.DateTimeField(auto_now=True)
-    expire = models.DateTimeField()
-    is_activity = models.BooleanField(default=True)
     creator_id = models.ForeignKey('Account', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    expire = models.DateTimeField()
     visable_vip = models.BooleanField()
-    expire_visable_page_home = models.DateTimeField()
+    created = models.DateTimeField(auto_now=True)
+    is_activity = models.BooleanField(default=True)
+    views = models.IntegerField(default=0)
+    is_lock = models.BooleanField(default=False)
+    bought = models.IntegerField(default=0)
+    # archive = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.product_id__name
 
 class Rating (models.Model):
     customer =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Customer')
@@ -134,11 +134,12 @@ class Rating (models.Model):
 class Order (models.Model):
     customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
     amount = models.IntegerField()
+    email = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)
-    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'Packing'), ('3', 'Transporting'))
+    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'In Process'), ('3', 'Packing'), ('4', 'Transporting'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
-    manner = models.CharField(max_length=200)
+    manner = models.BooleanField(default=True) # payment by COD or paypal
     is_paid = models.BooleanField()
     is_activity = models.BooleanField()
     archive = models.BooleanField()
@@ -150,10 +151,11 @@ class Order_Detail (models.Model):
     merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.IntegerField()
-    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'Packing'), ('3', 'Transporting'))
+    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'In Process'), ('3', 'Packing'), ('4', 'Transporting'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
     confirm_of_merchant = models.BooleanField(null=True)
     canceler_id = models.IntegerField(null=True)
+    is_seen =models.BooleanField(default=False)
 
 
 # class Email_Template(models.Model):
@@ -170,12 +172,14 @@ class Service(models.Model):
     quantity_product = models.IntegerField()
     created = models.DateTimeField(auto_now=True)
     day_limit = models.IntegerField()
-    day_visable_page_home = models.IntegerField()
     visable_vip = models.BooleanField()
     is_active = models.BooleanField(default=True)
     archive = models.BooleanField(default=False)
     creator_id = models.IntegerField()
     canceler_id = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.service_name
 
 class Purchase_Service(models.Model):
     purchase_name = models.CharField(max_length=200)

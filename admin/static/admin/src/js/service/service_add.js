@@ -6,7 +6,6 @@ $(document).ready(function(){
             'inputValue': $('#inputValue').val(),
             'inputQuantityProduct': $('#inputQuantityProduct').val(),
             'inputDayLimit': $('#inputDayLimit').val(),
-            'inputDayVisablePageHome': $('#inputDayVisablePageHome').val(),
             'inputAmount': $('#inputAmount').val(),
             'inputIsActive': $('#inputIsActive').val(),
             'inputVisableVip': $('#inputVisableVip').val(),

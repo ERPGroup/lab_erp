@@ -242,3 +242,28 @@ def activity_merchant(request, email, code):
 
 def resend_code(request):
     return
+
+
+
+#Product - collection - detail 
+def detail_product(request, id_product): 
+    return render(request,'website/product.html') 
+ 
+def collections(request, id_category): 
+    return render(request,'website/collection.html')
+ 
+def checkout(request): 
+    if 'user' in request.session:
+        account = Account.objects.get(pk=request.session.get('user')['id'])
+        return render(request,'website/checkout.html', {
+            'account': account,
+        })
+    else:
+        messages.warning(request, message='Vui long dang nhap de thanh toan', extra_tags='alert')
+        return redirect('/')
+ 
+# def profile(request): 
+#     return render(request,'website/checkout') 
+ 
+def cart(request): 
+    return render(request,'website/cart.html')

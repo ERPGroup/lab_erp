@@ -54,7 +54,6 @@ def service_add(request):
         value = request.POST.get('inputValue')
         quantity_product = request.POST.get('inputQuantityProduct')
         day_limit = request.POST.get('inputDayLimit')
-        day_visable_page_home = request.POST.get('inputDayVisablePageHome')
         visable_vip = request.POST.get('inputVisableVip')
         is_active = request.POST.get('inputIsActive')
 
@@ -65,7 +64,6 @@ def service_add(request):
             value=value,
             quantity_product=quantity_product,
             day_limit=day_limit,
-            day_visable_page_home=day_visable_page_home,
             visable_vip=visable_vip,
             is_active=is_active,
             creator_id=request.session.get('user')['id'],
