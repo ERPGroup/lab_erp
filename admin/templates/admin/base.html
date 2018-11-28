@@ -6,68 +6,70 @@
 {% endblock %}
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}
-        {% endblock title %}
-    </title>
-    <!-- Bootstrap Styles-->
-    <link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
-    <!-- FontAwesome Styles-->
-    <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
-    <!-- Morris Chart Styles-->
-    <!-- Custom Styles-->
-    <link href="{% static '/admin/assets/css/custom-styles.css' %} " rel="stylesheet" />
-    <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
-    <!-- Google Fonts-->
-    <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-    {% block styles %}
-    {% endblock %}
-    <style>
-            #dataTables-example_processing
-            {
-                display:none;
-            }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}
+    {% endblock title %}
+  </title>
+  <!-- Bootstrap Styles-->
+  <link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
+  <!-- FontAwesome Styles-->
+  <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
+  <!-- Morris Chart Styles-->
+  <!-- Custom Styles-->
+  <link href="{% static '/admin/assets/css/custom-styles.css' %} " rel="stylesheet" />
+  <link href="{% static '/admin/assets/css/styles.css' %} " rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+  {% block styles %}
+  {% endblock %}
+  <style>
+    #dataTables-example_processing {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="wrapper">
-        {% include "snippets_admin/header.html" %}
-        {% block side-bar %}
+  <div id="wrapper">
+    {% include "snippets_admin/header.html" %}
+    {% block side-bar %}
 
-        {% endblock %}
-        <div id="page-wrapper">
-            <div id="page-inner">
-
-                {% block content %}
-                {% endblock content %}
-
-
-                {% include "snippets_admin/footer.html" %}
-
-            </div>
-            <!-- /. PAGE INNER  -->
-        </div>
-        <!-- /. PAGE WRAPPER  -->
-    </div>
-    <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static '/admin/assets/js/jquery-1.10.2.js' %} "></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static '/admin/assets/js/bootstrap.min.js' %} "></script>
-    <!-- Metis Menu Js -->
-
-    <script src="{% static '/admin/assets/js/jquery.metisMenu.js' %} "></script>
-    <!-- Morris Chart Js -->
-    <!--Custom Script -->
-
-    {% block data_table %}
     {% endblock %}
-    
-    <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
+    <div id="page-wrapper">
+      <div id="page-inner">
+
+        {% block content %}
+        {% endblock content %}
+
+
+        {% include "snippets_admin/footer.html" %}
+
+      </div>
+      <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+    {% include "snippets_admin/checkads.html" %}
+  </div>
+  <!-- /. WRAPPER  -->
+  <!-- JS Scripts-->
+  <!-- jQuery Js -->
+  <script src="{% static '/admin/assets/js/jquery-1.10.2.js' %} "></script>
+  <!-- Bootstrap Js -->
+  <script src="{% static '/admin/assets/js/bootstrap.min.js' %} "></script>
+  <!-- Metis Menu Js -->
+
+  <script src="{% static '/admin/assets/js/jquery.metisMenu.js' %} "></script>
+  <!-- Morris Chart Js -->
+  <!--Custom Script -->
+
+  {% block data_table %}
+  {% endblock %}
+
+  <script src="{% static '/admin/src/js/custom/custom_script.js' %} "></script>
+
+  
 </body>
 
 </html>

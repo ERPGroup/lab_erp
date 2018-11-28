@@ -25,7 +25,7 @@ Trang chi tiết người dùng
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="/admin/addAds" class="background_white" role="form">
+        <form method="post" action="/admin/addAds" class="background_white" enctype="multipart/form-data" role="form">
             {% if error == "error" %}
             <h5 class="alert alert-danger" style="margin:0px;">Thất bại</h5>
             {% endif %}

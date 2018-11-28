@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Thanh toán</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap-theme.min.css' %} " />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/payment.css' %}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/font-awesome.min.css' %}" />
-    <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/bootstrap-theme.min.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/payment.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/font-awesome.min.css' %}" />
+    <script type="text/javascript" src="{% static 'website/lib/assets/jquery-2.2.4.min.js' %} "></script>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
         <div class="container">
             <div class="row">
                 <div class="logo col-xs-12">
-                    <img src="{% static 'website/images/logo.png' %}" alt="/index">
+                    <img src="{% static 'website/lib/images/logo.png' %}" alt="/index">
                 </div>
                 <form class="frmPayment" action="#" method="post">
                     <div class="bill_payment col-xs-12 col-md-4 pull_right_desktop">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-xs-12 no_padding border_top" id="detail_order" style="padding: 15px 0px;">
                                 <div class="img_payment col-xs-3">
-                                    <img src="{% static 'website/images/product_1.jpg' %}">
+                                    <img src="{% static 'website/lib/images/product_1.jpg' %}">
                                 </div>
                                 <div class="col-xs-5 name_payment no_padding">
                                     <div> Iphone 5S A Gold ABC ABC</div>
@@ -153,7 +153,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{% static 'website/assets/payment.js' %} "></script>
+    <script type="text/javascript" src="{% static 'website/lib/assets/payment.js' %} "></script>
 </body>
 
 </html>

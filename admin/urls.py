@@ -32,9 +32,12 @@ urlpatterns = [
     path('manager_attribute',views.manager_attribute,name="attribute"),
     path('manager_attribute_detail',views.manager_attribute_detail,name="products"),
 
+    #Ly Thanh
    # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
     path('getAllAds',functions.getAllAds,name="getAllAds"),
     path('addAds',functions.AddService,name="Add services"),
     path('removeAds/<int:id>',functions.RemoveService,name="remove"),
-
+    path('getAllAdsActiving',functions.getAllAdsActiving,name="getads"),
+    path('enable_ads',functions.enable_ads,name="enable"),
+    path('disable_ads',functions.disable_ads,name="enable"),
 ]

@@ -44,4 +44,10 @@ urlpatterns = [
     path('post_ads/',views.post_ads,name="ads"),
     path('upload_image_ads', functions.upload_image_ads, name='upload_image'),
     path('delete_image_ads/<int:id_image>', functions.del_image_ads, name='delete_image'),
+    path('purchase_service_ads', functions.purchase_service_ads, name='fun_purchase_service'),
+    path('upload_ads/',functions.post_ads,name="post_ads"),
+    path('post_ads_2/',functions.post_ads_2,name="post_ads"),
+ 
+
+
 ]

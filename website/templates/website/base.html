@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     {% load staticfiles %}
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap-theme.min.css' %} " />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/owl.carousel.css' %} " />
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/styles.css' %} " />
-    <link rel="stylesheet" href="{% static 'website/assets/font-awesome.min.css' %} ">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/bootstrap-theme.min.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/owl.carousel.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/lib/assets/styles.css' %} " />
+    <link rel="stylesheet" href="{% static 'website/lib/assets/font-awesome.min.css' %} ">
     {% block style_current %}
     {% endblock %}
     {%block zoom_img%}
     {%endblock%}
-    <link rel="stylesheet" href="{% static 'website/assets/fotorama.css' %} ">
-    <link rel="shortcut icon" href="{% static 'website/images/favicon.ico' %} ">
-    <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
+    <link rel="stylesheet" href="{% static 'website/lib/assets/fotorama.css' %} ">
+    <link rel="shortcut icon" href="{% static 'website/lib/images/favicon.ico' %} ">
+    <script type="text/javascript" src="{% static 'website/lib/assets/jquery-2.2.4.min.js' %} "></script>
+    <style>
+        .slider .info_slider {
+            height: 80px
+        }
+    </style>
 </head>
+
 <body>
     <!--Hotline-->
     <a href="tel:09789 789 789" class="suntory-alo-phone suntory-alo-green" id="suntory-alo-phoneIcon" style="left: 0px; bottom: 0px;">
@@ -34,13 +41,14 @@
     <!--footer section start-->
     {% include "snippets/footer.html" %}
     <!--End footer-->
-    <script src="{% static 'website/assets/owl.carousel.js' %} "></script>
-    <script src="{% static 'website/assets/bootstrap.min.js' %} "></script>
-    <script src="{% static 'website/assets/fotorama.js' %} "></script>
-    <script src="{% static 'website/assets/custom.js' %} "></script>
-    <script src="{% static 'website/assets/slider.js' %} "></script>
+    <script src="{% static 'website/lib/assets/owl.carousel.js' %} "></script>
+    <script src="{% static 'website/lib/assets/bootstrap.min.js' %} "></script>
+    <script src="{% static 'website/lib/assets/fotorama.js' %} "></script>
+    <script src="{% static 'website/lib/assets/custom.js' %} "></script>
+    <script src="{% static 'website/lib/assets/slider.js' %} "></script>
     {% block zoom_img_js %}
     {% endblock %}
+    <script src="{% static 'website/src/js/service_ads/getAds.js' %}"></script>
 </body>
 
 </html>

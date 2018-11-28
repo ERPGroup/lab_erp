@@ -10,23 +10,24 @@ Service.objects.create(service_name='goi bach kim', amount=400000, value=15, day
 Service.objects.create(service_name='goi vang', amount=300000, value=10, day_limit=10, day_visable_page_home=2, visable_vip=True, is_active=True, archive=False)
 Service.objects.create(service_name='goi bac', amount=150000, value=10, day_limit=10, day_visable_page_home=0, visable_vip=False, is_active=True, archive=False)
 
-Service_Ads.objects.create(service_name='Quảng cáo hình ảnh 867x800',type_service=2,position='Đầu trang',amount=1500000,created='11/11/2018',day_limit=7)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh đầu trang 7 ngày',position='Đầu trang',amount=1000000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh đầu trang 15 ngày',position='Đầu trang',amount=1900000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh đầu trang 30 ngày',position='Đầu trang',amount=2700000,day_limit=30,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh giữa trang 7 ngày',position='Giữa trang',amount=900000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh giữa trang 15 ngày',position='Giữa trang',amount=1600000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh giữa trang 30 ngày',position='Giữa trang',amount=2400000,day_limit=30,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh cuối trang 7 ngày',position='Cuối trang',amount=600000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh cuối trang 15 ngày',position='Cuối trang',amount=1000000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh cuối trang 30 ngày',position='Cuối trang',amount=1500000,day_limit=30,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo slide x3 hình ảnh 7 ngày',position='Slide',amount=1500000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo slide x3 hình ảnh 15 ngày',position='Slide',amount=2900000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo slide x3 hình ảnh 30 ngày',position='Slide',amount=4500000,day_limit=30,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 1 - 7 ngày',position='Bên phải slide 1',amount=700000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 1 - 15 ngày',position='Bên phải slide 1',amount=1300000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 1 - 30 ngày',position='Bên phải slide 1',amount=1900000,day_limit=30,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 2 - 7 ngày',position='Bên phải slide 2',amount=700000,day_limit=7,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 2 - 15 ngày',position='Bên phải slide 2',amount=1300000,day_limit=15,creator_id=1)
+Service_Ads.objects.create(service_name='Quảng cáo hình ảnh bên phải slide 2 - 30 ngày',position='Bên phải slide 2',amount=1900000,day_limit=30,creator_id=1)
 
-Account.objects.create(username='deftnt',email='jimmi2051deftnt',password='',name='NguyenLyThanh',phone='0978956043',activity_account=True,activity_merchant=True,is_admin=True)
 
-Purchase_Service_Ads.objects.create(purchase_name='Quảng cáo thân trang',
-merchant_id=Account.objects.get(pk=1),service_ads_id=Service_Ads.objects.get(pk=1),
-amount=999999,state=1,date_start='2018-11-21'
-)
-class Purchase_Service_Ads(models.Model):
-    purchase_name = models.CharField(max_length=200)
-    merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)
-    service_id = models.ForeignKey('Service', on_delete=models.CASCADE,blank=True,null=True)
-    service_ads_id = models.ForeignKey('Service_Ads',on_delete=models.CASCADE,blank=True,null=True)
-    amount = models.IntegerField()
-    state = models.IntegerField()
-    date_start = models.DateTimeField(blank=True,null=True)
-    success_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
-    archive = models.BooleanField(default=False)
 

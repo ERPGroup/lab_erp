@@ -11,8 +11,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage, Storage
 
 import pandas as pd
-from datetime import datetime  
-from datetime import timedelta  
+from datetime import datetime
+from datetime import timedelta
 
 import json
 
@@ -419,11 +419,11 @@ def purchase_service(request):
 
         try:
             purchase_service = Purchase_Service(
-               purchase_name=purchase_name,
-               merchant_id=merchant_id,
-               service_id=Service.objects.get(pk=service_id),
-               amount=amount,
-               state=int(state),
+                purchase_name=purchase_name,
+                merchant_id=merchant_id,
+                service_id=Service.objects.get(pk=service_id),
+                amount=amount,
+                state=int(state),
             )
             purchase_service.save()
             return HttpResponse('Success!')
@@ -449,22 +449,26 @@ def get_my_choices(id):
     _list = Service_Ads.objects.filter(position=f(id))
     return _list
 
-def findByValue(input,value):
+
+def findByValue(input, value):
     for i in range(len(input)):
         if input[i]['value'] == value:
             return i
     return -1
 
+
 @csrf_exempt
-def getDateAvailable(request,position,id_ads):
+def getDateAvailable(request, position, id_ads):
     if request.method == 'GET':
         infor_ads = Service_Ads.objects.get(pk=id_ads)
-        _list = Purchase_Service_Ads.objects.filter(service_ads_id__position=position)
+        _list = Purchase_Service_Ads.objects.filter(
+            service_ads_id__position=position)
         _input1 = []
         for item in _list:
             date_dict = dict()
             date_dict['start'] = item.date_start
-            date_dict['end'] = item.date_start + timedelta(days=item.service_ads_id.day_limit)
+            date_dict['end'] = item.date_start + \
+                timedelta(days=item.service_ads_id.day_limit)
             _input1.append(date_dict)
         max_date = (datetime.now()+timedelta(days=120))
         min_date = datetime.now()
@@ -478,43 +482,45 @@ def getDateAvailable(request,position,id_ads):
             min_date += step
         for item in _input1:
             while item['start'] < item['end']:
-                check[findByValue(check,item['start'].strftime('%Y-%m-%d'))] ['check'] = False
+                check[findByValue(check, item['start'].strftime(
+                    '%Y-%m-%d'))]['check'] = False
                 item['start'] += step
         max_date = (datetime.now()+timedelta(days=120))
         min_date = datetime.now()
         result = []
         while min_date <= max_date:
             flag = True
-            if check[findByValue(check,min_date.strftime('%Y-%m-%d'))]['check']:
+            if check[findByValue(check, min_date.strftime('%Y-%m-%d'))]['check']:
                 tempdate = min_date
                 for i in range(infor_ads.day_limit):
                     if tempdate >= max_date:
                         break
-                    if check[findByValue(check,tempdate.strftime('%Y-%m-%d'))] ['check'] == False :
+                    if check[findByValue(check, tempdate.strftime('%Y-%m-%d'))]['check'] == False:
                         flag = False
                         break
                     tempdate += step
-                if flag :
+                if flag:
                     result.append(min_date.strftime('%Y-%m-%d'))
             min_date += step
         return HttpResponse(json.dumps(result), content_type="application/json")
-    return  HttpResponse(-1)
+    return HttpResponse(-1)
+
 
 @csrf_exempt
-def get_my_choices_2(request):  
+def get_my_choices_2(request):
     if request.method == 'GET':
         ads = []
         for item in Service_Ads.objects.all():
             ads_dict = dict()
             ads_dict['id'] = item.id
             ads_dict['service_name'] = item.service_name
-            ads_dict['type_service'] = item.type_service
             ads_dict['position'] = item.position
             ads_dict['amount'] = item.amount
             ads_dict['day_limit'] = item.day_limit
             ads.append(ads_dict)
-        return  HttpResponse(json.dumps(ads), content_type="application/json")
-    return  HttpResponse(1)
+        return HttpResponse(json.dumps(ads), content_type="application/json")
+    return HttpResponse(1)
+
 
 @csrf_exempt
 def upload_image_ads(request):
@@ -540,6 +546,134 @@ def upload_image_ads(request):
             return HttpResponse(0)
     return HttpResponse(-1)
 
+
+@csrf_exempt
+def post_ads(request):
+    if request.method == 'POST':
+        filename = ""
+        filename_2 = ""
+        filename_3 = ""
+        myfile1 = request.FILES['inputPhoto_1']
+
+        if request.FILES.get('inputPhoto_2', False):
+            myfile2 = request.FILES['inputPhoto_2']
+        if request.FILES.get('inputPhoto_3', False):
+            myfile3 = request.FILES['inputPhoto_3']
+
+        validate_image = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif']
+        # up load image 1 to server
+        print(myfile1.size)
+        if myfile1.size > 1000000:
+            return HttpResponse(-2)
+        if myfile1.content_type in validate_image:
+            fs = FileSystemStorage(
+                location=settings.BASE_DIR + '/media/ads')
+            filename = fs.save(myfile1.name, myfile1)
+        else:
+            return HttpResponse(0)
+        # upload image 2 to server
+        if request.FILES.get('inputPhoto_2', False):
+            print(myfile2.size)
+            if myfile2.size > 1000000:
+                return HttpResponse(-2)
+            if myfile2.content_type in validate_image:
+                fs = FileSystemStorage(
+                    location=settings.BASE_DIR + '/media/ads')
+                filename_2 = fs.save(myfile2.name, myfile2)
+            else:
+                return HttpResponse(0)
+        # upload image 3 to server
+        if request.FILES.get('inputPhoto_3', False):
+            print(myfile3.size)
+            if myfile3.size > 1000000:
+                return HttpResponse(-2)
+            if myfile3.content_type in validate_image:
+                fs = FileSystemStorage(
+                    location=settings.BASE_DIR + '/media/ads')
+                filename_3 = fs.save(myfile3.name, myfile3)
+            else:
+                return HttpResponse(0)
+        inputAds_id = request.POST.get('inputAds_id')
+
+        inputLink_1 = request.POST.get('inputLink_1')
+        inputLink_2 = request.POST.get('inputLink_2')
+        inputLink_3 = request.POST.get('inputLink_3')
+
+        inputContent_1 = request.POST.get('inputContent_1')
+        inputContent_2 = request.POST.get('inputContent_2')
+        inputContent_3 = request.POST.get('inputContent_3')
+
+        service_ads = Purchase_Service_Ads.objects.get(id=inputAds_id)
+
+        customer = Account.objects.get(pk=request.session.get('user')['id'])
+
+        service_ads_post = Service_Ads_Post(
+            service_name=service_ads.service_ads_id.service_name,
+            purchase_service_id=service_ads,
+            customer_id=customer,
+            image_1=myfile1.name,
+            image_1_url=inputLink_1,
+            image_1_content=inputContent_1,
+            image_2=None if not request.FILES.get('inputPhoto_2', False) else myfile2.name,
+            image_2_url=inputLink_2,
+            image_2_content=inputContent_2,
+            image_3=None if not request.FILES.get('inputPhoto_3', False) else myfile3.name,
+            image_3_url=inputLink_3 ,
+            image_3_content=inputContent_3,
+        )
+        service_ads_post.save()
+
+        Purchase_Service_Ads.objects.filter(id=inputAds_id).update(state=2)
+
+        return HttpResponse(1)
+
+    return HttpResponse(-1)
+
+
+@csrf_exempt
+def post_ads_2(request):
+    if request.method == 'POST':
+        inputAds_id = request.POST.get('inputAds_id')
+
+        image_1 = request.POST.get('inputPhoto_1')
+        image_2 = request.POST.get('inputPhoto_2')
+        image_3 = request.POST.get('inputPhoto_3')
+
+        inputLink_1 = request.POST.get('inputLink_1')
+        inputLink_2 = request.POST.get('inputLink_2')
+        inputLink_3 = request.POST.get('inputLink_3')
+
+        inputContent_1 = request.POST.get('inputContent_1')
+        inputContent_2 = request.POST.get('inputContent_2')
+        inputContent_3 = request.POST.get('inputContent_3')
+
+        service_ads = Purchase_Service_Ads.objects.get(id=inputAds_id)
+
+        customer = Account.objects.get(pk=request.session.get('user')['id'])
+
+        expirired = service_ads.date_start + \
+            timedelta(days=service_ads.service_ads_id.day_limit)
+
+        service_ads = Service_Ads_Post(
+            service_name=service_ads.service_ads_id.service_name,
+            purchase_service_id=service_ads,
+            customer_id=customer,
+            image_1=image_1,
+            image_1_url=inputLink_1,
+            image_1_content=inputContent_1,
+            image_2=image_2,
+            image_2_url=inputLink_2,
+            image_2_content=inputContent_2,
+            image_3=image_3,
+            image_3_url=inputLink_3 ,
+            image_3_content=inputContent_3,
+            expiried=expirired,
+            is_active=True,
+        )
+        service_ads.save()
+        return HttpResponse(1)    
+    return HttpResponse(0)
+
 @csrf_exempt
 def del_image_ads(request, id_image):
     if request.method == 'DELETE':
@@ -549,10 +683,42 @@ def del_image_ads(request, id_image):
             Storage.delete(path)
             image.delete()
         return HttpResponse('1')
+    return HttpResponse('Error Request')
+
 
 def getServiceAdsAvailable(id):
-    result = Purchase_Service_Ads.objects.filter(merchant_id__id=id)
+    result = Purchase_Service_Ads.objects.filter(merchant_id__id=id,state=1)
     if result:
         return result
     return None
+
+
+@csrf_exempt
+def purchase_service_ads(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+
+    if request.method == 'POST':
+        purchase_name = request.POST.get('inputPurchaseName')
+        merchant_id = Account.objects.get(pk=request.session.get('user')['id'])
+        service_ads_id = request.POST.get('inputServiceId')
+        amount = request.POST.get('inputAmount')
+        state = request.POST.get('inputState')
+        date_start = datetime.strptime(request.POST.get('inputStart_date'), '%Y-%m-%d')
+
+        try:
+            purchase_service = Purchase_Service_Ads(
+                purchase_name=purchase_name,
+                merchant_id=merchant_id,
+                service_ads_id=Service_Ads.objects.get(pk=service_ads_id),
+                amount=amount,
+                state=int(state),
+                date_start=date_start,
+            )
+            purchase_service.save()
+            return HttpResponse('Success!')
+        except:
+            return HttpResponse('Error!')
+    return HttpResponse('Error Add Purchase!')
+
 

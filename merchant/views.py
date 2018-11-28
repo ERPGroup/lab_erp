@@ -6,7 +6,8 @@ from django.http import HttpResponse
 from website.models import *
 from . import functions
 from django.contrib import messages
-
+from datetime import datetime  
+from datetime import timedelta 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
     # if 'user' in request.session:
@@ -85,7 +86,9 @@ def service_ads(request):
 
 def service_ads_register(request,id_ads):
     if functions.get_my_choices(id_ads):
-        return render(request,'merchant/manager_service/manager_ads_register_detail.html',{ 'list':functions.get_my_choices(id_ads) })
+        user = request.session.get('user')
+        result = Account.objects.get(pk=user['id'])
+        return render(request,'merchant/manager_service/manager_ads_register_detail.html',{ 'list':functions.get_my_choices(id_ads),'user':result })
     else:
         return HttpResponse("Loi")
 

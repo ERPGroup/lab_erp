@@ -5,8 +5,8 @@ Trang chi tiết sản phẩm
 {% endblock %}
  
 {% block styles %}
-<script src="{% static 'merchant/ckeditor.js' %}"></script>
-<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
+<script src="{% static 'merchant/lib/ckeditor.js' %}"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lib/lightgallery.min.css' %} " />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
 {% endblock %}
 
@@ -142,16 +142,16 @@ Trang chi tiết sản phẩm
 {% endblock %}
 {% block data_table %}
 <!--Slide trượt-->
-<script src="{% static 'merchant/picturefill.min.js' %}"></script>
-<script src="{% static 'merchant/lightgallery.js' %}"></script>
-<script src="{% static 'merchant/lg-pager.js' %} "></script>
-<script src="{% static 'merchant/lg-autoplay.js' %}"></script>
-<script src="{% static 'merchant/lg-fullscreen.js' %}"></script>
-<script src="{% static 'merchant/lg-zoom.js' %}"></script>
-<script src="{% static 'merchant/lg-hash.js' %}"></script>
-<script src="{% static 'merchant/lg-share.js' %}"></script>
-<script src="{% static 'merchant/lg-thumbnail.js' %}"></script>
-<script src="{% static 'merchant/lg-deletebutton.js' %}"></script>
+<script src="{% static 'merchant/lib/picturefill.min.js' %}"></script>
+<script src="{% static 'merchant/lib/lightgallery.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-pager.js' %} "></script>
+<script src="{% static 'merchant/lib/lg-autoplay.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-fullscreen.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-zoom.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-hash.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-share.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-thumbnail.js' %}"></script>
+<script src="{% static 'merchant/lib/lg-deletebutton.js' %}"></script>
 <script>
     var $el = $('#lightgallery');
     $el.lightGallery({
@@ -182,5 +182,5 @@ Trang chi tiết sản phẩm
         }
     }
 </script>
-<script src="{% static 'merchant/merchant_product.js' %}"></script>
+<script src="{% static 'merchant/src/js/product/merchant_product.js' %}"></script>
 {% endblock %}

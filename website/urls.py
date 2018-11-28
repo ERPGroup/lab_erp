@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 
+from . import functions
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login, name='login-website'),
@@ -12,4 +14,8 @@ urlpatterns = [
     path('request_new_password/', views.request_new_password, name='request_new_password'),
     path('request_merchant/', views.request_merchant, name='request_merchant'),
     path('activity_merchant/<email>/<code>/', views.activity_merchant, name='activity_merchant'),
+
+    #Lý Thành
+    path('getAds',functions.getAds,name="get_ads_top")
+
 ]

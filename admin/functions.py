@@ -8,7 +8,9 @@ from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import re
 import json
-
+import pandas as pd
+from datetime import datetime
+from datetime import timedelta
 def check_rule(request):
     # if 'user' in request.session:
     #     user = request.session.get('user')
@@ -61,7 +63,7 @@ def service_add(request):
         return HttpResponse('Check')
     return HttpResponse('Error Add Service!')
 
-#Servies Ads
+#Servies Ads Ly Thanh
 @csrf_exempt
 def getAllAds(request):
     if check_rule(request) == 0:
@@ -81,6 +83,8 @@ def getAllAds(request):
             ads.append(ads_dict)
         return  HttpResponse(json.dumps(ads), content_type="application/json")
     return  HttpResponse(1)
+
+#Ly Thanh
 @csrf_exempt
 def AddService(request):
     if check_rule(request) == 0:
@@ -119,4 +123,68 @@ def RemoveService(request,id):
     success = "success"
     return render(request,'admin/manager_ads/manager_ads.html',{'success':success})
 
-       
+import pytz
+
+@csrf_exempt
+def getAllAdsActiving(request):
+    input = Purchase_Service_Ads.objects.filter(state=3,is_active=True)
+    result = []
+    tz = pytz.timezone('Asia/Bangkok')
+    now = datetime.now(tz)
+    # now = pytz.utc.localize(now)
+    for item in input:
+        if item.date_start<=now and now<item.date_start+timedelta(days=item.service_ads_id.day_limit):
+            ads_dict = dict()
+            ads_dict['id'] = item.id
+            ads_dict['end'] = (item.date_start+timedelta(days=item.service_ads_id.day_limit)).strftime('%Y-%m-%d-%H-%M-%S')
+            #ads_dict['start'] = (item.date_start).strftime('%m-%d-%Y-%H-%M-%S')
+            result.append(ads_dict)
+    for item in Purchase_Service_Ads.objects.filter(state=2,is_active=True):
+        ads_dict = dict()
+        ads_dict['id']= "start_"+str(item.id)
+        ads_dict['end']=(item.date_start).strftime('%Y-%m-%d-%H-%M-%S')
+        result.append(ads_dict)
+    if len(result) < 6:
+        arr_chose = []
+        arr_chose.append("Đầu trang")
+        arr_chose.append("Giữa trang")
+        arr_chose.append("Cuối trang")
+        arr_chose.append("Slide")
+        arr_chose.append("Bên phải slide 1")
+        arr_chose.append("Bên phải slide 2")
+        check = []
+        for i in range(6):
+            check_dict = dict()
+            check_dict['check']=False
+            check_dict['key'] = arr_chose[i]
+            check.append(check_dict)
+        for item in input:
+            for i in range(6):
+                if item.service_ads_id.position == check[i]['key']:
+                    check[i]['check']=True
+        for item in check:
+            if item['check'] == False:
+                ads_dict = dict()
+                ads_dict['id']="none_"+item['key']
+                ads_dict['end']=(now+timedelta(minutes=30)).strftime('%m-%d-%Y-%H-%M-%S')
+                result.append(ads_dict) 
+    if result:
+        return HttpResponse(json.dumps(result),content_type="application/json")
+    return HttpResponse(-1)
+
+@csrf_exempt
+def enable_ads(request):
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        service_ads = Purchase_Service_Ads.objects.filter(id=id)
+        service_ads.update(state=3)
+        return HttpResponse(1)
+    return HttpResponse(-1)
+@csrf_exempt
+def disable_ads(request):
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        service_ads = Purchase_Service_Ads.objects.filter(id=id)
+        service_ads.update(state=4)
+        return HttpResponse(1)
+    return HttpResponse(-1)

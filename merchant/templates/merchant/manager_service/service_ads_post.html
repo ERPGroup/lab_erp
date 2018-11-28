@@ -12,6 +12,10 @@ Trang chi tiết người dùng
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
 {% endblock %}
 {% block content %}
+<script>
+    var input = new Array();
+    var count = 0;
+</script>
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px; padding-top:15px;">
@@ -24,38 +28,58 @@ Trang chi tiết người dùng
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
+        <form method="post" id="frm_ads" action="/merchant/upload_ads/" enctype="multipart/form-data" class="background_white"
+            role="form">
+            {% csrf_token %}
             <h3 style="text-align:center;">Nội dung quảng cáo</h3>
             <hr>
-
             <div class="col-lg-6 form-group">
                 <label>Tên quảng cáo</label>
-                <select class="form-control" id="select_type">
+                <select class="form-control" name="inputAds_id" id="select_type">
                     {% for item in list %}
-                    <option value="{{item}}">{{item.service_ads_id.service_name}}</option>
+                    <option value="{{item.id}}">{{item.service_ads_id.service_name}}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col-lg-6 form-group">
                 <label>Hạn sử dụng</label>
-                <input type="text" class="form-control" value="21/12/2018" name="input" id="">
+                <input type="text" class="form-control" value="{{item.service_ads_id.day_limit}}" name="input" id="">
             </div>
-            <div class="col-lg-6 form-group">
-                <label>Đường dẫn quảng cáo</label>
-                <input value="https://google.com" type="text" class="form-control">
-            </div>
-            <div class="col-lg-6 form-group">
-                <label>Nội dung quảng cáo</label>
-                <input value="Đây là quảng cáo" type="text" class="form-control">
-            </div>
-            <div class="col-lg-12 form-group">
-                <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo">Thêm</label>
-                    <input type="file" name="photo" id="upload-photo" /></h3>
+            <div class="col-lg-4 form-group">
+                <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-1">Thêm</label>
+                    <input type="file" name="inputPhoto_1" id="upload-photo-1" /></h3>
                 <hr>
-            </div>
-            <div class="col-lg-12 form-group">
-                <div id="lightgallery">
+                <div class="count_image">
+                    <img id="ads_1" src="">
                 </div>
+                <label>Đường dẫn quảng cáo</label>
+                <input value="https://google.com" type="text" name="inputLink_1" class="form-control">
+                <label>Nội dung quảng cáo</label>
+                <input value="Đây là quảng cáo" type="text" name="inputContent_1" class="form-control">
+            </div>
+            <div class="col-lg-4 form-group">
+                <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-2">Thêm</label>
+                    <input type="file" name="inputPhoto_2" id="upload-photo-2" /></h3>
+                <hr>
+                <div class="count_image">
+                    <img id="ads_2" src="">
+                </div>
+                <label>Đường dẫn quảng cáo</label>
+                <input value="https://google.com" type="text" name="inputLink_2" class="form-control">
+                <label>Nội dung quảng cáo</label>
+                <input value="Đây là quảng cáo" type="text" name="inputContent_2" class="form-control">
+            </div>
+            <div class="col-lg-4 form-group">
+                <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-3">Thêm</label>
+                    <input type="file" name="inputPhoto_3" id="upload-photo-3" /></h3>
+                <hr>
+                <div class="count_image">
+                    <img id="ads_3" src="">
+                </div>
+                <label>Đường dẫn quảng cáo</label>
+                <input value="https://google.com" type="text" name="inputLink_3" class="form-control">
+                <label>Nội dung quảng cáo</label>
+                <input value="Đây là quảng cáo" type="text" name="inputContent_3" class="form-control">
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
                 <button type="submit" class="btn btn-info">Đăng nội dung</button>
@@ -70,80 +94,5 @@ Trang chi tiết người dùng
 {% endblock %}
 {% block data_table %}
 <!--Slide trượt-->
-<script src="{% static 'merchant/picturefill.min.js' %}"></script>
-<script src="{% static 'merchant/lightgallery.js' %}"></script>
-<script src="{% static 'merchant/lg-pager.js' %} "></script>
-<script src="{% static 'merchant/lg-autoplay.js' %}"></script>
-<script src="{% static 'merchant/lg-fullscreen.js' %}"></script>
-<script src="{% static 'merchant/lg-zoom.js' %}"></script>
-<script src="{% static 'merchant/lg-hash.js' %}"></script>
-<script src="{% static 'merchant/lg-share.js' %}"></script>
-<script src="{% static 'merchant/lg-thumbnail.js' %}"></script>
-<script src="{% static 'merchant/lg-deletebutton.js' %}"></script>
-<script>
-    var $el = $('#lightgallery');
-    $el.lightGallery({
-        selector: '.item',
-    });
-
-    function reload() {
-        $el.data('lightGallery').destroy(true);
-        $el.lightGallery();
-    }
-</script>
-<script>
-    // Upload image
-    $(document).ready(function () {
-        $('#upload-photo').change(function () {
-            data = new FormData();
-            files = $('#upload-photo').get(0).files;
-            if (files.length > 0) {
-                data.append('photo', files[0]);
-            }
-            $.ajax({
-                url: 'http://localhost:8000/merchant/upload_image_ads',
-                method: 'POST',
-                contentType: false,
-                processData: false,
-                data: data,
-                success: function (response) {
-                    // alert(response);
-                    if (response > 0) {
-                        var reader = new FileReader()
-                        reader.onload = function (e) {
-                            var result_1 = ''
-                            result_1 = '<div class="col-lg-6 no_padding ' + response +
-                                ' count_image item" id="' + response + '" data-src="' +
-                                e.target.result + '">'
-                            result_1 += '<img src="' + e.target.result + '" />'
-                            result_1 += '<div class="action_image">'
-                            result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
-                            result_1 += '<a href="#" onclick="$(\'#' + response +
-                                '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
-                            result_1 += '</div>'
-                            result_1 += '</div>'
-                            $el.append(result_1);
-                            $el.data('lightGallery').destroy(true);
-                            $el.lightGallery();
-                        }
-                        reader.readAsDataURL(files[0]);
-                    }
-                    if (response == 0) {
-                        alert('Do khong phai file anh');
-                    }
-                    if (response == -2) {
-                        alert('Dung luong anh khong duoc vuot qua 2MB');
-                    }
-                    if (response == -1) {
-                        alert('Xay ra loi');
-                    }
-                },
-                error: function (jqXHR) {
-                    alert(jqXHR.responseText);
-                }
-            });
-        });
-    });
-</script>
-
+<script src="{% static 'merchant/src/js/service_ads/service_ads.js' %}"></script>
 {% endblock %}
