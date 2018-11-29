@@ -289,6 +289,10 @@ def del_image(request, id_image):
 @csrf_exempt   
 def product_add(request):
     if request.method == "POST":
+        count_product = request.POST.get('inputCountProduct')
+        if int(count_product) < 1:
+            return HttpResponse('KHong the tao moi san pham')
+
         code = request.POST.get('inputCode')
         name = request.POST.get('inputName')
         detail = request.POST.get('inputDetail')
@@ -325,9 +329,6 @@ def product_add(request):
             )
             image.save()
 
-        count_product = request.POST.get('inputCountProduct')
-        if int(count_product) < 1:
-            return HttpResponse(-1)
         v = 1
         for i in range(int(count_product)):
             if count_product != 1:
@@ -648,40 +649,44 @@ def post_add(request):
         return HttpResponse('Error')
 
     if request.method == 'POST':
-        product_id = request.POST.get('inputProduct')
-        # check  product 
 
+        product_id = request.POST.get('inputProduct')
+        service_id = request.POST.get('inputService')
+        creator_id = Account.objects.get(pk=request.session.get('user')['id'])
+
+        # check  product 
         if Post_Product.objects.filter(product_id__id=product_id, is_activity=True, is_lock=False).exists():
             return HttpResponse('Error! This product was used in the Post other!')
+        # check remain post
+        if Account_Service.objects.filter(service_id=int(service_id), account_id=creator_id, remain__gt=0).exists == False:
+            return HttpResponse('Loi! Ban khong co du goi tin do')
 
-        service_id = request.POST.get('inputService')
-        service = Service.objects.get(pk=service_id)
-        creator = Account.objects.get(pk=request.session.get('user')['id'])
-        value = request.POST.get('inputValue')
+        service = Service.objects.get(pk=int(service_id))
+        quantity = request.POST.get('inputQuantity')
 
-        if int(value) > service.value:
-            return HttpResponse('So luong san pham khong duoc lon hon %s'.service.value)
-        if int(value) <= 0:
+
+        if int(quantity) > service.quantity_product:
+            return HttpResponse('So luong san pham khong duoc lon hon '+ str(service.value))
+        if int(quantity) <= 0 or quantity == '':
             return HttpResponse('So luong san pham phai lon hon 0')
 
-        try:
-            post_product = Post_Product(
-                product_id = Product.objects.get(pk=product_id),
-                post_type = service,
-                creator_id = creator,
-                quantity = int(value),
-                visable_vip = service.visable_vip,
-                expire = datetime.now() + timedelta(days=service.day_limit),
-            )
-            post_product.save()
-            account_service = Account_Service.objects.filter(account_id=request.session.get('user')['id'], service_id=post_product.post_type_id)
-            if account_service.count() == 1:        
-                remain = account_service[0].remain
-                account_service.update(remain=remain-1)
-                return HttpResponse('Success')
-            return HttpResponse('Error Account servive sub remain')
-        except:
-            return HttpResponse('Error except')
+    
+        post_product = Post_Product(
+            product_id = Product.objects.get(pk=product_id),
+            post_type = service,
+            creator_id = creator_id,
+            quantity = int(quantity),
+            visable_vip = service.visable_vip,
+            expire = datetime.now() + timedelta(days=service.day_limit),
+        )
+        post_product.save()
+        account_service = Account_Service.objects.filter(account_id=creator_id, service_id=post_product.post_type_id)
+        if account_service.count() == 1:        
+            remain = account_service[0].remain
+            account_service.update(remain=remain-1)
+            return HttpResponse('Success')
+        return HttpResponse('Error Account servive sub remain')
+
     return HttpResponse('Error')
 
 
@@ -698,22 +703,29 @@ def post(request, id_post):
 
     if request.method == 'POST':
 
-        if Post_Product.objects.filter(pk=id_post).exists() == False and Post_Product.objects.filter(pk=id_post).count == 1:
+        #check an update expire post  \
+
+        # kiem tra tin dang co ton tai khong?
+        if Post_Product.objects.filter(pk=id_post).exists() == False:
             return HttpResponse('Tin dang khong ton tai!')
 
         post = Post_Product.objects.get(pk=id_post)
+        # kiem tra da het  hang cua
         if post.is_lock == True:
             return HttpResponse('Tin dang da het hang, Khong duoc phep sua!')
 
-        quantity = request.POST.get('inputValue')
-        if int(quantity) > post.post_type.value:
-            return HttpResponse('So luong san pham khong duoc lon hon {}'.format(str(post.post_type.value)))
+        quantity = request.POST.get('inputQuantity')
+
+        if int(quantity) > (post.post_type.quantity_product - post.bought):
+            return HttpResponse('So luong san pham khong duoc lon hon {}'.format(str(post.quantity - post.bought)))
         if int(quantity) <= 0 or quantity == '':
             return HttpResponse('So luong san pham phai lon hon 0')
+
         post.quantity = quantity
         post.is_activity = request.POST.get('inputIsActivity')
         post.save()
         return HttpResponse('Thuc hien thanh cong!')
+
     if request.method == 'DELETE':
         if Post_Product.objects.filter(pk=id_post).exists() == False and Post_Product.objects.filter(pk=id_post).count == 1:
             return HttpResponse('Tin dang khong ton tai!')

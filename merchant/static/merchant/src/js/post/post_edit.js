@@ -8,7 +8,7 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-            console.log((response[0]['fields'].expire.split('T')));
+            console.log((response));
 
             post = response[0]['fields']
 
@@ -58,8 +58,7 @@ $(document).ready(function(){
             }
             $('#inputVisableVip').append(option_vip);
 
-            $('#inputValue').val(post.quantity);
-            $('#inputValue').attr('max', post.quantity);
+            $('#inputQuantity').val(post.quantity);
             
             option_activity = '';
             if(post.is_activity == true){
@@ -81,7 +80,7 @@ $(document).ready(function(){
 
     $('#edit').click(function(){
         data = {
-            'inputValue': $('#inputValue').val(),
+            'inputQuantity': $('#inputQuantity').val(),
             'inputIsActivity': $('#inputIsActivity').val(),
         }
 
@@ -121,7 +120,7 @@ function showProduct(id_product){
             item += '<td>'+ response.code +'</td>'
             item += '<td><div class="tbl_thumb_product"><img src="'+ response.list_image[0].image_link +'" alt="Product"></div></td>'
             item += '<td>'+ response.price_origin +' VNĐ</td>'
-            item += '<td>Đây là sản phẩm demo cho mọi người xem thôi, chứ khong6 có gì đâu</td>'
+            item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
             item += '</tr>'
             $('#item').empty();
             $('#item').append(item)

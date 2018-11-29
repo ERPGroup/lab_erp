@@ -41,7 +41,7 @@ $(document).ready(function(){
         data = {
             'inputProduct': $('#products').val(),
             'inputService': $('#services').val(),
-            'inputValue': $('#inputValue').val(),
+            'inputQuantity': $('#inputQuantity').val(),
         }
 
         $.ajax({
@@ -62,14 +62,13 @@ function showProduct(id_product){
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-            console.log(response);
             item = ''
             item += '<tr>'
             item += '<td><a href="/merchant/product/edit/'+ this.value +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
             item += '<td><div class="tbl_thumb_product"><img src="'+ response.list_image[0].image_link +'" alt="Product"></div></td>'
             item += '<td>'+ response.price_origin +' VNĐ</td>'
-            item += '<td>Đây là sản phẩm demo cho mọi người xem thôi, chứ khong6 có gì đâu</td>'
+            item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
             item += '</tr>'
             $('#item').empty();
             $('#item').append(item)
@@ -96,8 +95,8 @@ function showPost(id_service){
                 option_vip += '<option value="0" selected >Không</option>'
             }
             $('#inputVisableVip').append(option_vip);
-            $('#inputValue').val(service.value);
-            $('#inputValue').attr('max', service.value);
+            $('#inputQuantity').val(service.quantity_product);
+            $('#inputQuantity').attr('max', service.quantity_product);
         }
     })
 }
