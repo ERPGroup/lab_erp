@@ -14,7 +14,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 });
 
 $(document).ready(function () {
-    var table = $('#dataTables-example').dataTable({
+    var table = $('#dataTables_posted').dataTable({
         language: {
             paginate: {
                 previous: "<i class='fa fa-arrow-left'></i>",
@@ -27,35 +27,31 @@ $(document).ready(function () {
             sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
             sInfoFiltered: "(được lọc từ _MAX_ mục)",
             sInfoPostFix: "",
-            sSearch: "Tìm:",
+            sSearch: "Tìm kiếm: ",
             sUrl: "",
         },
         "dom": '<"toolbar">frtip',
-        "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
         "columnDefs": [
             { "type": 'formatted-num', targets: 0 },
             { "type": 'formatted-num', targets: 2 },
+            { "type": 'date-eu', targets: 3 }
         ],
-        "order": [[ 0, "desc" ]],
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/products?table=true",
+            "url": "http://localhost:8000/admin/posts",
             "dataSrc": ""
         },
-
     });
+
     var tool_bar = '';
     tool_bar += '<div class="col-xs-8 no_padding">';
-    tool_bar += '<span>Trạng thái: </span>';
+    tool_bar += '<span>Loại tin: </span>';
     tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-    tool_bar += '<option>Đang xem xét</option>';
-    tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Được chấp thuận</option>';
-    tool_bar += '<option>Bị khóa</option>';
     tool_bar += '</select>';
     tool_bar += '</div>';
     $("div.toolbar").html(tool_bar);
+
     $('#select_type').change(function () {
         regExSearch = '^' + this.value + '$';
         if (this.value == "Tất cả") {
@@ -65,4 +61,17 @@ $(document).ready(function () {
             table.api().columns(4).search(regExSearch, true, false).draw();
         }
     });
+
+    $.ajax({
+        url: 'http://localhost:8000/admin/services',
+        method: 'GET',
+        contentType: 'application/json',
+        success: function(response){
+            console.log(response)
+            tool_bar = '<option>Tất cả</option>';
+            for(var i = 0; i < response.length; i++)
+                tool_bar += '<option>'+ response[i]['fields'].service_name +'</option>';
+            $('#select_type').append(tool_bar)
+        }
+    })
 });

@@ -20,6 +20,7 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
+            console.log(response)
             for(var i = 0; i < response.length; i++)
                 $('#services').append('<option value="'+ response[i]['service_id'] +'">'+ response[i]['service_name'] + ' | ' + response[i]['remain'] +' tin' +'</option>');
             

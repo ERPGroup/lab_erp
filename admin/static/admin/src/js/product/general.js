@@ -68,9 +68,9 @@ function load_vesion_product () {
   for (var i = 0; i < result.length; i++) {
     var html = ''
     html += '<tr>'
-    html += '<td><input type="checkbox" checked id="check_vesion_'+ i +'" class="form-check-input"></td>'
+    html += '<td><input type="checkbox" checked disabled="disabled" id="check_vesion_'+ i +'" class="form-check-input"></td>'
     html += '<td><span style="color:#d9534f">' + result[i] + '</span></td>'
-    html += '<td><input type="text" class="price_product" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
+    html += '<td><input type="text" class="price_product" disabled="disabled" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
     html += '</tr>'
     x.innerHTML += html
   }
@@ -93,7 +93,7 @@ function addmore_att (content, name_tag) {
   }else{
     var uuid = guid();
     var attribute = '';
-    attribute += '<div class="label label-info ' + name_tag + '" id="' + uuid + '">' + content + '<a href="#" onclick="$(\'#' + uuid + '\').remove(); load_vesion_product(); return false;"><i class="fa fa-remove"></i></a></div>';
+    attribute += '<div class="label label-info ' + name_tag + '" id="' + uuid + '">' + content + '<a><i class="fa fa-remove"></i></a></div>';
     $('#' + name_tag).append(attribute);
     load_vesion_product();
     check_button_submit();
@@ -135,7 +135,7 @@ $(document).ready(function(){
         var new_value = 'this_value_' + count_value;
         var new_name = 'name_attribute_' + count_value;
         var attribute = ''
-        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\';  return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
+        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\'; return false; }" disabled="disabled" placeholder="Giá trị" width="100%" style="width:100%"></div>'
         attribute += '<div class="clearfix"></div></div>'
         attribute += '<div class="form-group">'
         attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>'
@@ -151,71 +151,6 @@ function scrollto (id) {
   $(window).scrollTop(etop)
 }
 
-// Upload image
-$(document).ready(function(){
-  $('#upload-photo').change(function(){
-    data = new FormData();
-    files = $('#upload-photo').get(0).files;
-
-    if (files.length > 0){
-      data.append('photo', files[0]);
-    }
-
-    $.ajax({
-      url: 'http://localhost:8000/merchant/upload_image',
-      method: 'POST',
-      contentType: false,
-      processData: false,
-      data: data,
-      success: function(response){
-        // alert(response);
-        if (response == -3)
-          alert('Vui long dang nhap de them san pham');
-        if (response > 0){
-          var reader = new FileReader()
-          reader.onload = function (e) {
-              var result_1 = ''
-              result_1 = '<div class="col-lg-6 no_padding ' + response + ' count_image item" id="'+ response +'" data-src="' + e.target.result + '">'
-              result_1 += '<img src="' + e.target.result + '" />'
-              result_1 += '<div class="action_image">'
-              result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
-              result_1 += '<a href="#" onclick="$(\'#' + response + '\').remove(); reload(); delete_image('+ response +'); return false;" ><i class="fa fa-remove"></i></a>'
-              result_1 += '</div>'
-              result_1 += '</div>'
-              $el.append(result_1);
-              $el.data('lightGallery').destroy(true);
-              $el.lightGallery();
-          }
-          reader.readAsDataURL(files[0]);
-        }
-        if (response == 0){
-          alert('Do khong phai file anh');
-        }
-        if (response == -2){
-          alert('Dung luong anh khong duoc vuot qua 2MB');
-        }
-        if (response == -1){
-          alert('Xay ra loi');
-        }
-      },
-      error: function(jqXHR){
-        alert(jqXHR.responseText);
-      }
-    });
-  });
-});
-
-
-function delete_image(id_image){
-  $.ajax({
-    url: 'http://localhost:8000/merchant/delete_image/' + id_image,
-    method: 'DELETE',
-    success: function(response){
-      $('#upload_photo').val(''); 
-      alert(response);
-    }
-  })
-}
 
 // List Categorys
 $(document).ready(function(){
@@ -245,7 +180,7 @@ function clickcategory(name, id) {
   }
   if (check == false){
     var html = '';
-    html += '<div class="col-lg-12 category_search" id="' + id + '" onclick="$(this).remove();">' + name + '</div>'
+    html += '<div class="col-lg-12 category_search" id="' + id + '">' + name + '</div>'
     $('#value_category').append(html);
   }
 }
@@ -269,17 +204,3 @@ function check_button_submit(){
       $('#submit').removeAttr('disabled');
     }
   });
-
-  // function check_price(){
-  //   var check_url = $(location).attr('pathname').split('/');
-  //   var id_product = check_url[check_url.length - 1]
-  //   $.ajax({
-  //     url: 'http://localhost:8000/merchant/product/' + id_product,
-  //     method: 'GET',
-  //     contentType: 'application/json',
-  //     success: function(response){
-  //       for(var i = 0; i < response.list_price.length; i++)
-  //           $('#price_product_'+ i).val(response.list_price[i])
-  //     }
-  //   })
-  // }

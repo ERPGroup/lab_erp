@@ -24,21 +24,22 @@ def check_rule(request):
 
 def services(request):
     if request.method == 'GET':
-        services = []
-        service_all = Service.objects.all()
-        for item in service_all:
-            service = []
-            service.append('<a href="/admin/service/edit/'+ str(item.id) +'">'+ str(item.service_name) +'</a>')
-            service.append(str(item.value) + ' tin')
-            service.append(str(item.day_limit)+ ' ngày')
-            service.append(str(item.amount)+ ' VNĐ')
-            if item.is_active == True:
-                service.append('<b style="color:green">Đang bán</b>')
-            else:
-                service.append('<b style="color:red">Ngưng bán</b>')
-            services.append(service)
-
-        return HttpResponse(json.dumps(services), content_type="application/json")
+        if request.GET.get('table') == 'true':
+            services = []
+            service_all = Service.objects.all()
+            for item in service_all:
+                service = []
+                service.append('<a href="/admin/service/edit/'+ str(item.id) +'">'+ str(item.service_name) +'</a>')
+                service.append(str(item.value) + ' tin')
+                service.append(str(item.day_limit)+ ' ngày')
+                service.append(str(item.amount)+ ' VNĐ')
+                if item.is_active == True:
+                    service.append('<b style="color:green">Đang bán</b>')
+                else:
+                    service.append('<b style="color:red">Ngưng bán</b>')
+                services.append(service)
+            return HttpResponse(json.dumps(services), content_type="application/json")
+        return HttpResponse(serialize('json', Service.objects.all()), content_type="application/json")
     return HttpResponse('error')
 
 # Service_add
@@ -135,12 +136,10 @@ def category_add(request):
     if request.method == 'POST':
         print(request.POST)
         name_category = request.POST.get('inputName')
-        quantity = request.POST.get('inputQuantity')
         is_active = request.POST.get('inputIsActive')
         #try:
         category = Category(
             name_category = name_category,
-            quantity = quantity,
             is_active = is_active,
         )
         category.save()
@@ -157,11 +156,9 @@ def category(request, id_category):
     if request.method == 'POST':
         try:
             name_category = request.POST.get('inputName')
-            quantity = request.POST.get('inputQuantity')
             is_active = request.POST.get('inputIsActive')
             category = Category.objects.get(id=id_category)
             category.name_category = name_category
-            category.quantity = quantity
             category.is_active = is_active
             category.save()
             return HttpResponse(1)
@@ -197,6 +194,14 @@ def attributes(request):
         return HttpResponse(json.dumps(attributes), content_type="application/json")
     return HttpResponse('error')
 
+
+######
+######
+###### Attribute
+######
+######
+######
+######
 
 @csrf_exempt    
 def attribute_add(request):
@@ -252,4 +257,220 @@ def attribute(request, id_attribute):
         return HttpResponse(1)
 
     return HttpResponse(0)
- 
+
+
+####  
+####
+####
+####
+####    Account
+####
+####
+####
+####
+
+def user(request, id_user):
+    if request.method == 'GET':
+        if Account.objects.filter(pk=id_user).exists() == True:
+            user = Account.objects.get(pk=id_user)
+            account = dict()
+            account['username']  = user.username
+            account['email'] = user.email
+            account['name_shop'] = user.name_shop
+            account['name']  = user.name
+            account['phone'] = user.phone
+            account['id_card'] = user.id_card
+            account['address'] = user.address
+            account['birthday'] = user.birthday
+
+            if user.activity_merchant == True:
+                account['role'] = 2
+            if user.activity_advertiser == True:
+                account['role'] = 3
+            if user.activity_account and user.activity_merchant == False:
+                account['role'] = 1
+            if user.is_admin == True:
+                account['role'] = 0
+
+            account['lock'] = user.is_lock
+            account['sex'] = user.sex
+
+            return HttpResponse(json.dumps(account), content_type="application/json")
+        else:
+            return HttpResponse(-3)
+    return HttpResponse(-1)
+
+
+#### Account service
+
+def account_services(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyen truy cap bi tu choi')
+
+    if request.method == 'GET':
+        if request.GET.get('service') == 'available':
+            if request.GET.get('table') == 'true':
+                list_acc_ser = []
+                account_services = Account_Service.objects.filter(account__id=request.session.get('user')['id'], remain__gt=0)
+                for item in account_services:
+                    acc_ser = []
+                    acc_ser.append('<a href="/merchant/purchase_service/'+ str(item.service_id) +'"> TD'+ str(item.service_id) +'</a>')
+                    acc_ser.append(item.service.service_name)
+                    acc_ser.append(str(item.remain)+ ' tin')
+                    acc_ser.append(str(item.service.day_limit) + ' ngày')
+                    list_acc_ser.append(acc_ser)
+                return HttpResponse(json.dumps(list_acc_ser), content_type="application/json")
+
+            account_services = Account_Service.objects.filter(account__id=request.session.get('user')['id'], remain__gt=0)
+            list_account_service = []
+            for account_service in account_services:
+                dict_account_service = dict()
+                dict_account_service['post_id'] = account_service.pk
+                dict_account_service['account_id'] = account_service.account_id
+                dict_account_service['service_id'] = account_service.service_id
+                dict_account_service['service_name'] = Service.objects.get(pk=account_service.service_id).service_name
+                dict_account_service['remain'] = account_service.remain
+                list_account_service.append(dict_account_service)
+            return HttpResponse(json.dumps(list_account_service), content_type="application/json")
+    return HttpResponse('Error')
+
+
+######
+######
+######
+######  Prdouct
+######
+######
+######
+
+
+def products(request):
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            products = []
+            prod_all = Product.objects.filter(type_product=True).order_by('-pk')
+            for item in prod_all:
+                product = []
+                product.append('<a href="/admin/product/see/'+ str(item.id) +'">SP'+ str(item.id) +'</a>')
+                product.append(item.name)
+                product.append(str(item.price) + ' VND')
+                image = Product_Image.objects.filter(product_id_id=item.id).order_by('image_id_id').first()
+                product.append('<div class="tbl_thumb_product"><img src="/product/' + image.image_id.image_link.url + '" /></div>')
+                if item.consider == 1:
+                    product.append('<p style="color:green">Được chấp thuận</p>')
+                if item.consider == 0:
+                    product.append('<p style="color:red">Bị khóa</p>')
+                if item.consider == 2:
+                    product.append('<p style="color:blue">Đang xem xét</p>')
+                products.append(product)
+            return HttpResponse(json.dumps(products), content_type="application/json")
+    return
+
+@csrf_exempt  
+def product(request, id_product):
+
+    if request.method == 'GET':
+        product_detail = dict()
+        product_config = Product.objects.filter(id=int(id_product), type_product=True)
+        if product_config.count() == 0:
+            return HttpResponse(-1)
+
+        product_detail['name'] = product_config[0].name
+        product_detail['detail'] = product_config[0].detail
+        product_detail['origin'] = product_config[0].origin
+        product_detail['code'] = product_config[0].code
+        product_detail['price_origin'] = product_config[0].price
+        product_detail['consider'] = product_config[0].consider
+
+        product_category = Product_Category.objects.filter(product_id=int(id_product))
+        list_category  = []
+        for item in product_category:
+            category_dict = dict()
+            category = Category.objects.get(pk=item.category_id.id)
+            category_dict['id'] = category.id
+            category_dict['name_category'] = category.name_category
+            category_dict['quantity'] = category.quantity
+            list_category.append(category_dict)
+        product_detail['list_category'] = list_category
+
+        product_image = Product_Image.objects.filter(product_id=int(id_product)).order_by('image_id_id')
+        list_image = []
+        for item in product_image:
+            image_dict = dict()
+            image = Image.objects.get(pk=item.image_id.id)
+            image_dict['id']  = image.id
+            image_dict['image_link'] =  '/product' + image.image_link.url
+            image_dict['is_default'] = image.is_default
+            image_dict['user_id'] = image.user_id.id
+            list_image.append(image_dict)
+        product_detail['list_image'] = list_image
+
+        #lay ra danh sach phien ban
+        link_type = Link_Type.objects.filter(parent_product=product_config[0].id)
+        list_attr = []
+        list_price = []
+        for item in link_type:
+            list_tmp = []
+            list_price.append(item.product_id.price)
+            product_attr = Product_Attribute.objects.filter(product_id=item.product_id.id).order_by('attribute_id')
+            for item in product_attr:
+                list_tmp.append(item.value)
+            list_attr.append(list_tmp)
+    
+        #su dung matrix de tra ve danh sach gia tri cho tung thuoc tinh
+        len_atr = len(list_attr[0])
+        len_verison = len(list_attr)
+        list_value_attr = []
+        for i in range(len_atr):
+            list_temp = []
+            for j in range(len_verison):
+                if list_attr[j][i] not in list_temp:
+                    list_temp.append(list_attr[j][i])
+            list_value_attr.append(list_temp)
+
+        product_detail['list_attr'] = list_value_attr
+        product_detail['list_price'] = list_price
+
+        return  HttpResponse(json.dumps(product_detail), content_type="application/json")
+
+    #check role
+    if request.method == 'POST':
+        consider = request.POST.get('consider')
+        if Product.objects.filter(pk=id_product).exists() == True:
+            product = Product.objects.get(pk=id_product)
+            product.consider = consider
+            if int(consider) == 1:
+                product.is_activity = True
+            product.save()
+            for item in Link_Type.objects.filter(parent_product=product.id):
+                x = item.product_id
+                x.consider = consider
+                if int(consider) == 1:
+                    x.is_activity = True
+                x.save()
+            return HttpResponse('Thao tac thanh cong!')
+    return        
+        
+####  POST
+
+def posts(request):
+    if request.method == 'GET':
+        posts = []
+        post_all = Post_Product.objects.all()
+        for item in post_all:
+            post = []
+            post.append('<a href="/admin/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>'),
+            post.append('<a href="/admin/user/see/'+ str(item.creator_id.id) +'">'+ str(item.creator_id.name) +'</a>'),         
+            post.append(str(item.quantity - item.bought))
+            post.append(item.expire.replace(tzinfo=None).strftime("%d/%m/%Y %H:%M"))
+            post.append(item.post_type.service_name)
+            if item.is_activity == True:
+                post.append('<b style="color:green">Đang hiển thị</b>')
+            else:
+                post.append('<b style="color:red">Tắt hiển thị</b>')
+            posts.append(post)
+        return HttpResponse(json.dumps(posts), content_type="application/json")
+    return HttpResponse('error')
+
+#### payment
+

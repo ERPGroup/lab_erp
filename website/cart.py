@@ -14,7 +14,7 @@ def add(request, id_product):
     if product.type_product == False:
         id_origin_product = Link_Type.objects.get(product_id_id=id_product).parent_product
     else:
-        id_origin_product = id_product
+        return HttpResponse('Vui long lua chon phien ban')
     
     post = Post_Product.objects.filter(product_id_id=id_origin_product, is_lock=False, is_activity=True)
     if post.exists():
@@ -40,7 +40,7 @@ def sub(request, id_product):
     if product.type_product == False:
         id_origin_product = Link_Type.objects.get(product_id_id=id_product).parent_product
     else:
-        id_origin_product = id_product
+        return HttpResponse('Vui long lua chon phien ban')
     
     post = Post_Product.objects.filter(product_id_id=id_origin_product, is_lock=False, is_activity=True)
     if post.exists():
@@ -92,7 +92,7 @@ def remove(request, id_product):
 
 def show(request):
     cart = Cart(request.session)
-    return HttpResponse(cart.count)
+    return HttpResponse(cart.items)
 
 def clear(request):
     cart = Cart(request.session)

@@ -202,6 +202,8 @@ def request_merchant(request):
         return redirect('/')
 
     if request.method == 'POST':
+        
+
         account = Account.objects.get(email=request.session.get('user')['email'])
 
         code = random_code_activity(40)

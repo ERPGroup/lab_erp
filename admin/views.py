@@ -30,10 +30,18 @@ def users(request):
         return redirect('/admin/login')
     return render(request,'admin/manager_users/manager_users.html')
 
+def user_info(request, id_user):
+    # check id_user
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'admin/manager_users/user_info.html')
+
 def users_add(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_users/manager_users_detail.html')
+
+
 
 
 def services(request):
@@ -69,7 +77,7 @@ def post(request):
         return redirect('/admin/login')
     return render(request,'admin/manager_posted/manager_post.html')
 
-def post_detail(request):
+def post_detail(request, id_post):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_posted/manager_post_detail.html')
@@ -100,6 +108,11 @@ def products(request):
     return render(request,'admin/manager_product/manager_product.html')
 
 def products_detail(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'admin/manager_product/manager_product_detail.html')
+
+def product(request, id_product):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
     return render(request,'admin/manager_product/manager_product_detail.html')

@@ -15,20 +15,18 @@ Trang chi tiết sản phẩm
 {% endblock %}
 
 {% block content %}
-
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px;">
             Quản lý sản phẩm <small>Chỉnh sửa</small>
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/merchant/manager_product_detail" class="btn btn-danger">Xóa sản phẩm</a>
+                <a id='ignore' class="btn btn-danger">Khóa sản phẩm</a>
             </div>
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
             <div class="form-group">
                 <h3 style="text-align:center;">Thông tin sản phẩm</h3>
                 <hr>
@@ -37,66 +35,43 @@ Trang chi tiết sản phẩm
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Mã sản phẩm:</label>
-                        <input type="text" class="form-control">
+                        <input type="text" id="inputCode" disabled='disabled' class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Tên sản phẩm:</label>
-                        <input type="text" class="form-control">
+                        <input type="text" id="inputName" disabled='disabled' class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Mô tả ngắn:</label>
-                        <textarea name="editor1" class="form-control" rows="4"></textarea>
+                        <textarea name="editor1" id="inputDetail"  disabled='disabled' class="form-control" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group" id="re_number3">
                         <label>Giá :</label>
-                        <input type="text" id="number3" maxlength="11" onkeyup="checkNumber('number3');" class="form-control">
+                        <input type="text" id="inputPrice"  disabled='disabled' maxlength="11" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Nguồn gốc :</label>
+                        <input type="text" id="inputOrigin" disabled='disabled' class="form-control">
                     </div>
                     <div class="form-group" style="position:relative;">
                         <label>Danh mục sản phẩm:</label>
-                        <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
+                        <input data-toggle="dropdown" type="text"  disabled='disabled' autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
                         <i class="fa fa-search" style="position: absolute;top: 35px;left: 15px;"></i>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm bán chạy</a></li>
-                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm khuyến mãi</a></li>
-                            <li><a href="#" onclick="clickcategory($(this).text()); return false;">Sản phẩm hot</a></li>
+                        <ul class="dropdown-menu" id="list-category">
                         </ul>
                         <div id="value_category"></div>
                     </div>
-                    <script>
-                        function clickcategory(a) {
-                            var uuid = guid();
-                            var result = document.getElementById('value_category');
-                            var html = '';
-                            html += '<div class="col-lg-12 category_search" id="' + uuid + '" onclick="$(\'#' + uuid + '\').remove();">' + a + '</div>'
-                            result.innerHTML += html;
-                        }
-                    </script>
-                    <div class="form-group frm_tags">
-                        <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
-                        <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
-                            type="text" class="form-control" placeholder="Nhập tags cho gói tin">
-                        <ul>
-                            <div id="tags_add">
-
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        <label>Trạng thái</label>
-                        <select class="form-control">
-                            <option>Sử dụng</option>
-                            <option>Không sử dụng</option>
-                        </select>
-                    </div>
+                    
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <h3>Ảnh sản phẩm</h3>
+                        <h3>Ảnh sản phẩm <label class="upload_photo add_image" style="color:#428bca" for="upload-photo"></label>
+                            
                         <hr>
                     </div>
                     <div class="form-group">
@@ -106,6 +81,30 @@ Trang chi tiết sản phẩm
                 </div>
                 <div class="col-lg-8 attribute">
                     <div class="form-group">
+                        <h3>Thêm thuộc tính</h3>
+                        <hr>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <label>Tên thuộc tính</label>
+                        </div>
+                        <div class="col-lg-8">
+                            <label>Giá trị thuộc tính</label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="attribute_demo" id="add_more">
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-lg-6">
+                            <a onclick="addmore_attribute(); return false;" class="btn btn-default">Thêm thuộc tính
+                                khác</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-lg-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
@@ -114,13 +113,12 @@ Trang chi tiết sản phẩm
                                             id="dataTables-example">
                                             <thead>
                                                 <tr>
+                                                    <th></th>
                                                     <th>Phiên bản</th>
                                                     <th>Giá</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="result_attribute">
-                                                <tr>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -131,11 +129,10 @@ Trang chi tiết sản phẩm
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info">Chỉnh sửa</button>
-                <button type="reset" class="btn btn-default">Khôi phục</button>
+                <button type="submit" id="accept" class="btn btn-info">Cho phép bán</button>
+                <a href="/admin/manager_product" class="btn btn-default">Trở về</a>
             </div>
             <div class="clearfix"></div>
-        </form>
     </div>
 </div>
 <div class="clearfix"></div>
@@ -161,26 +158,7 @@ Trang chi tiết sản phẩm
         $el.data('lightGallery').destroy(true);
         $el.lightGallery();
     }
-    function readURL(input) {
-        var uuid = guid()
-        if (input.files && input.files[0]) {
-            var reader = new FileReader()
-            reader.onload = function (e) {
-                var result_1 = ''
-                result_1 = '<div class="col-lg-6 no_padding ' + uuid + ' count_image item" data-src="' + e.target.result + '">'
-                result_1 += '<img src="' + e.target.result + '" />'
-                result_1 += '<div class="action_image">'
-                result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
-                result_1 += '<a href="#" onclick="$(\'.' + uuid + '\').remove(); reload(); return false;" ><i class="fa fa-remove"></i></a>'
-                result_1 += '</div>'
-                result_1 += '</div>'
-                $el.append(result_1);
-                $el.data('lightGallery').destroy(true);
-                $el.lightGallery();
-            }
-            reader.readAsDataURL(input.files[0])
-        }
-    }
 </script>
-<script src="{% static 'merchant/merchant_product.js' %}"></script>
+<script src="{% static 'admin/src/js/product/general.js' %}"></script>
+<script src="{% static 'admin/src/js/product/see_product.js' %}"></script>
 {% endblock %}

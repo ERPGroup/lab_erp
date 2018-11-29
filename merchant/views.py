@@ -51,9 +51,9 @@ def product_add(request):
 def product_edit(request, id_product):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
-    if Product.objects.filter(pk=int(id_product), type_product=True, account_created=request.session.get('user')['id']).count() == 0:
+    if Product.objects.filter(pk=int(id_product), type_product=True, account_created_id=request.session.get('user')['id']).exists() == False:
         messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
-        return redirect('/merchant/')
+        return redirect('/merchant')
     return render(request, 'merchant/manager_product/product_edit.html')
 
 ## ----- POST product
@@ -77,7 +77,7 @@ def post_edit(request, id_post):
     print(Post_Product.objects.filter(pk=id_post, creator_id_id=request.session.get('user')['id']))
     if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).count() == 0:
         messages.warning(request, message='Khong ton tai tin dang', extra_tags='alert')
-        return redirect('/merchant/')
+        return redirect('/merchant')
     return render(request,'merchant/manager_posted/post_edit.html')
 
 # ------- End

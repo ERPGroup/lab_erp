@@ -1,0 +1,156 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết người dùng
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block side-bar %}
+{% include "snippets_admin/side_bar.html" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý người dùng <small>Thêm mới</small>
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a class="btn btn-danger" id='lock'>Khóa người dùng</a>
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 background_white">
+        <div  role="form">
+            <div class="col-lg-6 background_white">
+                <div class="form-group">
+                    <h3>Thông tin cá nhân</h3>
+                    <hr>
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên:</label>
+                    <input type="text" class="form-control" id='inputName'  disabled='disabled'>
+                </div>
+                <div class="form-group">
+                    <label>Chứng minh nhân dân:</label>
+                    <input type="text" class="form-control" id="inputIDCard" disabled='disabled'>
+                </div>
+                <div class="form-group" id="re_phone">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="phone" class="form-control" onkeyup="checkPhone();"  disabled='disabled'>
+                </div>
+                <div class="form-group" id="checkPassword">
+                    <label>Địa chỉ</label>
+                    <input class="form-control" type="text" placeholder="" id='inputAddress'  disabled='disabled' >
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh</label>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" id='inputBirthday'  disabled='disabled' />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="select_status" class="form-control" disabled='disabled'>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <div class="clearfix"></div>
+                    <label class="radio-inline">
+                        <input type="radio" name="Sex" id="Sex1" value="Nam"  disabled='disabled' >Nam
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="Sex" id="Sex2" value="Nữ"  disabled='disabled'>Nữ
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-6 background_white">
+                <div class="form-group">
+                    <h3>Thông tin đăng nhập</h3>
+                    <hr>
+                </div>
+                <div class="form-group">
+                    <label>Tên đăng nhập:</label>
+                    <input type="username" id="username" class="form-control" disabled='disabled'>
+                </div>
+                <div class="form-group">
+                    <label>Tên cửa hàng (Nếu có):</label>
+                    <input type="text" class="form-control" id='inputNameShop' disabled='disabled'>
+                </div>
+
+                <div class="form-group" id="re_email">
+                    <label>Địa chỉ Email:</label>
+                    <input type="email" id="email" class="form-control" onkeyup="checkEmail();"  disabled='disabled'>
+                </div>
+                <div class="form-group">
+                    <label>Loại tài khoản</label>
+                    <div class="clearfix"></div>
+                    <label class="radio-inline">
+                        <input type="radio" name="type_user" id="type_user1" value="option1"   disabled='disabled'>Người bán
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type_user" id="type_user2" value="option2"  disabled='disabled'>Người mua
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type_user" id="type_user3" value="option3"  disabled='disabled'>Khách hàng
+                    </label>
+                </div>
+
+                <div class="form-group hidden" id='service'>
+                    <label>Thông tin dịch vụ</label>
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="tbl_product_detail table table-striped table-bordered table-hover"
+                                        id="dataTables-example">
+                                        <thead>
+                                            <tr>
+                                                <th>Loại tin đăng</th>
+                                                <th>Còn lại</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="result_sevice">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
+                <button class="btn btn-info " id='unlock' >Mở khóa người dùng</button>
+                <button type="reset" class="btn btn-default">Trở về</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<!--Date time picker-->
+<script src="{% static 'admin/assets/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/vi.js' %}"></script>
+<script src="{% static 'admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date('2010-12-30'),
+            date: new Date('1990-12-30'),
+        });
+    });
+</script>
+<script src="{% static 'admin/src/js/user/user_info.js' %}"></script>
+<!--End-->
+{% endblock %}

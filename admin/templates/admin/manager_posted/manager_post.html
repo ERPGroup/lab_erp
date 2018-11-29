@@ -34,9 +34,10 @@ Trang chủ
                             <tr>
                                 <th>Mã tin đăng</th>
                                 <th>Mã người bán</th>
-                                <th>Số lượng sản phẩm tồn</th>
+                                <th>Số SP tồn</th>
                                 <th>Hạn sử dụng</th>
                                 <th>Loại tin</th>
+                                <th>Hiển thị</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,6 +47,8 @@ Trang chủ
                                 <td class="center">5</td>
                                 <td>18/12/2018</td>
                                 <td>Bạch kim</td>
+
+                                <td>Bạch kim</td>
                             </tr>
                             {% for i in "x"|rjust:"10" %}
                             <tr>
@@ -54,6 +57,8 @@ Trang chủ
                                 <td class="center">{{forloop.counter}}</td>
                                 <td>{{forloop.counter}}/12/2018</td>
                                 {% if forloop.counter > 6 %}<td>Bạc</td> {% else %}<td>Vàng</td> {% endif %}
+
+                                <td>Bạch kim</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -71,67 +76,5 @@ Trang chủ
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
-<script>
-    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-        "formatted-num-pre": function (a) {
-            a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
-            return parseFloat(a);
-        },
-
-        "formatted-num-asc": function (a, b) {
-            return a - b;
-        },
-
-        "formatted-num-desc": function (a, b) {
-            return b - a;
-        }
-    });
-
-    $(document).ready(function () {
-        var table = $('#dataTables_posted').dataTable({
-            language: {
-                paginate: {
-                    previous: "<i class='fa fa-arrow-left'></i>",
-                    next: "<i class='fa fa-arrow-right'></i>"
-                },
-                sProcessing: "Đang xử lý...",
-                sLengthMenu: "Xem _MENU_ mục",
-                sZeroRecords: "Không tìm thấy dòng nào phù hợp",
-                sInfo: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
-                sInfoFiltered: "(được lọc từ _MAX_ mục)",
-                sInfoPostFix: "",
-                sSearch: "Tìm kiếm: ",
-                sUrl: "",
-            },
-            "dom": '<"toolbar">frtip',
-            "columnDefs": [
-                { "type": 'formatted-num', targets: 0 },
-                { "type": 'formatted-num', targets: 2 },
-                { "type": 'date-eu', targets: 3 }
-            ]
-
-        });
-        var tool_bar = '';
-        tool_bar += '<div class="col-xs-8 no_padding">';
-        tool_bar += '<span>Loại tin: </span>';
-        tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-        tool_bar += '<option>Tất cả</option>';
-        tool_bar += '<option>Bạch kim</option>';
-        tool_bar += '<option>Vàng</option>';
-        tool_bar += '<option>Bạc</option>';
-        tool_bar += '</select>';
-        tool_bar += '</div>';
-        $("div.toolbar").html(tool_bar);
-        $('#select_type').change(function () {
-            regExSearch = '^' + this.value + '$';
-            if (this.value == "Tất cả") {
-                table.api().columns(4).search('').draw();
-            }
-            else {
-                table.api().columns(4).search(regExSearch, true, false).draw();
-            }
-        });
-    });
-</script>
+<script src="{% static '/admin/src/js/post/manager_posts.js' %} "></script>
 {% endblock %}

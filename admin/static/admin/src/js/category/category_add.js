@@ -3,7 +3,6 @@ $(document).ready(function(){
     $('#submit').click(function(){
         data = {
             'inputName': $('#inputName').val(),
-            'inputQuantity': $('#number3').val(),
             'inputIsActive': $('#inputIsActive').val(),         
         }
         $.ajax({

@@ -16,7 +16,7 @@ Trang chủ
         <h1 class="page-header">
             Quản lý gói tin
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-info">Mua thêm gói tin mới</a>
+                <a href="/merchant/service_post" class="btn btn-info">Mua thêm gói tin mới</a>
             </div>
         </h1>
 
@@ -108,6 +108,12 @@ Trang chủ
 
             ],
             "dom": '<"toolbar">frtip',
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://localhost:8000/merchant/account_services?service=available&table=true",
+                "dataSrc": ""
+        },
 
         });
     });

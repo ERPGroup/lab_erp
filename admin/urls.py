@@ -14,6 +14,7 @@ urlpatterns = [
 
     path('manager_users',views.users,name='manager_users'),
     path('manager_users_detail',views.users_add,name='add users'),
+    path('user/see/<int:id_user>', views.user_info, name='user_info'),
 
     path('manager_services',views.services,name='Manager Services'),
     path('service/add', views.service_add, name='service_add'),
@@ -23,7 +24,8 @@ urlpatterns = [
     path('manager_payment_detail',views.payment_detail,name="payment_detail"),
 
     path('manager_posted',views.post,name="payment"),
-    path('manager_posted_detail',views.post_detail,name="payment"),
+    #path('manager_posted_detail',views.post_detail,name="payment"),
+    path('post/edit/<int:id_post>', views.post_detail, name='post_edit'),
 
     path('manager_ads',views.ads,name="ads"),
     path('manager_ads_detail',views.ads_detail,name="ads"),
@@ -33,6 +35,7 @@ urlpatterns = [
 
     path('manager_product',views.products,name="products"),
     path('manager_product_detail',views.products_detail,name="products"),
+    path('product/see/<int:id_product>',views.product,name="see_product"),
 
     path('manager_category',views.categories,name="products"),
     path('category/add', views.category_add, name='category_add'),
@@ -70,6 +73,20 @@ urlpatterns = [
     path('attributes',functions.attributes, name='attributes'),
     path('attribute',functions.attribute_add, name="attribute_add"),
     path('attribute/<int:id_attribute>',functions.attribute, name="attribute"),
+
+    # product
+    path('products', functions.products, name='products'),
+    path('product/<int:id_product>', functions.product, name='product'),
+
+    #post
+    path('posts',functions.posts, name='posts'),
+
+    #account service
+     path('account_services', functions.account_services, name='account_services'),
+
+    #user
+    path('user/<int:id_user>', functions.user, name='user')
+
 
    # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
 ]

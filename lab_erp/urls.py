@@ -18,11 +18,14 @@ from django.urls import path, include
 
 from django.conf import settings
 from django.conf.urls.static import static
+from lab_erp import rediect
 urlpatterns = [
     path('admin/', include('admin.urls')),
+    path('admin', rediect.redirect_admin_index),
     path('', include('website.urls')),
     path('customer/', include('customer.urls')),
     path('merchant/', include('merchant.urls')),
+    path('merchant', rediect.redirect_merchant_index),
 ]
 
 if settings.DEBUG:

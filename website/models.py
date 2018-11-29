@@ -9,6 +9,7 @@ class Account(models.Model):
     password = models.CharField(max_length=200)
     name = models.CharField(max_length=100)
     birthday = models.DateField(null=True)
+    sex = models.BooleanField(null=True)
     phone = models.CharField(max_length=12, null=True)
     id_card = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=200, null=True)
@@ -22,6 +23,7 @@ class Account(models.Model):
     code_act_merchant = models.CharField(max_length=60)
     is_admin = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True)
+    is_lock =  models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
@@ -39,17 +41,18 @@ class Product (models.Model):
     type_product = models.BooleanField()
     price = models.IntegerField()
     code = models.CharField(max_length=200)
-    is_visible = models.BooleanField(default=True)
-    is_activity = models.BooleanField(default=True)
+    consider = models.IntegerField(default=2)
+    is_activity = models.BooleanField(default=False)
     archive = models.BooleanField(default=False)
     account_created = models.ForeignKey('Account', on_delete=models.CASCADE)
+    archive_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.name
 
 class Category (models.Model):
     name_category = models.CharField(max_length=200)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
@@ -58,6 +61,9 @@ class Category (models.Model):
 class Product_Category(models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     category_id = models.ForeignKey('Category', on_delete=models.CASCADE)
+    archive = models.BooleanField(default=False)
+    archive_at = models.DateTimeField(null=True)
+
 
 class Attribute (models.Model):
     code = models.CharField(max_length=200)
@@ -73,13 +79,16 @@ class Product_Attribute (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     attribute_id = models.ForeignKey('Attribute', on_delete=models.CASCADE)
     value = models.CharField(max_length=200)
-    created = models.DateTimeField(auto_now=True)
+    archive = models.BooleanField(default=False)
+    archive_at = models.DateTimeField(null=True)
 
 class Discount (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     percent = models.IntegerField()
     date_start = models.DateField()
     date_end = models.DateField()
+    archive = models.BooleanField(default=False)
+    archive_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.product_id__name
@@ -87,6 +96,8 @@ class Discount (models.Model):
 class Product_Image(models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     image_id = models.ForeignKey('Image', on_delete=models.CASCADE)
+    archive = models.BooleanField(default=False)
+    archive_at = models.DateTimeField(null=True)
 
 
 class Image (models.Model):
@@ -149,6 +160,7 @@ class Order (models.Model):
 class Order_Detail (models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    version = models.IntegerField() ## get id product version
     merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.IntegerField()
