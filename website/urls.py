@@ -25,10 +25,15 @@ urlpatterns = [
     path('product_by_category/<int:id_category>', functions.product_by_category, name='product_by_category'),
     path('get_avatar_product/<int:id_product>', functions.get_avatar_product, name='get_avatar_product' ),
     path('payment', functions.payment, name='payment'),
+
+    path('data', functions.get_data, name='data'),
+
+
     #cart
     path('add/<int:id_product>', cart.add, name='add'),
     path('sub/<int:id_product>', cart.sub, name='sub'),
     path('remove/<int:id_product>', cart.remove, name='remove'),
     path('clear', cart.clear, name='clear'),
     path('show', cart.show, name='show'),
+    
 ]

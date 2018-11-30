@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from datetime import datetime, timedelta
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 from cart.cart import Cart
 
@@ -85,3 +86,63 @@ def payment(request):
         return HttpResponse('Thanh Cong!')
 
     return HttpResponse('error')
+
+
+# function page index
+
+def get_data(request):
+    data = [] # du lieu tra ve json 
+    post_abort = [] # du lieu bai dang tai khu vuc vip
+    list_service = Service.objects.filter(visable_vip=True, is_active=True, archive=False).values_list('id')
+    array_service = []
+    for item in list_service:
+        dict_service = Service.objects.get(pk=item[0]).__dict__
+        del dict_service['_state']
+        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item).order_by('-bought')[0:16]
+        array_post = [] 
+        for post in list_post:
+            post_abort.append(post.id)
+            dict_post = post.__dict__
+            del dict_post['_state']
+            # if Product.objects.filter(pk=post.id).exists() == True:
+            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+            del dict_product['_state']
+            image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+            dict_post['product'] = dict_product
+            array_post.append(dict_post)
+        dict_service['posts'] = array_post
+        array_service.append(dict_service)
+    dict_data = {
+        'type': 1,
+        'data': array_service
+    }
+    data.append(dict_data)
+
+    # danh sach san pham con lai theo danh muc san pham
+    list_category = Category.objects.filter(is_active=True).values_list('id')
+    array_category = []
+    for item in list_category:
+        dict_category = Category.objects.get(pk=item[0]).__dict__
+        print(dict_category)
+        del dict_category['_state']
+        list_poduct_avaliable = Product_Category.objects.filter(archive=False,category_id_id=item).values_list('product_id_id')
+        list_post = Post_Product.objects.exclude(product_id_id__in=post_abort).filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:16]
+        array_post = [] 
+        for post in list_post:
+            dict_post = post.__dict__
+            del dict_post['_state']
+            # if Product.objects.filter(pk=post.id).exists() == True:
+            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+            del dict_product['_state']
+            dict_post['product'] = dict_product
+            array_post.append(dict_post)
+        dict_category['posts'] = array_post
+        array_category.append(dict_category)
+    dict_data = {
+        'type': 2,
+        'data': array_category
+    }
+    data.append(dict_data)
+    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")   
+
