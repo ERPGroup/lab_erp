@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, functions
 
 urlpatterns = [
     # path('', views.index, name='index'),
@@ -10,6 +10,8 @@ urlpatterns = [
 
 
     #function 
-    
+    path('user',functions.profile,name='user'),
+    path('password',functions.change_pw,name='password'),
+    path('info',functions.change_info,name='info'),
 
 ]
