@@ -30,17 +30,17 @@ Thông tin cá nhân
                 <a href="#" class="btn btn-warning to_merchant">Đăng ký bán hàng</a>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no_padding_desktop_1280">
                     <h3 class="title_user">Thông tin đăng nhập</h3>
-                    <form action="#" method="post" class="frm_register">
+                    {% comment %} <form action="#" method="post" class="frm_register"> {% endcomment %}
+                    <div class="background_white" role="form">
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label no_padding">
                                 <label class="control-label">Tên tài khoản: </label>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <input value="admin" disabled="disabled" type="text" class="form-control" id="inputUsername">
+                                <input value="" disabled="disabled" type="text" class="form-control" id="inputUsername">
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding_desktop_1280">
                                 <div class="errors_id">
-
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -70,7 +70,7 @@ Thông tin cá nhân
                                     id="inputRePassword">
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding_desktop_1280">
-                                <div class="errors_rpw" id="errors_rpw">
+                                <div class="errors_rpw" id="errors_rpw" style='color:red'>
 
                                 </div>
                             </div>
@@ -80,19 +80,20 @@ Thông tin cá nhân
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
                                 <br>
-                                <button class="btn_registier btn btn-warning" type="submit">Đổi mật khẩu</button>
+                                <button class="btn_registier btn btn-warning" type="submit" id="password">Đổi mật khẩu</button>
                                 <br>
 
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                    </form>
+                    </div>
 
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no_padding_desktop_1280">
                     <h3 class="title_user">Thông tin cá nhân</h3>
-                    <form action="#" method="post" class="frm_register">
+                    {% comment %} <form action="#" method="post" class="frm_register"> {% endcomment %}
+                    <div class="background_white" role="form">
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
                                 <label class="control-label">Họ và tên: </label>
@@ -183,12 +184,12 @@ Thông tin cá nhân
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
                                 <br>
-                                <button class="btn_registier btn btn-warning" type="submit">Cập nhập thông tin</button>
+                                <button class="btn_registier btn btn-warning" type="submit" id="info">Cập nhập thông tin</button>
                                 <br>
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -203,7 +204,8 @@ Thông tin cá nhân
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/vi.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript">
+<script src="{% static 'customer/src/js/profile.js' %}"></script>
+{% comment %} <script type="text/javascript">
     $(function () {
         $('#datetimepicker1').datetimepicker({
             locale: 'vi',
@@ -212,5 +214,5 @@ Thông tin cá nhân
             date: new Date('1990-12-30'),
         });
     });
-</script>
+</script> {% endcomment %}
 {% endblock %}
