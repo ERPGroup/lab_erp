@@ -27,12 +27,6 @@ urlpatterns = [
     #path('manager_posted_detail',views.post_detail,name="payment"),
     path('post/edit/<int:id_post>', views.post_detail, name='post_edit'),
 
-    path('manager_ads',views.ads,name="ads"),
-    path('manager_ads_detail',views.ads_detail,name="ads"),
-
-    path('manager_ads/register',views.ads_register,name="ads"),
-    path('manager_ads/register_detail',views.ads_register_detail,name="ads"),
-
     path('manager_product',views.products,name="products"),
     path('manager_product_detail',views.products_detail,name="products"),
     path('product/see/<int:id_product>',views.product,name="see_product"),
@@ -85,8 +79,27 @@ urlpatterns = [
      path('account_services', functions.account_services, name='account_services'),
 
     #user
-    path('user/<int:id_user>', functions.user, name='user')
+    path('user/<int:id_user>', functions.user, name='user'),
 
 
    # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),
+
+   #Ly Thanh _service ADS
+
+    path('getAllPost',functions.getAllPostAds,name="getAllPost"),
+
+    path('manager_ads',views.ads,name="ads"),
+    path('manager_ads_created',views.ads_created,name="ads"),
+    path('manager_ads_detail/<int:id>',views.ads_detail,name="ads"),
+
+    path('manager_ads/register',views.ads_register,name="ads"),
+    path('manager_ads/register_detail/<int:id>',views.ads_register_detail,name="ads"),
+
+
+    path('getAllAds',functions.getAllAds,name="getAllAds"),
+    path('addAds',functions.AddService,name="Add services"),
+    path('removeAds/<int:id>',functions.RemoveService,name="remove"),
+    path('getAllAdsActiving',functions.getAllAdsActiving,name="getads"),
+    path('enable_ads',functions.enable_ads,name="enable"),
+    path('disable_ads',functions.disable_ads,name="enable"),
 ]

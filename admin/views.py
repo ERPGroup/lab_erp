@@ -82,26 +82,6 @@ def post_detail(request, id_post):
         return redirect('/admin/login')
     return render(request,'admin/manager_posted/manager_post_detail.html')
 
-def ads(request):
-    if check_rule(request) == 0:         
-        return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads.html')
-    
-def ads_detail(request):
-    if check_rule(request) == 0:         
-        return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads_detail.html')
-
-def ads_register(request):
-    if check_rule(request) == 0:         
-        return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads_register.html')
-
-def ads_register_detail(request):
-    if check_rule(request) == 0:         
-        return redirect('/admin/login')
-    return render(request,'admin/manager_ads/manager_ads_register_detail.html')
-    
 def products(request):
     if check_rule(request) == 0:         
         return redirect('/admin/login')
@@ -186,3 +166,41 @@ def statistical(request):
 #         #Cap nhap quang cao hien tai. thay the' bang quang cao tiep theo
 #         current_ads = new_ads
 #         return JsonResponse(new_ads.TenQuangCao)
+
+### Thanh Ly - Service Ads
+def ads(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    
+    return render(request,'admin/manager_ads/manager_ads.html')
+def ads_created(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    ads = Service_Ads.objects.all().last()
+    ads_id = ads.id+1
+    return render(request,'admin/manager_ads/manager_ads_detail.html',{'ads_id':ads_id})
+def ads_detail(request,id):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if id is None:
+        return render(request,'admin/manager_ads/manager_ads_detail.html')
+    else:
+        ads = Service_Ads.objects.filter(id=id).first()
+        return render(request,'admin/manager_ads/manager_ads_detail.html', {'ads': ads})
+
+def ads_register(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+
+    return render(request,'admin/manager_ads/manager_ads_register.html')
+
+def ads_register_detail(request,id):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if id is None:
+        return render(request,'admin/manager_ads_register.html')
+    else:
+        post_ads = Purchase_Service_Ads.objects.filter(id=id).first()
+        return render(request,'admin/manager_ads/manager_ads_register_detail.html',{'result':post_ads})
+    
+### End Thanh Ly

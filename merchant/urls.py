@@ -35,9 +35,7 @@ urlpatterns = [
     path('service_post',views.service_post,name='servies'),
     path('purchase_service/<int:id_service>', views.purchase_service, name='purchase_service'),
 
-    path('service_ads',views.service_ads,name='servies'),
 
-    path('ads_register',views.service_ads_register, name='ads'),
 
 
 
@@ -66,4 +64,18 @@ urlpatterns = [
     path('posts', functions.posts, name='posts'),
     path('post', functions.post_add, name='post_add'),
     path('post/<int:id_post>', functions.post, name='post'),
+
+    ### Ly Thanh 
+    path('getListAds/',functions.get_my_choices_2,name="remove"),
+    path('getDateAvailable/<position>&<int:id_ads>',functions.getDateAvailable,name="get_avail"),
+    path('post_ads/',views.post_ads,name="ads"),
+    path('upload_image_ads', functions.upload_image_ads, name='upload_image'),
+    path('delete_image_ads/<int:id_image>', functions.del_image_ads, name='delete_image'),
+    path('purchase_service_ads', functions.purchase_service_ads, name='fun_purchase_service'),
+    path('upload_ads/',functions.post_ads,name="post_ads"),
+    path('post_ads_2/',functions.post_ads_2,name="post_ads"),
+    path('ads_register/<int:id_ads>',views.service_ads_register, name='ads'),
+    path('service_ads',views.service_ads,name='servies'),
+
+    ###
 ]

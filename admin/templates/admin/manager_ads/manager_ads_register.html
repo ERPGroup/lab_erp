@@ -8,13 +8,13 @@ Quản lý đăng ký
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_ads='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý đăng ký
+            Quản lý đăng nội dung quảng cáo
         </h1>
 
     </div>
@@ -24,51 +24,21 @@ Quản lý đăng ký
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách đăng ký
+                Danh sách
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã quảng cáo</th>
-                                <th>Mã khách hàng</th>
-                                <th>Tổng tiền</th>
-                                <th>Ngày đăng ký</th>
+                                <th>Tên quảng cáo</th>
+                                <th>Người đăng</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Vị trí</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC015</a></td>
-                                <td>KH001</td>
-                                <td>500.000 VNĐ</td>
-                                <td>12/12/2018</td>
-                                <td>Duyệt</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC019</a></td>
-                                <td>KH001</td>
-                                <td>300.000 VNĐ</td>
-                                <td>12/9/2018</td>
-                                <td>Không duyệt</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC016</a></td>
-                                <td>KH001</td>
-                                <td>300.000 VNĐ</td>
-                                <td>12/9/2018</td>
-                                <td>Chưa thanh toán</td>
-                            </tr>
-                            {% for i in "x"|rjust:"10" %}
-                            <tr>
-                                <td><a href="/admin/manager_ads/register_detail">QC0{{forloop.counter}}</a></td>
-                                <td>KH0{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}00.000 VNĐ</td>
-                                <td>{{forloop.counter}}/10/2018</td>
-                                <td>Đang xử lý</td>
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -121,7 +91,29 @@ Quản lý đăng ký
                 { "type": 'formatted-num', targets: 0 },
                 { "type": 'formatted-num', targets: 2 },
                 { "type": 'date-eu', targets: 3 }
-            ]
+            ],
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://localhost:8000/admin/getAllPost",
+                "dataSrc": ""
+            },
+            "columns": [{
+                    "data": "ads_name"
+                },
+                {
+                    "data": "user"
+                },
+                {
+                    "data": "date_start"
+                },
+                {
+                    "data": "position"
+                },
+                {
+                    "data": "status"
+                },
+            ],
         });
         var tool_bar = '';
         tool_bar += '<div class="col-xs-8 no_padding">';

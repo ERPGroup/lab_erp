@@ -289,7 +289,7 @@
   /* Style as you please, it will become the visible UI component. */
 }
 
-#upload-photo {
+#upload-photo, #upload-photo-1, #upload-photo-2, #upload-photo-3 {
   opacity: 0;
   position: absolute;
   z-index: -1;
