@@ -63,14 +63,12 @@ class Product_Category(models.Model):
     category_id = models.ForeignKey('Category', on_delete=models.CASCADE)
     archive = models.BooleanField(default=False)
     archive_at = models.DateTimeField(null=True)
+    lock = models.BooleanField(default=False)
 
 
 class Attribute (models.Model):
-    code = models.CharField(max_length=200)
     label = models.CharField(max_length=200)
-    type_attr = models.CharField(max_length=200)
-    is_required = models.BooleanField(default=True)
-    is_unique = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.label
@@ -81,6 +79,7 @@ class Product_Attribute (models.Model):
     value = models.CharField(max_length=200)
     archive = models.BooleanField(default=False)
     archive_at = models.DateTimeField(null=True)
+    lock = models.BooleanField(default=False)
 
 class Discount (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
