@@ -46,6 +46,7 @@
             <!-- /. PAGE INNER  -->
         </div>
         <!-- /. PAGE WRAPPER  -->
+        {% include "snippets_admin/checkads.html" %}
     </div>
     <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
@@ -61,8 +62,8 @@
 
     {% block data_table %}
     {% endblock %}
-    
-    <script src="{% static '/admin/assets/js/custom_script.js' %} "></script>
+
+    <script src="{% static '/admin/src/js/custom/custom_script.js' %} "></script>
 </body>
 
 </html>

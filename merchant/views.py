@@ -7,6 +7,8 @@ from website.models import *
 
 from django.contrib import messages
 
+from . import functions
+
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
     # if 'user' in request.session:
@@ -103,9 +105,25 @@ def purchase_service(request, id_service):
     return render(request,'merchant/manager_service/purchase_service.html')
 # ------ End
 
+### Ly Thanh
+
 def service_ads(request):
     return render(request,'merchant/manager_service/service_ads.html')
-def service_ads_register(request):
-    return render(request,'merchant/manager_service/manager_ads_register_detail.html')
+
+def service_ads_register(request,id_ads):
+    if functions.get_my_choices(id_ads):
+        user = request.session.get('user')
+        result = Account.objects.get(pk=user['id'])
+        return render(request,'merchant/manager_service/manager_ads_register_detail.html',{ 'list':functions.get_my_choices(id_ads),'user':result })
+    else:
+        return HttpResponse("Loi")
+
+def post_ads(request):
+    user = request.session.get('user')
+    result = functions.getServiceAdsAvailable(user['id'])
+    return render(request,'merchant/manager_service/service_ads_post.html',{'list':result})
+
+### 
+
 from django import template
 

@@ -1,25 +1,37 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
+{% load humanize %}
 {% block title %}
 Trang chi tiết người dùng
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_ads='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
             Quản lý quảng cáo <small>Thêm mới</small>
-            <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa quảng cáo</a>
+            <div style="display:inline-block; text-align:left;float:right;">
+                <a href="/admin/manager_ads" class="btn btn-info"><i class="fa fa-arrow-left" style="padding-right:10px;"></i>Quay lại</a>
             </div>
+            {% if ads.id %}
+            <div style="display:inline-block; text-align:right;float:right;">
+                <a href="/admin/removeAds/{{ads.id}}" class="btn btn-danger">Xóa quảng cáo</a>
+            </div>
+            {% endif %}
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
+        <form method="post" action="/admin/addAds" class="background_white" enctype="multipart/form-data" role="form">
+            {% if error == "error" %}
+            <h5 class="alert alert-danger" style="margin:0px;"><i class="fa fa-remove"></i>Thất bại</h5>
+            {% endif %}
+            {% if success == "success" %}
+            <h5 class="alert alert-success" style="margin:0px;"><i class="fa fa-check"></i>Thành công</h5>
+            {% endif %}
             <div class="col-lg-6">
                 <div class="form-group">
                     <h3>Thông tin quảng cáo</h3>
@@ -27,23 +39,29 @@ Trang chi tiết người dùng
                 </div>
                 <div class="form-group">
                     <label>Mã quảng cáo:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" disabled="disabled" value="{% if ads is None %}{{ads_id}}{% else %}{{ads.id}}{%endif%}"
+                        class="form-control">
+                    <input name="inputId" type="hidden" value="{% if ads is None %}{{ads_id}}{% else %}{{ads.id}}{%endif%}">
                 </div>
                 <div class="form-group">
                     <label>Tên quảng cáo:</label>
-                    <input type="text" class="form-control">
+                    <input name="inputName" type="text" value="{% if ads is None %}{% else %}{{ads.service_name}}{%endif%}"
+                        class="form-control">
                 </div>
-                <div class="form-group" id="checkPassword">
+                <div class="form-group">
                     <label>Vị trí:</label>
-                    <input type="text" class="form-control">
+                    <input name="inputPosition" type="text" value="{% if ads is None %}{% else %}{{ads.position}}{%endif%}"
+                        class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Giá tiền:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="inputAmount" value="{% if ads is None %}{% else %}{{ads.amount|intcomma}}{%endif%}"
+                        class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Hạn sử dụng</label>
-                    <input type="text" class="form-control">
+                    <input name="inpuLimit" type="text" value="{% if ads is None %}{% else %}{{ads.day_limit}} Ngày{%endif%}"
+                        class="form-control">
                 </div>
             </div>
             <div class="col-lg-6">
@@ -52,19 +70,15 @@ Trang chi tiết người dùng
                     <hr>
                 </div>
                 <div class="form-group">
-                    <label>Kiểu dữ liệu</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Nội dung</label>
-                    <input type="tel" class="form-control">
+                    <label>Loại quảng cáo</label>
+                    <input name="inputType" type="text" value="{% if ads is None %}{% else %}{{ads.type_service}}{%endif%}"
+                        class="form-control">
                 </div>
                 <div class="form-group" id="checkPassword">
                     <label>Trạng thái</label>
-                    <select class="form-control">
-                        <option>Đang sử dụng</option>
-                        <option>Không sử dụng</option>
-                        <option>Không cho thuê</option>
+                    <select name="inputStatus" class="form-control">
+                        <option {% if ads.is_active %}selected="selected" {%endif%}>Kích hoạt</option>
+                        <option {% if ads.is_active %}{%else%}selected="selected" {%endif%}>Không kích hoạt</option>
                     </select>
                 </div>
                 <div class="form-group frm_tags">
@@ -79,7 +93,9 @@ Trang chi tiết người dùng
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info">Thêm quảng cáo</button>
+                {% if ads_id %} <button type="submit" class="btn btn-info">Thêm quảng cáo</button> {% else %}
+                <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
+                {% endif %}
                 <button type="reset" class="btn btn-default">Khôi phục</button>
             </div>
             <div class="clearfix"></div>

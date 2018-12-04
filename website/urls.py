@@ -43,4 +43,7 @@ urlpatterns = [
     path('clear', cart.clear, name='clear'),
     path('show', cart.show, name='show'),
     
+    #Ly Thanh
+    path('getAds',functions.getAds,name="get_ads_top")
+
 ]
