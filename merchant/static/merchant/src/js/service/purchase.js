@@ -70,7 +70,7 @@ $(document).ready(function(){
                 // PayPal Client IDs - replace with your own
                 // Create a PayPal app: https://developer.paypal.com/developer/applications/create
                 client: {
-                sandbox: 'AX5ZfJh3e8pEhmipVMor3KMa5CxdG5a_SVNLeUhwVM9vjNo_kReF_2cdK54v9dN7Yseu1I8Y-I4BH5AZ',
+                sandbox: 'AV2N2LEhYoOJEwN2mxKLTLddeXuZOk7X5nELsm7xCq3sfn3qLS9o8ERIptw7fJDXYY3lvIl8Q1jefuAJ',
                 // production: 'AX5ZfJh3e8pEhmipVMor3KMa5CxdG5a_SVNLeUhwVM9vjNo_kReF_2cdK54v9dN7Yseu1I8Y-I4BH5AZ'
                 },
                 payment: function (data, actions) {

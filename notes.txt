@@ -1,0 +1,2 @@
+Kiem tra lai loc san pham duoc phep dang tai giao dien merchant. 
+    + chi cho phep loc san pham cua merchant do

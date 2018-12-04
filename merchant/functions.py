@@ -415,7 +415,7 @@ def product(request, id_product):
         product_detail['list_image'] = list_image
 
         #lay ra danh sach phien ban
-        link_type = Link_Type.objects.filter(parent_product=product_config[0].id, product_id__archive=False)
+        link_type = Link_Type.objects.filter(parent_product=int(id_product), product_id__archive=False)
         list_attr = []
         list_price = []
         for item in link_type:
@@ -493,12 +493,12 @@ def product(request, id_product):
             v = 1
             for i in range(int(count_product)):
                 if count_product != 1:
-                    code_type = code + ' .v' + str(v)
+                    name_type = name + ' .v' + str(v)
                 else: 
-                    code_type = code
+                    name_type = name
                 product2 = Product(
-                    code=code_type,
-                    name=name,
+                    code=code,
+                    name=name_type,
                     detail=detail,
                     origin=origin,
                     price=request.POST.get('inputVersion['+ str(i) +'][price]'),

@@ -5,6 +5,6 @@
   "author": "dinh truong <dinhtruong018@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "lightgallery": "^1.6.11",
+    "nouislider": "^12.1.0"
   }
 }

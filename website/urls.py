@@ -16,7 +16,7 @@ urlpatterns = [
 
     
     path('collections/<int:id_category>', views.collections, name='collections'),
-    path('product/<int:id_product>', views.detail_product, name='detail_product'),
+    path('post/<int:id_post>', views.detail_post, name='detail_post'),
     path('cart', views.cart, name='cart'),
     path('checkout', views.checkout, name='checkout'),
 
@@ -28,10 +28,17 @@ urlpatterns = [
 
     path('data', functions.get_data, name='data'),
 
+    path('product_collection/<int:id_category>', functions.product_collection, name='product_collection'),
+
+    path('product_data/<int:id_product>', functions.product, name='product'),
+
+    path('post_data/<int:id_post>', functions.post, name='post'),
+    path('get_data_hot_buy', functions.get_data_hot_buy, name="get_data_hot_buy"),
 
     #cart
     path('add/<int:id_product>', cart.add, name='add'),
     path('sub/<int:id_product>', cart.sub, name='sub'),
+    path('set_qty/<int:id_product>/<int:qty>', cart.set_qty, name='set_qty'),
     path('remove/<int:id_product>', cart.remove, name='remove'),
     path('clear', cart.clear, name='clear'),
     path('show', cart.show, name='show'),

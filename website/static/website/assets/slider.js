@@ -538,10 +538,10 @@
 // end of owl2row plugin
 $(document).ready(function ($) {
 	"use strict";
-	dl_owl();
+	dl_owl('.owl-carousel:not(.not-aweowl)');
 })
-function dl_owl() { 
-	$('.owl-carousel:not(.not-aweowl)').each( function(){
+function dl_owl(element) { 
+	$(element).each( function(){
 		var xss_item = $(this).attr('data-xss-items');
 		var xs_item = $(this).attr('data-xs-items');		
 		var sm_item = $(this).attr('data-sm-items');

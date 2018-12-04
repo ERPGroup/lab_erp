@@ -248,10 +248,16 @@ def resend_code(request):
 
 
 #Product - collection - detail 
-def detail_product(request, id_product): 
+def detail_post(request, id_post):
+    if Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).exists() == False:
+        messages.warning(request, message='Product khong ton tai', extra_tags='alert')
+        return redirect('/')
     return render(request,'website/product.html') 
  
 def collections(request, id_category): 
+    if Category.objects.filter(pk=id_category).exists() == False:
+        messages.warning(request, message='Category khong ton tai', extra_tags='alert')
+        return redirect('/')
     return render(request,'website/collection.html')
  
 def checkout(request): 

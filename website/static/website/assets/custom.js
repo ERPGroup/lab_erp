@@ -78,12 +78,12 @@ function clickShowCategory(a)
 function clickShowFooter (a) {
   $('#'+a).slideToggle();
 }
-function quick_view () {
-  var popup = document.getElementById('popup_quickview')
-  popup.style.display = 'block'
-  $('body').append('<div id="over">')
-  $('#over').fadeIn(300)
-}
+// function quick_view () {
+//   var popup = document.getElementById('popup_quickview')
+//   popup.style.display = 'block'
+//   $('body').append('<div id="over">')
+//   $('#over').fadeIn(300)
+// }
 function checkPassword () {
   var password = document.getElementById('inputPassword')
 	var repassword = document.getElementById('inputRePassword')
@@ -97,3 +97,5 @@ function checkPassword () {
 		error.innerHTML ='';
   }
 }
+
+
