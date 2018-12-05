@@ -135,7 +135,7 @@ $(document).ready(function(){
         var new_value = 'this_value_' + count_value;
         var new_name = 'name_attribute_' + count_value;
         var attribute = ''
-        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\';  return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
+        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" data-id="'+ response[i].pk +'" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\';  return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
         attribute += '<div class="clearfix"></div></div>'
         attribute += '<div class="form-group">'
         attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>'

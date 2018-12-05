@@ -27,35 +27,19 @@ Trang chi tiết thuộc tính
             </div>
             <div class="col-lg-6 col-xs-offset-3">
                 <div class="form-group">
-                    <label>Mã thuộc tính</label>
-                    <input type="text" id="inputCode" class="form-control">
-                </div>
-                <div class="form-group">
                     <label>Tên thuộc tính</label>
                     <input type="text" id="inputLabel" class="form-control">
                 </div>
+            
                 <div class="form-group">
-                    <label>Loại dữ liệu</label>
-                    <input type="text" id="inputType" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Bắt buộc</label>
-                    <select class="form-control" id="inputIsRequired">
-                        {% comment %} <option value="1">Có</option>
-                        <option value="0">Không</option> {% endcomment %}                      
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Duy nhất</label>
-                    <select class="form-control" id="inputIsUnique">
-                        {% comment %} <option value="1">Có</option>
-                        <option value="0">Không</option> {% endcomment %}
+                    <label>Kích hoạt</label>
+                    <select class="form-control" id="inputIsActive">
+                        
                     </select>
                 </div>
                 
                 <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
                     <button type="submit" id="edit" class="btn btn-info">Cập nhật thuộc tính</button>
-       {% comment %}<button type="reset" class="btn btn-default">Khôi phục</button> {% endcomment %}
                 </div>
             </div>
             <div class="clearfix"></div>

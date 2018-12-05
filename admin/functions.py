@@ -139,11 +139,9 @@ def category_add(request):
     if request.method == 'POST':
         print(request.POST)
         name_category = request.POST.get('inputName')
-        is_active = request.POST.get('inputIsActive')
         #try:
         category = Category(
             name_category = name_category,
-            is_active = is_active,
         )
         category.save()
         return HttpResponse(1)
@@ -175,27 +173,6 @@ def category(request, id_category):
 
     return HttpResponse(0)
 
-def attributes(request):
-    if request.method == 'GET':
-        attributes = []
-        attributes_all = Attribute.objects.all()
-        for item in attributes_all:
-            attribute = []
-            attribute.append('<a href="/admin/attribute/edit/'+ str(item.id) +'">'+ str(item.code) +'</a>'),
-            attribute.append('<a href="/admin/attribute/edit/'+ str(item.id) +'">'+ str(item.label) +'</a>'),         
-            attribute.append(str(item.type_attr))
-            if item.is_required == True:
-                attribute.append('<b style="color:green">Có</b>')
-            else:
-                attribute.append('<b style="color:red">Không</b>')
-            if item.is_unique == True:
-                attribute.append('<b style="color:green">Có</b>')
-            else:
-                attribute.append('<b style="color:red">Không</b>')
-
-            attributes.append(attribute)
-        return HttpResponse(json.dumps(attributes), content_type="application/json")
-    return HttpResponse('error')
 
 
 ######
@@ -206,6 +183,23 @@ def attributes(request):
 ######
 ######
 
+
+def attributes(request):
+    if request.method == 'GET':
+        attributes = []
+        attributes_all = Attribute.objects.all()
+        for item in attributes_all:
+            attribute = []
+            attribute.append('<a href="/admin/attribute/edit/'+ str(item.id) +'">'+ str(item.label) +'</a>'),         
+            if item.is_active == True:
+                attribute.append('<b style="color:green">Có</b>')
+            else:
+                attribute.append('<b style="color:red">Không</b>')
+
+            attributes.append(attribute)
+        return HttpResponse(json.dumps(attributes), content_type="application/json")
+    return HttpResponse('error')
+
 @csrf_exempt    
 def attribute_add(request):
     if check_rule(request) == 0:
@@ -213,18 +207,11 @@ def attribute_add(request):
 
     if request.method == 'POST':
         print(request.POST)
-        code = request.POST.get('inputCode')
         label = request.POST.get('inputLabel')
-        type_attr = request.POST.get('inputType')
-        is_required = request.POST.get('inputIsRequired')
-        is_unique = request.POST.get('inputIsUnique')
+
         #try:
         attribute = Attribute(
-            code = code,
             label = label,
-            type_attr = type_attr,
-            is_required = is_required,
-            is_unique = is_unique,
         )
         attribute.save()
         return HttpResponse(1)
@@ -239,18 +226,13 @@ def attribute(request, id_attribute):
         return HttpResponse(serialize('json', Attribute.objects.filter(pk=id_attribute)), content_type="application/json")
     if request.method == 'POST':
         try:
-            code = request.POST.get('inputCode')
+
             label = request.POST.get('inputLabel')
-            type_attr = request.POST.get('inputType')
-            is_required = request.POST.get('inputIsRequired')
-            is_unique = request.POST.get('inputIsUnique')
+            is_active = request.POST.get('inputIsActive')
 
             attribute = Attribute.objects.get(id=id_attribute)
-            attribute.code = code
             attribute.label = label
-            attribute.type_attr = type_attr
-            attribute.is_required = is_required
-            attribute.is_unique = is_unique      
+            attribute.is_active = is_active
             attribute.save()
             return HttpResponse(1)
         except:

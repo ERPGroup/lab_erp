@@ -19,7 +19,7 @@ $(document).ready(function (){
         "dom": '<"toolbar">frtip',
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columnDefs": [
-        { "type": "numeric-comma", targets: 4 }
+        { "type": "numeric-comma", targets: 1 }
         ],
         "processing": true,
         "ajax": {

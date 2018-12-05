@@ -226,3 +226,7 @@ function addmore_tags (a) {
   });
 })(jQuery)
 
+
+function pageRedirect(url) {
+  window.location.replace(url);
+}

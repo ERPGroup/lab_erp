@@ -2,8 +2,7 @@
 $(document).ready(function(){
     $('#submit').click(function(){
         data = {
-            'inputName': $('#inputName').val(),
-            'inputIsActive': $('#inputIsActive').val(),         
+            'inputName': $('#inputName').val(),      
         }
         $.ajax({
             url: 'http://localhost:8000/admin/category',

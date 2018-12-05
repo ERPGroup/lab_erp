@@ -1,11 +1,7 @@
 $(document).ready(function(){
     $('#submit').click(function(){
         data = {
-            'inputCode': $('#inputCode').val(),
-            'inputLabel': $('#inputLabel').val(),
-            'inputType': $('#inputType').val(),
-            'inputIsRequired': $('#inputIsRequired').val(), 
-            'inputIsUnique': $('#inputIsUnique').val(),          
+            'inputLabel': $('#inputLabel').val(),       
         }
         $.ajax({
             url: 'http://localhost:8000/admin/attribute',

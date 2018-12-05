@@ -174,7 +174,7 @@ def category_add(request):
 #     return
 
 def attributes(request):
-    return HttpResponse(serialize('json', Attribute.objects.filter(is_required=True)), content_type="application/json")
+    return HttpResponse(serialize('json', Attribute.objects.filter(is_active=True)), content_type="application/json")
 
 def attribute_add(request):
     if check_rule(request) == 0:
@@ -285,6 +285,7 @@ def del_image(request, id_image):
             os.remove(path)
             image.delete()
             return HttpResponse('Xoa thanh cong')
+        return HttpResponse('Loi!')
         
 @csrf_exempt   
 def product_add(request):
@@ -351,7 +352,7 @@ def product_add(request):
 
             data = request.POST.get('inputVersion['+ str(i) +'][value]')
             list_attr = data.split(' | ')
-            attr = Attribute.objects.filter(is_required=True)
+            attr = Attribute.objects.filter(is_active=True)
             index = 0
             for item in list_attr:
                 product_attr = Product_Attribute(
