@@ -149,9 +149,10 @@ $(document).ready(function(){
       contentType: 'application/x-www-form-urlencoded',
       data: data,
       success: function(response){
-        console.log(response);
+        //console.log(response);
         if(response == 1){
           alert('Đã sửa sản phẩm');
+          window.location.replace('/merchant/manager_product')
         }else{
           alert(response)
         }
@@ -164,10 +165,15 @@ $(document).ready(function(){
       url: 'http://localhost:8000/merchant/product/' + id_product,
       method: 'DELETE',
       success: function(response){
-        alert(response)
-      },
+        if(response == 1){
+          alert('Sản phẩm đã xóa!');
+          window.location.replace('/merchant/manager_product')
+        }else
+          alert(response);
+      }
     });
   });
+
 });
 
 

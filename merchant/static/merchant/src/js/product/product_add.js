@@ -106,8 +106,10 @@ $(document).ready(function(){
       data: data,
       success: function(response){
         console.log(response);
-        if(response == 1)
+        if(response == 1){
           alert('Sản phẩm đã được tạo');
+          window.location.replace('/merchant/manager_product')
+        }
         else
           alert(response)
       },

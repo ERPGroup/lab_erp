@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import pytz
 import json, os
+from django.core.serializers.json import DjangoJSONEncoder
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
@@ -299,7 +300,7 @@ def product_add(request):
             return HttpResponse('Không thể tạo mới sản phẩm')
 
         count_tag = request.POST.get('inputCountTag')
-        if int(count_tag) > 3 or int(count_tag) < 1:
+        if int(count_tag) > 3:
             return HttpResponse('Không thể tạo mới sản phẩm')
         
         count_category = request.POST.get('inputCountCategory')
@@ -462,13 +463,15 @@ def product(request, id_product):
         product['list_attr'] = list_value_attr
         product['list_price'] = list_price
 
-        return  HttpResponse(json.dumps(product), content_type="application/json")
+        return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
     if request.method == 'POST':
         if Product.objects.filter(pk=id_product, archive=False).exists() == False:
             return HttpResponse('Không tồn tại sản phẩm')
         now = timezone.now()
         product = Product.objects.get(pk=id_product)
+        if product.is_activity == False:
+            return HttpResponse('Sản phẩm đã bị khóa không cho phép sửa!')
         product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
         Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
         Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
@@ -592,17 +595,19 @@ def product(request, id_product):
         try:
             now = timezone.now()
             product = Product.objects.get(pk=id_product)
+            if product.is_activity == False:
+                return HttpResponse('Sản phẩm đã bị khóa không cho phép xóa!')
             if Post_Product.objects.filter(product_id_id=product.id, is_lock=False).exists() == False:
-                product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
-                Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
-                Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-                Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-                Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
-                Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
+                #product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
+                #Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
+                # Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+                # Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+                # Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
+                # Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
                 product.archive = True
                 product.archive_at = now
                 product.save()
-                return HttpResponse('Sản phẩm đã xóa!')
+                return HttpResponse(1)
             else:
                 return HttpResponse('Vui lòng hủy tin đăng trước khi xóa sản phẩm!')
         except:
@@ -626,7 +631,7 @@ def products(request):
                     else:
                         product.append('<div class="tbl_thumb_product"><img src="/static/website/images/product_1.jpg" /></div>')
                     if item.is_activity == 1:
-                        product.append('<p style="color:green">Được chấp thuận</p>')
+                        product.append('<p style="color:green">Được hiển thị</p>')
                     if item.is_activity == 0:
                         product.append('<p style="color:red">Bị khóa</p>')
                     products.append(product)

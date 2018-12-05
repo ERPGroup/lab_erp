@@ -8,9 +8,11 @@ from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import re
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
+from sender import Mail, Message
 
 def check_rule(request):
     # if 'user' in request.session:
@@ -335,63 +337,58 @@ def products(request):
             products = []
             prod_all = Product.objects.filter(type_product=True).order_by('-pk')
             for item in prod_all:
-                product = []
-                product.append('<a href="/admin/product/see/'+ str(item.id) +'">SP'+ str(item.id) +'</a>')
-                product.append(item.name)
-                product.append(str(item.price) + ' VND')
-                image = Product_Image.objects.filter(product_id_id=item.id).order_by('image_id_id').first()
-                product.append('<div class="tbl_thumb_product"><img src="/product/' + image.image_id.image_link.url + '" /></div>')
-                if item.consider == 1:
-                    product.append('<p style="color:green">Được chấp thuận</p>')
-                if item.consider == 0:
-                    product.append('<p style="color:red">Bị khóa</p>')
-                if item.consider == 2:
-                    product.append('<p style="color:blue">Đang xem xét</p>')
-                products.append(product)
+                if Link_Type.objects.filter(parent_product=item.id).exists() == True:
+                    product = []
+                    product.append('<a href="/admin/product/see/'+ str(item.id) +'">SP'+ str(item.id) +'</a>')
+                    product.append(item.name)
+                    product.append(str(item.price) + ' VND')
+                    image = Product_Image.objects.filter(product_id_id=item.id).order_by('image_id_id').first()
+                    product.append('<div class="tbl_thumb_product"><img src="/product/' + image.image_id.image_link.url + '" /></div>')
+                    if item.archive == 0:
+                        if item.is_activity == 1:
+                            product.append('<p style="color:green">Được hiển thị</p>')
+                        if item.is_activity == 0:
+                            product.append('<p style="color:red">Bị khóa</p>')
+                    elif item.archive == 1:
+                        product.append('<p style="color:blue">Đã xóa</p>') 
+                    products.append(product)
             return HttpResponse(json.dumps(products), content_type="application/json")
     return
 
 @csrf_exempt  
 def product(request, id_product):
-
     if request.method == 'GET':
-        product_detail = dict()
-        product_config = Product.objects.filter(id=int(id_product), type_product=True)
-        if product_config.count() == 0:
-            return HttpResponse(-1)
+        if Product.objects.filter(pk=id_product).exists() == False:
+            return HttpResponse('Sản phẩm không tồn tại')
 
-        product_detail['name'] = product_config[0].name
-        product_detail['detail'] = product_config[0].detail
-        product_detail['origin'] = product_config[0].origin
-        product_detail['code'] = product_config[0].code
-        product_detail['price_origin'] = product_config[0].price
-        product_detail['consider'] = product_config[0].consider
-
-        product_category = Product_Category.objects.filter(product_id=int(id_product))
-        list_category  = []
+        product = Product.objects.get(pk=id_product).__dict__
+        del product['_state']
+        product_category = Product_Category.objects.filter(product_id=int(id_product), archive=False)
+        list_category = []
         for item in product_category:
-            category_dict = dict()
-            category = Category.objects.get(pk=item.category_id.id)
-            category_dict['id'] = category.id
-            category_dict['name_category'] = category.name_category
-            category_dict['quantity'] = category.quantity
-            list_category.append(category_dict)
-        product_detail['list_category'] = list_category
+            category = Category.objects.get(pk=item.category_id_id).__dict__
+            del category['_state']
+            list_category.append(category)
+        product['categories'] = list_category
 
-        product_image = Product_Image.objects.filter(product_id=int(id_product)).order_by('image_id_id')
+        product_image = Product_Image.objects.filter(product_id=int(id_product), archive=False).order_by('image_id_id')
         list_image = []
         for item in product_image:
-            image_dict = dict()
-            image = Image.objects.get(pk=item.image_id.id)
-            image_dict['id']  = image.id
-            image_dict['image_link'] =  '/product' + image.image_link.url
-            image_dict['is_default'] = image.is_default
-            image_dict['user_id'] = image.user_id.id
-            list_image.append(image_dict)
-        product_detail['list_image'] = list_image
+            image = Image.objects.get(pk=item.image_id_id).__dict__
+            del image['_state']
+            list_image.append(image)
+        product['images'] = list_image
+
+        tags = Tag.objects.filter(tag_type=1, tag_value=product['id'], archive=False)
+        list_tag = []
+        for item in tags:
+            tag = item.__dict__
+            del tag['_state']
+            list_tag.append(tag)
+        product['tags'] = list_tag
 
         #lay ra danh sach phien ban
-        link_type = Link_Type.objects.filter(parent_product=product_config[0].id)
+        link_type = Link_Type.objects.filter(parent_product=int(id_product), product_id__archive=False)
         list_attr = []
         list_price = []
         for item in link_type:
@@ -413,27 +410,30 @@ def product(request, id_product):
                     list_temp.append(list_attr[j][i])
             list_value_attr.append(list_temp)
 
-        product_detail['list_attr'] = list_value_attr
-        product_detail['list_price'] = list_price
+        product['list_attr'] = list_value_attr
+        product['list_price'] = list_price
 
-        return  HttpResponse(json.dumps(product_detail), content_type="application/json")
+        return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
     #check role
+    # Khoa san pham
+    # Khong cho mo khoa san pham
     if request.method == 'POST':
-        consider = request.POST.get('consider')
-        if Product.objects.filter(pk=id_product).exists() == True:
-            product = Product.objects.get(pk=id_product)
-            product.consider = consider
-            if int(consider) == 1:
-                product.is_activity = True
-            product.save()
-            for item in Link_Type.objects.filter(parent_product=product.id):
-                x = item.product_id
-                x.consider = consider
-                if int(consider) == 1:
-                    x.is_activity = True
-                x.save()
-            return HttpResponse('Thao tac thanh cong!')
+        if Product.objects.filter(pk=id_product).exists() == False:
+            return HttpResponse('Sản phẩm không tồn tại')
+        product = Product.objects.get(pk=id_product)
+        if product.is_activity == False:
+            return HttpResponse('Sản phẩm đã bị khóa')
+        if product.archive == True:
+            return HttpResponse('Sản phẩm đã bị xóa')
+        if Post_Product.objects.filter(product_id_id=product.id, is_lock=False).exists() == True:
+            Post_Product.objects.filter(product_id_id=product.id, is_lock=False).update(is_lock=True)
+        product.is_activity=False
+        product.save()
+        html = '<p>Sản phẩm "'+ product.name +'" của bạn đã bị khóa vì vi phạm các điều kiện của chúng tôi.</p>'
+        html +='<p>Mọi thắc mắc xin vui lòng liên hệ với chúng tôi để được giải đáp</p>'
+        send_email_notifile(product.account_created.email, 'Sản phẩm của bạn đã bị khóa', html)
+        return HttpResponse(1)
     return        
         
 ####  POST
@@ -609,3 +609,25 @@ def disable_ads(request):
 
 ### End Ly Thanh
 
+def send_email_notifile(email, body, content):
+
+    mail = Mail(
+        'smtp.gmail.com', 
+        port='465', 
+        username='dinhtai018@gmail.com', 
+        password='wcyfglkfcshkxoaa',
+        use_ssl=True,
+        use_tls=False,
+        debug_level=False
+    )
+    msg = Message(body)
+    msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+    msg.to = email
+    msg.body = body
+    msg.html = content
+    msg.reply_to = 'no-reply@gmail.com'
+    msg.charset = 'utf-8'
+    msg.extra_headers = {}
+    msg.mail_options = []
+    msg.rcpt_options = []
+    mail.send(msg)

@@ -9,20 +9,18 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-          console.log(response);
           $('#inputCode').val(response.code);
           $('#inputName').val(response.name);
           CKEDITOR.instances['inputDetail'].setData(response.detail);
           $('#inputOrigin').val(response.origin);
-          $('#inputPrice').val(response.price_origin);
-          console.log(response)
-          if(response.consider == 1)
-            $('#accept').addClass('hidden')
-          if(response.consider == 0)
+          $('#inputDiscount').val(response.discount_percent);
+
+          
+          if(response.is_activity == 0)
             $('#ignore').addClass('hidden')
 
-          for(var i = 0; i < response.list_category.length; i++){
-            clickcategory(response.list_category[i].name_category, response.list_category[i].id )
+          for(var i = 0; i < response.categories.length; i++){
+            clickcategory(response.categories[i].name_category, response.categories[i].id )
           }
           for(var  i= 0; i < response.list_attr.length; i++){
             for(var j = 0; j < response.list_attr[i].length; j++){
@@ -33,41 +31,29 @@ $(document).ready(function(){
           for(var i = 0; i < response.list_price.length; i++){
               $('#price_product_'+ i).val(response.list_price[i])
           }
-          for(var i = 0; i < response.list_image.length; i++){
-            Showimage(response.list_image[i].image_link, response.list_image[i].id);
+          for(var i = 0; i < response.tags.length; i++){
+            addmore_tags(response.tags[i].tag_key)
+          }
+
+          for(var i = 0; i < response.images.length; i++){
+            Showimage('/product/' + response.images[i].image_link, response.images[i].id);
           }
         },
       })
     }
 
-    $('#accept').click(function(){
-      data = {
-        'consider': 1,
-      }
-
-      $.ajax({
-        url: 'http://localhost:8000/admin/product/' + id_product,
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data,
-        success: function(response){
-          alert(response);
-        }
-      })
-    });
-
     $('#ignore').click(function(){
-      data = {
-        'consider': 0,
-      }
-
       $.ajax({
         url: 'http://localhost:8000/admin/product/' + id_product,
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
-        data: data,
         success: function(response){
-          alert(response);
+          if(response == 1){
+            alert('Sản phẩm đã bị khóa!');
+            window.location.replace('/admin/manager_product')
+          }
+          else
+            alert(response);
         }
       })
     })
