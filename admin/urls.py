@@ -87,10 +87,18 @@ urlpatterns = [
    #Ly Thanh _service ADS
 
     path('getAllPost',functions.getAllPostAds,name="getAllPost"),
+    path('getAllAdsRunning',functions.getAllAdsRunning,name="getAllPost"),
+    path('manager_ads_running',views.ads_running,name="Adsrunning"),
+    path('getDetailRunning',functions.getDetailRunning,name="get"),
+    path('manager_ads_running_detail/<int:id>',views.ads_running_detail,name="ads"),
 
     path('manager_ads',views.ads,name="ads"),
     path('manager_ads_created',views.ads_created,name="ads"),
     path('manager_ads_detail/<int:id>',views.ads_detail,name="ads"),
+    path('getDetailRegister',functions.getDetailRegister,name="get"),
+    path('submitPost',functions.confirmPost,name="confirm"),
+    path('cancelPost',functions.cancelPost,name="confirm"),
+
 
     path('manager_ads/register',views.ads_register,name="ads"),
     path('manager_ads/register_detail/<int:id>',views.ads_register_detail,name="ads"),

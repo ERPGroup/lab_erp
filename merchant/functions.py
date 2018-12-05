@@ -943,6 +943,7 @@ def post_ads(request):
             image_3=None if not request.FILES.get('inputPhoto_3', False) else myfile3.name,
             image_3_url=inputLink_3 ,
             image_3_content=inputContent_3,
+            state=1,
         )
         service_ads_post.save()
 
@@ -1044,6 +1045,56 @@ def purchase_service_ads(request):
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')
 
+
+@csrf_exempt
+def getAllAdsRunning(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    merchant_id = Account.objects.get(pk=request.session.get('user')['id'])
+    mer_id = merchant_id.id
+    if request.method == 'GET':
+        result = []
+        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=4,customer_id__id=mer_id):
+            post_dict = dict()
+            post_dict['id'] = item.id
+            post_dict['ads_name'] = "<a href='/merchant/manager_ads_running_detail/"+str(item.purchase_service_id.id)+"'>"+item.service_name+"</a>"
+            post_dict['user'] = item.customer_id.name
+            post_dict['date_start']=item.purchase_service_id.date_start.replace(tzinfo=None).strftime("%d/%m/%Y")
+            post_dict['date_end'] = (item.purchase_service_id.date_start+timedelta(days=item.purchase_service_id.service_ads_id.day_limit)).replace(tzinfo=None).strftime("%d/%m/%Y")
+            if item.state == "2":
+                post_dict['status'] = "<label class='label label-success'>Đang chạy</label>"
+            if item.state == "1":
+                post_dict['status'] = "<label class='label label-warning'>Đang duyệt</label>"
+            if item.state == "-1":
+                post_dict['status'] = "<label class='label label-danger'>Không duyệt</label>"
+            result.append(post_dict)
+        if result:
+            return HttpResponse(json.dumps(result),content_type="application/json")
+    
+    return HttpResponse(-1)
+
+
+@csrf_exempt
+def getDetailRunning(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=2,purchase_service_id__state=4).first()
+        if post_ads:
+            post_dict = dict()
+            post_dict['id']=post_ads.id
+            post_dict['img_1'] = post_ads.image_1
+            post_dict['content_1']= post_ads.image_1_content
+            post_dict['url_1']=post_ads.image_1_url
+            post_dict['img_2'] = post_ads.image_2
+            post_dict['content_2']= post_ads.image_2_content
+            post_dict['url_2']=post_ads.image_2_url
+            post_dict['img_3'] = post_ads.image_3
+            post_dict['content_3']= post_ads.image_3_content
+            post_dict['url_3']=post_ads.image_3_url
+            return HttpResponse(json.dumps(post_dict),content_type="application/json")
+    return HttpResponse(-1)
 
 
 ###

@@ -234,13 +234,14 @@ class Service_Ads_Post(models.Model):
     image_3 = models.CharField(max_length=200,blank=True,null=True)
     image_3_url = models.CharField(max_length=200,blank=True,null=True)
     image_3_content = models.CharField(max_length=200,blank=True,null=True)
-
+    CHOICES_STATE = (('1','IsPosting'),('2','IsConfirm'),('-1','Cancel'))
+    state = models.CharField(max_length=1, choices=CHOICES_STATE)
 class Purchase_Service_Ads(models.Model):
     purchase_name = models.CharField(max_length=200)
     merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)
     service_ads_id = models.ForeignKey('Service_Ads',on_delete=models.CASCADE)
     amount = models.IntegerField()
-    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'IsPosted'), ('3','IsConfirmed'),('4', 'IsActiving'),('5','Expired'))
+    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2','IsPosted'), ('3','IsConfirmed'),('4', 'IsActiving'),('5','Expired'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
     date_start = models.DateTimeField(blank=True,null=True)
     success_at = models.DateTimeField(auto_now=True)

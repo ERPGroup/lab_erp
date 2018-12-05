@@ -7,7 +7,7 @@
 <link href="{% static '/admin/assets/css/style_merchant.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets/side_bar_merchant.html" %}
+{% include "snippets/side_bar_merchant.html" with active_service='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
