@@ -80,12 +80,27 @@ function guid () {
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 }
+
 function addmore_tags (a) {
-  var x = document.getElementById('tags_add')
-  var attribute = ''
-  var uuid = guid();
-  attribute += ' <li id="' + uuid + '"><span class="value_tags">' + a + '<a href="#"><i onclick="$(\'#'+uuid+'\').remove(); return false;" class="fa fa-remove"></i></a></span></li>'
-  x.innerHTML += attribute
+  var m = $('.value_tags')
+  list_value = []
+  for (i = 0 ; i < m.length; i++){
+    list_value.push(m[i].textContent);
+  }
+  if (list_value.length == 3)
+    return
+  if(a == ''){
+    return -1;
+  }
+  if (list_value.includes(a))
+    alert('Loi! tag bi trung');
+  else{
+    var x = document.getElementById('tags_add')
+    var attribute = ''
+    var uuid = guid();
+    attribute += ' <li id="' + uuid + '"><span class="value_tags">' + a + '<a href="#"><i onclick="$(\'#'+uuid+'\').remove(); return false;" class="fa fa-remove"></i></a></span></li>'
+    x.innerHTML += attribute
+  }
 }
 
 //Quảng cáo 

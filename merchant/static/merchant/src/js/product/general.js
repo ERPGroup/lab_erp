@@ -70,7 +70,7 @@ function load_vesion_product () {
     html += '<tr>'
     html += '<td><input type="checkbox" checked id="check_vesion_'+ i +'" class="form-check-input"></td>'
     html += '<td><span style="color:#d9534f">' + result[i] + '</span></td>'
-    html += '<td><input type="text" class="price_product" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
+    html += '<td><input type="number" class="price_product" id="price_product_' + (i) + '" min="0" value=""></td>'
     html += '</tr>'
     x.innerHTML += html
   }
@@ -234,6 +234,22 @@ $(document).ready(function(){
   })
 });
 
+function load_category_autocomplete(keyword){
+  $("#list-category").empty()
+  $.ajax({
+    url: 'http://localhost:8000/merchant/categorys?keyword=' + keyword,
+    method: 'GET',
+    contentType: 'application/json',
+    success: function(response){
+      for (var item = 0; item < response.length; item++){
+        html = '<li><a href="#" data-id-category='+ response[item].pk +' onclick="clickcategory($(this).text(), $(this).attr(\'data-id-category\'));">'+ response[item].fields.name_category +'</a></li>'
+        $("#list-category").append(html)
+      }
+    },  
+  })
+}
+
+
 // Choose Category
 function clickcategory(name, id) {
   var category_search = $('.category_search')
@@ -283,3 +299,14 @@ function check_button_submit(){
   //     }
   //   })
   // }
+
+$(document).ready(function(){
+
+  $('#inputDiscount').change(function(){
+    discount = $('#inputDiscount').val()
+    console.log(discount)
+    if (discount > 100 || discount < 0){
+      $('#inputDiscount').val(0)
+    }
+  })
+})

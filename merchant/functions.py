@@ -85,7 +85,10 @@ def account_services(request):
 ####
 
 def categorys(request):
-    return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
+    if request.method  == 'GET':
+        if 'keyword' in request.GET:
+            return HttpResponse(serialize('json', Category.objects.filter(name_category__icontains=request.GET.get('keyword'))), content_type="application/json")
+        return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
 
 def category(request, id_category):
     if request.method == "GET":
@@ -290,14 +293,31 @@ def del_image(request, id_image):
 @csrf_exempt   
 def product_add(request):
     if request.method == "POST":
+        print(request.POST)
+
         count_product = request.POST.get('inputCountProduct')
         if int(count_product) < 1:
             return HttpResponse('KHong the tao moi san pham')
 
+        count_tag = request.POST.get('inputCountTag')
+        if int(count_tag) > 3 or int(count_tag) < 1:
+            return HttpResponse('KHong the tao moi san pham')
+        
+        count_category = request.POST.get('inputCountCategory')
+        if int(count_category) > 2 or int(count_category) < 1:
+            return HttpResponse('KHong the tao moi san pham')
+        
+        count_images = request.POST.get('inputCountImage')
+        if count_category < 1:
+            return  HttpResponse('KHong the tao moi san pham')
+
+        discount_percent = request.POST.get('inputDiscount')
+        if discount_percent == '':
+            return  HttpResponse('KHong the tao moi san pham')
+
         code = request.POST.get('inputCode')
         name = request.POST.get('inputName')
         detail = request.POST.get('inputDetail')
-        price_origin = request.POST.get('inputPrice')
         origin = request.POST.get('inputOrigin')
         account_created = Account.objects.get(pk=request.session.get('user')['id'])
         product_config = Product(
@@ -306,13 +326,14 @@ def product_add(request):
             detail=detail,
             origin=origin,
             type_product=True,
-            price=price_origin,
+            price=0,
+            discount_percent=discount_percent,
             archive=False,
             account_created=account_created,
         )
         product_config.save()
 
-        count_category = request.POST.get('inputCountCategory')
+
         for i in range(int(count_category)):
             id = request.POST.get('inputCategory['+ str(i) +']')
             product_category = Product_Category(
@@ -321,7 +342,17 @@ def product_add(request):
             )
             product_category.save()
 
-        count_images = request.POST.get('inputCountImage') #edit input
+        for i in range(int(count_tag)):
+            key = request.POST.get('inputCountTag['+ str(i) +']')
+            tag = Tag(
+                tag_key = key,
+                tag_value = product_config.id,
+                tag_type=1,
+            )
+            tag.save()
+
+
+        count_images = request.POST.get('inputCountImage')
         for i in range(int(count_images)):
             id = request.POST.get('inputImage['+ str(i) +']')
             image = Product_Image(
@@ -331,7 +362,9 @@ def product_add(request):
             image.save()
 
         v = 1
+        agv_price = 0
         for i in range(int(count_product)):
+            agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
             if count_product != 1:
                 code_type = code + ' .v' + str(v)
             else: 
@@ -342,6 +375,7 @@ def product_add(request):
                 detail=detail,
                 origin=origin,
                 price=request.POST.get('inputVersion['+ str(i) +'][price]'),
+                discount_percent=discount_percent,
                 type_product=False,
                 archive=False,
                 account_created=account_created,
@@ -362,17 +396,10 @@ def product_add(request):
                 )
                 product_attr.save()
                 index = index + 1 
-
             v = v + 1
-            # percent = request.POST.get('inputAttribute') #edit input
-            # date_start = request.POST.get('inputAttribute')  #edit input
-            # date_end = request.POST.get('inputAttribute')  #edit input
-            # discount = Discount(
-            #     product_id=product.id,
-            #     percent=percent,
-            #     date_start=date_start,
-            #     date_end=date_end,
-            # )
+
+            product_config.price  = (agv_price/count_product)
+            product_config.save()
 
         return HttpResponse(1)
 

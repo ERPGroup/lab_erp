@@ -40,6 +40,7 @@ class Product (models.Model):
     origin = models.CharField(max_length=200)
     type_product = models.BooleanField()
     price = models.IntegerField()
+    discount_percent = models.IntegerField(default=0)
     code = models.CharField(max_length=200)
     consider = models.IntegerField(default=2)
     is_activity = models.BooleanField(default=False)
@@ -81,16 +82,7 @@ class Product_Attribute (models.Model):
     archive_at = models.DateTimeField(null=True)
     lock = models.BooleanField(default=False)
 
-class Discount (models.Model):
-    product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    percent = models.IntegerField()
-    date_start = models.DateField()
-    date_end = models.DateField()
-    archive = models.BooleanField(default=False)
-    archive_at = models.DateTimeField(null=True)
 
-    def __str__(self):
-        return self.product_id__name
 
 class Product_Image(models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -112,8 +104,11 @@ class Link_Type(models.Model):
 
 class Tag(models.Model):
     tag_key = models.CharField(max_length=200)
-    tag_value =models.CharField(max_length=200)
-
+    tag_value = models.CharField(max_length=200)
+    tag_type = models.IntegerField()
+    see = models.IntegerField(default=0)
+    archive = models.BooleanField(default=False)
+    archive_at = models.DateTimeField(null=True)
 
 
 class Post_Product (models.Model):

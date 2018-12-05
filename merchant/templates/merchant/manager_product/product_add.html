@@ -11,6 +11,7 @@ Thêm sản phẩm
 <script src="{% static 'merchant/ckeditor.js' %}"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'merchant/lightgallery.min.css' %} " />
 <link rel="stylesheet" type="text/css" media="screen" href="{% static 'admin/assets/css/style_merchant.css' %} " />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 {% endblock %}
 <div class="row">
     <div class="col-md-12">
@@ -43,22 +44,23 @@ Thêm sản phẩm
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group" id="re_number3">
-                        <label>Giá :</label>
-                        <input type="text" id="inputPrice" maxlength="11" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Nguồn gốc :</label>
-                        <input type="text" id="inputOrigin" class="form-control">
-                    </div>
                     <div class="form-group" style="position:relative;">
                         <label>Danh mục sản phẩm:</label>
-                        <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
+                        <input data-toggle="dropdown" type="text" onkeypress="load_category_autocomplete(this.value)" style="padding-left:35px;" class="form-control dropdown-toggle">
                         <i class="fa fa-search" style="position: absolute;top: 35px;left: 15px;"></i>
                         <ul class="dropdown-menu" id="list-category">
                         </ul>
                         <div id="value_category"></div>
                     </div>
+                    <div class="form-group">
+                        <label>Nguồn gốc :</label>
+                        <input type="text" id="inputOrigin" class="form-control">
+                    </div>
+                    <div class="form-group" id="re_number3">
+                        <label>Giảm giá :</label>
+                        <input type="number" id="inputDiscount" min='0' max="100" class="form-control">
+                    </div>
+                    
                     <div class="form-group frm_tags">
                         <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
                         <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
@@ -163,6 +165,7 @@ Thêm sản phẩm
         $el.data('lightGallery').destroy(true);
         $el.lightGallery();
     }
+    
 </script>
 <script src="{% static 'merchant/src/js/product/general.js' %}"></script>
 <script src="{% static 'merchant/src/js/product/product_add.js' %}"></script>
