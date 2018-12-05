@@ -287,33 +287,32 @@ def del_image(request, id_image):
         if os.path.exists(path):
             os.remove(path)
             image.delete()
-            return HttpResponse('Xoa thanh cong')
-        return HttpResponse('Loi!')
+            return HttpResponse('Xóa thành công')
+        return HttpResponse('Lỗi hệ thống!\nChúng tôi sẽ cải thiệt chúng')
         
 @csrf_exempt   
 def product_add(request):
     if request.method == "POST":
-        print(request.POST)
 
         count_product = request.POST.get('inputCountProduct')
         if int(count_product) < 1:
-            return HttpResponse('KHong the tao moi san pham')
+            return HttpResponse('Không thể tạo mới sản phẩm')
 
         count_tag = request.POST.get('inputCountTag')
         if int(count_tag) > 3 or int(count_tag) < 1:
-            return HttpResponse('KHong the tao moi san pham')
+            return HttpResponse('Không thể tạo mới sản phẩm')
         
         count_category = request.POST.get('inputCountCategory')
         if int(count_category) > 2 or int(count_category) < 1:
-            return HttpResponse('KHong the tao moi san pham')
+            return HttpResponse('Không thể tạo mới sản phẩm')
         
         count_images = request.POST.get('inputCountImage')
-        if count_category < 1:
-            return  HttpResponse('KHong the tao moi san pham')
+        if int(count_images) < 1:
+            return  HttpResponse('Không thể tạo mới sản phẩm')
 
         discount_percent = request.POST.get('inputDiscount')
-        if discount_percent == '':
-            return  HttpResponse('KHong the tao moi san pham')
+        if int(discount_percent) == '':
+            return  HttpResponse('Không thể tạo mới sản phẩm')
 
         code = request.POST.get('inputCode')
         name = request.POST.get('inputName')
@@ -343,7 +342,7 @@ def product_add(request):
             product_category.save()
 
         for i in range(int(count_tag)):
-            key = request.POST.get('inputCountTag['+ str(i) +']')
+            key = request.POST.get('inputTag['+ str(i) +']')
             tag = Tag(
                 tag_key = key,
                 tag_value = product_config.id,
@@ -398,7 +397,7 @@ def product_add(request):
                 index = index + 1 
             v = v + 1
 
-            product_config.price  = (agv_price/count_product)
+            product_config.price  = (agv_price/int(count_product))
             product_config.save()
 
         return HttpResponse(1)
@@ -408,39 +407,34 @@ def product_add(request):
 @csrf_exempt
 def product(request, id_product):
     if request.method == 'GET':
-        product_detail = dict()
-        product_config = Product.objects.filter(id=int(id_product), type_product=True)
-        if product_config.count() == 0:
-            return HttpResponse(-1)
+        if Product.objects.filter(pk=id_product, archive=False).exists() == False:
+            return HttpResponse('Sản phẩm không tồn tại')
 
-        product_detail['name'] = product_config[0].name
-        product_detail['detail'] = product_config[0].detail
-        product_detail['origin'] = product_config[0].origin
-        product_detail['code'] = product_config[0].code
-        product_detail['price_origin'] = product_config[0].price
-
+        product = Product.objects.get(pk=id_product).__dict__
+        del product['_state']
         product_category = Product_Category.objects.filter(product_id=int(id_product), archive=False)
-        list_category  = []
+        list_category = []
         for item in product_category:
-            category_dict = dict()
-            category = Category.objects.get(pk=item.category_id.id)
-            category_dict['id'] = category.id
-            category_dict['name_category'] = category.name_category
-            category_dict['quantity'] = category.quantity
-            list_category.append(category_dict)
-        product_detail['list_category'] = list_category
+            category = Category.objects.get(pk=item.category_id_id).__dict__
+            del category['_state']
+            list_category.append(category)
+        product['categories'] = list_category
 
         product_image = Product_Image.objects.filter(product_id=int(id_product), archive=False).order_by('image_id_id')
         list_image = []
         for item in product_image:
-            image_dict = dict()
-            image = Image.objects.get(pk=item.image_id.id)
-            image_dict['id']  = image.id
-            image_dict['image_link'] =  '/product' + image.image_link.url
-            image_dict['is_default'] = image.is_default
-            image_dict['user_id'] = image.user_id.id
-            list_image.append(image_dict)
-        product_detail['list_image'] = list_image
+            image = Image.objects.get(pk=item.image_id_id).__dict__
+            del image['_state']
+            list_image.append(image)
+        product['images'] = list_image
+
+        tags = Tag.objects.filter(tag_type=1, tag_value=product['id'], archive=False)
+        list_tag = []
+        for item in tags:
+            tag = item.__dict__
+            del tag['_state']
+            list_tag.append(tag)
+        product['tags'] = list_tag
 
         #lay ra danh sach phien ban
         link_type = Link_Type.objects.filter(parent_product=int(id_product), product_id__archive=False)
@@ -465,107 +459,155 @@ def product(request, id_product):
                     list_temp.append(list_attr[j][i])
             list_value_attr.append(list_temp)
 
-        product_detail['list_attr'] = list_value_attr
-        product_detail['list_price'] = list_price
+        product['list_attr'] = list_value_attr
+        product['list_price'] = list_price
 
-        return  HttpResponse(json.dumps(product_detail), content_type="application/json")
+        return  HttpResponse(json.dumps(product), content_type="application/json")
 
     if request.method == 'POST':
-        if Product.objects.filter(pk=id_product).exists() == True:
-            now = timezone.now()
-            product = Product.objects.get(pk=id_product)
-            product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
-            Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
-            Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-            Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-            Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
+        if Product.objects.filter(pk=id_product, archive=False).exists() == False:
+            return HttpResponse('Không tồn tại sản phẩm')
+        now = timezone.now()
+        product = Product.objects.get(pk=id_product)
+        product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
+        Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
+        Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+        Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+        Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
+        Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
+        
+        count_product = request.POST.get('inputCountProduct')
+        if int(count_product) < 1:
+            return HttpResponse('Không thể sửa sản phẩm')
 
+        count_tag = request.POST.get('inputCountTag')
+        if int(count_tag) > 3 or int(count_tag) < 1:
+            return HttpResponse('Không thể sửa sản phẩm')
+        
+        count_category = request.POST.get('inputCountCategory')
+        if int(count_category) > 2 or int(count_category) < 1:
+            return HttpResponse('Không thể sửa sản phẩm')
+        
+        count_images = request.POST.get('inputCountImage')
+        if int(count_images) < 1:
+            return HttpResponse('Không thể sửa sản phẩm')
+
+        discount_percent = request.POST.get('inputDiscount')
+        if int(discount_percent) == '':
+            return HttpResponse('Không thể sửa sản phẩm')
+
+        #request 
+        code = request.POST.get('inputCode')
+        name = request.POST.get('inputName')
+        detail = request.POST.get('inputDetail')
+        discount_percent = request.POST.get('inputDiscount')
+        origin = request.POST.get('inputOrigin')
+        account_created = Account.objects.get(pk=request.session.get('user')['id'])
+        
+        # Edit product origin
+        product.code=code
+        product.name= name
+        product.detail=detail
+        product.origin=origin
+        product.discount_percent=discount_percent
+        product.save()
+
+        for i in range(int(count_category)):
+            id_category = request.POST.get('inputCategory['+ str(i) +']')
+            product_category = Product_Category(
+                product_id = product,
+                category_id = Category.objects.get(pk=int(id_category))
+            )
+            product_category.save()
+
+        for i in range(int(count_tag)):
+            key = request.POST.get('inputTag['+ str(i) +']')
+            tag = Tag(
+                tag_key = key,
+                tag_value = product.id,
+                tag_type=1,
+            )
+            tag.save()
+
+
+        for i in range(int(count_images)):
+            id_image = request.POST.get('inputImage['+ str(i) +']')
+            image = Product_Image(
+                product_id = product,
+                image_id = Image.objects.get(pk=int(id_image))
+            )
+            image.save()
+
+        
+        if int(count_product) < 1:
+            return HttpResponse(-1)
+        v = 1
+        agv_price = 0
+        for i in range(int(count_product)):
+            agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
+            if count_product != 1:
+                name_type = name + ' .v' + str(v)
+            else: 
+                name_type = name
+            product2 = Product(
+                code=code,
+                name=name_type,
+                detail=detail,
+                origin=origin,
+                price=request.POST.get('inputVersion['+ str(i) +'][price]'),
+                discount_percent=discount_percent,
+                type_product=False,
+                archive=False,
+                account_created=account_created,
+            )
+            product2.save()
             
-            #request 
-            code = request.POST.get('inputCode')
-            name = request.POST.get('inputName')
-            detail = request.POST.get('inputDetail')
-            price_origin = request.POST.get('inputPrice')
-            origin = request.POST.get('inputOrigin')
-            account_created = Account.objects.get(pk=request.session.get('user')['id'])
+            Link_Type.objects.create(product_id=product2, parent_product=product.id)
             
-            # Edit product origin
-            product.code=code
-            product.name= name
-            product.detail=detail
-            product.origin=origin
-            product.price=price_origin
-            product.save()
-
-            count_category = request.POST.get('inputCountCategory')
-            for i in range(int(count_category)):
-                id_category = request.POST.get('inputCategory['+ str(i) +']')
-                product_category = Product_Category(
-                    product_id = product,
-                    category_id = Category.objects.get(pk=int(id_category))
+            data = request.POST.get('inputVersion['+ str(i) +'][value]')
+            list_attr = data.split(' | ')
+            attr = Attribute.objects.filter(is_active=True)
+            index = 0
+            for item in list_attr:
+                product_attr = Product_Attribute(
+                    product_id=product2,
+                    attribute_id=attr[index],
+                    value=item,
                 )
-                product_category.save()
+                product_attr.save()
+                index = index + 1 
+            v = v + 1
 
-            count_images = request.POST.get('inputCountImage') #edit input
-            for i in range(int(count_images)):
-                id_image = request.POST.get('inputImage['+ str(i) +']')
-                image = Product_Image(
-                    product_id = product,
-                    image_id = Image.objects.get(pk=int(id_image))
-                )
-                image.save()
+        product.price  = (agv_price/int(count_product))
+        product.save()
 
-            count_product = request.POST.get('inputCountProduct')
-            if int(count_product) < 1:
-                return HttpResponse(-1)
-            v = 1
-            for i in range(int(count_product)):
-                if count_product != 1:
-                    name_type = name + ' .v' + str(v)
-                else: 
-                    name_type = name
-                product2 = Product(
-                    code=code,
-                    name=name_type,
-                    detail=detail,
-                    origin=origin,
-                    price=request.POST.get('inputVersion['+ str(i) +'][price]'),
-                    type_product=False,
-                    archive=False,
-                    account_created=account_created,
-                )
-                product2.save()
-                
-                Link_Type.objects.create(product_id=product2, parent_product=product.id)
-
-                data = request.POST.get('inputVersion['+ str(i) +'][value]')
-                list_attr = data.split(' | ')
-                attr = Attribute.objects.filter(is_required=True)
-                index = 0
-                for item in list_attr:
-                    product_attr = Product_Attribute(
-                        product_id=product2,
-                        attribute_id=attr[index],
-                        value=item,
-                    )
-                    product_attr.save()
-                    index = index + 1 
-                v = v + 1
-                # percent = request.POST.get('inputAttribute') #edit input
-                # date_start = request.POST.get('inputAttribute')  #edit input
-                # date_end = request.POST.get('inputAttribute')  #edit input
-                # discount = Discount(
-                #     product_id=product.id,
-                #     percent=percent,
-                #     date_start=date_start,
-                #     date_end=date_end,
-                # )
-            return HttpResponse(1)
+        return HttpResponse(1)
+        
 
     if request.method == 'DELETE':
         # kiem tra san pham da duoc dang chua?
-        # cau huy goi tin de duoc xoa
-        return
+        # can huy goi tin de duoc xoa
+        if Product.objects.filter(pk=id_product, archive=False).exists() == False:
+            return HttpResponse('Sản phẩm không tồn tại!')
+        try:
+            now = timezone.now()
+            product = Product.objects.get(pk=id_product)
+            if Post_Product.objects.filter(product_id_id=product.id, is_lock=False).exists() == False:
+                product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
+                Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
+                Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+                Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+                Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
+                Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
+                product.archive = True
+                product.archive_at = now
+                product.save()
+                return HttpResponse('Sản phẩm đã xóa!')
+            else:
+                return HttpResponse('Vui lòng hủy tin đăng trước khi xóa sản phẩm!')
+        except:
+            return HttpResponse('Lỗi hệ thống!')
+        return HttpResponse('Lỗi hệ thống!')
 
 def products(request):
     if request.method == 'GET':
@@ -583,12 +625,10 @@ def products(request):
                         product.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
                     else:
                         product.append('<div class="tbl_thumb_product"><img src="/static/website/images/product_1.jpg" /></div>')
-                    if item.consider == 1:
+                    if item.is_activity == 1:
                         product.append('<p style="color:green">Được chấp thuận</p>')
-                    if item.consider == 0:
+                    if item.is_activity == 0:
                         product.append('<p style="color:red">Bị khóa</p>')
-                    if item.consider == 2:
-                        product.append('<p style="color:blue">Đang xem xét</p>')
                     products.append(product)
             return HttpResponse(json.dumps(products), content_type="application/json")
         if request.GET.get('posted') == 'false':
@@ -735,7 +775,7 @@ def post(request, id_post):
 
         # kiem tra tin dang co ton tai khong?
         if Post_Product.objects.filter(pk=id_post).exists() == False:
-            return HttpResponse('Tin dang khong ton tai!')
+            return HttpResponse('Tin đăng không tồn tại!')
 
         post = Post_Product.objects.get(pk=id_post)
         # kiem tra da het  hang cua

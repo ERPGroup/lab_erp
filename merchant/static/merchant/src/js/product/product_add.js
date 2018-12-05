@@ -39,7 +39,7 @@ $(document).ready(function(){
       return
     }
 
-    for(item =0; item < list_version.length; item++){
+    for(item = 0; item < list_version.length; item++){
       if (list_version[item]['price'] == ''){
         alert('Giá phiên bản không hợp lệ');
         return
@@ -48,20 +48,39 @@ $(document).ready(function(){
     }
 
     if (list_category.length < 1 || list_category.length > 2){
-      alert('Số lượng phiên bản không nhỏ hơn 1 hoặc lớn hơn 2');
+      alert('Số lượng thư mục không nhỏ hơn 1 hoặc lớn hơn 2');
       return
     }
 
     if (values_image.length < 1){
-      alert('Số lượng phiên bản không nhỏ hơn 1 ');
+      alert('Số lượng hình ảnh không nhỏ hơn 1 ');
       return
     }
 
-    if (values_image.list_tag > 3){
-      alert('Số lượng phiên bản không lớn hơn 3 ');
+    if (list_tag.length > 3){
+      alert('Số lượng tag không lớn hơn 3 ');
       return
     }
 
+    if ($("#inputCode").val() == ''){
+      alert('Mã SKU không được để trống');
+      return
+    }
+
+    if ($("#inputName").val() == ''){
+      alert('Tên sản phẩm không được để trống');
+      return
+    }
+
+    if ($("#inputDiscount").val() == ''){
+      alert('Giảm giá không được để trống');
+      return
+    }
+
+    if ($("#inputOrigin").val() == ''){
+      alert('Nguồn gốc không được để trống');
+      return
+    }
 
     var data = {
       'inputCode': $("#inputCode").val(),
@@ -88,7 +107,7 @@ $(document).ready(function(){
       success: function(response){
         console.log(response);
         if(response == 1)
-          alert('da them san pham');
+          alert('Sản phẩm đã được tạo');
         else
           alert(response)
       },

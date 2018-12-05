@@ -189,13 +189,13 @@ $(document).ready(function(){
           reader.readAsDataURL(files[0]);
         }
         if (response == 0){
-          alert('Do khong phai file anh');
+          alert('Đó không phải file ảnh');
         }
         if (response == -2){
-          alert('Dung luong anh khong duoc vuot qua 2MB');
+          alert('Dung lượng ảnh không được vượt quá 2MB');
         }
         if (response == -1){
-          alert('Xay ra loi');
+          alert('Lỗi hệ thống!\nChúng tôi sẽ cải thiện chúng sớm!');
         }
       },
       error: function(jqXHR){
@@ -309,4 +309,6 @@ $(document).ready(function(){
       $('#inputDiscount').val(0)
     }
   })
+
+  
 })

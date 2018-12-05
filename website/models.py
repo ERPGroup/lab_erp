@@ -36,14 +36,13 @@ class Account_Service(models.Model):
 
 class Product (models.Model):
     name = models.CharField(max_length=200)
-    detail = models.TextField(max_length=2000)
+    detail = models.TextField(max_length=2000, null=True)
     origin = models.CharField(max_length=200)
     type_product = models.BooleanField()
     price = models.IntegerField()
     discount_percent = models.IntegerField(default=0)
     code = models.CharField(max_length=200)
-    consider = models.IntegerField(default=2)
-    is_activity = models.BooleanField(default=False)
+    is_activity = models.BooleanField(default=True)
     archive = models.BooleanField(default=False)
     account_created = models.ForeignKey('Account', on_delete=models.CASCADE)
     archive_at = models.DateTimeField(null=True)

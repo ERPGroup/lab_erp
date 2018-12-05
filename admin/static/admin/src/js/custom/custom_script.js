@@ -245,3 +245,9 @@ function addmore_tags (a) {
 function pageRedirect(url) {
   window.location.replace(url);
 }
+
+
+function check_length_sku(value){
+  if (value.length > 4)
+    $('#inputCode').val(value.substring(0,4))
+}

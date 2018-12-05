@@ -17,7 +17,7 @@ Trang chi tiết sản phẩm
         <h1 class="page-header" style="margin:0px;">
             Quản lý sản phẩm <small>Chỉnh sửa</small>
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/merchant/manager_product_detail" class="btn btn-danger">Xóa sản phẩm</a>
+                <a id="delete" class="btn btn-danger">Xóa sản phẩm</a>
             </div>
         </h1>
     </div>
@@ -31,12 +31,12 @@ Trang chi tiết sản phẩm
             <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
                 <div class="col-lg-8">
                     <div class="form-group">
-                        <label>Mã sản phẩm:</label>
-                        <input type="text" id="inputCode" class="form-control">
-                    </div>
-                    <div class="form-group">
                         <label>Tên sản phẩm:</label>
                         <input type="text" id="inputName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mã SKU:</label>
+                        <input type="text" id="inputCode" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Mô tả ngắn:</label>
@@ -44,14 +44,6 @@ Trang chi tiết sản phẩm
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group" id="re_number3">
-                        <label>Giá :</label>
-                        <input type="text" id="inputPrice" maxlength="11" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Nguồn gốc :</label>
-                        <input type="text" id="inputOrigin" class="form-control">
-                    </div>
                     <div class="form-group" style="position:relative;">
                         <label>Danh mục sản phẩm:</label>
                         <input data-toggle="dropdown" type="text" autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
@@ -60,6 +52,15 @@ Trang chi tiết sản phẩm
                         </ul>
                         <div id="value_category"></div>
                     </div>
+                    <div class="form-group">
+                        <label>Nguồn gốc :</label>
+                        <input type="text" id="inputOrigin" class="form-control">
+                    </div>
+                    <div class="form-group" id="re_number3">
+                        <label>Giảm giá :</label>
+                        <input type="number" id="inputDiscount" min='0' max="100" class="form-control">
+                    </div>
+
                     <div class="form-group frm_tags">
                         <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
                         <input onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
