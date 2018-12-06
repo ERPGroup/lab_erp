@@ -463,7 +463,7 @@ def getAllPostAds(request):
         return HttpResponse('Error')
     if request.method == 'GET':
         result = []
-        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=3):
+        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=2,state=1):
             post_dict = dict()
             post_dict['id'] = item.id
             post_dict['ads_name'] = "<a href='/admin/manager_ads/register_detail/"+str(item.purchase_service_id.id)+"'>"+item.service_name+"</a>"
@@ -539,7 +539,9 @@ import pytz
 
 @csrf_exempt
 def getAllAdsActiving(request):
-    input = Purchase_Service_Ads.objects.filter(state=3,is_active=True)
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    input = Purchase_Service_Ads.objects.filter(state=4,is_active=True)
     result = []
     tz = pytz.timezone('Asia/Bangkok')
     now = datetime.now(tz)
@@ -551,7 +553,7 @@ def getAllAdsActiving(request):
             ads_dict['end'] = (item.date_start+timedelta(days=item.service_ads_id.day_limit)).strftime('%Y-%m-%d-%H-%M-%S')
             #ads_dict['start'] = (item.date_start).strftime('%m-%d-%Y-%H-%M-%S')
             result.append(ads_dict)
-    for item in Purchase_Service_Ads.objects.filter(state=2,is_active=True):
+    for item in Purchase_Service_Ads.objects.filter(state=3,is_active=True):
         ads_dict = dict()
         ads_dict['id']= "start_"+str(item.id)
         ads_dict['end']=(item.date_start).strftime('%Y-%m-%d-%H-%M-%S')
@@ -586,21 +588,115 @@ def getAllAdsActiving(request):
 
 @csrf_exempt
 def enable_ads(request):
-    if request.method == 'POST':
-        id = request.POST['inputID']
-        service_ads = Purchase_Service_Ads.objects.filter(id=id)
-        service_ads.update(state=3)
-        return HttpResponse(1)
-    return HttpResponse(-1)
-@csrf_exempt
-def disable_ads(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
     if request.method == 'POST':
         id = request.POST['inputID']
         service_ads = Purchase_Service_Ads.objects.filter(id=id)
         service_ads.update(state=4)
         return HttpResponse(1)
     return HttpResponse(-1)
+@csrf_exempt
+def disable_ads(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        service_ads = Purchase_Service_Ads.objects.filter(id=id)
+        service_ads.update(state=5)
+        return HttpResponse(1)
+    return HttpResponse(-1)
 
+@csrf_exempt
+def getDetailRegister(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=1,purchase_service_id__state=2).first()
+        if post_ads:
+            post_dict = dict()
+            post_dict['id']=post_ads.id
+            post_dict['img_1'] = post_ads.image_1
+            post_dict['content_1']= post_ads.image_1_content
+            post_dict['url_1']=post_ads.image_1_url
+            post_dict['img_2'] = post_ads.image_2
+            post_dict['content_2']= post_ads.image_2_content
+            post_dict['url_2']=post_ads.image_2_url
+            post_dict['img_3'] = post_ads.image_3
+            post_dict['content_3']= post_ads.image_3_content
+            post_dict['url_3']=post_ads.image_3_url
+            return HttpResponse(json.dumps(post_dict),content_type="application/json")
+    return HttpResponse(-1)
+
+@csrf_exempt
+def confirmPost(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        sid = request.POST['inputSID']
+        pid = request.POST['inputPID']
+        service_ads = Purchase_Service_Ads.objects.filter(id=sid)
+        service_ads.update(state=3)
+        post_ads = Service_Ads_Post.objects.filter(id=pid)
+        post_ads.update(state=2)
+        return HttpResponse(1)
+    return HttpResponse(-1)
+@csrf_exempt
+def cancelPost(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        sid = request.POST['inputSID']
+        pid = request.POST['inputPID']
+        service_ads = Purchase_Service_Ads.objects.filter(id=sid)
+        service_ads.update(state=1)
+        post_ads = Service_Ads_Post.objects.filter(id=pid)
+        post_ads.update(state=-1)
+        return HttpResponse(1)
+    return HttpResponse(-1)
+
+@csrf_exempt
+def getAllAdsRunning(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'GET':
+        result = []
+        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=4,state=2):
+            post_dict = dict()
+            post_dict['id'] = item.id
+            post_dict['ads_name'] = "<a href='/admin/manager_ads_running_detail/"+str(item.purchase_service_id.id)+"'>"+item.service_name+"</a>"
+            post_dict['user'] = item.customer_id.name
+            post_dict['date_start']=item.purchase_service_id.date_start.replace(tzinfo=None).strftime("%d/%m/%Y")
+            post_dict['date_end'] = (item.purchase_service_id.date_start+timedelta(days=item.purchase_service_id.service_ads_id.day_limit)).replace(tzinfo=None).strftime("%d/%m/%Y")
+            post_dict['status'] = "<label class='label label-warning'>Đang chạy</label>"
+            result.append(post_dict)
+        if result:
+            return HttpResponse(json.dumps(result),content_type="application/json")
+    
+    return HttpResponse(-1)
+
+@csrf_exempt
+def getDetailRunning(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Error')
+    if request.method == 'POST':
+        id = request.POST['inputID']
+        post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=2,purchase_service_id__state=4).first()
+        if post_ads:
+            post_dict = dict()
+            post_dict['id']=post_ads.id
+            post_dict['img_1'] = post_ads.image_1
+            post_dict['content_1']= post_ads.image_1_content
+            post_dict['url_1']=post_ads.image_1_url
+            post_dict['img_2'] = post_ads.image_2
+            post_dict['content_2']= post_ads.image_2_content
+            post_dict['url_2']=post_ads.image_2_url
+            post_dict['img_3'] = post_ads.image_3
+            post_dict['content_3']= post_ads.image_3_content
+            post_dict['url_3']=post_ads.image_3_url
+            return HttpResponse(json.dumps(post_dict),content_type="application/json")
+    return HttpResponse(-1)
 
 ### End Ly Thanh
 

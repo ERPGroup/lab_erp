@@ -1,24 +1,22 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Admin - Quản lý gói tin
+Quản lý đăng ký
 {% endblock %}
 {% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html"  with active_post="active"  %}
+{% include "snippets_admin/side_bar.html" with active_ads='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý gói tin
-            <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/service/add" class="btn btn-info">Thêm gói tin mới</a>
-            </div>
+            Quản lý đăng nội dung quảng cáo
         </h1>
+
     </div>
 </div>
 <div class="row">
@@ -26,22 +24,21 @@ Admin - Quản lý gói tin
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách gói tin
+                Danh sách
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="tbl_manager_servies">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Tên gói</th>
-                                <th>Số lượng tin</th>
-                                <th>Hạn sử dụng (Mỗi tin)</th>
-                                <th>Giá tiền</th>
+                                <th>Tên quảng cáo</th>
+                                <th>Người đăng</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
-                        <tbody id="content_table">
-                            
+                        <tbody>
                         </tbody>
                     </table>
                 </div>
@@ -56,5 +53,6 @@ Admin - Quản lý gói tin
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
-<script src="{% static '/admin/src/js/service/manager_service.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
+<script src="{% static 'admin/src/js/service_ads/service_ads_running.js' %}"></script>
 {% endblock %}

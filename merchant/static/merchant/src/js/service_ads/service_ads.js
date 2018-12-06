@@ -69,3 +69,29 @@ $(document).ready(function () {
         });
     });
 });
+$(document).ready(function () {
+    if ($('#' + $('#select_type').val()).val() == "Slide") {
+        document.getElementById('post_img_2').style.display = "block";
+        document.getElementById('post_img_3').style.display = "block";
+        document.getElementById('post_img_1').classList.remove("col-lg-12");
+        document.getElementById('post_img_1').classList.add("col-lg-4");
+    } else {
+        document.getElementById('post_img_2').style.display = "none";
+        document.getElementById('post_img_3').style.display = "none";
+        document.getElementById('post_img_1').classList.add("col-lg-12");
+        document.getElementById('post_img_1').classList.remove("col-lg-4");
+    }
+})
+$('#select_type').change(function () {
+    if ($('#' + this.value).val() == "Slide") {
+        document.getElementById('post_img_2').style.display = "block";
+        document.getElementById('post_img_3').style.display = "block";
+        document.getElementById('post_img_1').classList.remove("col-lg-12");
+        document.getElementById('post_img_1').classList.add("col-lg-4");
+    } else {
+        document.getElementById('post_img_2').style.display = "none";
+        document.getElementById('post_img_3').style.display = "none";
+        document.getElementById('post_img_1').classList.add("col-lg-12");
+        document.getElementById('post_img_1').classList.remove("col-lg-4");
+    }
+})

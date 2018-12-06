@@ -63,6 +63,11 @@ urlpatterns = [
     path('post/<int:id_post>', functions.post, name='post'),
 
     ### Ly Thanh 
+    path('getAllAdsRunning',functions.getAllAdsRunning,name="getAllPost"),
+    path('manager_ads_running',views.ads_running,name="Adsrunning"),
+    path('getDetailRunning',functions.getDetailRunning,name="get"),
+    path('manager_ads_running_detail/<int:id>',views.ads_running_detail,name="ads"),
+
     path('getListAds/',functions.get_my_choices_2,name="remove"),
     path('getDateAvailable/<position>&<int:id_ads>',functions.getDateAvailable,name="get_avail"),
     path('post_ads/',views.post_ads,name="ads"),

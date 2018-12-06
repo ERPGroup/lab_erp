@@ -34,6 +34,9 @@ Trang chi tiết người dùng
             <h3 style="text-align:center;">Nội dung quảng cáo</h3>
             <hr>
             <div class="col-lg-6 form-group">
+                {% for item in list %}
+                <input type="hidden" value="{{item.service_ads_id.position}}" id="{{item.id}}">
+                {% endfor %}
                 <label>Tên quảng cáo</label>
                 <select class="form-control" name="inputAds_id" id="select_type">
                     {% for item in list %}
@@ -45,7 +48,7 @@ Trang chi tiết người dùng
                 <label>Hạn sử dụng</label>
                 <input type="text" class="form-control" value="{{item.service_ads_id.day_limit}}" name="input" id="">
             </div>
-            <div class="col-lg-4 form-group">
+            <div id="post_img_1" class="col-lg-4 form-group">
                 <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-1">Thêm</label>
                     <input type="file" name="inputPhoto_1" id="upload-photo-1" /></h3>
                 <hr>
@@ -57,7 +60,7 @@ Trang chi tiết người dùng
                 <label>Nội dung quảng cáo</label>
                 <input value="Đây là quảng cáo" type="text" name="inputContent_1" class="form-control">
             </div>
-            <div class="col-lg-4 form-group">
+            <div id="post_img_2" class="col-lg-4 form-group">
                 <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-2">Thêm</label>
                     <input type="file" name="inputPhoto_2" id="upload-photo-2" /></h3>
                 <hr>
@@ -69,7 +72,7 @@ Trang chi tiết người dùng
                 <label>Nội dung quảng cáo</label>
                 <input value="Đây là quảng cáo" type="text" name="inputContent_2" class="form-control">
             </div>
-            <div class="col-lg-4 form-group">
+            <div id="post_img_3" class="col-lg-4 form-group">
                 <h3>Ảnh quảng cáo <label class="upload_photo add_image" style="color:#428bca" for="upload-photo-3">Thêm</label>
                     <input type="file" name="inputPhoto_3" id="upload-photo-3" /></h3>
                 <hr>

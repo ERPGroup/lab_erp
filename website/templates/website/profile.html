@@ -10,8 +10,7 @@ Thông tin cá nhân
         margin-bottom:0px;
     }
 </style>
-<link href="{% static '/admin/assets/css/bootstrap.css' %} " rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<link href="{% static '/admin/assets/css/bootstrap-datetimepicker.min.css' %} " rel="stylesheet" />
 <!--End-->
 {%endblock%}
 {% block content %}
@@ -27,7 +26,6 @@ Thông tin cá nhân
             </div>
             <div class="clearfix"></div>
             <div class="row" style="border-top: 1px solid #ebebeb;position:relative">
-                <a href="#" class="btn btn-warning to_merchant">Đăng ký bán hàng</a>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no_padding_desktop_1280">
                     <h3 class="title_user">Thông tin đăng nhập</h3>
                     {% comment %} <form action="#" method="post" class="frm_register"> {% endcomment %}
@@ -200,12 +198,11 @@ Thông tin cá nhân
 
 {% endblock %}
 {% block zoom_img_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/vi.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-<script src="{% static 'customer/src/js/profile.js' %}"></script>
-{% comment %} <script type="text/javascript">
+<script src="{% static 'admin/assets/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/vi.js' %}"></script>
+<script src="{% static 'admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
     $(function () {
         $('#datetimepicker1').datetimepicker({
             locale: 'vi',

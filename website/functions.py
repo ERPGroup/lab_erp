@@ -158,27 +158,31 @@ def get_data(request):
 
 @csrf_exempt
 def getAds(request):
-    key_search = request.POST['key']
-    result = Service_Ads_Post.objects.filter(purchase_service_id__is_active=True, purchase_service_id__state=4, purchase_service_id__service_ads_id__position=key_search)
-    if result:
-        if key_search == "Slide":
+    input = Service_Ads_Post.objects.filter(state=2,purchase_service_id__is_active=True, purchase_service_id__state=4)
+    result = []
+    for item in input:
+        if item.purchase_service_id.service_ads_id.position == "Slide":
             dict_result = dict()
-            dict_result['img_1'] = result[0].image_1
-            dict_result['url_1'] = result[0].image_1_url
-            dict_result['content_1'] = result[0].image_1_content
-            dict_result['img_2'] = result[0].image_2
-            dict_result['url_2'] = result[0].image_2_url
-            dict_result['content_3'] = result[0].image_2_content
-            dict_result['img_3'] = result[0].image_3
-            dict_result['url_3'] = result[0].image_3_url
-            dict_result['content_3'] = result[0].image_3_content
-            return HttpResponse(json.dumps(dict_result),content_type="application/json")   
+            dict_result['position'] = item.purchase_service_id.service_ads_id.position
+            dict_result['img_1'] = item.image_1
+            dict_result['url_1'] = item.image_1_url
+            dict_result['content_1'] = item.image_1_content
+            dict_result['img_2'] = item.image_2
+            dict_result['url_2'] = item.image_2_url
+            dict_result['content_3'] = item.image_2_content
+            dict_result['img_3'] = item.image_3
+            dict_result['url_3'] = item.image_3_url
+            dict_result['content_3'] = item.image_3_content
+            result.append(dict_result)
         else:
             dict_result = dict()
-            dict_result['img'] = result[0].image_1
-            dict_result['url'] = result[0].image_1_url
-            dict_result['content'] = result[0].image_1_content
-            return HttpResponse(json.dumps(dict_result),content_type="application/json")       
+            dict_result['position'] = item.purchase_service_id.service_ads_id.position
+            dict_result['img_1'] = item.image_1
+            dict_result['url_1'] = item.image_1_url
+            dict_result['content_1'] = item.image_1_content
+            result.append(dict_result)
+    if result:
+        return HttpResponse(json.dumps(result),content_type="application/json")   
     return HttpResponse(-1)
   
 

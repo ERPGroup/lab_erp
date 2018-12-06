@@ -236,9 +236,9 @@ function addmore_tags (a) {
     })
     checkTime('countdown')
   }
-  $(document).ready(function () {
+  $(document).ready(function(){
     load();
-  });
+  })
 })(jQuery)
 
 

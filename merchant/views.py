@@ -123,6 +123,21 @@ def post_ads(request):
     result = functions.getServiceAdsAvailable(user['id'])
     return render(request,'merchant/manager_service/service_ads_post.html',{'list':result})
 
+def ads_running(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request,'merchant/manager_service/manager_ads_running.html')    
+
+def ads_running_detail(request,id):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if id is None:
+        return render(request,'merchant/manager_service.html')
+    else:
+        post_ads = Purchase_Service_Ads.objects.filter(id=id).first()
+        return render(request,'merchant/manager_service/manager_ads_running_detail.html',{'result':post_ads})
+
+
 ### 
 
 from django import template
