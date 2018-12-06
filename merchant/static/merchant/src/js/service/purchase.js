@@ -109,7 +109,7 @@ $(document).ready(function(){
                             }
                         })
 
-                    window.alert('Payment Complete!');
+                    window.alert('Thanh toán hoàn tất!');
                     console.log(data);
                     });
                 }

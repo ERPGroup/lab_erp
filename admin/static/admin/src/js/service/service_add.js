@@ -1,6 +1,32 @@
 
 $(document).ready(function(){
     $('#submit').click(function(){
+        if ($('#inputServiceName').val() == ''){
+            alert('Tên dịch vụ không hợp lệ')
+            return
+        }
+        
+        if ($('#inputValue').val() == ''){
+            alert('Số lượng tin không hợp lệ')
+            return
+        }
+
+        if ($('#inputQuantityProduct').val() == ''){
+            alert('Số lượng sản phẩm không hợp lệ')
+            return
+        }
+
+        if ($('#inputDayLimit').val() == ''){
+            alert('Giới hạn không hợp lệ')
+            return
+        }
+
+        if ($('#inputAmount').val() == ''){
+            alert('Số tiền không hợp lệ')
+            return
+        }
+
+
         data = {
             'inputServiceName': $('#inputServiceName').val(),
             'inputValue': $('#inputValue').val(),
@@ -18,10 +44,10 @@ $(document).ready(function(){
             success: function(response){
                 if(response == 1){   
                     setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Da them thanh cong!\nBan se duoc dieu huong den danh sach dich vu sau 3 giay!');
+                    alert('Đã thêm thành công!\nBạn sẽ được điều hướng sang trang quản lý sau 3 giây!');
                 }
                 else
-                    alert('ERROR!');
+                    alert(response);
                 
             }
         })

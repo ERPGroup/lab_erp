@@ -91,159 +91,10 @@ def categorys(request):
             return HttpResponse(serialize('json', Category.objects.filter(name_category__icontains=request.GET.get('keyword'))), content_type="application/json")
         return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
 
-def category(request, id_category):
-    if request.method == "GET":
-        return HttpResponse(serialize('json', Category.objects.filter(pk=id_category)), content_type="application/json")
-
-    if check_rule(request) == 0:
-        return HttpResponse('Error')
-    else:
-
-        # Edit Category
-        if request.method == "PATCH":
-            try:
-                name_category = request.POST.get('inputNameCategory')
-                quantity = request.POST.get('inputQuantity')
-                category = Category.objects.get(id=id_category)
-                category.name_category = name_category
-                category.quantity = quantity
-                category.save()
-                return HttpResponse('Success!')
-            except:
-                return
-            return
-        return
-
-        #Delete Category
-        if request.method == 'DELETE':
-            try:
-                category = Category.objects.get(id=id_category)
-                category.delete()
-                return HttpResponse('Success!')
-            except: 
-                return
-        return
-
-
-
-# @csrf_exempt
-def category_add(request):
-    if check_rule(request) == 0:
-        return HttpResponse('Error')
-
-    if request.method == "POST":
-        name_category = request.POST.get('inputNameCategory')
-        quantity = request.POST.get('inputQuantity')
-        try:
-            category = Category(
-                name_category=name_category,
-                quantity=quantity,
-            )
-            category.save()
-            return HttpResponse('Success!')
-        except:
-            return
-        return
-    return
-
-# def category_edit(request,id_category):
-#     if check_rule(request) == 0:
-#         return HttpResponse('Error')
-
-#     if request.method == "PUT":
-#         try:
-#             name_category = request.POST.get('inputNameCategory')
-#             quantity = request.POST.get('inputQuantity')
-#             category = Category.objects.get(id=id_category)
-#             category.name_category = name_category
-#             category.quantity = quantity
-#             category.save()
-#             return HttpResponse('Success!')
-#         except:
-#             return
-#         return
-#     return
-
-# def category_del(request, id_category):
-#     if check_rule(request) == 0:
-#         return HttpResponse('Error')
-
-#     if request.method == 'DELETE':
-#         try:
-#             category = Category.objects.get(id=id_category)
-#             category.delete()
-#             return HttpResponse('Success!')
-#         except: 
-#             return
-#     return
 
 def attributes(request):
     return HttpResponse(serialize('json', Attribute.objects.filter(is_active=True)), content_type="application/json")
 
-def attribute_add(request):
-    if check_rule(request) == 0:
-        return HttpResponse('Error')
-
-    if request.method == 'POST':
-        code = request.POST.get('inputCode')
-        label = request.POST.get('inputLabel')
-        type_attr = request.POST.get('inputTypeAttr')
-        is_required = request.POST.get('inputRequired')
-        is_unique = request.POST.get('inputUnique')
-
-        try:
-            attribute = Attribute(
-                code=code,
-                lable=label,
-                type_attr=type_attr,
-                is_required=is_required,
-                is_unique=is_unique,
-            )
-            attribute.save()
-            return HttpResponse('Success!')
-        except:
-            return HttpResponse('Error!')
-        
-        return HttpResponse('Check')
-    return HttpResponse('Error Add Attribute!')
-
-def attribute_edit(request, id_attribute):
-    if check_rule(request) == 0:
-        return HttpResponse('Error')
-
-    if request.method == 'POST':
-        try:
-            code = request.POST.get('inputCode')
-            label = request.POST.get('inputLabel')
-            type_attr = request.POST.get('inputTypeAttr')
-            is_required = request.POST.get('inputRequired')
-            is_unique = request.POST.get('inputUnique')
-
-            attribute = Attribute.objects.get(id=id_attribute)
-            attribute.code = code
-            attribute.label = label
-            attribute.type_attr = type_attr
-            attribute.is_required = is_required
-            attribute.is_unique = is_unique
-
-            attribute.save()
-            return HttpResponse('Success!')
-        except:
-            return HttpResponse('Error!')
-    return HttpResponse('Error Edit Attribute!')
-
-def attribute_del(request, id_attribute):
-    if check_rule(request) == 0:
-        return HttpResponse('Error')
-
-    if request.method == 'POST':
-        try:
-            attribute = Attribute.objects.get(id=id_attribute)
-            attribute.delete()
-            return HttpResponse('Success!')
-        except: 
-            return
-    return
 
 ####  _______________Product
 ####
@@ -664,8 +515,6 @@ def services(request):
 
 
 def service(request, id_service):
-    # if check_rule(request) == 0:
-    #     return HttpResponse('Error')
     if request.method == "GET":
         return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
 
@@ -696,17 +545,17 @@ def purchase_service(request):
             if account_service.count() == 1:
                 remain = account_service[0].remain
                 account_service.update(remain=remain+service.value)
-                return HttpResponse('Success!')
-            return HttpResponse('Error!')
+                return HttpResponse('Dữ liệu tin đăng đã được cập nhật')
+            return HttpResponse('Lỗi hệ thống!')
         except:
-            return HttpResponse('Error!')
-    return HttpResponse('Error Add Purchase!')
+            return HttpResponse('Lỗi hệ thống!')
+    return HttpResponse('Lỗi hệ thống!')
 
 
-### -------  Post Product
 ###
 ###
 ###
+###-------  Post Product
 ###
 ###
 ###

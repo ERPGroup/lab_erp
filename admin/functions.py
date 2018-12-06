@@ -63,7 +63,6 @@ def service_add(request):
         visable_vip = request.POST.get('inputVisableVip')
         is_active = request.POST.get('inputIsActive')
 
-        #try:
         service = Service(
             service_name=service_name,
             amount=amount,
@@ -82,11 +81,7 @@ def service_add(request):
                 service = service,
             )
         return HttpResponse(1)
-        # except :
-        #     return HttpResponse(0)
-        
-        return HttpResponse('Check')
-    return HttpResponse('Error Add Service!')
+    return HttpResponse('Lỗi hệ thống!\n Chúng tôi sẽ khắc phục sớm')
 
 @csrf_exempt  
 def service(request, id_service):

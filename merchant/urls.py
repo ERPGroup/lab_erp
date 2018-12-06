@@ -41,13 +41,10 @@ urlpatterns = [
 
     #function urls
     path('categorys', functions.categorys, name='categorys'),
-    path('category/<int:id_category>', functions.category, name='category'),
-    path('category', functions.category_add, name='category_add'),
+    path('attributes', functions.attributes, name='attributes'),
 
     path('upload_image', functions.upload_image, name='upload_image'),
     path('delete_image/<int:id_image>', functions.del_image, name='delete_image'),
-
-    path('attributes', functions.attributes, name='attributes'),
 
     path('product', functions.product_add, name='product_add'),
     path('product/<int:id_product>', functions.product, name='product'),
