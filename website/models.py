@@ -192,7 +192,7 @@ class Purchase_Service(models.Model):
     purchase_name = models.CharField(max_length=200)
     merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)
     service_id = models.ForeignKey('Service', on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    amount = models.FloatField(null=True, blank=True, default=None)
     state = models.IntegerField()
     success_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

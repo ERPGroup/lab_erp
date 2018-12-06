@@ -8,8 +8,8 @@ $(document).ready(function(){
         url: 'http://localhost:8000/merchant/service/' + id_service,
         method: 'GET',
         contentType: 'application/json',
-        success: function(response){
-            service = response[0]['fields']
+        success: function(service){
+            console.log(service)
 
             $('.title').text(service.service_name);
             $('.amount').text(service.amount);
@@ -79,7 +79,7 @@ $(document).ready(function(){
                     transactions: [
                         {
                         amount: {
-                            total: service.amount,
+                            total: service.usd.toFixed(2),
                             currency: 'USD'
                         }
                         }
@@ -95,7 +95,7 @@ $(document).ready(function(){
                         data_info = {
                             'inputPurchaseName': data.paymentID,
                             'inputServiceId': id_service,
-                            'inputAmount': service.amount,
+                            'inputAmount': service.usd.toFixed(2),
                             'inputState': 1,
                         }
 

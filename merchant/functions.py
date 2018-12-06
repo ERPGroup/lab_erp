@@ -15,6 +15,7 @@ from django.utils import timezone
 import pytz
 import json, os
 from django.core.serializers.json import DjangoJSONEncoder
+import requests
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
@@ -316,6 +317,7 @@ def product(request, id_product):
 
         return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
+    # Request POST
     if request.method == 'POST':
         if Product.objects.filter(pk=id_product, archive=False).exists() == False:
             return HttpResponse('Không tồn tại sản phẩm')
@@ -431,7 +433,6 @@ def product(request, id_product):
                 product_attr.save()
                 index = index + 1 
             v = v + 1
-
         product.price  = (agv_price/int(count_product))
         product.save()
 
@@ -464,6 +465,7 @@ def product(request, id_product):
         except:
             return HttpResponse('Lỗi hệ thống!')
         return HttpResponse('Lỗi hệ thống!')
+
 
 def products(request):
     if request.method == 'GET':
@@ -516,7 +518,14 @@ def services(request):
 
 def service(request, id_service):
     if request.method == "GET":
-        return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
+        service = Service.objects.get(pk=id_service).__dict__
+        del service['_state']
+
+        url = "http://data.fixer.io/api/latest?access_key=32893f56d737e115463ea1b87dd134b7&symbols=USD,EUR,VND&format=1"
+        response = requests.get(url)
+        data = json.loads(response.text)
+        service['usd'] = (float(service['amount'])/ float(data['rates']['VND'])) * float(data['rates']['USD'])
+        return HttpResponse(json.dumps(service, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
 
 @csrf_exempt        
@@ -536,7 +545,7 @@ def purchase_service(request):
                 purchase_name=purchase_name,
                 merchant_id=merchant_id,
                 service_id=service,
-                amount=amount,
+                amount=float(amount),
                 state=int(state),
             )
             purchase_service.save()
