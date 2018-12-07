@@ -161,13 +161,22 @@ def category(request, id_category):
             category.name_category = name_category
             category.is_active = is_active
             category.save()
+
+            if category.is_active == '0': #Khoá
+                Product_Category.objects.filter(category_id=id_category,archive=False).update(archive=True,is_active=False)
+            else: #Kich hoat
+                Product_Category.objects.filter(category_id=id_category,is_active=False).update(archive=False,is_active=True)
+            
             return HttpResponse(1)
         except:
             return HttpResponse(0)
-    if request.method == 'DETELE':
+
+    if request.method == 'DETELE': #Khoá
         category = Category.objects.get(id=id_category)
         category.is_active = False
         category.save()
+        Product_Category.objects.filter(category_id=id_category,archive=False).update(archive=True,is_active=False)
+
         return HttpResponse(1)
 
     return HttpResponse(0)
@@ -189,7 +198,10 @@ def attributes(request):
                 attribute.append('<b style="color:green">Có</b>')
             else:
                 attribute.append('<b style="color:red">Không</b>')
-
+            if item.is_active == True:
+                attribute.append('<b style="color:green">Kích hoạt</b>')
+            else:
+                attribute.append('<b style="color:red">Đang khoá</b>')
             attributes.append(attribute)
         return HttpResponse(json.dumps(attributes), content_type="application/json")
     return HttpResponse('error')
@@ -210,20 +222,26 @@ def attribute_add(request):
 
     if request.method == 'POST':
         print(request.POST)
-        code = request.POST.get('inputCode')
         label = request.POST.get('inputLabel')
-        type_attr = request.POST.get('inputType')
-        is_required = request.POST.get('inputIsRequired')
-        is_unique = request.POST.get('inputIsUnique')
+        is_active = request.POST.get('inputIsActive')
         #try:
         attribute = Attribute(
-            code = code,
             label = label,
-            type_attr = type_attr,
-            is_required = is_required,
-            is_unique = is_unique,
+            is_active = is_active, 
         )
         attribute.save()
+        
+        products = Product.objects.filter(type_product=True).values_list('id',flat=True) #id of configure products
+        for item in products:
+            versions = Link_Type.objects.filter(parent_product=item).values_list('product_id',flat=True) #id of versions of a configure product
+            for temp in versions:
+                prod_attr = Product_Attribute(
+                    product_id=Product.objects.get(id=temp),
+                    attribute_id=attribute,
+                    value="Chưa cập nhật",
+                )
+                prod_attr.save()     
+        
         return HttpResponse(1)
         # except :
         #     return HttpResponse(0)
@@ -241,21 +259,33 @@ def attribute(request, id_attribute):
             type_attr = request.POST.get('inputType')
             is_required = request.POST.get('inputIsRequired')
             is_unique = request.POST.get('inputIsUnique')
+            is_active = request.POST.get('inputIsActive')
 
             attribute = Attribute.objects.get(id=id_attribute)
             attribute.code = code
             attribute.label = label
             attribute.type_attr = type_attr
             attribute.is_required = is_required
-            attribute.is_unique = is_unique      
+            attribute.is_unique = is_unique 
+            attribute.is_active = is_active     
             attribute.save()
+
+            if attribute.is_active == '0': #Khoá
+                Product_Attribute.objects.filter(attribute_id=id_attribute,archive=False).update(archive=True,is_active=False)
+            else: #Kich hoat
+                Product_Attribute.objects.filter(attribute_id=id_attribute,is_active=False).update(archive=False,is_active=True)
+            
             return HttpResponse(1)
         except:
             return HttpResponse(0)
-    if request.method == 'DETELE':
-        Attribute.objects.filter(pk=id_attribute).delete()
-        return HttpResponse(1)
+    if request.method == 'DETELE': #Khoá
+        attribute = Attribute.objects.get(id=id_attribute)
+        attribute.is_active = False
+        attribute.save()
+        Product_Attribute.objects.filter(attribute_id=id_attribute,archive=False).update(archive=True,is_active=False)
 
+        return HttpResponse(1)
+        
     return HttpResponse(0)
 
 

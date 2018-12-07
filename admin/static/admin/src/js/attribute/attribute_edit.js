@@ -32,6 +32,16 @@ $(document).ready(function(){
                 option_unique += '<option value="0" selected >Không</option>'
             }
             $('#inputIsUnique').append(option_unique)
+
+            var option_active = ''
+            if(attribute.is_active == true){
+                option_active += '<option value="1" selected >Kích hoạt</option>'
+                option_active += '<option value="0">Đang khoá</option>'
+            }else{
+                option_active += '<option value="1">Kích hoạt</option>'
+                option_active += '<option value="0" selected>Đang khoá</option>'
+            }
+            $('#inputIsActive').append(option_active)
         }
     })
 
@@ -43,7 +53,8 @@ $(document).ready(function(){
             'inputLabel': $('#inputLabel').val(),
             'inputType': $('#inputType').val(),  
             'inputIsRequired': $('#inputIsRequired').val(),    
-            'inputIsUnique': $('#inputIsUnique').val(),      
+            'inputIsUnique': $('#inputIsUnique').val(),
+            'inputIsActive': $('#inputIsActive').val(),       
         }
 
         $.ajax({

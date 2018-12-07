@@ -54,7 +54,7 @@ class Category (models.Model):
     name_category = models.CharField(max_length=200)
     quantity = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
-    
+
     def __str__(self):
         return self.name_category
 
@@ -63,7 +63,7 @@ class Product_Category(models.Model):
     category_id = models.ForeignKey('Category', on_delete=models.CASCADE)
     archive = models.BooleanField(default=False)
     archive_at = models.DateTimeField(null=True)
-
+    is_active = models.BooleanField(default=True)
 
 class Attribute (models.Model):
     code = models.CharField(max_length=200)
@@ -71,6 +71,7 @@ class Attribute (models.Model):
     type_attr = models.CharField(max_length=200)
     is_required = models.BooleanField(default=True)
     is_unique = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.label
@@ -81,7 +82,8 @@ class Product_Attribute (models.Model):
     value = models.CharField(max_length=200)
     archive = models.BooleanField(default=False)
     archive_at = models.DateTimeField(null=True)
-
+    is_active = models.BooleanField(default=True)
+    
 class Discount (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     percent = models.IntegerField()

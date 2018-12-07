@@ -18,7 +18,7 @@ $(document).ready(function(){
                 option_active += '<option value="0">Đang khoá</option>'
             }else{
                 option_active += '<option value="1">Kích hoạt</option>'
-                option_active += '<option value="0" selected >Đang khoá</option>'
+                option_active += '<option value="0" selected>Đang khoá</option>'
             }
             $('#inputIsActive').append(option_active)
         }
