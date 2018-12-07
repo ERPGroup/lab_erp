@@ -198,10 +198,6 @@ class Purchase_Service(models.Model):
     is_active = models.BooleanField(default=True)
     archive = models.BooleanField(default=False)
 
-# class Paypal(models.Model):
-#     paypal_name = models.CharField(max_length=200)
-#     purchase_id = models.ForeignKey('Purchase_Service', on_delete=models.CASCADE)
-#     detail = models.CharField(max_length=1000)
 
 class Service_Ads(models.Model):
     service_name = models.CharField(max_length=200)
@@ -213,6 +209,7 @@ class Service_Ads(models.Model):
     archive = models.BooleanField(default=False)
     creator_id = models.IntegerField()
     canceler_id = models.IntegerField(null=True)
+
 
 class Service_Ads_Post(models.Model):
     service_name = models.CharField(max_length=200)
@@ -229,6 +226,8 @@ class Service_Ads_Post(models.Model):
     image_3_content = models.CharField(max_length=200,blank=True,null=True)
     CHOICES_STATE = (('1','IsPosting'),('2','IsConfirm'),('-1','Cancel'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
+
+
 class Purchase_Service_Ads(models.Model):
     purchase_name = models.CharField(max_length=200)
     merchant_id = models.ForeignKey('Account', on_delete=models.CASCADE)

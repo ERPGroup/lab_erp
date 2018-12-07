@@ -183,7 +183,7 @@ def getAds(request):
             result.append(dict_result)
     if result:
         return HttpResponse(json.dumps(result),content_type="application/json")   
-    return HttpResponse(-1)
+    return HttpResponse(-1)     
   
 
 def get_data_collection(request, list_post):
@@ -367,7 +367,9 @@ def post(request, id_post):
         post['product'] = product
         account = Account.objects.get(pk=post['creator_id_id']).__dict__
         del account['_state']
-        count_star = Rating.objects.aggregate(Sum('num_of_star'))
+        count_star = Rating.objects.filter(merchant_id=account['id']).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if count_star == None:
+            count_star = 0
         count_person = Rating.objects.filter(merchant_id=account['id'], is_activity=True).count()
         if count_person == 0:
             account['rating'] = 0

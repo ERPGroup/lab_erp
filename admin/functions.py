@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from website.models import *
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 import re
 import json
 from django.core.serializers.json import DjangoJSONEncoder
@@ -47,6 +48,7 @@ def services(request):
         return HttpResponse(serialize('json', Service.objects.all()), content_type="application/json")
     return HttpResponse('error')
 
+
 # Service_add
 @csrf_exempt    
 def service_add(request):
@@ -86,7 +88,12 @@ def service_add(request):
 @csrf_exempt  
 def service(request, id_service):
     if request.method == 'GET':
-        return HttpResponse(serialize('json', Service.objects.filter(pk=id_service)), content_type="application/json")
+        service = Service.objects.get(pk=id_service).__dict__
+        del service['_state']
+        account = Account.objects.filter(pk=service['creator_id']).values('email')
+        
+        service['account'] = account[0]
+        return HttpResponse(json.dumps(service, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
     if request.method == 'POST':
         try:
             is_active = request.POST.get('inputIsActive')
@@ -251,9 +258,10 @@ def attribute(request, id_attribute):
 ####
 ####
 
+@csrf_exempt
 def user(request, id_user):
     if request.method == 'GET':
-        if Account.objects.filter(pk=id_user).exists() == True:
+        if Account.objects.filter(pk=id_user, is_admin=False).exists() == True:
             user = Account.objects.get(pk=id_user)
             account = dict()
             account['username']  = user.username
@@ -280,14 +288,66 @@ def user(request, id_user):
             return HttpResponse(json.dumps(account), content_type="application/json")
         else:
             return HttpResponse(-3)
+
+    #mo khoa tai khoan
+    if request.method == 'POST':
+        if Account.objects.filter(pk=id_user, is_admin=False).exists() == False:
+            return HttpResponse('Tài khoản không tồn tại')
+        account = Account.objects.get(pk=id_user)
+        account.is_lock = True
+        account.save()
+        return HttpResponse(1)
+    # khoa tai khoan
+    if request.method == 'DELETE':
+        if Account.objects.filter(pk=id_user, is_admin=False).exists() == False:
+            return HttpResponse('Tài khoản không tồn tại')
+        account = Account.objects.get(pk=id_user)
+        account.is_lock = False
+        account.save()
+        return HttpResponse(1)
     return HttpResponse(-1)
 
+
+def users(request):
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            users = []
+            user_all = Account.objects.filter(is_admin=False)
+            for item in user_all:
+                user = []
+                user.append('<a href="/admin/see/'+ str(item.id) +'">'+ item.email +'</a>')
+                user.append(item.name)
+                if item.activity_merchant == True:
+                    user.append('Người bán')
+                elif item.activity_advertiser == True:
+                    user.append('Người quảng cáo')
+                elif item.activity_account and user.activity_merchant == False:
+                    user.append('Người mua')
+                count_star = Rating.objects.filter(merchant_id=item.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+                count_person = Rating.objects.filter(merchant_id=item.id, is_activity=True).count()
+                if count_star == None:
+                    user.append('0 <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                else:
+                    user.append(str(count_star) + ' <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                
+                if item.is_lock == True:
+                    user.append('<label class="label label-danger">Đã bị khóa</label>')
+                else:
+                    if item.activity_merchant == False and item.activity_advertiser == False and item.activity_account == False:
+                        user.append('<label class="label label-warning">Không hoạt động</label>')
+                    else:
+                        user.append('<label class="label label-success">Đang hoạt động</label>')
+                users.append(user)
+            return HttpResponse(json.dumps(users), content_type="application/json")
+        return HttpResponse(503)
+    return HttpResponse(404)
+        
 
 #### Account service
 
 def account_services(request):
     if check_rule(request) == 0:
-        return HttpResponse('Quyen truy cap bi tu choi')
+        return HttpResponse('Quyền truy cập bị từ chối!')
 
     if request.method == 'GET':
         if request.GET.get('service') == 'available':
@@ -407,6 +467,7 @@ def product(request, id_product):
 
         product['list_attr'] = list_value_attr
         product['list_price'] = list_price
+        product['price_max_min'] = [max(list_price), min(list_price)]
 
         return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
@@ -439,15 +500,21 @@ def posts(request):
         post_all = Post_Product.objects.all()
         for item in post_all:
             post = []
-            post.append('<a href="/admin/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>'),
-            post.append('<a href="/admin/user/see/'+ str(item.creator_id.id) +'">'+ str(item.creator_id.name) +'</a>'),         
-            post.append(str(item.quantity - item.bought))
+            post.append('<a href="/admin/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>')
+            post.append('<a href="/admin/user/see/'+ str(item.creator_id.id) +'">'+ str(item.creator_id.name) +'</a>')
+            post.append(item.quantity - item.bought)
             post.append(item.expire.replace(tzinfo=None).strftime("%d/%m/%Y %H:%M"))
             post.append(item.post_type.service_name)
-            if item.is_activity == True:
-                post.append('<b style="color:green">Đang hiển thị</b>')
+            if item.is_lock == False:
+                if item.is_activity == True:
+                    post.append('<label class="label label-success">Đang hiển thị</label>')
+                else:
+                    post.append('<label class="label label-info">Ngừng hiển thị</label>')
             else:
-                post.append('<b style="color:red">Tắt hiển thị</b>')
+                if item.expire.replace(tzinfo=None) <= datetime.now():
+                    post.append('<label class="label label-warning">Hết hạn</label>')
+                else: 
+                    post.append('<label class="label label-danger">Bị khóa</label>')
             posts.append(post)
         return HttpResponse(json.dumps(posts), content_type="application/json")
     return HttpResponse('error')

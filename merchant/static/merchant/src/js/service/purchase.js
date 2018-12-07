@@ -10,6 +10,10 @@ $(document).ready(function(){
         contentType: 'application/json',
         success: function(service){
             console.log(service)
+            if (service == -1){
+                alert('Gói tin này không tồn tại!')
+                window.location.replace('/merchant/service_post')
+            }
 
             $('.title').text(service.service_name);
             $('.amount').text(service.amount);

@@ -314,6 +314,7 @@ def product(request, id_product):
 
         product['list_attr'] = list_value_attr
         product['list_price'] = list_price
+        product['price_max_min'] = [max(list_price), min(list_price)]
 
         return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
@@ -496,7 +497,7 @@ def products(request):
                 list_id = Post_Product.objects.values_list('product_id__id').filter(is_activity=True, is_lock=False).exclude(product_id__id=request.GET.get('include'))
                 return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True)), content_type="application/json")
             list_id = Post_Product.objects.values_list('product_id__id').filter(is_activity=True, is_lock=False)
-            return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True)), content_type="application/json")
+            return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True, is_activity=True, archive=False)), content_type="application/json")
         return HttpResponse(0)
     return HttpResponse(0)
 
@@ -513,11 +514,25 @@ def products(request):
 ###
 
 def services(request):
+    if request.method == 'GET':
+        if 'table' in request.GET:
+            if request.GET.get('table') == True:
+                return HttpResponse(serialize('json', Service.objects.filter()), content_type="application/json")
     return HttpResponse(serialize('json', Service.objects.filter(is_active=True)), content_type="application/json")
+
 
 
 def service(request, id_service):
     if request.method == "GET":
+        if 'posted' in request.GET:
+            if request.GET.get('posted') == 'true':
+                service = Service.objects.get(pk=id_service).__dict__
+                del service['_state']
+                return HttpResponse(json.dumps(service, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+        if Service.objects.filter(pk=id_service, is_active=True).exists() == False:
+            return HttpResponse(-1)
+            
         service = Service.objects.get(pk=id_service).__dict__
         del service['_state']
 
@@ -532,7 +547,10 @@ def service(request, id_service):
 def purchase_service(request):
     if check_rule(request) == 0:
         return HttpResponse('Error')
+        
     if request.method == 'POST':
+        ## chua kiem tra lai qua API PAYPAL ve ma Giao dich
+        
         purchase_name = request.POST.get('inputPurchaseName')
         merchant_id = Account.objects.get(pk=request.session.get('user')['id'])
         service_id = request.POST.get('inputServiceId')
@@ -580,30 +598,34 @@ def post_add(request):
         return HttpResponse('Error')
 
     if request.method == 'POST':
-
         product_id = request.POST.get('inputProduct')
         service_id = request.POST.get('inputService')
         creator_id = Account.objects.get(pk=request.session.get('user')['id'])
 
         # check  product 
         if Post_Product.objects.filter(product_id__id=product_id, is_activity=True, is_lock=False).exists():
-            return HttpResponse('Error! This product was used in the Post other!')
+            return HttpResponse('Lỗi sản phẩm bạn chọn đã được sử dụng!')
         # check remain post
         if Account_Service.objects.filter(service_id=int(service_id), account_id=creator_id, remain__gt=0).exists == False:
-            return HttpResponse('Loi! Ban khong co du goi tin do')
+            return HttpResponse('Lỗi! Tin đăng không tồn tại!')
+
+        product = Product.objects.get(pk=product_id)
+        if product.account_created.id != creator_id.id:
+            return HttpResponse('Sản phẩm không khả dụng')
+
 
         service = Service.objects.get(pk=int(service_id))
         quantity = request.POST.get('inputQuantity')
 
 
         if int(quantity) > service.quantity_product:
-            return HttpResponse('So luong san pham khong duoc lon hon '+ str(service.value))
+            return HttpResponse('Số lượng sản phẩm phải nhỏ hơn '+ str(service.quantity_product))
         if int(quantity) <= 0 or quantity == '':
-            return HttpResponse('So luong san pham phai lon hon 0')
+            return HttpResponse('Số lượng sản phẩm phải lớn hơn 0')
 
     
         post_product = Post_Product(
-            product_id = Product.objects.get(pk=product_id),
+            product_id = product,
             post_type = service,
             creator_id = creator_id,
             quantity = int(quantity),
@@ -611,14 +633,15 @@ def post_add(request):
             expire = datetime.now() + timedelta(days=service.day_limit),
         )
         post_product.save()
+
         account_service = Account_Service.objects.filter(account_id=creator_id, service_id=post_product.post_type_id)
         if account_service.count() == 1:        
             remain = account_service[0].remain
             account_service.update(remain=remain-1)
-            return HttpResponse('Success')
-        return HttpResponse('Error Account servive sub remain')
+            return HttpResponse(1)
+        return HttpResponse('Lỗi hệ thống')
 
-    return HttpResponse('Error')
+    return HttpResponse('Lỗi hệ thống')
 
 
 def check_expire_post(id_post):
@@ -630,57 +653,67 @@ def check_expire_post(id_post):
 @csrf_exempt 
 def post(request, id_post):
     if request.method == 'GET':
-        return HttpResponse(serialize('json', Post_Product.objects.filter(pk=id_post)), content_type="application/json")
+        return HttpResponse(serialize('json', Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id'])), content_type="application/json")
 
     if request.method == 'POST':
 
         #check an update expire post  \
-
+        check_expire_post(id_post)
         # kiem tra tin dang co ton tai khong?
-        if Post_Product.objects.filter(pk=id_post).exists() == False:
+        if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).exists() == False:
             return HttpResponse('Tin đăng không tồn tại!')
 
         post = Post_Product.objects.get(pk=id_post)
         # kiem tra da het  hang cua
         if post.is_lock == True:
-            return HttpResponse('Tin dang da het hang, Khong duoc phep sua!')
+            return HttpResponse('Tin đăng đã hết hạn, Không được phép sửa!')
 
         quantity = request.POST.get('inputQuantity')
 
         if int(quantity) > (post.post_type.quantity_product - post.bought):
-            return HttpResponse('So luong san pham khong duoc lon hon {}'.format(str(post.quantity - post.bought)))
+            return HttpResponse('Số lượng sản phẩm phải nhỏ hơn {}'.format(str(post.quantity - post.bought)))
         if int(quantity) <= 0 or quantity == '':
-            return HttpResponse('So luong san pham phai lon hon 0')
+            return HttpResponse('Số lượng sản phẩm phải lớn hơn 0')
 
         post.quantity = quantity
         post.is_activity = request.POST.get('inputIsActivity')
         post.save()
-        return HttpResponse('Thuc hien thanh cong!')
+        return HttpResponse(1)
 
     if request.method == 'DELETE':
-        if Post_Product.objects.filter(pk=id_post).exists() == False and Post_Product.objects.filter(pk=id_post).count == 1:
-            return HttpResponse('Tin dang khong ton tai!')
+        if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).exists() == False:
+            return HttpResponse('Tin đăng không tồn tại!')
         post = Post_Product.objects.get(pk=id_post)
         if post.is_lock == True:
-            return HttpResponse('Tin dang da het han!')
+            return HttpResponse('Tin đăng đã hết hạn! Không thể ngừng bán')
         if post.is_activity == False:
-            return HttpResponse('Thuc hien that bai!\nTin dang da tat hien thi ')
+            return HttpResponse('Thực hiện thất bại!\nTin đăng đã tắt hiển thị')
         post.is_activity = False
         post.save()
-        return HttpResponse('Thuc hien thanh cong!\nTin dang da tat che do hien thi!')
+        return HttpResponse(1)
     return
     
 def posts(request):
     if request.method == 'GET':
         posts = []
-        post_all = Post_Product.objects.filter(creator_id__id=request.session.get('user')['id'])
+        post_all = Post_Product.objects.filter(creator_id__id=request.session.get('user')['id'], is_lock=False)
         for item in post_all:
             post = []
             post.append('<a href="/merchant/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>')
             post.append('<a href="/merchant/product/edit/'+ str(item.product_id_id) +'"> SP'+ str(item.product_id_id) +'</a>')
-            post.append('15')
+            post.append(item.quantity - item.bought)
             post.append(item.expire.replace(tzinfo=None).strftime("%d/%m/%Y %H:%M"))
             post.append(item.post_type.service_name)
+            if item.is_lock == False:
+                if item.is_activity == True:
+                    post.append('<label class="label label-success">Đang hiển thị</label>')
+                else:
+                    post.append('<label class="label label-info">Ngừng hiển thị</label>')
+            else:
+                if item.expire.replace(tzinfo=None) <= datetime.now():
+                    post.append('<label class="label label-warning">Hết hạn</label>')
+                else: 
+                    post.append('<label class="label label-danger">Bị khóa</label>')
             posts.append(post)
         return HttpResponse(json.dumps(posts), content_type="application/json")
 
@@ -725,7 +758,7 @@ def getDateAvailable(request, position, id_ads):
                 timedelta(days=item.service_ads_id.day_limit)
             _input1.append(date_dict)
         max_date = (datetime.now()+timedelta(days=120))
-        min_date = datetime.now()
+        min_date = datetime.now()+timedelta(days=3)
         step = timedelta(days=1)
         check = []
         while min_date <= max_date:
@@ -740,7 +773,7 @@ def getDateAvailable(request, position, id_ads):
                     '%Y-%m-%d'))]['check'] = False
                 item['start'] += step
         max_date = (datetime.now()+timedelta(days=120))
-        min_date = datetime.now()
+        min_date = datetime.now()+timedelta(days=3)
         result = []
         while min_date <= max_date:
             flag = True

@@ -50,17 +50,6 @@ Trang chủ
 
                                 <td>Bạch kim</td>
                             </tr>
-                            {% for i in "x"|rjust:"10" %}
-                            <tr>
-                                <td><a href="/admin/manager_posted_detail">TD0{{forloop.counter}}</a></td>
-                                <td>Demo{{forloop.counter}}</td>
-                                <td class="center">{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}/12/2018</td>
-                                {% if forloop.counter > 6 %}<td>Bạc</td> {% else %}<td>Vàng</td> {% endif %}
-
-                                <td>Bạch kim</td>
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

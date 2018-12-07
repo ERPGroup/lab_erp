@@ -37,9 +37,10 @@ Danh sách tin đăng
                             <tr>
                                 <th>Mã tin đăng</th>
                                 <th>Mã sản phẩm</th>
-                                <th>Số lượng sản phẩm tồn</th>
+                                <th>Số lượng tồn</th>
                                 <th>Hạn sử dụng</th>
                                 <th>Loại tin</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,16 +50,8 @@ Danh sách tin đăng
                                 <td class="center">5</td>
                                 <td>18/12/2018</td>
                                 <td>Bạch kim</td>
+                                <td>Bạch kim</td>
                             </tr>
-                            {% for i in "x"|rjust:"13" %}
-                            <tr>
-                                <td><a href="/merchant/manager_post_detail">TD0{{forloop.counter}}</a></td>
-                                <td>SP0{{forloop.counter}}</td>
-                                <td class="center">{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}/12/2018</td>
-                                {% if forloop.counter > 6 %}<td>Bạc</td> {% else %}<td>Vàng</td> {% endif %}
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

@@ -80,6 +80,7 @@ urlpatterns = [
 
     #user
     path('user/<int:id_user>', functions.user, name='user'),
+    path('users', functions.users, name="users"),
 
 
    # path(r'^ajax/update_ads/$', views.update_ads, name='Update Ads'),

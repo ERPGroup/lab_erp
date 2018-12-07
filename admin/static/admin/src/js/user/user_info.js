@@ -7,15 +7,18 @@ $(document).ready(function(){
         contentType: 'application/json',
         success: function(response){
             if (response == -3){
-                alert('Tai khoan khong ton tai');
+                alert('Quyền truy cập bị từ chối!');
+                window.location.replace('/admin/manager_users');
                 return;
             }
             if (response == -2){
-                alert('Quyen truy cap bi tu choi');
+                alert('Quyền truy cập bị từ chối!');
+                window.location.replace('/admin/manager_users');
                 return;
             }
             if (response == -1){
-                alert('Loi he thong!');
+                alert('Lỗi hệ thống!');
+                window.location.replace('/admin/manager_users');
                 return;
             }
             console.log(response)
@@ -70,13 +73,35 @@ $(document).ready(function(){
 
     $('#lock').click(function(){
         $.ajax({
-
+            url: 'http://localhost:8000/admin/user/' + id_user,
+            method: 'POST',
+            data: {},
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                if(response == 1){
+                    alert('Tài khoản đã bị khóa!');
+                    window.location.replace('/admin/manager_users');
+                }
+                else
+                    alert(response);
+            }
         })
     }); 
 
     $('#unlock').click(function(){
         $.ajax({
-
+            url: 'http://localhost:8000/admin/user/' + id_user,
+            method: 'DELETE',
+            data: {},
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                if(response == 1){
+                    alert('Tài khoản đã được mở khóa!');
+                    window.location.replace('/admin/manager_users');
+                }
+                else
+                    alert(response);
+            }
         })
     });
 })
