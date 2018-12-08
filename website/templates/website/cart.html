@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load cart_tags %}
 {% load product_tags %}
-
+{% load humanize %}
 
 {% block title %}
 Giỏ hàng
@@ -27,20 +27,25 @@ Giỏ hàng
                 <td class="thumb_cart"> <img src="{{image}}" /></td>
                 <td>{{ item.product.name }}</td>
                 <td>{{ item.product.account_created.name}}</td>
-                <td class="hidden-xs">{{ item.product.price }} ₫</td>
+                {% get_price_discount item.product.price item.product.discount_percent as price_discount %}
+                {% if item.product.discount_percent == 0 %}
+                <td class="hidden-xs">{{ item.product.price|intcomma }} ₫</td>
+                {% else %}
+                <td class="hidden-xs"> {{ price_discount|floatformat:0|intcomma }}  ₫</td>
+                {% endif %}
                 <td>
-                    <button class="button_add">-</button>
+                    <button class="button_add" onclick="sub_product({{item.product.id}})">-</button>
                     <input value="{{ item.quantity }}" size="2" max-length="4" name="quantity" id="quantity">
                     <button class="button_add" onclick="add_product({{item.product.id}})">+</button>
                 </td>
                 <td class="hidden-xs">{{ item.subtotal }} ₫</td>
                 <td class="hidden-xs">
-                    <a href="#"><i class="fa fa-close"></i></a>
+                    <a href="#" onclick="remove({{item.product.id}})"><i class="fa fa-close"></i></a>
                 </td>
             </tr>
             <tr class="hidden-sm hidden-md hidden-lg">
                 <td colspan="2">Giá: <b>10.790.000 ₫</b></td>
-                <td><a href="#"><i class="fa fa-close"></i></a></td>
+                <td><a onclick="remove({{item.product.id}})"><i class="fa fa-close"></i></a></td>
             </tr>
             {% endfor %}
         </table>
@@ -51,7 +56,7 @@ Giỏ hàng
     <hr>
     <div class="col-lg-12 calculator">
         <a href="/checkout" class="btn_buy">Thanh toán</a>
-        <a href="/collection" class="btn_buy btn_continue">Tiếp tục mua hàng <i style="padding-left:15px;" class="fa fa-arrow-right hidden-xs"></i> </a>
+        <a href="/" class="btn_buy btn_continue">Tiếp tục mua hàng <i style="padding-left:15px;" class="fa fa-arrow-right hidden-xs"></i> </a>
     </div>
     <div class="clearfix"></div>
 </div>

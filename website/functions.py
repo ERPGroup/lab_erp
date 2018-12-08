@@ -98,10 +98,11 @@ def payment(request):
 
 # function page index
 
+
 def get_data(request):
     data = [] # du lieu tra ve json 
     post_abort = [] # du lieu bai dang tai khu vuc vip
-    list_service = Service.objects.filter(visable_vip=True, is_active=True, archive=False).values_list('id')
+    list_service = Service.objects.filter(visable_vip=True, is_active=True, archive=False).order_by('-amount').values_list('id')
     array_service = []
     for item in list_service:
         dict_service = Service.objects.get(pk=item[0]).__dict__
@@ -115,6 +116,8 @@ def get_data(request):
             # if Product.objects.filter(pk=post.id).exists() == True:
             dict_product = Product.objects.get(pk=post.product_id_id).__dict__
             del dict_product['_state']
+            list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+            dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
             image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
             dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
             dict_post['product'] = dict_product

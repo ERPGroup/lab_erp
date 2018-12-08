@@ -21,6 +21,7 @@ class Account(models.Model):
     q_vip = models.IntegerField(default=0)
     code_act_account = models.CharField(max_length=60)
     code_act_merchant = models.CharField(max_length=60)
+    token_ghtk = models.CharField(max_length=100, null=True)
     is_admin = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=True)
     is_lock =  models.BooleanField(default=False)

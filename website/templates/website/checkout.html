@@ -81,41 +81,24 @@
                     <div class="information_payment col-xs-12 col-md-4">
                         <div class="col-xs-12 border_top">
                             <h4><b><i class="fa fa-id-card-o" style="padding-right:5px;"></i>Thông tin mua hàng</b></h4>
+                            {% if not request.session %}
                             <h5><a href="/login"><i class="fa fa-user" style="padding-right:5px;"></i>Đăng nhập</a></h5>
+                            {% else%}
+                            <h5><a class="btn btn-info"><i class="fa fa-user" style="padding-right:5px;"></i>Cập nhật thông tin tài khoản</a></h5>
+                            {% endif %}
                         </div>
 
                         <div class="col-xs-12">
-
-                            <input name="Email" type="email" class="field__input form-control" id="_email" data-error="Vui lòng nhập email đúng định dạng"
-                                required="" value="{{ account.email }}" pattern="^([a-zA-Z0-9_\-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
-                                placeholder="Email">
                             <input name="BillingAddress.LastName" type="text" class="field__input form-control"
-                                placeholder="Họ và tên" id="_billing_address_last_name" value="{{ account.name }}" data-error="Vui lòng nhập họ tên"
+                                placeholder="Họ và tên" id="_billing_address_last_name" value="" data-error="Vui lòng nhập họ tên"
                                 required="">
-                            <input name="BillingAddress.Phone" bind-event-change="saveAbandoned()" type="tel" value="{{ account.phone }}"
+                            <input name="BillingAddress.Phone" bind-event-change="saveAbandoned()" type="tel" value=""
                                 bind-event-focus="handleFocus(this)" bind-event-blur="handleFieldBlur(this)" class="field__input form-control"
                                 id="_billing_address_phone" placeholder="Số điện thoại" data-error="Vui lòng nhập số điện thoại"
                                 pattern="^([0-9,\+,\-,\(,\),\.]{8,20})$" bind="billing_address.phone">
-                            <input name="BillingAddress.Address1" class="field__input form-control" value="{{ account.address }}" placeholder="Địa chỉ"
+                            <input name="BillingAddress.Address1" class="field__input form-control" value="" placeholder="Địa chỉ"
                                 id="_billing_address_address1">
-                            <input class="input-checkbox" type="checkbox" onclick="clickShowFooter('newAddress');" value="true" name="otherAddress" id="other_address">
-                            <label class="checkbox__label" for="other_address" >
-                                Giao hàng đến địa chỉ khác
-                            </label>
-                            <div style="display:none" id="newAddress">
-                                <input name="Email" type="email" class="field__input form-control" id="_email"
-                                    data-error="Vui lòng nhập email đúng định dạng" required="" value="" pattern="^([a-zA-Z0-9_\-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
-                                    placeholder="Email">
-                                <input name="BillingAddress.LastName" type="text" class="field__input form-control"
-                                    placeholder="Họ và tên" id="_billing_address_last_name" data-error="Vui lòng nhập họ tên"
-                                    required="">
-                                <input name="BillingAddress.Phone" bind-event-change="saveAbandoned()" type="tel"
-                                    bind-event-focus="handleFocus(this)" bind-event-blur="handleFieldBlur(this)" class="field__input form-control"
-                                    id="_billing_address_phone" placeholder="Số điện thoại" data-error="Vui lòng nhập số điện thoại"
-                                    pattern="^([0-9,\+,\-,\(,\),\.]{8,20})$" bind="billing_address.phone">
-                                <input name="BillingAddress.Address1" class="field__input form-control" placeholder="Địa chỉ"
-                                    id="_billing_address_address1">
-                            </div>
+                            
                             <textarea name="note" bind-event-change="saveAbandoned()" id='inputNote' value="" class="field__input form-control m0"
                                 placeholder="Ghi chú"></textarea>
 

@@ -12,7 +12,7 @@ $(document).ready(function(){
                         html = '<div class="service_'+ datas[i].id +'">'
                         html += '<div class="container">'
                         html += '<div class="row">'
-                        html += '<h3 class="title_deal">Sản phẩm khuyến mãi</h3>'
+                        html += '<h3 class="title_deal text-capitalize">'+ datas[i].service_name +'</h3>'
                         html += '<div class="owl-product-sales owl-carousel owl-theme">'
                         posts = datas[i].posts
                         
@@ -20,21 +20,36 @@ $(document).ready(function(){
                             html += '<div class="item">'
                             html += '<div class="product_box">'
                             html += '<div class="title_box">'
-                            html += '<a href="#"><p class="name_product">Tablet Plaza</p></a>'
-                            html += '<p class="poster_product">3 An Dương Vương, P3, Q5</p>'
+                            html += '<a ><p class="name_shop text-center">Tin Vip</p></a>'
                             html += '<p class="square_rating">8.0</p>'
                             html += '</div>'
                             html += '<div class="thumb_image_product">'
-                            html += '<a href="/product"><img src="'+ posts[item].product.image +'"></a>'
+                            html += '<a><img src="'+ posts[item].product.image +'"></a>'
                             html += '</div>'
                             html += '<div class="info_box">'
-                            html += '<a href="/product" class="detail_product">'
+                            html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
                             html += '<p>'+ posts[item].product.name +'</p>'
                             html += '</a>'
-                            html += '<span class="price">'+ posts[item].product.price +'</span>'
+                            if( posts[item].product.discount_percent != 0){
+                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                    html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                                else{
+                                    html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                            }
+                            else{
+                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                    html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                                else{
+                                    html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                            }
+                            
                             // html += '<br class="hidden_desktop">'
                             // html += '<span class="disable_price">4.000.000 d</span>'
-                            // html += '<span class="sales_percent">15%</span>'
+                            html += '<span class="sales_percent">'+ posts[item].product.discount_percent +'%</span>'
                             html += '</div>'
                             html += '<div class="quick_view">'
                             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
@@ -80,7 +95,7 @@ $(document).ready(function(){
                         html = '<div class="service_'+ datas[i].id +'">'
                         html += '<div class="container">'
                         html += '<div class="row">'
-                        html += '<h3 class="title_deal">'+ datas[i].name_category +' | <a class="view_more" href="/collections/'+ datas[i].id +'">Xem thêm</a></h3>'
+                        html += '<h3 class="title_deal text-capitalize">'+ datas[i].name_category +' | <a class="view_more" href="/collections/'+ datas[i].id +'">Xem thêm</a></h3>'
                         html += '<div class="owl-product-sales owl-carousel owl-theme">'
                         posts = datas[i].posts
                         
@@ -88,21 +103,36 @@ $(document).ready(function(){
                             html += '<div class="item">'
                             html += '<div class="product_box">'
                             html += '<div class="title_box">'
-                            html += '<a href="#"><p class="name_product">Tablet Plaza</p></a>'
-                            html += '<p class="poster_product">3 An Dương Vương, P3, Q5</p>'
+                            html += '<a ><p class="name_shop text-center">Tin Vip</p></a>'
                             html += '<p class="square_rating">8.0</p>'
                             html += '</div>'
                             html += '<div class="thumb_image_product">'
-                            html += '<a href="/product"><img src="'+ posts[item].product.image +'"></a>'
+                            html += '<a><img src="'+ posts[item].product.image +'"></a>'
                             html += '</div>'
                             html += '<div class="info_box">'
-                            html += '<a href="/product" class="detail_product">'
+                            html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
                             html += '<p>'+ posts[item].product.name +'</p>'
                             html += '</a>'
-                            html += '<span class="price">'+ posts[item].product.price +'</span>'
+                            if( posts[item].product.discount_percent != 0){
+                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                    html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                                else{
+                                    html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                            }
+                            else{
+                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                    html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                                else{
+                                    html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+                                }
+                            }
+                            
                             // html += '<br class="hidden_desktop">'
                             // html += '<span class="disable_price">4.000.000 d</span>'
-                            // html += '<span class="sales_percent">15%</span>'
+                            html += '<span class="sales_percent">'+ posts[item].product.discount_percent +'%</span>'
                             html += '</div>'
                             html += '<div class="quick_view">'
                             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
@@ -187,8 +217,8 @@ function quick_view (id_post) {
             $('#attributes').empty()
             attributes_html = ''
             for(var i = 0; i < response.product.version[0].attributes.length; i++){
-                if (i == 2) return;
-                attributes_html += response.product.version[0].attributes[i].label + ' : ' + response.product.version[0].attributes[i].value
+                if (i == 5) break;
+                attributes_html += response.product.version[0].attributes[i].label + ' : ' + response.product.version[0].attributes[i].value + '<br />'
             }
             attributes_html += '<li><a href="/post/'+ id_post +'">Xem thêm</a><li>'
             $('#attributes').append(attributes_html);
@@ -198,7 +228,7 @@ function quick_view (id_post) {
             $('#form_quickview').empty()
             html_choice_qty = '<input type="hidden" id="version_product" value="'+ response.product.version[0].id_product +'">'
             html_choice_qty += '<button onclick="sub_product()" class="button_add">-</button>'
-            html_choice_qty += '<input value="1" class="input_add" maxlength="3" size="1" name="quantity" id="quantity">'
+            html_choice_qty += '<input value="1" class="input_add" maxlength="3" size="1" name="quantity" id="input_quantity">'
             html_choice_qty += '<button onclick="add_product('+ (response.quantity - response.bought) +')" class="button_add">+</button>'
             html_choice_qty += '<button onclick="buy_product()" class="btn_buy">Mua hàng</button>'
             $('#form_quickview').append(html_choice_qty)
@@ -224,8 +254,8 @@ function get_attr(item){
             $('#attributes').empty()
             attributes_html = ''
             for(var i = 0; i < response.product.version[item].attributes.length; i++){
-                if (i == 2) return;
-                attributes_html += response.product.version[item].attributes[i].label + ' : ' + response.product.version[item].attributes[i].value
+                if (i == 5) break;
+                attributes_html += response.product.version[item].attributes[i].label + ' : ' + response.product.version[item].attributes[i].value + '<br />'
             }
             attributes_html += '<li><a href="/post/'+ id_post +'">Xem thêm</a><li>'
             $('#attributes').append(attributes_html);
@@ -238,21 +268,58 @@ function get_attr(item){
 }
 
 function sub_product(){
-    var qty = parseInt($('#quantity').val());
+    var qty = parseInt($('#input_quantity').val());
     if (qty <= 1) return
-    $('#quantity').val(qty -1);
+    $('#input_quantity').val(qty -1);
 }
   
 function add_product(qty_aval){
-    var qty = parseInt($('#quantity').val()); 
+    var qty = parseInt($('#input_quantity').val()); 
     if (qty >= qty_aval) return
-    $('#quantity').val(qty + 1);
+    $('#input_quantity').val(qty + 1);
 }
 
 
 
 function buy_product(){
-    var quantity = $('quantity').val()
+    var quantity = $('#input_quantity').val()
     var product = $('#version_product').val()
+    $.ajax({
+        url: 'http://localhost:8000/add_qty/' + product + '/' + quantity,
+        method: 'GET',
+        success: function(response){
+            if(response == -2){
+                alert('Vui lòng lựa chọn phiên bản!');
+            }
+            else if(response == -1){
+                alert('Sản phẩm không đủ số lượng!')
+            }
+            else{
+                alert(response);
+                if (confirm("Bạn muốn tiếp tục mua hàng?")) {
+                    var popup = document.getElementById('popup_quickview')
+                    popup.style.display = 'none'
+                    $('#over').remove()
+                    $.ajax({
+                        url: 'http://localhost:8000/count',
+                        method: 'GET',
+                        success: function(response){
+                            $('#cart_mobi').empty()
+                            $('#cart_mobi').append('('+ response +') sản phẩm')
+                            $('#cart_desk').empty()
+                            $('#cart_desk').append('('+ response +') sản phẩm')
+                            $('#mobile_cart').empty()
+                            $('#mobile_cart').append(response)
+                            $('#desktop_cart').empty()
+                            $('#desktop_cart').append(response)
+                        }
+                    })
+                } else {
+                    window.location.replace('/cart')
+                }
+            }
+        }
+    })
 
 }
+

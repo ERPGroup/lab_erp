@@ -37,11 +37,13 @@ urlpatterns = [
 
     #cart
     path('add/<int:id_product>', cart.add, name='add'),
+    path('add_qty/<int:id_product>/<int:qty>', cart.add_qty, name='add_qty'),
     path('sub/<int:id_product>', cart.sub, name='sub'),
     path('set_qty/<int:id_product>/<int:qty>', cart.set_qty, name='set_qty'),
     path('remove/<int:id_product>', cart.remove, name='remove'),
     path('clear', cart.clear, name='clear'),
     path('show', cart.show, name='show'),
+    path('count', cart.count, name='count'),
     
     #Ly Thanh
     path('getAds',functions.getAds,name="get_ads_top")

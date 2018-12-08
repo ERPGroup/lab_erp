@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     $('#sub_destop').click(function(){
         data  = {
             'inputEmail': $('#_email').val(),

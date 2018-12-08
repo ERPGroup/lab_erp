@@ -602,6 +602,9 @@ def post_add(request):
         service_id = request.POST.get('inputService')
         creator_id = Account.objects.get(pk=request.session.get('user')['id'])
 
+        if creator_id.token_ghtk == '':
+            return HttpResponse(-4)
+
         # check  product 
         if Post_Product.objects.filter(product_id__id=product_id, is_activity=True, is_lock=False).exists():
             return HttpResponse('Lỗi sản phẩm bạn chọn đã được sử dụng!')

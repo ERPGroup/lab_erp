@@ -70,6 +70,10 @@ $(document).ready(function(){
                     alert('Sản phẩm đã được đăng!');
                     window.location.replace('/merchant/manager_post');
                 }
+                else if (response == -4){
+                    alert('Vui lòng kết nối tài khoản giao hàng tiết kiệm!');
+                    window.location.replace('/setup/ghtk')
+                }
                 else{
                     alert(response);
                 }
