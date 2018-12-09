@@ -22,6 +22,8 @@ urlpatterns = [
 
 
     #function
+
+    path('get_profile_payment', functions.get_profile_payment, name='get_profile_payment'),
     path('product_by_category/<int:id_category>', functions.product_by_category, name='product_by_category'),
     path('get_avatar_product/<int:id_product>', functions.get_avatar_product, name='get_avatar_product' ),
     path('payment', functions.payment, name='payment'),

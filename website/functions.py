@@ -15,6 +15,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
+from sender import Mail, Message
 
 
 from cart.cart import Cart
@@ -56,10 +57,13 @@ def payment(request):
     # check user  dang nhap vao he thong chua?
 
     if request.method == 'POST':
+        if 'user' not in request.session:
+            return HttpResponse('Vui lòng đang nhập để thanh toán')
         cart = Cart(request.session)
 
+        if cart.count == 0:
+            return HttpResponse('Bạn chưa có sản phẩm nào trong giỏ hàng')
 
-        email = request.POST.get('inputEmail')
         name  = request.POST.get('inputName')
         phone = request.POST.get('inputPhone')
         address = request.POST.get('inputAddress')
@@ -70,9 +74,10 @@ def payment(request):
         order = Order(
             customer=customer,
             amount=cart.total,
-            email=email,
+            email=customer.email,
             address=address,
             phone=phone,
+            note=note,
             state=2,
             is_paid=False,
             is_activity=True,
@@ -86,14 +91,21 @@ def payment(request):
                 product=item.product,
                 merchant=item.product.account_created,
                 quantity=item.quantity,
-                price= item.product.price,
+                price= item.price,
                 state=2,
                 confirm_of_merchant=False
             )
             order_detail.save()
-        return HttpResponse('Thanh Cong!')
+            product_orgin = Link_Type.objects.get(product_id_id=item.product.id).parent_product
+            post = Post_Product.objects.filter(product_id_id=product_orgin).order_by('-id').first()
+            bought = post.bought
+            post.bought = bought + item.quantity
+            post.save()
+        cart.clear()
+        send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="http://localhost:8000/customer/order/'+ str(order.id) +'"> đây</a>')
+        return HttpResponse(1)
 
-    return HttpResponse('error')
+    return HttpResponse('Lỗi hệ thống!')
 
 
 # function page index
@@ -408,5 +420,39 @@ def get_data_hot_buy(request):
 def get_data_related(request, id_post):
     if request.method == 'GET':
         return
+
+def get_profile_payment(request):
+    if request.method == 'GET':
+        if 'user' not in request.session:
+            return HttpResponse(-1)
+        user = Account.objects.get(pk = request.session.get('user')['id'])
+        data = dict()
+        data['name']  = user.name
+        data['phone'] = user.phone
+        data['address'] = user.address
+
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
         
-        
+def send_email_notifile(email, body, content):
+
+    mail = Mail(
+        'smtp.gmail.com', 
+        port='465', 
+        username='dinhtai018@gmail.com', 
+        password='wcyfglkfcshkxoaa',
+        use_ssl=True,
+        use_tls=False,
+        debug_level=False
+    )
+    msg = Message(body)
+    msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+    msg.to = email
+    msg.body = body
+    msg.html = content
+    msg.reply_to = 'no-reply@gmail.com'
+    msg.charset = 'utf-8'
+    msg.extra_headers = {}
+    msg.mail_options = []
+    msg.rcpt_options = []
+    mail.send(msg)

@@ -223,7 +223,7 @@ function quick_view (id_post) {
             attributes_html += '<li><a href="/post/'+ id_post +'">Xem thêm</a><li>'
             $('#attributes').append(attributes_html);
             $('#price').empty()
-            $('#price').append(response.product.version[0].price + ' VND')
+            $('#price').append(currency(((response.product.version[0].price * (100 - response.product.discount_percent))/100), { precision: 0, separator: ',' }).format() + ' VND')
 
             $('#form_quickview').empty()
             html_choice_qty = '<input type="hidden" id="version_product" value="'+ response.product.version[0].id_product +'">'
@@ -293,6 +293,12 @@ function buy_product(){
             }
             else if(response == -1){
                 alert('Sản phẩm không đủ số lượng!')
+            }
+            else if(response == -3){
+                alert('Bạn không được phép mua sản phẩm này')
+            }
+            else if(response == -4){
+                alert('Vui lòng đăng nhập để mua sản phẩm')
             }
             else{
                 alert(response);

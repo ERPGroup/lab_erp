@@ -87,9 +87,9 @@ def post_edit(request, id_post):
 def warehose(request):
     return render(request,'merchant/manager_product/manager_warehose.html')
 def order(request):
-    return render(request,'merchant/manager_order/manager_pay.html')
+    return render(request,'merchant/manager_order/manager_order.html')
 def order_detail(request):
-    return render(request,'merchant/manager_order/manager_pay_detail.html')
+    return render(request,'merchant/manager_order/manager_order_detail.html')
 def statistical_post(request):
     return render(request,'merchant/manager_posted/manager_statistical_post.html')
 

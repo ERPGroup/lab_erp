@@ -8,6 +8,7 @@ from  passlib.hash import pbkdf2_sha256
 from sender import Mail, Message
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from cart.cart import Cart
 
 
 def check_session(request):
@@ -262,16 +263,25 @@ def collections(request, id_category):
  
 def checkout(request): 
     if 'user' in request.session:
+        cart = Cart(request.session)
+        if cart.count == 0:
+            messages.warning(request, message='Bạn chưa có sản phẩm nào trong giỏ hàng', extra_tags='alert')
+            return redirect('/')
         account = Account.objects.get(pk=request.session.get('user')['id'])
         return render(request,'website/checkout.html', {
             'account': account,
         })
     else:
-        messages.warning(request, message='Vui long dang nhap de thanh toan', extra_tags='alert')
+        messages.warning(request, message='Vui lòng đăng nhập để thanh toán', extra_tags='alert')
         return redirect('/')
  
 # def profile(request): 
 #     return render(request,'website/checkout') 
  
-def cart(request): 
-    return render(request,'website/cart.html')
+def cart(request):
+    if 'user' in request.session:
+        return render(request,'website/cart.html')
+    else:
+        messages.warning(request, message='Vui lòng đăng nhập để mua hàng', extra_tags='alert')
+        return redirect('/')
+    

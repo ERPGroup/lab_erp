@@ -70,7 +70,7 @@ function load_vesion_product () {
     html += '<tr>'
     html += '<td><input type="checkbox" checked disabled="disabled" id="check_vesion_'+ i +'" class="form-check-input"></td>'
     html += '<td><span style="color:#d9534f">' + result[i] + '</span></td>'
-    html += '<td><input type="text" class="price_product" disabled="disabled" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
+    html += '<td><input type="text" class="price_product" onchange="check_value(this)" min="1000" disabled="disabled" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
     html += '</tr>'
     x.innerHTML += html
   }
@@ -204,3 +204,11 @@ function check_button_submit(){
       $('#submit').removeAttr('disabled');
     }
   });
+
+
+  function check_value(input){
+    if (parseInt(input.value) < 1000){
+      alert('Giá trị phải lớn hơn 1000!')
+      input.value = ''
+    }
+  }

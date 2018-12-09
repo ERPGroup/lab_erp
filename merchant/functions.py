@@ -472,7 +472,7 @@ def products(request):
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             products = []
-            prod_all = Product.objects.filter(type_product=True, archive=False).order_by('-pk')
+            prod_all = Product.objects.filter(type_product=True, archive=False, account_created_id=request.session.get('user')['id']).order_by('-pk')
             for item in prod_all:
                 if Link_Type.objects.filter(parent_product=item.id).exists() == True:
                     product = []
@@ -1064,4 +1064,39 @@ def getDetailRunning(request):
     return HttpResponse(-1)
 
 
-###
+###  Order
+
+def orders(request):
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_order = []
+            order_all = Order_Detail.objects.filter(merchant_id=request.session.get('user')['id'])
+            print(order_all)
+            for item in order_all:
+                order_item = Order.objects.get(pk=item.order.id)
+                order = []
+                order.append('<a href="/merchant/order/edit/'+ str(item.order.id) +'"> DH'+ str(item.order.id) +'</a>')
+                order.append(order_item.customer.name)
+                order.append(str(item.price * item.quantity) + ' VND')
+                order.append(item.order.created.replace(tzinfo=None))
+                if item.state == '1':
+                    order.append('<label class="label label-success">Thành công</label>')
+                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Xem</a>')
+                if item.state == '0':
+                    order.append('<label class="label label-danger">Hủy bỏ</label>')
+                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Xem</a>')
+                if item.state == '2':
+                    order.append('<label class="label label-info">Đặt hàng</label>')
+                    order.append('<a onclick="change_state(3)" class="btn btn-warning">Bắt đầu gói hàng</a>')
+                if item.state == '3':
+                    order.append('<label class="label label-warning">Đang gói hàng</label>')
+                    order.append('<a onclick="change_state(4)" class="btn btn-warning">Bắt đầu vận chuyển</a>')
+                if item.state == '4':
+                    order.append('<label class="label label-default">Đang vận chuyển</label>')
+                    order.append('<a onclick="change_state(1)" class="btn btn-success">Thành công</a><a onclick="change_state(0)" class="btn btn-success">Thất bại</a>')
+                list_order.append(order)
+            return HttpResponse(json.dumps(list_order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+    return
+
+def change_state(request):
+    return

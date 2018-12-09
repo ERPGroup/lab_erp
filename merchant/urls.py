@@ -62,6 +62,9 @@ urlpatterns = [
     path('post', functions.post_add, name='post_add'),
     path('post/<int:id_post>', functions.post, name='post'),
 
+
+    path('orders', functions.orders, name='order'),
+
     ### Ly Thanh 
     path('getAllAdsRunning',functions.getAllAdsRunning,name="getAllPost"),
     path('manager_ads_running',views.ads_running,name="Adsrunning"),

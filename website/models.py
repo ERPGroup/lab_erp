@@ -144,22 +144,23 @@ class Order (models.Model):
     email = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)
-    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'In Process'), ('3', 'Packing'), ('4', 'Transporting'))
+    note = models.CharField(max_length=200, null=True)
+    CHOICES_STATE = (('1', 'Thành công'), ('0', 'Hủy bỏ'), ('2', 'Đặt hàng'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
     manner = models.BooleanField(default=True) # payment by COD or paypal
     is_paid = models.BooleanField()
     is_activity = models.BooleanField()
+    created = models.DateTimeField(auto_now=True)
     archive = models.BooleanField()
     canceler_id = models.IntegerField(null=True)
 
 class Order_Detail (models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
-    version = models.IntegerField() ## get id product version
     merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.IntegerField()
-    CHOICES_STATE = (('1', 'Success'), ('0', 'Cancel'), ('2', 'In Process'), ('3', 'Packing'), ('4', 'Transporting'))
+    CHOICES_STATE = (('1', 'Thành công'), ('0', 'Hủy bỏ'), ('2', 'Đặt hàng'), ('3', 'Đang gói hàng'), ('4', 'Đang vận chuyển'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
     confirm_of_merchant = models.BooleanField()
     canceler_id = models.IntegerField(null=True)

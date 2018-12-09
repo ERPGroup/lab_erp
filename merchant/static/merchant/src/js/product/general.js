@@ -70,7 +70,7 @@ function load_vesion_product () {
     html += '<tr>'
     html += '<td><input type="checkbox" checked id="check_vesion_'+ i +'" class="form-check-input"></td>'
     html += '<td><span style="color:#d9534f">' + result[i] + '</span></td>'
-    html += '<td><input type="number" class="price_product" id="price_product_' + (i) + '" min="0" value=""></td>'
+    html += '<td><input type="number" class="price_product" onchange="check_value(this)" min="1000" id="price_product_' + (i) + '" min="0" value=""></td>'
     html += '</tr>'
     x.innerHTML += html
   }
@@ -312,3 +312,11 @@ $(document).ready(function(){
 
   
 })
+
+
+function check_value(input){
+  if (parseInt(input.value) < 1000){
+    alert('Giá trị phải lớn hơn 1000!')
+    input.value = ''
+  }
+}

@@ -16,41 +16,10 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/payment.css' %}" />
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/font-awesome.min.css' %}" />
     <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
-    <style>
-        /* Center the loader */
-        #loader {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          z-index: 1;
-          width: 150px;
-          height: 150px;
-          margin: -75px 0 0 -75px;
-          border: 16px solid #f3f3f3;
-          border-radius: 50%;
-          border-top: 16px solid #3498db;
-          width: 120px;
-          height: 120px;
-          -webkit-animation: spin 2s linear infinite;
-          animation: spin 2s linear infinite;
-          
-        }
-        
-        @-webkit-keyframes spin {
-          0% { -webkit-transform: rotate(0deg); }
-          100% { -webkit-transform: rotate(360deg); }
-        }
-        
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-    </style>
 </head>
 
 <body>
-    <div class="payment" style="display:block;" id="html_payment">
+    <div class="payment">
         <div class="container">
             <div class="row">
                 <div class="logo col-xs-12">
@@ -176,11 +145,6 @@
             </div>
         </div>
     </div>
-
-
-    <div id="loader" style="display:none;" ></div>
-
-    
     <script type="text/javascript" src="{% static 'website/assets/payment.js' %} "></script>
     <script type="text/javascript" src="{% static 'website/src/js/payment/index.js' %} "></script>
 </body>
