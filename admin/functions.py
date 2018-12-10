@@ -166,6 +166,13 @@ def category(request, id_category):
             category.name_category = name_category
             category.is_active = is_active
             category.save()
+        
+            if category.is_active == '0': #Khoá
+                Product_Category.objects.filter(category_id=category,archive=False).update(archive=True,lock=True)
+            else: #Kich hoat   
+                Product_Category.objects.filter(category_id=category,lock=True).update(archive=False,lock=False)
+           
+            
             return HttpResponse(1)
         except:
             return HttpResponse(0)
@@ -173,6 +180,8 @@ def category(request, id_category):
         category = Category.objects.get(id=id_category)
         category.is_active = False
         category.save()
+        Product_Category.objects.filter(category_id=id_category,archive=False).update(archive=True,lock=True)
+
         return HttpResponse(1)
 
     return HttpResponse(0)
@@ -218,6 +227,18 @@ def attribute_add(request):
             label = label,
         )
         attribute.save()
+
+        products = Product.objects.filter(type_product=True).values_list('id',flat=True) #id of configure products
+        for item in products:
+            versions = Link_Type.objects.filter(parent_product=item).values_list('product_id',flat=True) #id of versions of a configure product
+            for temp in versions:
+                prod_attr = Product_Attribute(
+                    product_id=Product.objects.get(id=temp),
+                    attribute_id=attribute,
+                    value="Chưa cập nhật",
+                )
+                prod_attr.save()     
+        
         return HttpResponse(1)
         # except :
         #     return HttpResponse(0)
@@ -238,11 +259,21 @@ def attribute(request, id_attribute):
             attribute.label = label
             attribute.is_active = is_active
             attribute.save()
+
+            if attribute.is_active == '0': #Khoá
+                Product_Attribute.objects.filter(attribute_id=id_attribute,archive=False).update(archive=True,lock=True)
+            else: #Kich hoat
+                Product_Attribute.objects.filter(attribute_id=id_attribute,lock=True).update(archive=False,lock=False)
+            
             return HttpResponse(1)
         except:
             return HttpResponse(0)
     if request.method == 'DETELE':
-        Attribute.objects.filter(pk=id_attribute).delete()
+        attribute = Attribute.objects.get(id=id_attribute)
+        attribute.is_active = False
+        attribute.save()
+        Product_Attribute.objects.filter(attribute_id=id_attribute,archive=False).update(archive=True,lock=True)
+
         return HttpResponse(1)
 
     return HttpResponse(0)
