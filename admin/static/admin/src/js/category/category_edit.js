@@ -40,11 +40,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_category')", 3000);
-                    alert('Da sua thanh cong!\nBan se duoc dieu huong den danh muc san pham sau 3 giay!');
+                    alert('Đã sửa thư mục thành công!');
+                    pageRedirect('/admin/manager_category')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi!')
             }
         })
     });
@@ -56,8 +56,8 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_category')", 3000);
-                    alert('Danh muc da ngung hoat dong!\nBan se duoc dieu huong den danh muc san pham sau 3 giay!');
+                    alert('Dạnh mục đã dừng sử dụng!');
+                    pageRedirect('/admin/manager_category')
                 }
                 else
                     alert('ERROR')

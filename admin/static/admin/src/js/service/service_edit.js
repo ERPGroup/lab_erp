@@ -52,11 +52,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Da sua thanh cong!\nBan se duoc dieu huong den danh sach dich vu sau 3 giay!');
+                    alert('Đã sửa gói tin thành công!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi~')
             }
         })
     });
@@ -69,11 +69,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Dich vu da ngung ban!\nBan se duoc dieu huong den danh sach dich vu sau 3 giay!');
+                    alert('Gói tin đã ngừng bán!');
+                    pageRedirect('/admin/manager_services')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi~')
             }
         })
     });

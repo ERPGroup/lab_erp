@@ -40,6 +40,8 @@ $(document).ready(function(){
                 box +='<li>Hiển thị trên khu vực VIP</li>';
             else
                 box +='<li class="disable">Không hiển thị trên khu vực VIP</li>';
+
+            box +='<li>'+ service.usd.toFixed(2) +'$ dành cho thanh toán PayPal</li>';
             $('.pricing-content').append(box);
 
 

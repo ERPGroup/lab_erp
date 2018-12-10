@@ -218,12 +218,12 @@ def product_add(request):
         for i in range(int(count_product)):
             agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
             if count_product != 1:
-                code_type = code + ' .v' + str(v)
+                name_type = name + ' .v' + str(v)
             else: 
-                code_type = code
+                name_type = name
             product = Product(
-                code=code_type,
-                name=name,
+                code=code,
+                name=name_type,
                 detail=detail,
                 origin=origin,
                 price=request.POST.get('inputVersion['+ str(i) +'][price]'),
@@ -326,19 +326,13 @@ def product(request, id_product):
         product = Product.objects.get(pk=id_product)
         if product.is_activity == False:
             return HttpResponse('Sản phẩm đã bị khóa không cho phép sửa!')
-        product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
-        Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
-        Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-        Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-        Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
-        Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
         
         count_product = request.POST.get('inputCountProduct')
         if int(count_product) < 1:
             return HttpResponse('Không thể sửa sản phẩm')
 
         count_tag = request.POST.get('inputCountTag')
-        if int(count_tag) > 3 or int(count_tag) < 1:
+        if int(count_tag) > 3:
             return HttpResponse('Không thể sửa sản phẩm')
         
         count_category = request.POST.get('inputCountCategory')
@@ -352,6 +346,14 @@ def product(request, id_product):
         discount_percent = request.POST.get('inputDiscount')
         if int(discount_percent) == '':
             return HttpResponse('Không thể sửa sản phẩm')
+        
+
+        product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
+        Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
+        Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+        Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
+        Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
+        Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
 
         #request 
         code = request.POST.get('inputCode')
@@ -396,13 +398,12 @@ def product(request, id_product):
             image.save()
 
         
-        if int(count_product) < 1:
-            return HttpResponse(-1)
+        
         v = 1
         agv_price = 0
         for i in range(int(count_product)):
             agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
-            if count_product != 1:
+            if int(count_product) != 1:
                 name_type = name + ' .v' + str(v)
             else: 
                 name_type = name
@@ -479,8 +480,8 @@ def products(request):
                     product.append('<a href="/merchant/product/edit/'+ str(item.id) +'">SP'+ str(item.id) +'</a>')
                     product.append(item.name)
                     product.append(str(item.price) + ' VND')
-                    image = Product_Image.objects.filter(product_id_id=item.id).order_by('image_id_id').first()
-                    if Product_Image.objects.filter(product_id_id=item.id).exists() == True:
+                    image = Product_Image.objects.filter(product_id_id=item.id, archive=False).order_by('image_id_id').first()
+                    if Product_Image.objects.filter(product_id_id=item.id, archive=False).exists() == True:
                         product.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
                     else:
                         product.append('<div class="tbl_thumb_product"><img src="/static/website/images/product_1.jpg" /></div>')
@@ -1081,10 +1082,10 @@ def orders(request):
                 order.append(item.order.created.replace(tzinfo=None))
                 if item.state == '1':
                     order.append('<label class="label label-success">Thành công</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Xem</a>')
+                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Đánh giá</a>')
                 if item.state == '0':
                     order.append('<label class="label label-danger">Hủy bỏ</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Xem</a>')
+                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Đánh giá</a>')
                 if item.state == '2':
                     order.append('<label class="label label-info">Đặt hàng</label>')
                     order.append('<a onclick="change_state(3)" class="btn btn-warning">Bắt đầu gói hàng</a>')

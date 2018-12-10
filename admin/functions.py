@@ -216,7 +216,7 @@ def attributes(request):
 @csrf_exempt    
 def attribute_add(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Lỗi')
 
     if request.method == 'POST':
         print(request.POST)
@@ -240,10 +240,7 @@ def attribute_add(request):
                 prod_attr.save()     
         
         return HttpResponse(1)
-        # except :
-        #     return HttpResponse(0)
-        return HttpResponse('Check')
-    return HttpResponse('Error Add !')
+    return HttpResponse('Lỗi hệ thống!!')
 
 @csrf_exempt  
 def attribute(request, id_attribute):
@@ -251,7 +248,6 @@ def attribute(request, id_attribute):
         return HttpResponse(serialize('json', Attribute.objects.filter(pk=id_attribute)), content_type="application/json")
     if request.method == 'POST':
         try:
-
             label = request.POST.get('inputLabel')
             is_active = request.POST.get('inputIsActive')
 
@@ -268,6 +264,7 @@ def attribute(request, id_attribute):
             return HttpResponse(1)
         except:
             return HttpResponse(0)
+
     if request.method == 'DETELE':
         attribute = Attribute.objects.get(id=id_attribute)
         attribute.is_active = False
@@ -428,7 +425,7 @@ def products(request):
                     product.append('<a href="/admin/product/see/'+ str(item.id) +'">SP'+ str(item.id) +'</a>')
                     product.append(item.name)
                     product.append(str(item.price) + ' VND')
-                    image = Product_Image.objects.filter(product_id_id=item.id).order_by('image_id_id').first()
+                    image = Product_Image.objects.filter(product_id_id=item.id, archive=False).order_by('image_id_id').first()
                     product.append('<div class="tbl_thumb_product"><img src="/product/' + image.image_id.image_link.url + '" /></div>')
                     if item.archive == 0:
                         if item.is_activity == 1:

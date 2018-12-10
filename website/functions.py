@@ -130,7 +130,7 @@ def get_data(request):
             del dict_product['_state']
             list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
             dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
-            image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+            image = Product_Image.objects.filter(product_id_id=dict_product['id'], archive=False).order_by('image_id_id').first()
             dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
             dict_post['product'] = dict_product
             array_post.append(dict_post)

@@ -41,11 +41,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_attribute')", 3000);
-                    alert('Da sua thanh cong!\nBan se duoc dieu huong den danh sach thuoc tinh sau 3 giay!');
+                    alert('Đã sửa thuộc tính thành công!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi!')
             }
         })
     });
@@ -57,11 +57,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_attribute')", 3000);
-                    alert('Thuoc tinh da bi xoa!\nBan se duoc dieu huong den danh sach thuoc tinh sau 3 giay!');
+                    alert('Thuộc tính đã dừng sử dụng!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi!')
             }
         })
     });

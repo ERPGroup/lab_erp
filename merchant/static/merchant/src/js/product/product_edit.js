@@ -192,14 +192,6 @@ function get_blob(image_link, id_image, callback){
     xhr.send();
 }
 
-const toDataURL = url => fetch(url)
-  .then(response => response.blob())
-  .then(blob => new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result )
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-  }))
 
 
 function Showimage(image_link, image_id){
@@ -214,7 +206,7 @@ function Showimage(image_link, image_id){
           result_1 += '<img src="' + reader.result + '" />'
           result_1 += '<div class="action_image">'
           result_1 += '<a href="#"><i class="fa fa-check"></i></a>'
-          result_1 += '<a href="#" onclick="$(\'#' + image_id + '\').remove(); reload(); delete_image('+ image_id +'); return false;" ><i class="fa fa-remove"></i></a>'
+          result_1 += '<a href="#" onclick="$(\'#' + image_id + '\').remove(); $(\'#' + image_id + '\').remove(); alert(\'Đã xóa hình\'); return true;" ><i class="fa fa-remove"></i></a>'
           result_1 += '</div>'
           result_1 += '</div>'
           $el.append(result_1);

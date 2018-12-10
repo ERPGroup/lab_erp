@@ -170,7 +170,7 @@ $(document).ready(function(){
       success: function(response){
         // alert(response);
         if (response == -3)
-          alert('Vui long dang nhap de them san pham');
+          alert('Vui lòng đăng nhập để thực hiện!');
         if (response > 0){
           var reader = new FileReader()
           reader.onload = function (e) {

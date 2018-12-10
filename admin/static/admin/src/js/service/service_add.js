@@ -43,8 +43,8 @@ $(document).ready(function(){
             data: data,
             success: function(response){
                 if(response == 1){   
-                    setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Đã thêm thành công!\nBạn sẽ được điều hướng sang trang quản lý sau 3 giây!');
+                    alert('Đã thêm gói tin mới!');
+                    pageRedirect('/admin/manager_services')
                 }
                 else
                     alert(response);

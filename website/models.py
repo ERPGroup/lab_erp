@@ -137,6 +137,15 @@ class Rating (models.Model):
     def __str__(self):
         return self.customer.name
 
+class Rating_Customer (models.Model):
+    customer =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='cus')
+    merchant =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='mer')
+    num_of_star = models.IntegerField()
+    confirm_bought = models.BooleanField()
+    is_activity = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.customer.name
 
 class Order (models.Model):
     customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
