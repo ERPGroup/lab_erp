@@ -55,6 +55,10 @@ $(document).ready(function(){
 
             $('#inputQuantity').val(post.quantity);
 
+            if (post.is_lock == true){
+                $('#inputQuantity').attr('disabled', true)
+            }
+
             if(post.is_activity == 0){
                 $('#delete').addClass('hidden')
             }
@@ -68,6 +72,9 @@ $(document).ready(function(){
                 option_activity += '<option value="0" selected >Không hiển thị</option>'
             }
             $('#inputIsActivity').append(option_activity)
+            if (post.is_lock == true){
+                $('#inputIsActivity').attr('disabled', true)
+            }
 
             $('#edit').attr('disabled', true)
 
@@ -136,7 +143,7 @@ $(document).ready(function(){
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/merchant/product/'+ id_product,
+        url: 'http://localhost:8000/merchant/product/'+ id_product + '?posted=true',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -145,18 +152,12 @@ function showProduct(id_product){
             item += '<td><a href="/merchant/product/edit/'+ id_product +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
             item += '<td><div class="tbl_thumb_product"><img src="/product/'+ response.images[0].image_link +'" alt="Product"></div></td>'
-            if (response.discount_percent != 0){
-                if (response.price_max_min[0] == response.price_max_min[1])
-                    item += '<td>'+ (response.price_max_min[0] * (100 - response.discount_percent))/100 +' VNĐ</td>'
-                else
-                    item += '<td>'+ (response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100 +' VNĐ</td>'
-            }
-            else{
-                if (response.price_max_min[0] == response.price_max_min[1])
-                    item += '<td>'+ response.price_max_min[0] +' VNĐ</td>'
-                else
-                    item += '<td>'+ response.price_max_min[1] + ' - ' + response.price_max_min[0] +' VNĐ</td>'
-            }
+            
+            if (response.price_max_min[0] == response.price_max_min[1])
+                item += '<td>'+ currency((response.price_max_min[0] * (100 - response.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            else
+                item += '<td>'+ currency((response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            
             if (response.detail != '')
                 item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
             else

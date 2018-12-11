@@ -4,6 +4,37 @@
 Trang chủ
 {% endblock %}
 {% block styles %}
+<style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      
+    }
+    
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+</style>
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
@@ -34,7 +65,6 @@ Trang chủ
                                 <th>Mã hóa đơn</th>
                                 <th>Mã người mua</th>
                                 <th>Tổng tiền</th>
-                                <th>Ngày lập</th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
@@ -46,13 +76,11 @@ Trang chủ
                                 <td>1.000.000 VNĐ</td>
                                 <td>12/10/2018</td>
                                 <td>Đã thanh toán</td>
-                                <td>Đã thanh toán</td>
                             </tr>
                             <tr>
                                 <td><a href="/merchant/order_detail">HD002</a></td>
                                 <td>Demo2</td>
                                 <td>500.000 VNĐ</td>
-                                <td>12/10/2018</td>
                                 <td>Đã thanh toán</td>
                                 <td>Đã thanh toán</td>
                             </tr>
@@ -65,8 +93,10 @@ Trang chủ
         <!--End Advanced Tables -->
     </div>
 </div>
+
 {% endblock content %}
 {% block data_table %}
+<div id="loader" style="display:none;" ></div>
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>

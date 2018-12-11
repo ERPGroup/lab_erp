@@ -16,7 +16,7 @@ urlpatterns = [
     path('manager_product',views.product,name='manager product'),
     path('product/add', views.product_add, name='product_add'),
     path('product/edit/<int:id_product>', views.product_edit, name='product_edit'),
-    path('manager_product_detail',views.product_detail,name='product'),
+    #path('manager_product_detail',views.product_detail,name='product'),
 
 
 
@@ -29,6 +29,9 @@ urlpatterns = [
 
     path('order',views.order,name='order'),
     path('order_detail',views.order_detail,name='order'),
+
+    path('payment',views.payment,name='payment'),
+    path('payment_detail',views.payment,name='payment_detail'),
 
     path('statistial_post',views.statistical_post,name='statis'),
 
@@ -64,6 +67,10 @@ urlpatterns = [
 
 
     path('orders', functions.orders, name='order'),
+    path('change_state/<int:order_id>/<int:state>', functions.change_state, name="change_state"),
+
+
+    path('payments', functions.payments, name='payments'),
 
     ### Ly Thanh 
     path('getAllAdsRunning',functions.getAllAdsRunning,name="getAllPost"),

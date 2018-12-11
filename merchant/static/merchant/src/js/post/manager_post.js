@@ -58,8 +58,8 @@ $(document).ready(function () {
     tool_bar += '<option>Đang hiển thị</option>';
     tool_bar += '<option>Tất cả</option>';
     tool_bar += '<option>Ngừng hiển thị</option>';
-    tool_bar += '<option>Hết hạn</option>';
-    tool_bar += '<option>Bị khóa</option>';
+    tool_bar += '<option>Hết hàng</option>';
+    tool_bar += '<option>SP bị xóa</option>';
     tool_bar += '</select>';
     tool_bar += '</div>';
 

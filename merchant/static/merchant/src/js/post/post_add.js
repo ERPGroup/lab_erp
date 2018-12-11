@@ -93,18 +93,11 @@ function showProduct(id_product){
             item += '<td><a href="/merchant/product/edit/'+ id_product +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
             item += '<td><div class="tbl_thumb_product"><img src="/product/'+ response.images[0].image_link +'" alt="Product"></div></td>'
-            if (response.discount_percent != 0){
-                if (response.price_max_min[0] == response.price_max_min[1])
-                    item += '<td>'+ (response.price_max_min[0] * response.discount_percent)/100 +' VNĐ</td>'
-                else
-                    item += '<td>'+ (response.price_max_min[1] * response.discount_percent)/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100 +' VNĐ</td>'
-            }
-            else{
-                if (response.price_max_min[0] == response.price_max_min[1])
-                    item += '<td>'+ response.price_max_min[0] +' VNĐ</td>'
-                else
-                    item += '<td>'+ response.price_max_min[1] + ' - ' + response.price_max_min[0] +' VNĐ</td>'
-            }
+            
+            if (response.price_max_min[0] == response.price_max_min[1])
+                item += '<td>'+ currency((response.price_max_min[0] * (100 - response.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            else
+                item += '<td>'+ currency((response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
             
             if (response.detail != '')
                 item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'

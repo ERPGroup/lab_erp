@@ -12,7 +12,6 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         return b - a;
     }
 });
-
 $(document).ready(function () {
     var table = $('#dataTables-example').dataTable({
         language: {
@@ -31,31 +30,28 @@ $(document).ready(function () {
             sUrl: "",
         },
         "dom": '<"toolbar">frtip',
-        "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columnDefs": [
             { "type": 'formatted-num', targets: 0 },
             { "type": 'formatted-num', targets: 2 },
+            { "type": 'date-eu', targets: 3 }
         ],
-        "order": [[ 0, "desc" ]],
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/products?table=true",
+            "url": "http://localhost:8000/merchant/payments?table=true",
             "dataSrc": ""
         },
-
     });
     var tool_bar = '';
     tool_bar += '<div class="col-xs-8 no_padding">';
     tool_bar += '<span>Trạng thái: </span>';
     tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-    tool_bar += '<option>Đang hiển thị</option>';
     tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Không hiển thị</option>';
-    tool_bar += '<option>Chưa được đăng</option>';
+    tool_bar += '<option>Thanh toán thành công</option>';
+    tool_bar += '<option>Thanh toán thất bại</option>';
     tool_bar += '</select>';
     tool_bar += '</div>';
-    table.api().columns(4).search('^Đang hiển thị$', true, false).draw();
     $("div.toolbar").html(tool_bar);
     $('#select_type').change(function () {
         regExSearch = '^' + this.value + '$';

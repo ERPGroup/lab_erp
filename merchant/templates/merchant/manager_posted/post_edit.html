@@ -49,7 +49,7 @@ Trang chi tiết người dùng
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Hạn sử dụng</label>
+                    <label>Ngày kết thúc tại khu vực vip</label>
                     <input type="text" class="form-control" id="inputExpire" disabled="disabled">
                 </div>
 
@@ -110,5 +110,6 @@ Trang chi tiết người dùng
 {% endblock %}
 
 {% block data_table %}
+<script src="{% static '/website/assets/currency.min.js' %}"></script>
 <script src="{% static '/merchant/src/js/post/post_edit.js' %} "></script>
 {% endblock %}

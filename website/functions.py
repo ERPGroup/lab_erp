@@ -56,6 +56,8 @@ def product_by_category(request, id_category):
 def payment(request):
     # check user  dang nhap vao he thong chua?
 
+    # cap nhat lai so luong cua bai viet
+
     if request.method == 'POST':
         if 'user' not in request.session:
             return HttpResponse('Vui lòng đang nhập để thanh toán')

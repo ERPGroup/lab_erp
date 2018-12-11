@@ -1,23 +1,20 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Danh sách tin đăng
+Thanh toán gói tin
 {% endblock %}
 {% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets/side_bar_merchant.html" with active_posted='active' %}
+{% include "snippets/side_bar_merchant.html" with active_payment='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý đăng tin
-            <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/merchant/post/add" class="btn btn-info">Đăng tin mới</a>
-            </div>
+            Quản lý thanh toán gói tin
         </h1>
 
     </div>
@@ -27,31 +24,22 @@ Danh sách tin đăng
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách tin đang hoạt động
+                Danh sách thanh toán gói tin
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables_posted">
-
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã tin đăng</th>
-                                <th>Mã sản phẩm</th>
-                                <th>Số lượng tồn</th>
-                                <th>Hạn sử dụng (VIP)</th>
-                                <th>Loại tin</th>
+                                <th>Nội dung</th>
+                                <th>Tin đăng</th>
+                                <th>Số tiền</th>
+                                <th>Ngày thực hiện</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="/merchant/manager_post_detail">TD00</a></td>
-                                <td>SP19</td>
-                                <td class="center">5</td>
-                                <td>18/12/2018</td>
-                                <td>Bạch kim</td>
-                                <td>Bạch kim</td>
-                            </tr>
+                         
                         </tbody>
                     </table>
                 </div>
@@ -67,5 +55,6 @@ Danh sách tin đăng
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
-<script src="{% static 'merchant/src/js/post/manager_post.js' %}"></script>
+<script src="{% static '/merchant/src/js/payment/manager_payment.js' %}"></script>
+
 {% endblock %}

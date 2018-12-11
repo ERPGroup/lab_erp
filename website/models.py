@@ -166,9 +166,11 @@ class Order (models.Model):
 class Order_Detail (models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post_Product', on_delete=models.CASCADE)
     merchant = models.ForeignKey('Account', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.IntegerField()
+    discount = models.IntegerField()
     CHOICES_STATE = (('1', 'Thành công'), ('0', 'Hủy bỏ'), ('2', 'Đặt hàng'), ('3', 'Đang gói hàng'), ('4', 'Đang vận chuyển'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
     confirm_of_merchant = models.BooleanField()

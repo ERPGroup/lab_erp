@@ -64,3 +64,24 @@ $(document).ready(function () {
         }
     });
 });
+
+function change_state(order_id, state){
+    $("#wrapper").css("display","none");
+    $("#loader").css("display","block");
+    $.ajax({
+        url: 'http://localhost:8000/merchant/change_state/' + order_id + '/' + state,
+        method: 'GET',
+        success: function(response){
+            if (response == 1){
+                alert('Trạng thái đã thay đổi')
+                $("#wrapper").css("display","none");
+                $("#loader").css("display","block");
+            }
+            else{
+                alert(response)
+                $("#wrapper").css("display","block");
+                $("#loader").css("display","none");
+            }
+        }
+    })
+}

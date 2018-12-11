@@ -40,11 +40,6 @@ def product(request):
 
     return render(request,'merchant/manager_product/manager_product.html')
 
-def product_detail(request):
-    if check_rule(request) == 0:
-        return redirect('/merchant/login')
-    return render(request,'merchant/manager_product/manager_product_detail.html')
-
 def product_add(request):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
@@ -53,8 +48,8 @@ def product_add(request):
 def product_edit(request, id_product):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
-    if Product.objects.filter(pk=int(id_product), type_product=True, account_created_id=request.session.get('user')['id']).exists() == False:
-        messages.warning(request, message='Khong ton tai san pham', extra_tags='alert')
+    if Product.objects.filter(pk=int(id_product), type_product=True, account_created_id=request.session.get('user')['id'], archive=False).exists() == False:
+        messages.warning(request, message='Sản phẩm không tồn tại', extra_tags='alert')
         return redirect('/merchant')
     return render(request, 'merchant/manager_product/product_edit.html')
 
@@ -76,9 +71,8 @@ def post_add(request):
 def post_edit(request, id_post):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
-    print(Post_Product.objects.filter(pk=id_post, creator_id_id=request.session.get('user')['id']))
     if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).count() == 0:
-        messages.warning(request, message='Khong ton tai tin dang', extra_tags='alert')
+        messages.warning(request, message='Không tồn tại tin đăng', extra_tags='alert')
         return redirect('/merchant')
     return render(request,'merchant/manager_posted/post_edit.html')
 
@@ -92,6 +86,12 @@ def order_detail(request):
     return render(request,'merchant/manager_order/manager_order_detail.html')
 def statistical_post(request):
     return render(request,'merchant/manager_posted/manager_statistical_post.html')
+
+
+def payment(request):
+    return render(request,'merchant/manager_payment/manager_payment.html')
+def payment_detail(request):
+    return render(request,'merchant/manager_payment/manager_payment_detail.html')
 
 # ---- Service
 def service_post(request):
@@ -138,7 +138,5 @@ def ads_running_detail(request,id):
         return render(request,'merchant/manager_service/manager_ads_running_detail.html',{'result':post_ads})
 
 
-### 
 
-from django import template
 

@@ -16,6 +16,7 @@ import pytz
 import json, os
 from django.core.serializers.json import DjangoJSONEncoder
 import requests
+from sender import Mail, Message
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
@@ -260,8 +261,29 @@ def product_add(request):
 @csrf_exempt
 def product(request, id_product):
     if request.method == 'GET':
-        if Product.objects.filter(pk=id_product, archive=False).exists() == False:
-            return HttpResponse('Sản phẩm không tồn tại')
+        #### 
+        if request.GET.get('posted') == 'true':
+            if Product.objects.filter(pk=id_product).exists() == False:
+                return HttpResponse('Sản phẩm không tồn tại')
+                product = Product.objects.get(pk=id_product).__dict__
+                del product['_state']
+                product_image = Product_Image.objects.filter(product_id=int(id_product), archive=False).order_by('image_id_id')
+                list_image = []
+                for item in product_image:
+                    image = Image.objects.get(pk=item.image_id_id).__dict__
+                    del image['_state']
+                    list_image.append(image)
+                product['images'] = list_image
+
+                link_type = Link_Type.objects.filter(parent_product=int(id_product), product_id__archive=False)
+                list_attr = []
+                list_price = []
+                for item in link_type:
+                    list_price.append(item.product_id.price)
+                product['list_price'] = list_price
+                product['price_max_min'] = [max(list_price), min(list_price)]
+
+                return  HttpResponse(json.dumps(product, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
         product = Product.objects.get(pk=id_product).__dict__
         del product['_state']
@@ -451,19 +473,14 @@ def product(request, id_product):
             product = Product.objects.get(pk=id_product)
             if product.is_activity == False:
                 return HttpResponse('Sản phẩm đã bị khóa không cho phép xóa!')
-            if Post_Product.objects.filter(product_id_id=product.id, is_lock=False).exists() == False:
-                #product_link = Link_Type.objects.filter(parent_product=product.id, product_id__archive=False).values_list('product_id_id')
-                #Product.objects.filter(pk__in=product_link).update(archive=True, archive_at=now)
-                # Product_Category.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-                # Product_Image.objects.filter(product_id_id=product.id, archive=False).update(archive=True, archive_at=now)
-                # Product_Attribute.objects.filter(product_id_id__in=product_link, archive=False).update(archive=True, archive_at=now)
-                # Tag.objects.filter(tag_type=1, tag_value=product.id, archive=False).update(archive=True, archive_at=now)
-                product.archive = True
-                product.archive_at = now
-                product.save()
-                return HttpResponse(1)
-            else:
-                return HttpResponse('Vui lòng hủy tin đăng trước khi xóa sản phẩm!')
+
+            product.archive = True
+            product.is_activity = False
+            product.archive_at = now
+            product.save()
+            if Post_Product.objects.filter(product_id_id=product.id).exists() == True:
+                Post_Product.objects.filter(product_id_id=product.id).update(is_lock=True, is_activity=False)
+            return HttpResponse(1)
         except:
             return HttpResponse('Lỗi hệ thống!')
         return HttpResponse('Lỗi hệ thống!')
@@ -485,6 +502,16 @@ def products(request):
                         product.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
                     else:
                         product.append('<div class="tbl_thumb_product"><img src="/static/website/images/product_1.jpg" /></div>')
+                    
+                    if Post_Product.objects.filter(product_id_id=item.id).exists() == False:
+                        product.append('<label class="label label-warning">Chưa được đăng</label>')
+                    else:
+                        post = Post_Product.objects.filter(product_id_id=item.id).first()
+                        if post.is_lock == True:
+                            product.append('<label class="label label-info">Không hiển thị</label>')
+                        else:
+                            product.append('<label class="label label-success">Đang hiển thị</label>')
+                    
                     if item.is_activity == 1:
                         product.append('<p style="color:green">Được hiển thị</p>')
                     if item.is_activity == 0:
@@ -662,7 +689,7 @@ def post(request, id_post):
     if request.method == 'POST':
 
         #check an update expire post  \
-        check_expire_post(id_post)
+        #check_expire_post(id_post)
         # kiem tra tin dang co ton tai khong?
         if Post_Product.objects.filter(pk=id_post, creator_id__id=request.session.get('user')['id']).exists() == False:
             return HttpResponse('Tin đăng không tồn tại!')
@@ -670,7 +697,7 @@ def post(request, id_post):
         post = Post_Product.objects.get(pk=id_post)
         # kiem tra da het  hang cua
         if post.is_lock == True:
-            return HttpResponse('Tin đăng đã hết hạn, Không được phép sửa!')
+            return HttpResponse('Tin đăng đã bị khóa, Không được phép sửa!')
 
         quantity = request.POST.get('inputQuantity')
 
@@ -689,7 +716,7 @@ def post(request, id_post):
             return HttpResponse('Tin đăng không tồn tại!')
         post = Post_Product.objects.get(pk=id_post)
         if post.is_lock == True:
-            return HttpResponse('Tin đăng đã hết hạn! Không thể ngừng bán')
+            return HttpResponse('Tin đăng đã khóa! Không thể ngừng hiển thị')
         if post.is_activity == False:
             return HttpResponse('Thực hiện thất bại!\nTin đăng đã tắt hiển thị')
         post.is_activity = False
@@ -700,7 +727,7 @@ def post(request, id_post):
 def posts(request):
     if request.method == 'GET':
         posts = []
-        post_all = Post_Product.objects.filter(creator_id__id=request.session.get('user')['id'], is_lock=False)
+        post_all = Post_Product.objects.filter(creator_id__id=request.session.get('user')['id'])
         for item in post_all:
             post = []
             post.append('<a href="/merchant/post/edit/'+ str(item.id) +'"> TD'+ str(item.id) +'</a>')
@@ -714,10 +741,10 @@ def posts(request):
                 else:
                     post.append('<label class="label label-info">Ngừng hiển thị</label>')
             else:
-                if item.expire.replace(tzinfo=None) <= datetime.now():
-                    post.append('<label class="label label-warning">Hết hạn</label>')
-                else: 
-                    post.append('<label class="label label-danger">Bị khóa</label>')
+                if item.bought == item.quantity:
+                    post.append('<label class="label label-danger">Hết hàng</label>')
+                else:
+                    post.append('<label class="label label-danger">SP bị xóa</label>')
             posts.append(post)
         return HttpResponse(json.dumps(posts), content_type="application/json")
 
@@ -1071,33 +1098,131 @@ def orders(request):
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             list_order = []
-            order_all = Order_Detail.objects.filter(merchant_id=request.session.get('user')['id'])
-            print(order_all)
+            order_all_id = Order_Detail.objects.filter(merchant_id=request.session.get('user')['id']).values_list('order_id').distinct()
+            print(order_all_id)
+            order_all = Order.objects.filter(pk__in=order_all_id)
             for item in order_all:
-                order_item = Order.objects.get(pk=item.order.id)
                 order = []
-                order.append('<a href="/merchant/order/edit/'+ str(item.order.id) +'"> DH'+ str(item.order.id) +'</a>')
-                order.append(order_item.customer.name)
-                order.append(str(item.price * item.quantity) + ' VND')
-                order.append(item.order.created.replace(tzinfo=None))
-                if item.state == '1':
+                order.append('<a href="/merchant/order/edit/'+ str(item.id) +'"> DH'+ str(item.id) +'</a>')
+                order.append(item.customer.name)
+                order.append(str(item.amount) + ' VND')
+                #order.append(item.order.created.replace(tzinfo=None))
+                order_detail = Order_Detail.objects.filter(order_id=item.id, merchant_id=request.session.get('user')['id']).first()
+                if order_detail.state == '1':
                     order.append('<label class="label label-success">Thành công</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Đánh giá</a>')
-                if item.state == '0':
+                    order.append('<a href="/oder/edit/'+ str(item.id) +'" class="btn btn-info">Đánh giá</a>')
+                if order_detail.state == '0':
                     order.append('<label class="label label-danger">Hủy bỏ</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.order.id) +'" class="btn btn-info">Đánh giá</a>')
-                if item.state == '2':
+                    order.append('<a href="/oder/edit/'+ str(item.id) +'" class="btn btn-info">Đánh giá</a>')
+                if order_detail.state == '2':
                     order.append('<label class="label label-info">Đặt hàng</label>')
-                    order.append('<a onclick="change_state(3)" class="btn btn-warning">Bắt đầu gói hàng</a>')
-                if item.state == '3':
+                    order.append('<a onclick="change_state('+ str(item.id) +', 3)" class="btn btn-warning">Bắt đầu gói hàng</a>')
+                if order_detail.state == '3':
                     order.append('<label class="label label-warning">Đang gói hàng</label>')
-                    order.append('<a onclick="change_state(4)" class="btn btn-warning">Bắt đầu vận chuyển</a>')
-                if item.state == '4':
+                    order.append('<a onclick="change_state('+ str(item.id) +', 4)" class="btn btn-default">Bắt đầu vận chuyển</a>')
+                if order_detail.state == '4':
                     order.append('<label class="label label-default">Đang vận chuyển</label>')
-                    order.append('<a onclick="change_state(1)" class="btn btn-success">Thành công</a><a onclick="change_state(0)" class="btn btn-success">Thất bại</a>')
+                    order.append('<a onclick="change_state('+ str(item.id) +', 1)" class="btn btn-success">Thành công</a><a onclick="change_state('+ str(item.id) +', 0)"  style="margin-left: 10px;" class="btn btn-danger">Thất bại</a>')
                 list_order.append(order)
             return HttpResponse(json.dumps(list_order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
     return
 
-def change_state(request):
-    return
+def change_state(request, order_id, state):
+    if request.method == 'GET':
+        if Order.objects.filter(pk=order_id).exists() == False:
+            return HttpResponse('Đơn hàng không tồn tại!')
+        
+        order = Order.objects.get(pk=order_id)
+        order_detail = Order_Detail.objects.filter(order_id=order.id, merchant_id=request.session.get('user')['id'])
+        if order_detail.count() == 0:
+            return HttpResponse('Đơn hàng bị lỗi!')
+
+        if state == 1:
+            if order_detail.first().state != '4':
+                return HttpResponse('Đơn hàng bị từ chối trạng thái thành công')
+            order_detail.update(state=1)
+            header = 'Đơn hàng bạn đã mua thành công vào lúc '+ str(datetime.now()) +' !'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            send_email_notifile(order.customer.email, header, body)
+            return HttpRespone(1)            
+
+        if state == 0:
+            if order_detail.first().state != '4':
+                return HttpResponse('Đơn hàng bị từ chối trạng thái thất bại')
+            # cap nhat lai so luong san pham cua tin dang!
+            #for item in order_detail:
+
+            order_detail.update(state=0, canceler_id=request.session('user')['id'])
+            header = 'Đơn hàng bạn đã bị hủy vào lúc '+ str(datetime.now()) +' !'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            send_email_notifile(order.customer.email, header, body)
+            return HttpResponse(1)
+
+        if state == 3:
+            if order_detail.first().state != '2':
+                return HttpResponse('Đơn hàng bị từ chối trạng thái gói hàng')
+            order_detail.update(state=3)
+            header = 'Đơn hàng bạn đang được đóng gói vào lúc '+ str(datetime.now()) +' !'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            send_email_notifile(order.customer.email, header, body)
+            return HttpResponse(1)  
+
+        if state == 4:
+            if order_detail.first().state != '3':
+                return HttpResponse('Đơn hàng bị từ chối trạng thái vận chuyển')
+            order_detail.update(state=4)
+            header = 'Đơn hàng bạn đang được vận chuyển vào lúc '+ str(datetime.now()) +' !'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            send_email_notifile(order.customer.email, header, body)
+            return HttpResponse(1)  
+    return HttpResponse('Xảy ra lỗi!')  
+
+
+####3 END ORder
+
+
+### Payment
+
+def payments(request):
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_payment = []
+            payment_all = Purchase_Service.objects.filter(merchant_id_id=request.session.get('user')['id'])
+            for item in payment_all:
+                payment_item = []
+                payment_item.append('<a>'+ item.purchase_name +'</a>')
+                service = Service.objects.get(pk=item.service_id_id)
+                payment_item.append('<a href="/merchant/purchase_service/'+ str(item.service_id_id) +'">'+ service.service_name +'</a>')
+                payment_item.append(str(item.amount) + ' $')
+                payment_item.append(item.success_at.replace(tzinfo=None))
+                if item.state == 1:
+                    payment_item.append('<label class="label label-success">Thanh toán thành công</label>')
+                else:
+                    payment_item.append('<label class="label label-danger">Thanh toán thất bại</label>')
+                list_payment.append(payment_item)
+            return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse('No data')
+
+
+def send_email_notifile(email, body, content):
+
+    mail = Mail(
+        'smtp.gmail.com', 
+        port='465', 
+        username='dinhtai018@gmail.com', 
+        password='wcyfglkfcshkxoaa',
+        use_ssl=True,
+        use_tls=False,
+        debug_level=False
+    )
+    msg = Message(body)
+    msg.fromaddr = ("Website C2C", "dinhtai018@gmail.com")
+    msg.to = email
+    msg.body = body
+    msg.html = content
+    msg.reply_to = 'no-reply@gmail.com'
+    msg.charset = 'utf-8'
+    msg.extra_headers = {}
+    msg.mail_options = []
+    msg.rcpt_options = []
+    mail.send(msg)
