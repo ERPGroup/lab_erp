@@ -1,0 +1,187 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết đơn hàng
+{% endblock %}
+{% block styles %}
+<style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      
+    }
+    
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+</style>
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_order='active'  %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header" style="margin:0px;">
+            Chi tiết đơn hàng
+            <div style="display:inline-block; text-align:right;float:right;">
+               
+            </div>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="background_white" role="form">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <h3>Thông tin thanh toán</h3>
+                    <hr>
+                </div>
+                <div class="form-group hidden">
+                    <input id="inputIdCus" class="form-control"  disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>Họ tên người mua</label>
+                    <input id="inputName" class="form-control" value="Nguyễn Văn A" disabled="disabled"
+                        placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Đánh giá:</label>
+                    <input id="inputRating" type="text" class="form-control" value="KH001" disabled="disabled">
+                </div>
+                <div class="form-group" id="checkPassword">
+                    <label>Tổng tiền</label>
+                    <input id="inputAmount" value="1.000.000 VNĐ" type="text" class="form-control" disabled="disabled" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Ngày đặt hàng: </label>
+                    <input id="inputCreated" value="12/10/2018" disabled="disabled" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Hình thức thanh toán</label>
+                    <select disabled="disabled" class="form-control">
+                        <option>COD</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <h3>Thông tin giao hàng</h3>
+                    <hr>
+                </div>
+                <div class="form-group">
+                    <label>Họ tên người nhận:</label>
+                    <input id="inputNameCus" type="text" class="form-control" value="KH001" disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ:</label>
+                    <input id="inputAddress" type="text" class="form-control" value="KH001" disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại:</label>
+                    <input id="inputPhone" type="text" class="form-control" value="KH001" disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái hóa đơn</label>
+                    <select class="form-control" id="inputState" disabled="disabled">
+                        
+                    </select>
+                </div>
+                <div id="part_rating" class="form-group hidden">
+                    <label>Bạn đánh giá người mua</label>
+                    <select class="form-control" id="inputRatingCus">
+                        <option value="5">5 sao</i></option>
+                        <option value="4">4 sao</option>
+                        <option value="3">3 sao</option>
+                        <option value="2">2 sao</option>
+                        <option value="1">1 sao</option>
+                    </select>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <h3>Thông tin đơn hàng</h3>
+                    <hr>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Giá tiền</th>
+                                        <th>Số lượng</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="/merchant/manager_product_detail">SP001</a></td>
+                                        <td>Iphone5s</td>
+                                        <td>
+                                            <div class="tbl_thumb_product">
+                                                <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                            </div>
+                                        </td>
+                                        <td>3.900.000 VNĐ</td>
+                                        <td class="center">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="/merchant/manager_product_detail">SP002</a></td>
+                                        <td>Iphone5s</td>
+                                        <td>
+                                            <div class="tbl_thumb_product">
+                                                <img src="{% static 'admin/assets/img/product_1.jpg' %}" alt="Product">
+                                            </div>
+                                        </td>
+                                        <td>3.900.000 VNĐ</td>
+                                        <td class="center">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;" id="submit_action">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<div id="loader" style="display:none;" ></div>
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="{% static '/admin/src/js/order/order_detail.js' %} "></script>
+{% endblock %}
