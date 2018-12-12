@@ -795,6 +795,100 @@ def getDetailRunning(request):
 
 ### End Ly Thanh
 
+
+## Order 
+
+
+def orders(request):
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_order = []
+            order_all_id = Order_Detail.objects.filter(merchant_id=request.session.get('user')['id']).values_list('order_id').distinct()
+            print(order_all_id)
+            order_all = Order.objects.filter(pk__in=order_all_id)
+            for item in order_all:
+                order = []
+                order.append('<a href="/merchant/order/edit/'+ str(item.id) +'"> DH'+ str(item.id) +'</a>')
+                order.append(item.customer.name)
+                order.append(str(item.amount) + ' VND')
+                order.append(item.order.created.replace(tzinfo=None))
+                order_detail = Order_Detail.objects.filter(order_id=item.id, merchant_id=request.session.get('user')['id']).first()
+                if order_detail.state == '1':
+                    order.append('<label class="label label-success">Thành công</label>')
+                if order_detail.state == '0':
+                    order.append('<label class="label label-danger">Hủy bỏ</label>')
+                if order_detail.state == '2':
+                    order.append('<label class="label label-info">Đặt hàng</label>')
+                if order_detail.state == '3':
+                    order.append('<label class="label label-warning">Đang gói hàng</label>')
+                if order_detail.state == '4':
+                    order.append('<label class="label label-default">Đang vận chuyển</label>')
+                list_order.append(order)
+            return HttpResponse(json.dumps(list_order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+    return
+
+
+def order(request, id_order):
+    if request.method == 'GET':
+        if Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exists() == False:
+            return HttpResponse('Đơn hàng không tồn tại!')
+        order = Order.objects.get(pk=id_order).__dict__
+        customer = Account.objects.get(pk=order['customer_id'])
+        order['name_customer'] = customer.name
+        rating_count = Rating_Customer.objects.filter(customer_id=order['customer_id']).count()
+        rating_ponit = Rating_Customer.objects.filter(customer_id=order['customer_id']).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if rating_ponit == None:
+            rating_ponit = 0
+        order['rating_count'] = rating_count
+        order['rating_point'] = rating_ponit
+        del order['_state']
+        order_detail = Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exclude(state__in = [0, 1])
+        if order_detail.count() == 0:
+            order['rate_cus'] = True
+        else:
+            order['rate_cus'] = False
+
+        if Rating_Customer.objects.filter(merchant_id=request.session.get('user')['id'], customer_id=customer.id).exists() == True:
+            order['disable_rating'] = True
+        else:
+            order['disable_rating']  = False
+        state_now = -1
+        for item in order_detail:
+            state_now = item.state
+            break
+        order['state_now'] = state_now
+        return HttpResponse(json.dumps(order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+
+def orders_detail(request, id_order):
+    if request.method == 'GET':
+        list_orders_detail = []
+        order_detail_all = Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id'])
+        for item in order_detail_all:
+            order_item = []
+            product_orgin_id = Link_Type.objects.get(product_id_id=item.product_id).parent_product
+            product = Product.objects.get(pk=product_orgin_id)
+            image = Product_Image.objects.filter(product_id_id=product_orgin_id, archive=False).order_by('image_id_id').first()
+            order_item.append('<a href="/merchant/product/edit/'+ str(product_orgin_id) +'">'+ product.name +'</a>')
+            order_item.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
+            price = int(round((item.price * (100 - item.discount))/100, 0))
+            order_item.append(str(price) + ' VND')
+            order_item.append(str(item.quantity))
+            if item.state == '1':
+                order_item.append('<label class="label label-success">Thành công</label>')
+            if item.state == '0':
+                order_item.append('<label class="label label-danger">Hủy bỏ</label>')
+            if item.state == '2':
+                order_item.append('<label class="label label-info">Đặt hàng</label>')
+            if item.state == '3':
+                order_item.append('<label class="label label-warning">Đang gói hàng</label>')
+            if item.state == '4':
+                order_item.append('<label class="label label-default">Đang vận chuyển</label>') 
+            list_orders_detail.append(order_item)
+        return HttpResponse(json.dumps(list_orders_detail, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+
+
 def send_email_notifile(email, body, content):
 
     mail = Mail(

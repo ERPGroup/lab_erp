@@ -23,6 +23,9 @@ urlpatterns = [
     path('manager_pay',views.payment,name="payment"),
     path('manager_payment_detail',views.payment_detail,name="payment_detail"),
 
+    path('manager_order_detail', views.manager_order_detail, name='manager_order_detail'),
+    path('manager_order', views.manager_order, name="manager_order"),
+
     path('manager_posted',views.post,name="payment"),
     #path('manager_posted_detail',views.post_detail,name="payment"),
     path('post/edit/<int:id_post>', views.post_detail, name='post_edit'),

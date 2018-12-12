@@ -146,6 +146,18 @@ def attribute_edit(request,id_attribute):
 def manager_attribute_detail(request):# function nay khong can sua
     return render(request,'admin/manager_product/manager_attribute_detail.html')
 
+
+
+
+
+# ORDER
+
+def manager_order_detail(request):
+    return render(request, 'admin/manager_order/manager_order_detail.html')
+
+def manager_order(request):
+    return render(request, 'admin/manager_order/manager_order.html')
+
 # -------------------- Ket thuc khu vuc lam viec cua Phuc
 
 def statistical(request):
