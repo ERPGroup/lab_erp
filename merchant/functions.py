@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from website.models import *
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage, Storage
@@ -1110,16 +1111,16 @@ def orders(request):
                 order_detail = Order_Detail.objects.filter(order_id=item.id, merchant_id=request.session.get('user')['id']).first()
                 if order_detail.state == '1':
                     order.append('<label class="label label-success">Thành công</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.id) +'" class="btn btn-info">Đánh giá</a>')
+                    order.append('<a href="/merchant/order/edit/'+ str(item.id) +'" class="btn btn-default">Đánh giá</a>')
                 if order_detail.state == '0':
                     order.append('<label class="label label-danger">Hủy bỏ</label>')
-                    order.append('<a href="/oder/edit/'+ str(item.id) +'" class="btn btn-info">Đánh giá</a>')
+                    order.append('<a href="/merchant/order/edit/'+ str(item.id) +'" class="btn btn-default">Đánh giá</a>')
                 if order_detail.state == '2':
                     order.append('<label class="label label-info">Đặt hàng</label>')
                     order.append('<a onclick="change_state('+ str(item.id) +', 3)" class="btn btn-warning">Bắt đầu gói hàng</a>')
                 if order_detail.state == '3':
                     order.append('<label class="label label-warning">Đang gói hàng</label>')
-                    order.append('<a onclick="change_state('+ str(item.id) +', 4)" class="btn btn-default">Bắt đầu vận chuyển</a>')
+                    order.append('<a onclick="change_state('+ str(item.id) +', 4)" class="btn btn-info">Bắt đầu vận chuyển</a>')
                 if order_detail.state == '4':
                     order.append('<label class="label label-default">Đang vận chuyển</label>')
                     order.append('<a onclick="change_state('+ str(item.id) +', 1)" class="btn btn-success">Thành công</a><a onclick="change_state('+ str(item.id) +', 0)"  style="margin-left: 10px;" class="btn btn-danger">Thất bại</a>')
@@ -1127,13 +1128,13 @@ def orders(request):
             return HttpResponse(json.dumps(list_order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
     return
 
-def change_state(request, order_id, state):
+def change_state(request, id_order, state):
     if request.method == 'GET':
-        if Order.objects.filter(pk=order_id).exists() == False:
+        if Order.objects.filter(pk=id_order).exists() == False:
             return HttpResponse('Đơn hàng không tồn tại!')
         
-        order = Order.objects.get(pk=order_id)
-        order_detail = Order_Detail.objects.filter(order_id=order.id, merchant_id=request.session.get('user')['id'])
+        order = Order.objects.get(pk=id_order)
+        order_detail = Order_Detail.objects.filter(order_id=order.id, merchant_id=request.session.get('user')['id']).exclude(state__in = [0, 1])
         if order_detail.count() == 0:
             return HttpResponse('Đơn hàng bị lỗi!')
 
@@ -1144,15 +1145,14 @@ def change_state(request, order_id, state):
             header = 'Đơn hàng bạn đã mua thành công vào lúc '+ str(datetime.now()) +' !'
             body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
             send_email_notifile(order.customer.email, header, body)
-            return HttpRespone(1)            
+            return HttpResponse(1)            
 
         if state == 0:
             if order_detail.first().state != '4':
                 return HttpResponse('Đơn hàng bị từ chối trạng thái thất bại')
-            # cap nhat lai so luong san pham cua tin dang!
+            # Khoong cho phep cap nhat so luong tin ! Do merchant huy don hang
             #for item in order_detail:
-
-            order_detail.update(state=0, canceler_id=request.session('user')['id'])
+            order_detail.update(state=0, canceler_id=request.session.get('user')['id'])
             header = 'Đơn hàng bạn đã bị hủy vào lúc '+ str(datetime.now()) +' !'
             body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
             send_email_notifile(order.customer.email, header, body)
@@ -1176,6 +1176,69 @@ def change_state(request, order_id, state):
             send_email_notifile(order.customer.email, header, body)
             return HttpResponse(1)  
     return HttpResponse('Xảy ra lỗi!')  
+
+
+def order(request, id_order):
+    if request.method == 'GET':
+        if Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exists() == False:
+            return HttpResponse('Đơn hàng không tồn tại!')
+        order = Order.objects.get(pk=id_order).__dict__
+        customer = Account.objects.get(pk=order['customer_id'])
+        order['name_customer'] = customer.name
+        rating_count = Rating_Customer.objects.filter(customer_id=order['customer_id']).count()
+        rating_ponit = Rating_Customer.objects.filter(customer_id=order['customer_id']).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if rating_ponit == None:
+            rating_ponit = 0
+        order['rating_count'] = rating_count
+        order['rating_point'] = rating_ponit
+        del order['_state']
+        order_detail = Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exclude(state__in = [0, 1])
+        if order_detail.count() == 0:
+            order['rate_cus'] = True
+        else:
+            order['rate_cus'] = False
+
+        if Rating_Customer.objects.filter(merchant_id=request.session.get('user')['id'], customer_id=customer.id).exists() == True:
+            order['disable_rating'] = True
+        else:
+            order['disable_rating']  = False
+        state_now = -1
+        for item in order_detail:
+            state_now = item.state
+            break
+        order['state_now'] = state_now
+        return HttpResponse(json.dumps(order, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+
+def orders_detail(request, id_order):
+    if request.method == 'GET':
+        list_orders_detail = []
+        order_detail_all = Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id'])
+        for item in order_detail_all:
+            order_item = []
+            product_orgin_id = Link_Type.objects.get(product_id_id=item.product_id).parent_product
+            product = Product.objects.get(pk=product_orgin_id)
+            image = Product_Image.objects.filter(product_id_id=product_orgin_id, archive=False).order_by('image_id_id').first()
+            order_item.append('<a href="/merchant/product/edit/'+ str(product_orgin_id) +'">'+ product.name +'</a>')
+            order_item.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
+            price = int(round((item.price * (100 - item.discount))/100, 0))
+            order_item.append(str(price) + ' VND')
+            order_item.append(str(item.quantity))
+            if item.state == '1':
+                order_item.append('<label class="label label-success">Thành công</label>')
+            if item.state == '0':
+                order_item.append('<label class="label label-danger">Hủy bỏ</label>')
+            if item.state == '2':
+                order_item.append('<label class="label label-info">Đặt hàng</label>')
+            if item.state == '3':
+                order_item.append('<label class="label label-warning">Đang gói hàng</label>')
+            if item.state == '4':
+                order_item.append('<label class="label label-default">Đang vận chuyển</label>') 
+            list_orders_detail.append(order_item)
+        return HttpResponse(json.dumps(list_orders_detail, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+            
+        
 
 
 ####3 END ORder
@@ -1202,6 +1265,44 @@ def payments(request):
                 list_payment.append(payment_item)
             return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
         return HttpResponse('No data')
+
+
+@csrf_exempt
+def rating_customer(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        customer_id = request.POST.get('customer_id')
+        num_star = request.POST.get('num_star')
+        customer = Account.objects.get(pk=customer_id)
+        merchant = Account.objects.get(pk=request.session.get('user')['id'])
+
+        if int(customer_id) == int(request.session.get('user')['id']):
+            return HttpResponse('Không được phép thực hiện')
+
+        if Rating_Customer.objects.filter(merchant_id=request.session.get('user')['id'], customer_id=customer_id).exists() == True:
+            return HttpResponse('Bạn đã từng đánh giá người mua này!\n Đánh giá thất bại!')
+
+        if Order_Detail.objects.filter(order_id=order_id, merchant_id=request.session.get('user')['id']).exclude(state__in = [0, 1]).count() > 0:
+            return HttpResponse('Đơn hàng của bạn chưa hoàn thành!\nKhông được phép đánh giá!')
+
+        if Order.objects.filter(pk=order_id, customer_id=customer_id).exists() == False:
+            return HttpResponse('Không được phép thực hiện!')
+
+        rating_cus = Rating_Customer.objects.create(
+            customer =  customer,
+            merchant =  merchant,
+            num_of_star = num_star,
+            confirm_bought = True,
+        )
+
+        header = 'Bạn được người bán '+ merchant.name_shop +' đánh giá!'
+        body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1><p>Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</p><p>Đánh giá lại merchant tại đây!</p>'
+        send_email_notifile(customer.email, header, body)
+        return HttpResponse(1)
+
+        
+        
+
 
 
 def send_email_notifile(email, body, content):

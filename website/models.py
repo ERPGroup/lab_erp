@@ -150,6 +150,7 @@ class Rating_Customer (models.Model):
 class Order (models.Model):
     customer =  models.ForeignKey('Account', on_delete=models.CASCADE)
     amount = models.IntegerField()
+    name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)

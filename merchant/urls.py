@@ -28,7 +28,7 @@ urlpatterns = [
     path('manager_warehose',views.warehose,name='warehose'),
 
     path('order',views.order,name='order'),
-    path('order_detail',views.order_detail,name='order'),
+    path('order/edit/<int:id_order>',views.order_edit, name='order_edit'),
 
     path('payment',views.payment,name='payment'),
     path('payment_detail',views.payment,name='payment_detail'),
@@ -66,8 +66,13 @@ urlpatterns = [
     path('post/<int:id_post>', functions.post, name='post'),
 
 
-    path('orders', functions.orders, name='order'),
-    path('change_state/<int:order_id>/<int:state>', functions.change_state, name="change_state"),
+    path('orders', functions.orders, name='orders'),
+    path('order/<int:id_order>', functions.order, name='order'),
+    path('change_state/<int:id_order>/<int:state>', functions.change_state, name="change_state"),
+    path('orders_detail/<int:id_order>', functions.orders_detail, name='orders_detail'),
+
+
+    path('rating_customer', functions.rating_customer, name='rating_customer'),
 
 
     path('payments', functions.payments, name='payments'),

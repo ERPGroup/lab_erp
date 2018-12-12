@@ -82,7 +82,7 @@ def warehose(request):
     return render(request,'merchant/manager_product/manager_warehose.html')
 def order(request):
     return render(request,'merchant/manager_order/manager_order.html')
-def order_detail(request):
+def order_edit(request, id_order):
     return render(request,'merchant/manager_order/manager_order_detail.html')
 def statistical_post(request):
     return render(request,'merchant/manager_posted/manager_statistical_post.html')

@@ -1,9 +1,40 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chi tiết hóa đơn
+Trang chi tiết đơn hàng
 {% endblock %}
 {% block styles %}
+<style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      
+    }
+    
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+</style>
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
@@ -14,42 +45,45 @@ Trang chi tiết hóa đơn
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px;">
-            Chi tiết hóa đơn HD001
+            Chi tiết đơn hàng
             <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa hóa đơn</a>
+               
             </div>
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="#" class="background_white" role="form">
+        <div class="background_white" role="form">
             <div class="col-lg-6">
                 <div class="form-group">
                     <h3>Thông tin thanh toán</h3>
                     <hr>
                 </div>
-                <div class="form-group">
-                    <label>Mã người mua:</label>
-                    <input type="text" class="form-control" value="KH001" disabled="disabled">
+                <div class="form-group hidden">
+                    <input id="inputIdCus" class="form-control"  disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Họ tên người mua</label>
-                    <input name="inputPassword" class="form-control" value="Nguyễn Văn A" disabled="disabled"
+                    <input id="inputName" class="form-control" value="Nguyễn Văn A" disabled="disabled"
                         placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Đánh giá:</label>
+                    <input id="inputRating" type="text" class="form-control" value="KH001" disabled="disabled">
                 </div>
                 <div class="form-group" id="checkPassword">
                     <label>Tổng tiền</label>
-                    <input value="1.000.000 VNĐ" type="text" class="form-control" disabled="disabled" placeholder="">
+                    <input id="inputAmount" value="1.000.000 VNĐ" type="text" class="form-control" disabled="disabled" placeholder="">
                 </div>
                 <div class="form-group">
-                    <label>Ngày thanh toán: </label>
-                    <input value="12/10/2018" disabled="disabled" placeholder="" type="text" class="form-control">
+                    <label>Ngày đặt hàng: </label>
+                    <input id="inputCreated" value="12/10/2018" disabled="disabled" placeholder="" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Hình thức thanh toán</label>
                     <select disabled="disabled" class="form-control">
-                        <option>Trực tuyến Paypal</option>
+                        <option>COD</option>
                     </select>
                 </div>
             </div>
@@ -60,22 +94,30 @@ Trang chi tiết hóa đơn
                 </div>
                 <div class="form-group">
                     <label>Họ tên người nhận:</label>
-                    <input type="text" class="form-control" value="KH001" disabled="disabled">
+                    <input id="inputNameCus" type="text" class="form-control" value="KH001" disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ:</label>
-                    <input type="text" class="form-control" value="KH001" disabled="disabled">
+                    <input id="inputAddress" type="text" class="form-control" value="KH001" disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Số điện thoại:</label>
-                    <input type="text" class="form-control" value="KH001" disabled="disabled">
+                    <input id="inputPhone" type="text" class="form-control" value="KH001" disabled="disabled">
                 </div>
                 <div class="form-group">
                     <label>Trạng thái hóa đơn</label>
-                    <select class="form-control">
-                        <option>Đã thanh toán</option>
-                        <option>Đang chuyển tiền</option>
-                        <option>Khởi tạo</option>
+                    <select class="form-control" id="inputState" disabled="disabled">
+                        
+                    </select>
+                </div>
+                <div id="part_rating" class="form-group hidden">
+                    <label>Bạn đánh giá người mua</label>
+                    <select class="form-control" id="inputRatingCus">
+                        <option value="5">5 sao</i></option>
+                        <option value="4">4 sao</option>
+                        <option value="3">3 sao</option>
+                        <option value="2">2 sao</option>
+                        <option value="1">1 sao</option>
                     </select>
                 </div>
             </div>
@@ -91,11 +133,11 @@ Trang chi tiết hóa đơn
                             <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Hình ảnh</th>
                                         <th>Giá tiền</th>
                                         <th>Số lượng</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -127,63 +169,19 @@ Trang chi tiết hóa đơn
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
-                <button type="reset" class="btn btn-default">Khôi phục</button>
+            <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;" id="submit_action">
             </div>
             <div class="clearfix"></div>
-        </form>
+        </div>
     </div>
 </div>
 
 <div class="clearfix"></div>
 {% endblock %}
 {% block data_table %}
+<div id="loader" style="display:none;" ></div>
 <!-- DATA TABLE SCRIPTS -->
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
-<script>
-    $(document).ready(function () {
-        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-            "formatted-num-pre": function (a) {
-                a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
-                return parseFloat(a);
-            },
-
-            "formatted-num-asc": function (a, b) {
-                return a - b;
-            },
-
-            "formatted-num-desc": function (a, b) {
-                return b - a;
-            }
-        });
-
-        var table = $('#dataTables-example').dataTable({
-            language: {
-                paginate: {
-                    previous: "<i class='fa fa-arrow-left'></i>",
-                    next: "<i class='fa fa-arrow-right'></i>"
-                },
-                sProcessing: "Đang xử lý...",
-                sLengthMenu: "Xem _MENU_ mục",
-                sZeroRecords: "Không tìm thấy dòng nào phù hợp",
-                sInfo: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                sInfoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
-                sInfoFiltered: "(được lọc từ _MAX_ mục)",
-                sInfoPostFix: "",
-                sSearch: "Tìm:",
-                sUrl: "",
-            },
-            "dom": '<"toolbar">frtip',
-            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
-            "columnDefs": [
-                { "type": 'formatted-num', targets: 0 },
-                { "type": 'formatted-num', targets: 3 },
-                { "type": 'formatted-num', targets: 4 },
-            ]
-
-        });
-    });
-</script>
+<script src="{% static '/merchant/src/js/order/order_detail.js' %} "></script>
 {% endblock %}

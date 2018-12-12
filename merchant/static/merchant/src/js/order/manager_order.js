@@ -36,6 +36,7 @@ $(document).ready(function () {
             { "type": 'formatted-num', targets: 2 },
             { "type": 'date-eu', targets: 3 }
         ],
+        "order": [[ 0, "desc" ]],
         "processing": true,
         "ajax": {
             "processing": true,
@@ -48,19 +49,21 @@ $(document).ready(function () {
     tool_bar += '<span>Trạng thái: </span>';
     tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
     tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Đã thanh toán</option>';
-    tool_bar += '<option>Đang xử lý</option>';
-    tool_bar += '<option>Không duyệt</option>';
+    tool_bar += '<option>Thành công</option>';
+    tool_bar += '<option>Hủy bỏ</option>';
+    tool_bar += '<option>Đặt hàng</option>';
+    tool_bar += '<option>Đang gói hàng</option>';
+    tool_bar += '<option>Đang vận chuyển</option>';
     tool_bar += '</select>';
     tool_bar += '</div>';
     $("div.toolbar").html(tool_bar);
     $('#select_type').change(function () {
         regExSearch = '^' + this.value + '$';
         if (this.value == "Tất cả") {
-            table.api().columns(4).search('').draw();
+            table.api().columns(3).search('').draw();
         }
         else {
-            table.api().columns(4).search(regExSearch, true, false).draw();
+            table.api().columns(3).search(regExSearch, true, false).draw();
         }
     });
 });
@@ -74,8 +77,9 @@ function change_state(order_id, state){
         success: function(response){
             if (response == 1){
                 alert('Trạng thái đã thay đổi')
-                $("#wrapper").css("display","none");
-                $("#loader").css("display","block");
+                $("#wrapper").css("display","block");
+                $("#loader").css("display","none");
+                window.location.replace('/merchant/order')
             }
             else{
                 alert(response)

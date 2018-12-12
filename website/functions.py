@@ -73,36 +73,43 @@ def payment(request):
         
         customer = Account.objects.get(pk = request.session.get('user')['id'])
 
-        order = Order(
-            customer=customer,
-            amount=cart.total,
-            email=customer.email,
-            address=address,
-            phone=phone,
-            note=note,
-            state=2,
-            is_paid=False,
-            is_activity=True,
-            archive=False,
-        )
-        order.save()
-
-        for item in cart.items:
-            order_detail = Order_Detail(
-                order=order,
-                product=item.product,
-                merchant=item.product.account_created,
-                quantity=item.quantity,
-                price= item.price,
+        try:
+            order = Order(
+                customer=customer,
+                amount=cart.total,
+                email=customer.email,
+                address=address,
+                phone=phone,
+                note=note,
                 state=2,
-                confirm_of_merchant=False
+                is_paid=False,
+                is_activity=True,
+                archive=False,
             )
-            order_detail.save()
-            product_orgin = Link_Type.objects.get(product_id_id=item.product.id).parent_product
-            post = Post_Product.objects.filter(product_id_id=product_orgin).order_by('-id').first()
-            bought = post.bought
-            post.bought = bought + item.quantity
-            post.save()
+            order.save()
+
+            for item in cart.items:
+                product_origin = Link_Type.objects.get(product_id_id=item.product.id)
+                post = Post_Product.objects.filter(product_id_id=product_origin.parent_product, is_lock=False, is_activity=True)
+                order_detail = Order_Detail(
+                    order=order,
+                    product=item.product,
+                    post=post[0],
+                    merchant=item.product.account_created,
+                    quantity=item.quantity,
+                    price= item.price,
+                    discount=item.product.discount_percent,
+                    state=2,
+                    confirm_of_merchant=False
+                )
+                order_detail.save()
+                product_orgin = Link_Type.objects.get(product_id_id=item.product.id).parent_product
+                post = Post_Product.objects.filter(product_id_id=product_orgin).order_by('-id').first()
+                bought = post.bought
+                post.bought = bought + item.quantity
+                post.save()
+        except:
+            raise
         cart.clear()
         send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="http://localhost:8000/customer/order/'+ str(order.id) +'"> đây</a>')
         return HttpResponse(1)
