@@ -31,7 +31,7 @@ urlpatterns = [
     path('data', functions.get_data, name='data'),
 
     path('product_collection/<int:id_category>', functions.product_collection, name='product_collection'),
-
+    path('advanced_search/<int:id_category>', functions.advanced_search, name='advanced_search'),
     path('product_data/<int:id_product>', functions.product, name='product'),
 
     path('post_data/<int:id_post>', functions.post, name='post'),

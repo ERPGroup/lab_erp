@@ -238,7 +238,7 @@ def product_collection(request, id_category):
         category = Category.objects.get(pk = id_category)
 
         list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=id_category).values_list('product_id_id')
-
+        #list_poduct_avaliable = advanced_search(request,list_poduct_avaliable)
         if 'newest' in request.GET:
             if request.GET.get('newest') == 'true':
                 list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-created')
@@ -456,3 +456,19 @@ def send_email_notifile(email, body, content):
     msg.mail_options = []
     msg.rcpt_options = []
     mail.send(msg)
+
+
+@csrf_exempt       
+def advanced_search(request,id_category):
+    if request.method == 'GET':
+        list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=id_category).values_list('product_id_id')
+        products = Product.objects.filter(pk__in=list_poduct_avaliable)
+    
+        price_f = request.GET.get('price_from')
+        price_t = request.GET.get('price_to')
+        products = products.filter(price__gte = price_f,price__lte = price_t)
+    
+        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=products).order_by('-created')
+        data = get_data_collection(request, list_post)
+        return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+    
