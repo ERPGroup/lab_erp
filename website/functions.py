@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from admin import views
+import random
+from  passlib.hash import pbkdf2_sha256
 # Create your views here.
 
 from django.http import HttpResponse, Http404, JsonResponse
@@ -23,24 +25,16 @@ from django.core.paginator import Paginator
 from random import randint
 
 def get_avatar_product(request, id_product):
+    ''' Lấy ra hình ảnh đại diện cho sản phẩm'''
     if request.method == 'GET':
         image = Product_Image.objects.filter(product_id_id=id_product).order_by('image_id_id').first()
         return HttpResponse(image.image_id.image_link.url)
 
 def product_by_category(request, id_category):
+    ''' '''
     if request.method == 'GET':
-        # start = 0
-        # end = 0
-        # num = 12
-        # if 'page' not in request.GET or int(request.GET.get('page')) < 1:
-        #     start = 0
-        #     end = 11
-        # else:
-        #     start = int(request.GET.get('page'))* 12
-        #     end = start + 12
-
         if Category.objects.filter(pk=id_category).exists() == False:
-            return HttpResponse('Not found this category')
+            return HttpResponse('Không tìm thấy danh mục bạn chọn')
         else:
             list_pro_cat = Product_Category.objects.filter(category_id_id=id_category).values_list('product_id_id')
             list_product = Post_Product.objects.filter(product_id_id__in=list_pro_cat, is_lock=False, is_activity=True)
@@ -54,13 +48,13 @@ def product_by_category(request, id_category):
 
 @csrf_exempt       
 def payment(request):
+    ''' Tạo đơn hàng '''
     # check user  dang nhap vao he thong chua?
-
     # cap nhat lai so luong cua bai viet
 
     if request.method == 'POST':
         if 'user' not in request.session:
-            return HttpResponse('Vui lòng đang nhập để thanh toán')
+            return HttpResponse('Vui lòng đăng nhập để thanh toán')
         cart = Cart(request.session)
 
         if cart.count == 0:
@@ -119,7 +113,12 @@ def payment(request):
 
 # function page index
 
-
+def check_expire_post(id_post):
+    post = Post_Product.objects.get(pk=id_post)
+    if post.expire.replace(tzinfo=None) <= datetime.now():
+        return 1
+    return 0
+    
 def get_data(request):
     data = [] # du lieu tra ve json 
     post_abort = [] # du lieu bai dang tai khu vuc vip
@@ -131,18 +130,19 @@ def get_data(request):
         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item).order_by('-bought')[0:16]
         array_post = [] 
         for post in list_post:
-            post_abort.append(post.id)
-            dict_post = post.__dict__
-            del dict_post['_state']
-            # if Product.objects.filter(pk=post.id).exists() == True:
-            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
-            del dict_product['_state']
-            list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
-            dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
-            image = Product_Image.objects.filter(product_id_id=dict_product['id'], archive=False).order_by('image_id_id').first()
-            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
-            dict_post['product'] = dict_product
-            array_post.append(dict_post)
+            if post.expire.replace(tzinfo=None) > datetime.now():
+                post_abort.append(post.id)
+                dict_post = post.__dict__
+                del dict_post['_state']
+                # if Product.objects.filter(pk=post.id).exists() == True:
+                dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+                del dict_product['_state']
+                list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+                dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
+                image = Product_Image.objects.filter(product_id_id=dict_product['id'], archive=False).order_by('image_id_id').first()
+                dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+                dict_post['product'] = dict_product
+                array_post.append(dict_post)
         dict_service['posts'] = array_post
         array_service.append(dict_service)
     dict_data = {
@@ -162,15 +162,16 @@ def get_data(request):
         list_post = Post_Product.objects.exclude(pk__in=post_abort).filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:16]
         array_post = [] 
         for post in list_post:
-            dict_post = post.__dict__
-            del dict_post['_state']
-            # if Product.objects.filter(pk=post.id).exists() == True:
-            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
-            del dict_product['_state']
-            image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
-            dict_post['product'] = dict_product
-            array_post.append(dict_post)
+            if post.expire.replace(tzinfo=None) > datetime.now():
+                dict_post = post.__dict__
+                del dict_post['_state']
+                # if Product.objects.filter(pk=post.id).exists() == True:
+                dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+                del dict_product['_state']
+                image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+                dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+                dict_post['product'] = dict_product
+                array_post.append(dict_post)
         dict_category['posts'] = array_post
         array_category.append(dict_category)
     dict_data = {
@@ -243,7 +244,7 @@ def get_data_collection(request, list_post):
 def product_collection(request, id_category):
     if request.method == 'GET':
         if Category.objects.filter(pk=id_category).exists() == False:
-            return HttpResponse('Category khong ton tai')
+            return HttpResponse('Danh mục không tồn tại!')
         category = Category.objects.get(pk = id_category)
 
         list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=id_category).values_list('product_id_id')
@@ -442,7 +443,88 @@ def get_profile_payment(request):
 
         return HttpResponse(json.dumps(data), content_type="application/json")
 
+def random_code_activity(length):
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(length))
+
+@csrf_exempt
+def register(request):
+    if request.method  == 'POST':
+        username = request.POST.get('inputUsername')
+        email = request.POST.get('inputEmail')
+        password = request.POST.get('inputPassword')
+        name = request.POST.get('inputFullname')
+        birthday = request.POST.get('inputBirthday')
+        sex = request.POST.get('inputSex')
         
+        option_acc = request.POST.get('inputOptionAcc')
+        if int(option_acc) == 0:
+            code = random_code_activity(40)
+            new_account = Account(
+                username = username,
+                email=email,
+                password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
+                name=name,
+                birthday = birthday,
+                sex=sex,
+                code_act_account=code,
+            )
+            new_account.save()
+            link = 'activity/%s/%s/' % (email, code)
+            template = template_register(name, link)
+            header = 'Xác thực tài khoản'
+            send_email_notifile(email, header, template)
+
+        elif int(option_acc) == 1:
+            cmnd = request.POST.get('inputID')
+            phone = request.POST.get('inputTel')
+            address = request.POST.get('inputAddress')
+            store = request.POST.get('inputStore')
+            code_act_merchant = random_code_activity(40)
+            new_account = Account(
+                username = username,
+                email = email,
+                password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
+                name=name,
+                code_act_merchant=code_act_merchant,
+                activity_account=True,
+                id_card=cmnd,
+                phone=phone,
+                address=address,    
+                name_shop=store,
+            )
+            new_account.save()
+            link = 'activity_merchant/%s/%s/' % (email, code_act_merchant)
+            template = template_register(name, link)
+            header = 'Xác thực tài khoản'
+            send_email_notifile(email, header, template)
+            # send_mail_register('activity_merchant', email, code_act_merchant)
+        elif int(option_acc) == 2:
+            cmnd = request.POST.get('inputID')
+            phone = request.POST.get('inputTel')
+            address = request.POST.get('inputAddress')
+            store = request.POST.get('inputStore')
+            code_act_ads = random_code_activity(40)
+            new_account = Account(
+                username = username,
+                email = email,
+                password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
+                name=name,
+                code_act_ads=code_act_ads,
+                activity_account=True,
+                id_card=cmnd,
+                phone=phone,
+                address=address,    
+                name_shop=store,
+            )
+            new_account.save()
+            link = 'activity_ad/%s/%s/' % (email, code_act_ads)
+            template = template_register(name, link)
+            header = 'Xác thực tài khoản'
+            send_email_notifile(email, header, template)
+        return HttpResponse("You're submit form! %s" % email)
+
+
 def send_email_notifile(email, body, content):
 
     mail = Mail(
@@ -465,3 +547,217 @@ def send_email_notifile(email, body, content):
     msg.mail_options = []
     msg.rcpt_options = []
     mail.send(msg)
+
+
+
+def template_register(name, link):
+    template_email = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        /* CLIENT-SPECIFIC STYLES */
+        body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+        table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+        img{-ms-interpolation-mode: bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+        /* RESET STYLES */
+        img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}
+        table{border-collapse: collapse !important;}
+        body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @media screen and (max-width: 525px) {
+
+            /* ALLOWS FOR FLUID TABLES */
+            .wrapper {
+            width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            /* ADJUSTS LAYOUT OF LOGO IMAGE */
+            .logo img {
+            margin: 0 auto !important;
+            }
+
+            /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+            .mobile-hide {
+            display: none !important;
+            }
+
+            .img-max {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            }
+
+            /* FULL-WIDTH TABLES */
+            .responsive-table {
+            width: 100% !important;
+            }
+
+            /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
+            .padding {
+            padding: 10px 5% 15px 5% !important;
+            }
+
+            .padding-meta {
+            padding: 30px 5% 0px 5% !important;
+            text-align: center;
+            }
+
+            .padding-copy {
+                padding: 10px 5% 10px 5% !important;
+            text-align: center;
+            }
+
+            .no-padding {
+            padding: 0 !important;
+            }
+
+            .section-padding {
+            padding: 50px 15px 50px 15px !important;
+            }
+
+            /* ADJUST BUTTONS ON MOBILE */
+            .mobile-button-container {
+                margin: 0 auto;
+                width: 100% !important;
+            }
+
+            .mobile-button {
+                padding: 15px !important;
+                border: 0 !important;
+                font-size: 16px !important;
+                display: block !important;
+            }
+
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] { margin: 0 !important; }
+    </style>
+    </head>
+    """
+    
+    template_email += """
+    <body style="margin: 0 !important; padding: 0 !important;">
+
+    <!-- HIDDEN PREHEADER TEXT -->
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        Entice the open with some amazing preheader text. Use a little mystery and get those subscribers to read through...
+    </div>
+
+    <!-- HEADER -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td bgcolor="#ffffff" align="center">
+                <!--[if (gte mso 9)|(IE)]>
+                <table align="center" border="0" cellspacing="0" cellpadding="0" width="500">
+                <tr>
+                <td align="center" valign="top" width="500">
+                <![endif]-->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="wrapper">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 15px 0;" class="logo">
+                            <a href="http://localhost:8000" target="_blank">
+                                <span style="font-size:38px; display: block; font-family: Helvetica, Arial, sans-serif; color: red;" border="0">Tablet Plaza</span>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#D8F1FF" align="center" style="padding: 70px 15px 70px 15px;" class="section-padding">
+                <!--[if (gte mso 9)|(IE)]>
+                <table align="center" border="0" cellspacing="0" cellpadding="0" width="500">
+                <tr>
+                <td align="center" valign="top" width="500">
+                <![endif]-->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="responsive-table">
+                    <tr>
+                        <td>
+                            <!-- HERO IMAGE -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        <!-- COPY -->
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding">Xin chào, {}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding">Đăng ký tài khoản thành công</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding">Vui lòng bấm nút bên dưới để kích hoạt</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <!-- BULLETPROOF BUTTON -->
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="padding-top: 25px;" class="padding">
+                                                    <table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container">
+                                                        <tr>
+                                                            <td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="http://localhost:8000/{}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Kích hoạt &rarr;</a></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+                </td>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" align="center" style="padding: 20px 0px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 500px;" class="responsive-table">
+                    <tr>
+                        <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">
+                            56 Nguyễn Trải, Phường 3, Quận 5, Tp. HCM
+                            <br>
+                            <a href="http://localhost:8000" target="_blank" style="color: #666666; text-decoration: none;">Trang chủ</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    </body>
+    </html>
+    """.format(name, link)
+    return template_email

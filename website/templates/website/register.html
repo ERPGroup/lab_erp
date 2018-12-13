@@ -9,6 +9,7 @@
         margin-bottom:0px;
     }
 </style>
+<link href="{% static '/admin/assets/css/bootstrap-datetimepicker.min.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block content %}
 <!--content register-->
@@ -18,14 +19,14 @@
             <div class="register_box">
                 <div class="module_title">
                     <div class="col-xs-12 no_padding">
-                        <span class="title "><a href="/login/">Đăng nhập </a> </span> <span class="title is_active"><a
-                                href="/register/">Tạo tài khoản</a> </span>
+                        <span class="title "><a href="/login">Đăng nhập </a> </span> <span class="title is_active"><a
+                                href="/register">Tạo tài khoản</a> </span>
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="register_content">
-                    <form action="{% url 'register' %}" method="POST" class="frm_register">
-                        {% csrf_token %}
+                    <div class="frm_register">
+                        
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-3 padding_label">
                                 <label class="control-label">Tên tài khoản: </label>
@@ -34,7 +35,7 @@
                                 <input type="text" class="form-control" name="inputUsername" id="inputUsername">
                             </div>
                             <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                <div class="errors_id">
+                                <div class="errors_username">
 
                                 </div>
                             </div>
@@ -49,7 +50,7 @@
                                 <input type="text" class="form-control" name="inputEmail" id="inputEmail">
                             </div>
                             <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                <div class="errors_id">
+                                <div class="errors_email">
 
                                 </div>
                             </div>
@@ -94,8 +95,47 @@
                                 <input type="text" class="form-control" name="inputFullname" id="inputFullname">
                             </div>
                             <div class="col-xs-12 col-sm-9 col-md-3 col-lg-3">
-                                <div class="errors_fn">
+                                <div class="errors_name">
 
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 padding_label">
+                                <label class="control-label">Ngày sinh</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 input-group date" style="padding:0 15px;" id="datetimepicker1">
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding_desktop_1280">
+                                <div class="errors_birt">
+
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 padding_label">
+                                <label class="control-label">Giới tính </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <label class="radio-inline">
+                                    <input style="height:26px;" type="radio" checked="checked" name="inlineRadioOptions" id="inlineRadio2"
+                                        value="option2"> Nam
+                                </label>
+                                <label class="radio-inline">
+                                    <input style="height:26px;" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                        value="option3"> Nữ
+                                </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no_padding_desktop_1280">
+                                <div class="errors_sex">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -191,11 +231,11 @@
                         </div>
                         <div class="form-group group_button">
                             <div class="col-xs-6 col-sm-6 col-xs-offset-3">
-                                <button class="btn_registier btn btn-warning" type="submit">Đăng ký</button>
+                                <button class="btn_registier btn btn-warning" id="sub_register" type="submit">Đăng ký</button>
                                 <br>
                             </div>
                         </div>
-                    </form>
+                    </f>
                 </div>
             </div>
         </div>
@@ -204,5 +244,28 @@
 <!--End content-->
 {% endblock %}
 {% block zoom_img_js %}
+<script src="{% static 'admin/assets/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'admin/assets/js/vi.js' %}"></script>
+<script src="{% static 'admin/assets/js/bootstrap-datetimepicker.min.js' %}"></script>
 <script src="{% static '/website/src/js/register/register.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY',
+            maxDate: new Date('2010-12-30'),
+            date: new Date('1990-12-30'),
+        });
+    });
+
+    $(document).ready(function(){
+        $('#').click(function(){
+            day=$("#datetimepicker1").find("input").val().split('/')
+            birthday=day[2]+'-'+day[1]+'-'+day[0]
+            $('#birthday').val(birthday)
+
+        })
+    })
+</script> 
 {% endblock %}
