@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Quản lý đơn hàng
+Quản lý đánh giá người bán
 {% endblock %}
 {% block styles %}
 <style>
@@ -39,13 +39,13 @@ Quản lý đơn hàng
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html"  with active_order='active'  %}
+{% include "snippets_admin/side_bar.html"  with active_user='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Quản lý đơn hàng
+            Quản lý đánh giá người bán
         </h1>
 
     </div>
@@ -55,18 +55,18 @@ Quản lý đơn hàng
         <!-- Advanced Tables -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                Danh sách đơn hàng
+                Danh sách đánh giá
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã hóa đơn</th>
                                 <th>Người mua</th>
-                                <th>Tổng tiền</th>
-                                <th>Ngày tạo</th>
-                                <th>Trạng thái</th>
+                                <th>Số sao</th>
+                                <th>Bình luận</th>
+                                <th>Chứng nhận</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,6 +74,9 @@ Quản lý đơn hàng
                     </table>
                 </div>
 
+            </div>
+            <div class="panel-footer">
+                <a id="back" class="btn btn-default">Trở về</a>
             </div>
         </div>
         <!--End Advanced Tables -->
@@ -87,6 +90,6 @@ Quản lý đơn hàng
 <script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
 <script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
 <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
-<script src="{% static '/admin/src/js/order/manager_order.js' %}"></script>
+<script src="{% static '/admin/src/js/rating/manager_rating_merchant.js' %}"></script>
 
 {% endblock %}

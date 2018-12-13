@@ -11,7 +11,7 @@ $(document).ready(function(){
             console.log(response);
             category = response[0]['fields']
             $('#inputName').val(category.name_category);
-            $('#number3').val(category.quantity);
+            //$('#number3').val(category.quantity);
             var option_active = ''
             if(category.is_active == true){
                 option_active += '<option value="1" selected >Kích hoạt</option>'

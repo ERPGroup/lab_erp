@@ -39,7 +39,7 @@ Trang chi tiết đơn hàng
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets/side_bar_merchant.html" with active_order='active'  %}
+{% include "snippets_admin/side_bar.html"  with active_order='active'  %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -108,16 +108,6 @@ Trang chi tiết đơn hàng
                     <label>Trạng thái hóa đơn</label>
                     <select class="form-control" id="inputState" disabled="disabled">
                         
-                    </select>
-                </div>
-                <div id="part_rating" class="form-group hidden">
-                    <label>Bạn đánh giá người mua</label>
-                    <select class="form-control" id="inputRatingCus">
-                        <option value="5">5 sao</i></option>
-                        <option value="4">4 sao</option>
-                        <option value="3">3 sao</option>
-                        <option value="2">2 sao</option>
-                        <option value="1">1 sao</option>
                     </select>
                 </div>
             </div>

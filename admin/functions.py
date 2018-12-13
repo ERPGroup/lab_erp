@@ -16,19 +16,20 @@ from datetime import timedelta
 from sender import Mail, Message
 
 def check_rule(request):
-    # if 'user' in request.session:
-    #     user = request.session.get('user')
-    #     print(user['role'])
-    #     if 0 in user['role']:
-    #         print(user)
-    #         return 1
-    #     return 0
-    # return 0
-    return 1
+    if 'user' in request.session:
+        user = request.session.get('user')
+        print(user['role'])
+        if 0 in user['role']:
+            print(user)
+            return 1
+        return 0
+    return 0
 
 # Phuc doc tham khao Service
 
 def services(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             services = []
@@ -53,8 +54,7 @@ def services(request):
 @csrf_exempt    
 def service_add(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
-
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         print(request.POST)
         service_name = request.POST.get('inputServiceName')
@@ -87,6 +87,8 @@ def service_add(request):
 
 @csrf_exempt  
 def service(request, id_service):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         service = Service.objects.get(pk=id_service).__dict__
         del service['_state']
@@ -118,6 +120,8 @@ def service(request, id_service):
 # Code Category va Attribute dua theo Serive ben duoc comment nay
 # Viet funtion nho viet URL va views
 def categories(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         categories = []
         categories_all = Category.objects.all()
@@ -138,6 +142,9 @@ def categories(request):
 @csrf_exempt    
 def category_add(request):
     if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
+    if check_rule(request) == 0:
         return HttpResponse('Error')
 
     if request.method == 'POST':
@@ -156,6 +163,9 @@ def category_add(request):
 
 @csrf_exempt  
 def category(request, id_category):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         return HttpResponse(serialize('json', Category.objects.filter(pk=id_category)), content_type="application/json")
     if request.method == 'POST':
@@ -198,6 +208,9 @@ def category(request, id_category):
 
 
 def attributes(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         attributes = []
         attributes_all = Attribute.objects.all()
@@ -216,7 +229,7 @@ def attributes(request):
 @csrf_exempt    
 def attribute_add(request):
     if check_rule(request) == 0:
-        return HttpResponse('Lỗi')
+        return HttpResponse('Quyền truy cập bị từ chối')
 
     if request.method == 'POST':
         print(request.POST)
@@ -244,6 +257,9 @@ def attribute_add(request):
 
 @csrf_exempt  
 def attribute(request, id_attribute):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         return HttpResponse(serialize('json', Attribute.objects.filter(pk=id_attribute)), content_type="application/json")
     if request.method == 'POST':
@@ -288,6 +304,9 @@ def attribute(request, id_attribute):
 
 @csrf_exempt
 def user(request, id_user):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         if Account.objects.filter(pk=id_user, is_admin=False).exists() == True:
             user = Account.objects.get(pk=id_user)
@@ -337,26 +356,37 @@ def user(request, id_user):
 
 
 def users(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+        
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             users = []
             user_all = Account.objects.filter(is_admin=False)
             for item in user_all:
                 user = []
-                user.append('<a href="/admin/see/'+ str(item.id) +'">'+ item.email +'</a>')
+                user.append('<a href="/admin/user/see/'+ str(item.id) +'">'+ item.email +'</a>')
                 user.append(item.name)
                 if item.activity_merchant == True:
                     user.append('Người bán')
+                    count_star = Rating.objects.filter(merchant_id=item.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+                    count_person = Rating.objects.filter(merchant_id=item.id, is_activity=True).count()
+                    if count_star == None:
+                        user.append('0 <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                    else:
+                        user.append(str(count_star) + ' <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
                 elif item.activity_advertiser == True:
                     user.append('Người quảng cáo')
-                elif item.activity_account and user.activity_merchant == False:
+                    user.append('Không có đánh giá')
+                elif item.activity_account == True and item.activity_merchant == False:
                     user.append('Người mua')
-                count_star = Rating.objects.filter(merchant_id=item.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
-                count_person = Rating.objects.filter(merchant_id=item.id, is_activity=True).count()
-                if count_star == None:
-                    user.append('0 <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
-                else:
-                    user.append(str(count_star) + ' <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                    count_star = Rating_Customer.objects.filter(customer_id=item.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+                    count_person = Rating_Customer.objects.filter(customer_id=item.id, is_activity=True).count()
+                    if count_star == None:
+                        user.append('0 <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                    else:
+                        user.append(str(count_star) + ' <i class="fa fa-star"></i>' + '/ ' + str(count_person) + ' đánh giá')
+                
                 
                 if item.is_lock == True:
                     user.append('<label class="label label-danger">Đã bị khóa</label>')
@@ -375,7 +405,7 @@ def users(request):
 
 def account_services(request):
     if check_rule(request) == 0:
-        return HttpResponse('Quyền truy cập bị từ chối!')
+        return HttpResponse('Quyền truy cập bị từ chối')
 
     if request.method == 'GET':
         if request.GET.get('service') == 'available':
@@ -415,6 +445,9 @@ def account_services(request):
 
 
 def products(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             products = []
@@ -440,6 +473,9 @@ def products(request):
 
 @csrf_exempt  
 def product(request, id_product):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+
     if request.method == 'GET':
         if Product.objects.filter(pk=id_product).exists() == False:
             return HttpResponse('Sản phẩm không tồn tại')
@@ -523,6 +559,8 @@ def product(request, id_product):
 ####  POST
 
 def posts(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         posts = []
         post_all = Post_Product.objects.all()
@@ -555,7 +593,7 @@ def posts(request):
 @csrf_exempt
 def getAllPostAds(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         result = []
         for item in Service_Ads_Post.objects.filter(purchase_service_id__state=2,state=1):
@@ -575,7 +613,7 @@ def getAllPostAds(request):
 @csrf_exempt
 def getAllAds(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')     
+        return HttpResponse('Quyền truy cập bị từ chối')     
     if request.method == 'GET':
         ads = []
         for item in Service_Ads.objects.all():
@@ -595,7 +633,7 @@ def getAllAds(request):
 @csrf_exempt
 def AddService(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         _is_active = False
         if request.POST.get('inputStatus') == "Kích hoạt":
@@ -618,9 +656,10 @@ def AddService(request):
             return render(request,'admin/manager_ads/manager_ads_detail.html',{'error':error})
     success = "success"
     return render(request,'admin/manager_ads/manager_ads_detail.html',{'success':success,'ads':obj})
+
 def RemoveService(request,id):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     ads = Service_Ads.objects.filter(id=id).first()
     if ads is None:
         error = "error"
@@ -635,7 +674,7 @@ import pytz
 @csrf_exempt
 def getAllAdsActiving(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     input = Purchase_Service_Ads.objects.filter(state=4,is_active=True)
     result = []
     tz = pytz.timezone('Asia/Bangkok')
@@ -684,7 +723,7 @@ def getAllAdsActiving(request):
 @csrf_exempt
 def enable_ads(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         id = request.POST['inputID']
         service_ads = Purchase_Service_Ads.objects.filter(id=id)
@@ -694,7 +733,7 @@ def enable_ads(request):
 @csrf_exempt
 def disable_ads(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         id = request.POST['inputID']
         service_ads = Purchase_Service_Ads.objects.filter(id=id)
@@ -705,7 +744,7 @@ def disable_ads(request):
 @csrf_exempt
 def getDetailRegister(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         id = request.POST['inputID']
         post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=1,purchase_service_id__state=2).first()
@@ -727,7 +766,7 @@ def getDetailRegister(request):
 @csrf_exempt
 def confirmPost(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         sid = request.POST['inputSID']
         pid = request.POST['inputPID']
@@ -740,7 +779,7 @@ def confirmPost(request):
 @csrf_exempt
 def cancelPost(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         sid = request.POST['inputSID']
         pid = request.POST['inputPID']
@@ -754,7 +793,7 @@ def cancelPost(request):
 @csrf_exempt
 def getAllAdsRunning(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         result = []
         for item in Service_Ads_Post.objects.filter(purchase_service_id__state=4,state=2):
@@ -774,7 +813,7 @@ def getAllAdsRunning(request):
 @csrf_exempt
 def getDetailRunning(request):
     if check_rule(request) == 0:
-        return HttpResponse('Error')
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         id = request.POST['inputID']
         post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=2,purchase_service_id__state=4).first()
@@ -800,6 +839,8 @@ def getDetailRunning(request):
 
 
 def orders(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             list_order = []
@@ -808,10 +849,10 @@ def orders(request):
             order_all = Order.objects.filter(pk__in=order_all_id)
             for item in order_all:
                 order = []
-                order.append('<a href="/merchant/order/edit/'+ str(item.id) +'"> DH'+ str(item.id) +'</a>')
+                order.append('<a href="/admin/manager_order_detail/'+ str(item.id) +'"> DH'+ str(item.id) +'</a>')
                 order.append(item.customer.name)
                 order.append(str(item.amount) + ' VND')
-                order.append(item.order.created.replace(tzinfo=None))
+                order.append(item.created.replace(tzinfo=None))
                 order_detail = Order_Detail.objects.filter(order_id=item.id, merchant_id=request.session.get('user')['id']).first()
                 if order_detail.state == '1':
                     order.append('<label class="label label-success">Thành công</label>')
@@ -829,6 +870,8 @@ def orders(request):
 
 
 def order(request, id_order):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         if Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exists() == False:
             return HttpResponse('Đơn hàng không tồn tại!')
@@ -861,6 +904,8 @@ def order(request, id_order):
 
 
 def orders_detail(request, id_order):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'GET':
         list_orders_detail = []
         order_detail_all = Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id'])
@@ -869,7 +914,7 @@ def orders_detail(request, id_order):
             product_orgin_id = Link_Type.objects.get(product_id_id=item.product_id).parent_product
             product = Product.objects.get(pk=product_orgin_id)
             image = Product_Image.objects.filter(product_id_id=product_orgin_id, archive=False).order_by('image_id_id').first()
-            order_item.append('<a href="/merchant/product/edit/'+ str(product_orgin_id) +'">'+ product.name +'</a>')
+            order_item.append('<a href="/admin/product/see/'+ str(product_orgin_id) +'">'+ product.name +'</a>')
             order_item.append('<div class="tbl_thumb_product"><img src="/product' + image.image_id.image_link.url + '" /></div>')
             price = int(round((item.price * (100 - item.discount))/100, 0))
             order_item.append(str(price) + ' VND')
@@ -888,6 +933,152 @@ def orders_detail(request, id_order):
         return HttpResponse(json.dumps(list_orders_detail, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
 
+
+# Rating
+
+
+def rating_merchant(request, id_account):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            rating_all = Rating.objects.filter(merchant_id=id_account)
+            list_rating = []
+            for item in rating_all:
+                rating_item = []
+                rating_item.append('<a href="/admin/user/see/'+ str(item.customer.id) +'">'+ item.customer.name +'</a>')
+                rating_item.append(str(item.num_of_star))
+                rating_item.append(item.comment)
+                if item.confirm_bought == True:
+                    rating_item.append('<label class="label label-success">Đã mua</label>')
+                else:
+                    rating_item.append('<label class="label label-warning">Chưa mua</label>')
+                if item.is_activity == True:
+                    rating_item.append('<button onclick="update_rating_mer('+ str(item.id) +', 0)" class="btn btn-danger">Ẩn</button>')
+                else:
+                    rating_item.append('<button onclick="update_rating_mer('+ str(item.id) +', 1)" class="btn btn-info">Hiển thị</button>')
+                list_rating.append(rating_item)
+            return HttpResponse(json.dumps(list_rating, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse(503)
+    return HttpResponse(404)
+
+def rating_customer(request, id_account):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            rating_all = Rating_Customer.objects.filter(customer_id=id_account)
+            list_rating = []
+            for item in rating_all:
+                rating_item = []
+                rating_item.append('<a href="/admin/user/see/'+ str(item.merchant.id) +'">'+ item.merchant.name +'</a>')
+                rating_item.append(str(item.num_of_star))
+                if item.confirm_bought == True:
+                    rating_item.append('<label class="label label-success">Đã bán</label>')
+                else:
+                    rating_item.append('<label class="label label-warning">Chưa bán</label>')
+                if item.is_activity == True:
+                    rating_item.append('<button onclick="update_rating_cus('+ str(item.id) +', 0)" class="btn btn-danger">Ẩn</button>')
+                else:
+                    rating_item.append('<button onclick="update_rating_cus('+ str(item.id) +', 1)" class="btn btn-info">Hiển thị</button>')
+                list_rating.append(rating_item)
+            return HttpResponse(json.dumps(list_rating, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse(503)
+
+    return HttpResponse(404)
+
+@csrf_exempt
+def update_rating_merchant(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'POST':
+        id_rating = request.POST.get('id_rating')
+        active_new = request.POST.get('action')
+        if Rating.objects.filter(pk=id_rating).exists() == False:
+            return HttpResponse('Đánh giá không tồn tại')
+        rating = Rating.objects.get(pk=id_rating)
+        rating.is_activity = active_new
+        rating.save()
+        return HttpResponse(1)
+    return HttpResponse(503)
+
+@csrf_exempt
+def update_rating_customer(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'POST':
+        id_rating = request.POST.get('id_rating')
+        active_new = request.POST.get('action')
+        if Rating_Customer.objects.filter(pk=id_rating).exists() == False:
+            return HttpResponse('Đánh giá không tồn tại')
+        rating = Rating_Customer.objects.get(pk=id_rating)
+        rating.is_activity = active_new
+        rating.save()
+        return HttpResponse(1)
+    return HttpResponse(503)
+
+def payment_posts(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_payment = []
+            payment_all = Purchase_Service.objects.filter(merchant_id_id=request.session.get('user')['id'])
+            for item in payment_all:
+                payment_item = []
+                payment_item.append('<a href="/admin/payment_post_detail/'+ str(item.id) +'">'+ item.purchase_name +'</a>')
+                payment_item.append('<a href="/admin/user/see/'+ str(item.merchant_id.id) +'">'+ item.merchant_id.name +'</a>')
+                #payment_item.append('<a href="/admin/service/edit/'+ str(item.service_id.id) +'">'+ item.service_id.service_name +'</a>')
+                payment_item.append(str(item.amount) + ' $')
+                payment_item.append(str(item.success_at.replace(tzinfo=None)).split(' ')[0]+ ' ' +str(item.success_at.replace(tzinfo=None)).split(' ')[1].split('.')[0])
+                if item.state == 1:
+                    payment_item.append('<label class="label label-success">Thành công</label>')
+                else:
+                    payment_item.append('<label class="label label-danger">Thất bại</label>')
+                list_payment.append(payment_item)
+            return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse('No data')
+
+
+def f_payment_post_detail(request, id_payment):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if Purchase_Service.objects.filter(pk=id_payment).exists() == False:
+            return HttpResponse('Không tồn tại giao dịch!')
+        payment =  Purchase_Service.objects.get(pk=id_payment).__dict__
+        del payment['_state']
+        merchant = Account.objects.filter(pk=payment['merchant_id_id']).values('name', 'email')[0]
+        #del merchant['_state']
+        service = Service.objects.get(pk=payment['service_id_id']).__dict__
+        del service['_state']
+        payment['merchant'] = merchant
+        payment['service'] = service
+        return HttpResponse(json.dumps(payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
+
+
+
+def payment_ads(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_payment = []
+            payment_all = Purchase_Service_Ads.objects.filter(merchant_id_id=request.session.get('user')['id'])
+            for item in payment_all:
+                payment_item = []
+                payment_item.append('<a>'+ item.purchase_name +'</a>')
+                payment_item.append('<a href="/admin/user/see/'+ str(item.merchant_id.id) +'">'+ item.merchant_id.name +'</a>')
+                payment_item.append(str(item.amount) + ' $')
+                payment_item.append(str(item.success_at.replace(tzinfo=None)).split(' ')[0]+ ' ' +str(item.success_at.replace(tzinfo=None)).split(' ')[1].split('.')[0])
+                if item.state == 1:
+                    payment_item.append('<label class="label label-success">Thanh toán thành công</label>')
+                else:   
+                    payment_item.append('<label class="label label-danger">Thanh toán thất bại</label>')
+                list_payment.append(payment_item)
+            return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse('No data')
 
 def send_email_notifile(email, body, content):
 

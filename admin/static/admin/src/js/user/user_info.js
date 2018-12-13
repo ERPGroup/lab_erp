@@ -40,12 +40,19 @@ $(document).ready(function(){
             $('#username').val(response.username);
             $('#inputNameShop').val(response.name_shop);
             $('#email').val(response.email);
-            if(response.role == 1)
+            if(response.role == 1){
                 $('#type_user3').attr('checked', true);
-            else if (response.role == 2)
+                $('#rating').attr('href', '/admin/rating_customer/' + id_user );
+            }
+            else if (response.role == 2){
                 $('#type_user1').attr('checked', true);
-            else if (response.role == 3)
+                $('#rating').attr('href', '/admin/rating_merchant/' + id_user );
+            }
+                
+            else if (response.role == 3){
                 $('#type_user2').attr('checked', true);
+                $('#rating').addClass('hidden')
+            }
 
             if (response.lock == false)
                 $('button[id=unlock]').addClass('hidden');

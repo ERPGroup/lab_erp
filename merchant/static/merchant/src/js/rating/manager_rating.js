@@ -36,34 +36,12 @@ $(document).ready(function () {
             { "type": 'formatted-num', targets: 2 },
             { "type": 'date-eu', targets: 3 }
         ],
-        "order": [[ 0, "desc" ]],
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/orders?table=true",
+            "url": "http://localhost:8000/merchant/list_rating?table=true",
             "dataSrc": ""
         },
     });
-    var tool_bar = '';
-    tool_bar += '<div class="col-xs-8 no_padding">';
-    tool_bar += '<span>Trạng thái: </span>';
-    tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-    tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Thành công</option>';
-    tool_bar += '<option>Hủy bỏ</option>';
-    tool_bar += '<option>Đặt hàng</option>';
-    tool_bar += '<option>Đang gói hàng</option>';
-    tool_bar += '<option>Đang vận chuyển</option>';
-    tool_bar += '</select>';
-    tool_bar += '</div>';
-    $("div.toolbar").html(tool_bar);
-    $('#select_type').change(function () {
-        regExSearch = '^' + this.value + '$';
-        if (this.value == "Tất cả") {
-            table.api().columns(4).search('').draw();
-        }
-        else {
-            table.api().columns(4).search(regExSearch, true, false).draw();
-        }
-    });
+    
 });

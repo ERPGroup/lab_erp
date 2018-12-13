@@ -31,9 +31,11 @@ urlpatterns = [
     path('order/edit/<int:id_order>',views.order_edit, name='order_edit'),
 
     path('payment',views.payment,name='payment'),
-    path('payment_detail',views.payment,name='payment_detail'),
+    #path('payment_detail',views.payment,name='payment_detail'),
 
     path('statistial_post',views.statistical_post,name='statis'),
+
+    path('rating', views.rating, name='rating'),
 
     path('service_post',views.service_post,name='servies'),
     path('purchase_service/<int:id_service>', views.purchase_service, name='purchase_service'),
@@ -73,6 +75,7 @@ urlpatterns = [
 
 
     path('rating_customer', functions.rating_customer, name='rating_customer'),
+    path('list_rating', functions.list_rating, name='list_rating'),
 
 
     path('payments', functions.payments, name='payments'),

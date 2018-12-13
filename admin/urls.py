@@ -9,7 +9,7 @@ from . import views, functions
 
 urlpatterns = [
     # path('', views.index, name='index'),
-    path('login/',views.login,name='login'),
+    path('login',views.login,name='login'),
     path('',views.index,name='admin_index'),
 
     path('manager_users',views.users,name='manager_users'),
@@ -20,11 +20,20 @@ urlpatterns = [
     path('service/add', views.service_add, name='service_add'),
     path('service/edit/<int:id_service>', views.service_edit, name='service_edit'),
     
-    path('manager_pay',views.payment,name="payment"),
+    # path('manager_pay',views.payment,name="payment"),
     path('manager_payment_detail',views.payment_detail,name="payment_detail"),
 
-    path('manager_order_detail', views.manager_order_detail, name='manager_order_detail'),
+    path('manager_payment_post', views.manager_payment_post, name='manager_payment_post'),
+    path('payment_post_detail/<int:id_payment>', views.payment_post_detail, name='payment_post_detail'),
+    path('manager_payment_ads', views.manager_payment_ads, name='manager_payment_ad'),
+    path('payment_ads_detail/<int:id_payment>', views.payment_ads_detail, name='payment_ads_detail'),
+
+    path('manager_order_detail/<int:id_order>', views.manager_order_detail, name='manager_order_detail'),
     path('manager_order', views.manager_order, name="manager_order"),
+
+    path('rating_merchant/<int:id_account>', views.rating_merchant, name='rating_merchant'),
+    path('rating_customer/<int:id_account>', views.rating_customer, name='rating_customer'),
+
 
     path('manager_posted',views.post,name="payment"),
     #path('manager_posted_detail',views.post_detail,name="payment"),
@@ -79,7 +88,26 @@ urlpatterns = [
     path('posts',functions.posts, name='posts'),
 
     #account service
-     path('account_services', functions.account_services, name='account_services'),
+    path('account_services', functions.account_services, name='account_services'),
+
+
+    #order
+    path('orders', functions.orders, name="orders"),
+    path('order/<int:id_order>', functions.order, name="order"),
+    path('orders_detail/<int:id_order>', functions.orders_detail, name='orders_detail'),
+
+
+    #rating
+    path('rating_mer/<int:id_account>', functions.rating_merchant, name='rating_merchant'),
+    path('rating_cus/<int:id_account>', functions.rating_customer, name='rating_customer'),
+
+    path('update_rating_customer', functions.update_rating_customer, name='update_rating_customer'),
+    path('update_rating_merchant', functions.update_rating_merchant, name='update_rating_merchant'),
+    
+    #payment
+    path('payment_posts', functions.payment_posts, name="payment_posts"),
+    path('f_payment_post_detail/<int:id_payment>', functions.f_payment_post_detail, name='f_payment_post_detail'),
+    path('payment_ads', functions.payment_ads, name="payment_ads"),
 
     #user
     path('user/<int:id_user>', functions.user, name='user'),

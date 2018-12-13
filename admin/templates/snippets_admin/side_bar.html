@@ -48,7 +48,23 @@
                 </ul>
             </li>
             <li>
-                <a {% if active_history %} class="active-menu" {% endif %} href="/admin/manager_pay"><i class="fa fa-money"></i> Lịch sử giao dịch</a>
+                <a {% if active_order %} class="active-menu" {% endif %} href="/admin/manager_order"><i class="fa fa-truck"></i>Kiểm tra đơn hàng<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="/admin/manager_order">Đơn hàng</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a {% if active_history %} class="active-menu" {% endif %} href="/admin/manager_pay"><i class="fa fa-money"></i> Lịch sử giao dịch<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="/admin/manager_payment_post">Giao dịch tin đăng</a>
+                    </li>
+                    <li>
+                        <a href="/admin/manager_payment_ads">Giao dịch quảng cáo</a>
+                    </li>
+                </ul>
 
             </li>
             <li>

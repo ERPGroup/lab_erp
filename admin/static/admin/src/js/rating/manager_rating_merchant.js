@@ -13,6 +13,10 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     }
 });
 $(document).ready(function () {
+
+    var check_url = $(location).attr('pathname').split('/');
+    var id_account = check_url[check_url.length - 1]
+
     var table = $('#dataTables-example').dataTable({
         language: {
             paginate: {
@@ -40,30 +44,47 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/orders?table=true",
+            "url": "http://localhost:8000/admin/rating_mer/"+ id_account +"?table=true",
             "dataSrc": ""
         },
     });
-    var tool_bar = '';
-    tool_bar += '<div class="col-xs-8 no_padding">';
-    tool_bar += '<span>Trạng thái: </span>';
-    tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-    tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Thành công</option>';
-    tool_bar += '<option>Hủy bỏ</option>';
-    tool_bar += '<option>Đặt hàng</option>';
-    tool_bar += '<option>Đang gói hàng</option>';
-    tool_bar += '<option>Đang vận chuyển</option>';
-    tool_bar += '</select>';
-    tool_bar += '</div>';
-    $("div.toolbar").html(tool_bar);
-    $('#select_type').change(function () {
-        regExSearch = '^' + this.value + '$';
-        if (this.value == "Tất cả") {
-            table.api().columns(4).search('').draw();
+
+    $('#back').attr('href', '/admin/user/see/' + id_account)
+
+    $.ajax({
+        url: 'http://localhost:8000/admin/user/' + id_account,
+        method:  'GET',
+        contentType: 'application/json',
+        success: function(response){
+            var tool_bar = '';
+            tool_bar += '<div class="col-xs-8 no_padding">';
+            tool_bar += '<span>Người bán: <a href="/admin/user/see/'+ id_account +'">'+ response.name +'</a></span>';
+            tool_bar += '</div>';
+            $("div.toolbar").html(tool_bar);
         }
-        else {
-            table.api().columns(4).search(regExSearch, true, false).draw();
-        }
-    });
+    })
 });
+
+
+function update_rating_mer(id_rating, action){
+    data = {
+        'id_rating': id_rating,
+        'action' : action,
+    }
+
+    $.ajax({
+        url: 'http://localhost:8000/admin/update_rating_merchant',
+        method: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: data,
+        success: function(response){
+            if (response == 1){
+                alert('Cập nhật thành công!');
+                window.location.reload();
+            }
+            else{
+                alert(response)
+            }
+        }
+    })
+}

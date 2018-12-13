@@ -130,7 +130,7 @@ class Rating (models.Model):
     customer =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Customer')
     merchant =  models.ForeignKey('Account', on_delete=models.CASCADE, related_name='Merchant')
     num_of_star = models.IntegerField()
-    comment = models.CharField(max_length=2000)
+    comment = models.CharField(max_length=2000, null=True)
     confirm_bought = models.BooleanField()
     is_activity = models.BooleanField(default=True)
 

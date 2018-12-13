@@ -11,15 +11,14 @@ from . import functions
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 def check_rule(request):
-    # if 'user' in request.session:
-    #     user = request.session.get('user')
-    #     print(user['role'])
-    #     if 2 in user['role']:
-    #         print(user)
-    #         return 1
-    #     return 0
-    # return 0
-    return 1
+    if 'user' in request.session:
+        user = request.session.get('user')
+        print(user['role'])
+        if 2 in user['role']:
+            print(user)
+            return 1
+        return 0
+    return 0
 
 def login (request):
     if check_rule(request) == 1:
@@ -36,8 +35,6 @@ def index(request):
 def product(request):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
-    
-
     return render(request,'merchant/manager_product/manager_product.html')
 
 def product_add(request):
@@ -60,6 +57,8 @@ def posted(request):
     return render(request,'merchant/manager_posted/manager_post.html')
 
 def posted_detail(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_posted/manager_post_detail.html')
 
 def post_add(request):
@@ -79,19 +78,43 @@ def post_edit(request, id_post):
 # ------- End
 
 def warehose(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_product/manager_warehose.html')
+
 def order(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_order/manager_order.html')
+
 def order_edit(request, id_order):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
+    if Order_Detail.objects.filter(order_id=id_order, merchant_id=request.session.get('user')['id']).exists() == False:
+        messages.warning(request, message='Không tồn tại đơn hàng', extra_tags='alert')
+        return redirect('/merchant')
     return render(request,'merchant/manager_order/manager_order_detail.html')
+
 def statistical_post(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_posted/manager_statistical_post.html')
+
+def rating(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
+    return render(request,'merchant/manager_rating/manager_rating.html')
 
 
 def payment(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_payment/manager_payment.html')
-def payment_detail(request):
-    return render(request,'merchant/manager_payment/manager_payment_detail.html')
+
+# def payment_detail(request):
+#     if check_rule(request) == 0:
+#         return redirect('/merchant/login')
+#     return render(request,'merchant/manager_payment/manager_payment_detail.html')
 
 # ---- Service
 def service_post(request):
@@ -102,23 +125,32 @@ def service_post(request):
 def purchase_service(request, id_service):
     if check_rule(request) == 0:
         return redirect('/merchant/login')
+    if Service.objects.filter(pk=id_service, is_active=True).exists() == False:
+        messages.warning(request, message='Gói tin không tồn tại hoặc ngừng bán!', extra_tags='alert')
+        return redirect('/merchant')
     return render(request,'merchant/manager_service/purchase_service.html')
 # ------ End
 
 ### Ly Thanh
 
 def service_ads(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     return render(request,'merchant/manager_service/service_ads.html')
 
 def service_ads_register(request,id_ads):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     if functions.get_my_choices(id_ads):
         user = request.session.get('user')
         result = Account.objects.get(pk=user['id'])
         return render(request,'merchant/manager_service/manager_ads_register_detail.html',{ 'list':functions.get_my_choices(id_ads),'user':result })
     else:
-        return HttpResponse("Loi")
+        return HttpResponse("Lỗi")
 
 def post_ads(request):
+    if check_rule(request) == 0:
+        return redirect('/merchant/login')
     user = request.session.get('user')
     result = functions.getServiceAdsAvailable(user['id'])
     return render(request,'merchant/manager_service/service_ads_post.html',{'list':result})

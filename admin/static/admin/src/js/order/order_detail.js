@@ -3,7 +3,7 @@ $(document).ready(function () {
     var check_url = $(location).attr('pathname').split('/');
     var id_order = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/merchant/order/' + id_order,
+        url: 'http://localhost:8000/admin/order/' + id_order,
         method: 'GET',
         success: function(response){
             $('#inputIdCus').val(response.customer_id);
@@ -23,30 +23,6 @@ $(document).ready(function () {
             }
             if (response.state == 2){
                 $('#inputState').append('<option>Đặt hàng</option>')
-            }
-
-            if (response.disable_rating == true){
-                $('#part_rating').removeClass('hidden');
-                $('#inputRatingCus').attr('disabled', true)
-            }
-            else{
-                if(response.rate_cus  == true){
-                    $('#part_rating').removeClass('hidden');
-                    var num_star = $('#inputRatingCus').val()
-                    $('#submit_action').append('<button onclick="rating_customer('+ id_order +')" class="btn btn-default">Đánh giá</button>')
-                }
-            }
-            
-
-            if (response.state_now == 2){
-                $('#submit_action').append('<button onclick="change_state('+ id_order +', 3)" class="btn btn-warning">Bắt đầu gói hàng</button>')
-            }
-            if (response.state_now == 3){
-                $('#submit_action').append('<button onclick="change_state('+ id_order +', 4)" class="btn btn-info">Bắt đầu vận chuyển</button>')
-            }
-            if (response.state_now == 4){
-                $('#submit_action').append('<button onclick="change_state('+ id_order +', 1)" class="btn btn-success">Thành công</button>')
-                $('#submit_action').append('<button onclick="change_state('+ id_order +', 0)" style="margin-left: 5px;" class="btn btn-danger">Hủy bỏ</button>')
             }
         }
     })
@@ -96,63 +72,9 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/orders_detail/" + id_order,
+            "url": "http://localhost:8000/admin/orders_detail/" + id_order,
             "dataSrc": ""
         },
 
     });
 });
-
-
-function rating_customer(id_order){
-    $("#wrapper").css("display","none");
-    $("#loader").css("display","block");
-    data = {
-        'order_id': id_order,
-        'customer_id' : $('#inputIdCus').val(),
-        'num_star' : $('#inputRatingCus').val(),
-    }
-
-    $.ajax({
-        url: 'http://localhost:8000/merchant/rating_customer',
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data,
-        success: function(response){
-            if (response == 1){
-                alert('Đánh giá thành công!');
-                $("#wrapper").css("display","block");
-                $("#loader").css("display","none");
-                window.location.replace('/merchant/order')
-            }
-            else{
-                alert(response)
-                $("#wrapper").css("display","block");
-                $("#loader").css("display","none");
-            }
-        }
-    })
-}
-
-
-function change_state(order_id, state){
-    $("#wrapper").css("display","none");
-    $("#loader").css("display","block");
-    $.ajax({
-        url: 'http://localhost:8000/merchant/change_state/' + order_id + '/' + state,
-        method: 'GET',
-        success: function(response){
-            if (response == 1){
-                alert('Trạng thái đã thay đổi')
-                $("#wrapper").css("display","block");
-                $("#loader").css("display","none");
-                window.location.replace('/merchant/order')
-            }
-            else{
-                alert(response)
-                $("#wrapper").css("display","block");
-                $("#loader").css("display","none");
-            }
-        }
-    })
-}
