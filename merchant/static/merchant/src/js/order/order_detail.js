@@ -10,6 +10,7 @@ $(document).ready(function () {
             $('#inputName').val(response.name_customer);
             $('#inputRating').val(response.rating_point + ' */ ' + response.rating_count + ' lần')
             $('#inputAmount').val(response.amount + ' VND')
+            $('#inputNote').val(response.note)
             $('#inputCreated').val((response.created.split('T')[0]) + ' ' + (response.created.split('T')[1]).split('.')[0])
             $('#inputNameCus').val(response.name)
             $('#inputAddress').val(response.address)

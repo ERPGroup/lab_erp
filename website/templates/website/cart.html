@@ -39,7 +39,7 @@ Giỏ hàng
                 </td>
             </tr>
             <tr class="hidden-sm hidden-md hidden-lg">
-                <td colspan="2">Giá: <b>10.790.000 ₫</b></td>
+                <td colspan="2">Giá: <b>{{ item.price|intcomma }} ₫</b></td>
                 <td><a onclick="remove({{ item.product.id }})"><i class="fa fa-close"></i></a></td>
             </tr>
             {% endfor %}

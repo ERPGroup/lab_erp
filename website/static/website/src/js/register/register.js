@@ -27,6 +27,14 @@ $(document).ready(function(){
             }
         }
         else{
+            if ($('#input_tel').val().length != 10){
+                alert('Số điện thoại không hợp lệ')
+                return;
+            }
+            if ($('#input_id').val().length > 12 || $('#input_id').val().length < 10){
+                alert('Chứng minh nhân dân không hợp lệ')
+                return;
+            }
             data = {
                 'inputUsername': $('#inputUsername').val(),
                 'inputEmail': $('#inputEmail').val(),
@@ -48,7 +56,13 @@ $(document).ready(function(){
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
-                console.log(response)
+                if(response == 1){
+                    alert('Thư xác minh đã được gửi và mail của bạn!')
+                    window.location.replace('/')
+                }
+                else(
+                    alert(response)
+                )
             }
         })
     })

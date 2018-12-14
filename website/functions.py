@@ -113,11 +113,11 @@ def payment(request):
 
 # function page index
 
-def check_expire_post(id_post):
-    post = Post_Product.objects.get(pk=id_post)
-    if post.expire.replace(tzinfo=None) <= datetime.now():
-        return 1
-    return 0
+# def check_expire_post(id_post):
+#     post = Post_Product.objects.get(pk=id_post)
+#     if post.expire.replace(tzinfo=None) <= datetime.now():
+#         return 1
+#     return 0
     
 def get_data(request):
     data = [] # du lieu tra ve json 
@@ -127,12 +127,23 @@ def get_data(request):
     for item in list_service:
         dict_service = Service.objects.get(pk=item[0]).__dict__
         del dict_service['_state']
-        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item).order_by('-bought')[0:16]
+        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item, creator_id__is_lock=False).order_by('-bought')[0:16]
         array_post = [] 
         for post in list_post:
             if post.expire.replace(tzinfo=None) > datetime.now():
                 post_abort.append(post.id)
                 dict_post = post.__dict__
+                print(dict_post)
+                
+                count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+                if count_star == None:
+                    count_star = 0
+                count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+                if count_person == 0:
+                    dict_post['rating'] = float(0)
+                else:
+                    dict_post['rating'] = float(round(count_star/count_person, 1))
+                
                 del dict_post['_state']
                 # if Product.objects.filter(pk=post.id).exists() == True:
                 dict_product = Product.objects.get(pk=post.product_id_id).__dict__
@@ -159,14 +170,26 @@ def get_data(request):
         # print(dict_category)
         del dict_category['_state']
         list_poduct_avaliable = Product_Category.objects.filter(archive=False,category_id_id=item).values_list('product_id_id')
-        list_post = Post_Product.objects.exclude(pk__in=post_abort).filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:16]
+        list_post = Post_Product.objects.exclude(pk__in=post_abort).filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, creator_id__is_lock=False).order_by('-bought')[0:16]
         array_post = [] 
         for post in list_post:
             if post.expire.replace(tzinfo=None) > datetime.now():
                 dict_post = post.__dict__
+
+                count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+                if count_star == None:
+                    count_star = 0
+                count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+                if count_person == 0:
+                    dict_post['rating'] = float(0)
+                else:
+                    dict_post['rating'] = float(round(count_star/count_person, 1))
+
                 del dict_post['_state']
                 # if Product.objects.filter(pk=post.id).exists() == True:
                 dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+                list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+                dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
                 del dict_product['_state']
                 image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
                 dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
@@ -226,9 +249,19 @@ def get_data_collection(request, list_post):
     array_post = []
     for item in danhsach:
         dict_post = item.__dict__
+        count_star = Rating.objects.filter(merchant_id=item.creator_id.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if count_star == None:
+            count_star = 0
+        count_person = Rating.objects.filter(merchant_id=item.creator_id.id, is_activity=True).count()
+        if count_person == 0:
+            dict_post['rating'] = float(0)
+        else:
+            dict_post['rating'] = float(round(count_star/count_person, 1))
         del dict_post['_state']
         dict_product = Product.objects.get(pk=item.product_id_id).__dict__
         del dict_product['_state']
+        list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+        dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
         image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
         dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
         dict_post['product'] = dict_product
@@ -272,15 +305,15 @@ def product_collection(request, id_category):
                 data = get_data_collection(request, list_post)
                 return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
 
-        # if 'ratiest' in request.GET:
-        #     if request.GET.get('ratiest') == 'true':
-        #         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-created')
-        #         data = get_data_collection(request, list_post)
-        #         return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
-        #     else: 
-        #         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('created')
-        #         data = get_data_collection(request, list_post)
-        #         return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+        if 'pricest' in request.GET:
+            if request.GET.get('pricest') == 'true':
+                list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-product_id__price')
+                data = get_data_collection(request, list_post)
+                return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+            else: 
+                list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('product_id__price')
+                data = get_data_collection(request, list_post)
+                return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
         
         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-created', '-bought')
         data = get_data_collection(request, list_post)
@@ -451,7 +484,11 @@ def random_code_activity(length):
 def register(request):
     if request.method  == 'POST':
         username = request.POST.get('inputUsername')
+        if Account.objects.filter(username=username).exists() == True:
+            return HttpResponse('Username đã tồn tại!')
         email = request.POST.get('inputEmail')
+        if Account.objects.filter(email=email).exists() == True:
+            return HttpResponse('Email đã tồn tại!')
         password = request.POST.get('inputPassword')
         name = request.POST.get('inputFullname')
         birthday = request.POST.get('inputBirthday')
@@ -471,7 +508,8 @@ def register(request):
             )
             new_account.save()
             link = 'activity/%s/%s/' % (email, code)
-            template = template_register(name, link)
+            action = 'Vui lòng bấm nút bên dưới để kích hoạt'
+            template = template_register(name, action, link)
             header = 'Xác thực tài khoản'
             send_email_notifile(email, header, template)
 
@@ -487,7 +525,7 @@ def register(request):
                 password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
                 name=name,
                 code_act_merchant=code_act_merchant,
-                activity_account=True,
+                activity_account=False,
                 id_card=cmnd,
                 phone=phone,
                 address=address,    
@@ -495,7 +533,8 @@ def register(request):
             )
             new_account.save()
             link = 'activity_merchant/%s/%s/' % (email, code_act_merchant)
-            template = template_register(name, link)
+            action = 'Vui lòng bấm nút bên dưới để kích hoạt'
+            template = template_register(name, action, link)
             header = 'Xác thực tài khoản'
             send_email_notifile(email, header, template)
             # send_mail_register('activity_merchant', email, code_act_merchant)
@@ -511,7 +550,7 @@ def register(request):
                 password = pbkdf2_sha256.encrypt(password, rounds=1200, salt_size=32),
                 name=name,
                 code_act_ads=code_act_ads,
-                activity_account=True,
+                activity_account=False,
                 id_card=cmnd,
                 phone=phone,
                 address=address,    
@@ -519,11 +558,33 @@ def register(request):
             )
             new_account.save()
             link = 'activity_ad/%s/%s/' % (email, code_act_ads)
-            template = template_register(name, link)
+            action = 'Vui lòng bấm nút bên dưới để kích hoạt'
+            template = template_register(name, action, link)
             header = 'Xác thực tài khoản'
             send_email_notifile(email, header, template)
-        return HttpResponse("You're submit form! %s" % email)
+        return HttpResponse(1)
 
+@csrf_exempt
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('inputEmail')
+        if Account.objects.filter(email=email).exists() == False:
+            return HttpResponse('Lỗi! Tài khoản không tồn tại!')
+        account = Account.objects.get(email=email)
+        if account.activity_account == False:
+            return HttpResponse('Lỗi! Tài khoản chưa được kích hoạt!')
+        if account.is_lock == True:
+            return HttpResponse('Lỗi! Tài khoản đã bị khóa!')
+        code_act_account = random_code_activity(40)
+        account.code_act_account = code_act_account
+        account.save()
+        link = 'request_new_password/%s/%s/' % (email, code_act_account)
+        action = 'Vui lòng bấm nút bên dưới để đổi mật khẩu'
+        template = template_register(account.name, action, link)
+        header = 'Lấy lại mật khẩu'
+        send_email_notifile(email, header, template)
+        return HttpResponse(1)
+    return HttpResponse(503)
 
 def send_email_notifile(email, body, content):
 
@@ -550,7 +611,7 @@ def send_email_notifile(email, body, content):
 
 
 
-def template_register(name, link):
+def template_register(name, action, link):
     template_email = """
     <!DOCTYPE html>
     <html>
@@ -710,7 +771,7 @@ def template_register(name, link):
                                                 <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding">Đăng ký tài khoản thành công</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding">Vui lòng bấm nút bên dưới để kích hoạt</td>
+                                                <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding">{}</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -759,5 +820,5 @@ def template_register(name, link):
 
     </body>
     </html>
-    """.format(name, link)
+    """.format(name, action , link)
     return template_email

@@ -1,7 +1,9 @@
 {% extends "website/base.html" %}
 {% load staticfiles %}
+{% load product_tags %}
+{% load humanize %}
 {% block title %}
-Thông tin cá nhân
+Chi tiết hóa đơn
 {% endblock %}
 {% block content %}
 <div class="order_detail">
@@ -15,46 +17,64 @@ Thông tin cá nhân
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row" style="border-top: 1px solid #ebebeb;position:relative">
+            <a class="btn btn-default" onclick="HTMLtoPDF()">In hóa đơn</a>
+            <div class="row" id="bill" >
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h2 class="a_center">Hóa đơn HD001</h2>
+                    <h2 class="a_center">Hóa đơn HD{{ order.id }}</h2>
                     <hr>
-                    <div class="border_around col-lg-6 calculator">
-                        <h3>Thông tin hóa đơn</h3>
-                        <span class="col-lg-4">Ngày lập: </span><label>12/12/2018</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Ngày giao hàng: </span><label>18/12/2018</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Trạng thái: </span><label>Đã nhận</label>
-                        <div class="clearfix"></div>
+                    
+                    <div class="col-lg-6">
+                        <div class="border_around col-lg-12 calculator">
+                            <h3>Thông tin hóa đơn</h3>
+                            <span class="col-lg-4">Ngày lập: </span><label>{{ order.created }}</label>
+                            <div class="clearfix"></div>
+                            {% if order.state == '2' %}
+                            <span class="col-lg-4">Trạng thái: </span><label>Đang xử lý</label>
+                            {% endif %}
+                            {% if order.state == '1' %}
+                            <span class="col-lg-4">Trạng thái: </span><label>Thành công</label>
+                            {% endif %}
+                            {% if order.state == '0' %}
+                            <span class="col-lg-4">Trạng thái: </span><label>Thất bại</label>
+                            {% endif %}
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Tổng tiền: </span><label>{{ order.amount|intcomma }} VND</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Phí vận chuyện: </span><label>0 VND</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Hình thức thanh toán:</span><label>COD</label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="border_around col-lg-12">
+                            <h3>Thông tin người nhận</h3>
+                            <span class="col-lg-4">Họ và tên: </span><label>{{ order.name }}</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Địa chỉ </span><label>{{ order.address }}</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Số điện thoại</span><label>{{ order.phone }}</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Ghi chú</span><label>{{ order.note }}</label>
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
-                    <div class="border_around col-lg-6">
-                        <h3>Thông tin người mua</h3>
-                        <span class="col-lg-4">Họ và tên: </span><label>Nguyễn Văn A</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Địa chỉ </span><label>Số 5 Nguyễn Trãi, Phường 3, Quận 5</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Số điện thoại</span><label>09789 789 789</label>
-                        <div class="clearfix"></div>
+                    <div class="col-lg-6">
+                        {% for item in merchants %}
+                        <div class="border_around col-lg-12 calculator">
+                            <h3>Thông tin người bán</h3>
+                            <span class="col-lg-4">Tên người bán: </span><label>{{ item.name }}</label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Cửa hàng: </span><label><a href="/shop/{{item.id}}">{{ item.name_shop}}</a></label>
+                            <div class="clearfix"></div>
+                            <span class="col-lg-4">Đánh giá:</span><label>{{ item.rating }}</label>
+                            <div class="clearfix"></div>
+                            {% if order.state == '1' or order.state == '0' %}
+                            <span class="col-lg-4"></span><label>Đánh giá người mua</label>
+                            <div class="clearfix"></div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
                     </div>
-                    <div class="border_around col-lg-6 calculator">
-                        <h3>Thông tin thanh toán</h3>
-                        <span class="col-lg-4">Tổng tiền: </span><label>10.790.000 VND</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Phí vận chuyện: </span><label>0 VND</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Hình thức thanh toán:</span><label>COD</label>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="border_around col-lg-6">
-                        <h3>Thông tin người nhận</h3>
-                        <span class="col-lg-4">Họ và tên: </span><label>Nguyễn Văn B</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Địa chỉ </span><label>Số 5 An Dương Vương, Phường 3, Quận 5</label>
-                        <div class="clearfix"></div>
-                        <span class="col-lg-4">Số điện thoại</span><label>09789 123 456</label>
-                        <div class="clearfix"></div>
-                    </div>
+                    
                     <div class="clearfix"></div>
                     <div class="template_cart" style="border-top:1px solid #ebebeb;margin-top:15px;">
                         <h3 style="padding-left:15px; border-bottom:1px solid #ebebeb;margin-bottom:15px;padding-bottom:15px;">Sản
@@ -62,27 +82,28 @@ Thông tin cá nhân
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <table class="tbl_cart">
                                 <tr>
-                                    <th>No.1</th>
+                                    <th>Hình</th>
                                     <th>Sản phẩm</th>
                                     <th class="hidden-xs">Giá</th>
                                     <th class="hidden-xs">Số lượng</th>
-                                    <th class="hidden-xs">Tổng cộng</th>
                                     <th>Nguời bán</th>
-                                    <th>Đánh giá</th>
+                                    <th>Trạng thái</th>
+                                    <th class="hidden-xs">Hành động</th>
                                 </tr>
+                                {% for item in order_detail %}
+                                {% get_image_product item.product.id as image  %}
                                 <tr>
-                                    <td class="thumb_cart"> <img src="{% static 'website/images/product_1.jpg' %}"></td>
-                                    <td>iPhone 7 Plus 32GB-iPhone 7 Plus 32GB</td>
-                                    <td class="hidden-xs">10.790.000 ₫</td>
-                                    <td class="hidden-xs">1</td>
-                                    <td class="hidden-xs">10.790.000 ₫</td>
-                                    <td><a href="#">Nguyễn Văn Tèo</a></td>
-                                    <td><i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                    <td class="thumb_cart"> <img src="{{ image }}"></td>
+                                    <td>{{ item.product.name }}</td>
+                                    <td class="hidden-xs">{{ item.price|intcomma }} ₫</td>
+                                    <td class="hidden-xs">{{ item.quantity }}</td>
+                                    <td class="hidden-xs">{{ item.merchant.name }}</td>
+                                    <td><a href="#">{{ item.state_display }}</a></td>
+                                    {% if item.state != '1' and item.state != '0' %}
+                                    <td>   
+                                        <button onclick="cancel_order_item({{item.id}})">Hủy bỏ</button>
                                     </td>
+                                    {% endif %}
                                 </tr>
                                 <tr>
                                     <th class="hidden-sm hidden-md hidden-lg">Giá: </th>
@@ -90,12 +111,18 @@ Thông tin cá nhân
                                     <th class="hidden-sm hidden-md hidden-lg">Số luợng: </th>
                                     <td class="hidden-sm hidden-md hidden-lg">1</td>
                                 </tr>
+                                {% endfor %}
 
                             </table>
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
+                        {% if order.state == '2' %}
+                        <button class="btn btn-success" id="success_order">Hoàn tất</button>
+                        <button class="btn btn-warning" id="cancel_order">Hủy toàn bộ</button>
+                        {% endif %}
+                        <a href="/customer/history_order" class="btn btn-default">Trở về</a>
                     </div>
                 </div>
             </div>
@@ -103,3 +130,10 @@ Thông tin cá nhân
     </div>
 </div>
     {% endblock %}
+
+{% block zoom_img_js %}
+<script src="{% static 'customer/src/js/bill.js' %}"></script>
+<script src="{% static 'customer/src/js/jspdf.js' %}"></script>
+<script src="{% static 'customer/src/js/jquery-2.1.3.js' %}"></script>
+<script src="{% static 'customer/src/js/pdfFromHTML.js' %}"></script>
+{% endblock %}

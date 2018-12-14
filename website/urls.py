@@ -9,11 +9,14 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('index',views.index,name="index"),
     path('activity/<email>/<code>/', views.activity_account, name='activity_account'),
-    path('request_new_password/', views.request_new_password, name='request_new_password'),
-    path('request_merchant/', views.request_merchant, name='request_merchant'),
+    path('request_new_password/<email>/<code>/', views.request_new_password, name='request_new_password'),
     path('activity_merchant/<email>/<code>/', views.activity_merchant, name='activity_merchant'),
     path('activity_ad/<email>/<code>/', views.activity_ad, name='activity_ad'),
+    #path('forgot_password/', views.forgot_password, name='forgot_password'),
+    #path('request_merchant/', views.request_merchant, name='request_merchant'),
 
+    path('shop/<id_account>', views.shop, name='shop'),
+    path('search', views.search, name='search'),
 
     
     path('collections/<int:id_category>', views.collections, name='collections'),
@@ -23,6 +26,8 @@ urlpatterns = [
 
 
     #function
+
+    path('forgot_password', functions.forgot_password, name='forgot_password'),
 
     path('get_profile_payment', functions.get_profile_payment, name='get_profile_payment'),
     path('product_by_category/<int:id_category>', functions.product_by_category, name='product_by_category'),

@@ -47,7 +47,7 @@ def services(request):
                 services.append(service)
             return HttpResponse(json.dumps(services), content_type="application/json")
         return HttpResponse(serialize('json', Service.objects.all()), content_type="application/json")
-    return HttpResponse('error')
+    return HttpResponse('Error')
 
 
 # Service_add
@@ -324,7 +324,7 @@ def user(request, id_user):
                 account['role'] = 2
             if user.activity_advertiser == True:
                 account['role'] = 3
-            if user.activity_account and user.activity_merchant == False:
+            if user.activity_account and user.activity_merchant == False and user.activity_advertiser == False:
                 account['role'] = 1
             if user.is_admin == True:
                 account['role'] = 0

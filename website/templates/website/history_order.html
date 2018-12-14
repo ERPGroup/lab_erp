@@ -1,5 +1,6 @@
 {% extends "website/base.html" %}
 {% load staticfiles %}
+{% load humanize %}
 {% block title %}
 Thông tin cá nhân
 {% endblock %}
@@ -28,14 +29,23 @@ Thông tin cá nhân
                                     <th>Trạng thái</th>
                                     <th>Chi tiết hoá đơn</th>
                                 </tr>
+                                {% for item in data %}
                                 <tr>
-                                    <td>HD001</td>
-                                    <td>10.790.000 ₫</td>
-                                    <td class="hidden-xs">12/12/2018</td>
-                                    <td> Đã giao</td>
-                                    <td><a href="#">Xem thêm</a></td>
+                                    <td>HD{{ item.id }}</td>
+                                    <td>{{ item.amount|intcomma }} ₫</td>
+                                    <td class="hidden-xs">{{ item.created }}</td>
+                                    {% if item.state == '1' %}
+                                    <td><label class="lable lable-succes">Hoàn thành</label></td>
+                                    {% endif %}
+                                    {% if item.state == '0' %}
+                                    <td><label class="lable lable-danger">Hủy bỏ</label></td>
+                                    {% endif %}
+                                    {% if item.state == '2' %}
+                                    <td><label class="lable lable-succes">Đang xử lý</label></td>
+                                    {% endif %}
+                                    <td><a href="/customer/bill_detail/{{ item.id }}">Xem thêm</a></td>
                                 </tr>
-
+                                {% endfor %}
                             </table>
                             <div class="clearfix"></div>
                         </div>

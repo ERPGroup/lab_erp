@@ -10,19 +10,20 @@ from django.contrib import messages
 from . import functions
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
+
 def check_rule(request):
     if 'user' in request.session:
         user = request.session.get('user')
-        print(user['role'])
-        if 2 in user['role']:
-            print(user)
+        #print(user['role'])
+        if 2 in user['role'] or 3 in user['role']:
+            #print(user)
             return 1
         return 0
     return 0
 
 def login (request):
     if check_rule(request) == 1:
-        return redirect('/merchant/index')
+        return redirect('/merchant/')
     return render(request,'login/Login.html')
 
 

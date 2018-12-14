@@ -24,7 +24,7 @@ def check_rule(request):
     if 'user' in request.session:
         user = request.session.get('user')
         print(user['role'])
-        if 2 in user['role']:
+        if 2 in user['role'] or 3 in user['role']:
             print(user)
             return 1
         return 0
@@ -1337,10 +1337,22 @@ def rating_customer(request):
             num_of_star = num_star,
             confirm_bought = True,
         )
-
         header = 'Bạn được người bán '+ merchant.name_shop +' đánh giá!'
         body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1><p>Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</p><p>Đánh giá lại merchant tại đây!</p>'
         send_email_notifile(customer.email, header, body)
+
+        rating_count = Rating_Customer.objects.filter(customer_id=order['customer_id'], is_activity=True).count()
+        if rating_count == 0:
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(customer.email, header, body)
+        rating_ponit = Rating_Customer.objects.filter(customer_id=order['customer_id'], is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if rating_ponit == None:
+            rating_ponit = 0
+        if (float(rating_point/rating_count) < 2):
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(customer.email, header, body)
         return HttpResponse(1)
 
         
@@ -1353,7 +1365,7 @@ def list_rating(request):
             list_rating = []
             for item in rating_all:
                 rating_item = []
-                rating_item.append('<a href="/admin/user/see/'+ str(item.customer.id) +'">'+ item.customer.name +'</a>')
+                rating_item.append('<a>'+ item.customer.name +'</a>')
                 rating_item.append(str(item.num_of_star))
                 rating_item.append(item.comment)
                 if item.confirm_bought == True:

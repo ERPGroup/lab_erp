@@ -10,8 +10,7 @@ from . import functions
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/',views.login,name='login'),
-
+    path('login',views.login,name='login'),
 
     path('manager_product',views.product,name='manager product'),
     path('product/add', views.product_add, name='product_add'),

@@ -78,6 +78,19 @@ function clickShowCategory(a)
 function clickShowFooter (a) {
   $('#'+a).slideToggle();
 }
+
+function forgot_password (){
+  var c = document.getElementById('forgot_password')
+  c.style.display = 'block';
+  var x = document.getElementById('fr_login')
+  x.style.display = 'none';
+}
+function show_login(){
+  var c = document.getElementById('forgot_password')
+  c.style.display = 'none';
+  var x = document.getElementById('fr_login')
+  x.style.display = 'block';
+}
 // function quick_view () {
 //   var popup = document.getElementById('popup_quickview')
 //   popup.style.display = 'block'

@@ -84,11 +84,9 @@ def activity_account(request, email, code):
             return redirect('/')
         else:
             if account.code_act_account == code:
-
                 account.activity_account = True
                 account.save()
 
-                account = Account.objects.get(email=email)
                 request.session['user'] = {
                     'id': account.id,
                     'email': account.email,
@@ -113,9 +111,8 @@ def activity_merchant(request, email, code):
         else:
             if account.code_act_merchant == code:
                 account.activity_merchant = True
+                account.activity_account = True
                 account.save()
-
-                account = Account.objects.get(email=email)
                 print(role_user_session(account))
                 request.session['user'] = {
                     'id': account.id,
@@ -126,9 +123,12 @@ def activity_merchant(request, email, code):
                 for item in service_all:
                     Account_Service.objects.create(
                         account=account,
-                        service=service,
+                        service=item,
                         remain=0,
                     )
+
+                admin = Account.objects.filter(is_admin=True).first()
+                Rating.objects.create(customer=admin, merchant=account, num_of_star=3, confirm_bought=False, is_activity=True)
                 messages.success(request, message='Tài khoản của bạn đã kích hoạt!', extra_tags='alert')
                 return redirect('/')
             else:
@@ -148,9 +148,9 @@ def activity_ad(request, email, code):
         else:
             if account.code_act_ads == code:
                 account.activity_advertiser = True
+                account.activity_account = True
                 account.save()
 
-                account = Account.objects.get(email=email)
                 print(role_user_session(account))
                 request.session['user'] = {
                     'id': account.id,
@@ -168,50 +168,52 @@ def activity_ad(request, email, code):
         return redirect('/')
     return
 
-def request_new_password(request):
-    email = request.POST.get('forgot_email')
-    try:
-        account = Account.objects.get(email=email)
-        return HttpResponse('Da gui thong tin qua email')
-    except ObjectDoesNotExist:
-        return HttpResponse('Email khong ton tai')
-    return
 
-
-def forgot_password(request):
-    if request.method == 'POST':
-        email = request.POST.get('inputEmail')
-    return
-
-
-
-def request_merchant(request):
-    if check_session(request) == 0:
-        return redirect('/login')
-    print(request.session.get('user'))
-    if 2 in request.session.get('user')['role']:
-        messages.warning(request, message='You were a merchant!', extra_tags='alert')
+def request_new_password(request, email, code):
+    if Account.objects.filter(email=email).exists() == False:
+        messages.warning(request, message='Lỗi! Tài khoản không hợp lệ!', extra_tags='alert')
         return redirect('/')
-
-    if request.method == 'POST':
-        account = Account.objects.get(email=request.session.get('user')['email'])
-        code = random_code_activity(40)
-        email = account.email
-        account.code_act_merchant = code
+    account = Account.objects.get(email=email)
+    if account.code_act_account == code:
+        account.activity_account = True
         account.save()
-        send_mail_register('activity_merchant', email, code)
-        messages.success(request, message='Request Success! Please check email!', extra_tags='alert')
+
+        request.session['user'] = {
+            'id': account.id,
+            'email': account.email,
+            'role': role_user_session(account),
+        }
+        return redirect('/customer/profile')
+    else:
+        messages.warning(request, message='Lỗi! Mã code không hợp lệ!!', extra_tags='alert')
         return redirect('/')
-    return render(request, 'website/request_merchant.html')
 
 
-#Can them cac dich vu cho tai khoan nguoi ban
+# def request_merchant(request):
+#     if check_session(request) == 0:
+#         return redirect('/login')
+#     print(request.session.get('user'))
+#     if 2 in request.session.get('user')['role']:
+#         messages.warning(request, message='You were a merchant!', extra_tags='alert')
+#         return redirect('/')
+
+#     if request.method == 'POST':
+#         account = Account.objects.get(email=request.session.get('user')['email'])
+#         code = random_code_activity(40)
+#         email = account.email
+#         account.code_act_merchant = code
+#         account.save()
+#         send_mail_register('activity_merchant', email, code)
+#         messages.success(request, message='Request Success! Please check email!', extra_tags='alert')
+#         return redirect('/')
+#     return render(request, 'website/request_merchant.html')
 
 
-def resend_code(request):
+def search(request, id_account):
     return
 
-
+def shop(request, id_account):
+    return
 
 #Product - collection - detail 
 def detail_post(request, id_post):
