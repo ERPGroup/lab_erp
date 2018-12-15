@@ -108,6 +108,7 @@ urlpatterns = [
     path('payment_posts', functions.payment_posts, name="payment_posts"),
     path('f_payment_post_detail/<int:id_payment>', functions.f_payment_post_detail, name='f_payment_post_detail'),
     path('payment_ads', functions.payment_ads, name="payment_ads"),
+    path('f_payment_ads_detail/<int:id_payment_ads>', functions.f_payment_ads_detail, name='f_payment_ads_detail'),
 
     #user
     path('user/<int:id_user>', functions.user, name='user'),

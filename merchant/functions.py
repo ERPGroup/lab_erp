@@ -771,6 +771,41 @@ def posts(request):
 ### Ly Thanh
 # Lý Thành
 
+def payment_ads(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if request.GET.get('table') == 'true':
+            list_payment = []
+            payment_all = Purchase_Service_Ads.objects.filter(merchant_id_id=request.session.get('user')['id'])
+            for item in payment_all:
+                payment_item = []
+                payment_item.append('<a href="/merchant/payment_ads_detail/'+ str(item.id) +'">'+ item.purchase_name +'</a>')
+                payment_item.append('<a href="/admin/user/see/'+ str(item.merchant_id.id) +'">'+ item.merchant_id.name +'</a>')
+                payment_item.append(str(item.amount) + ' VNĐ')
+                payment_item.append(str(item.success_at.replace(tzinfo=None)).split(' ')[0]+ ' ' +str(item.success_at.replace(tzinfo=None)).split(' ')[1].split('.')[0])
+                if item.state != 0:
+                    payment_item.append('<label class="label label-success">Thanh toán thành công</label>')
+                else:   
+                    payment_item.append('<label class="label label-danger">Thanh toán thất bại</label>')
+                list_payment.append(payment_item)
+            return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+        return HttpResponse('No data')
+def f_payment_ads_detail(request, id_payment_ads):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if Purchase_Service_Ads.objects.filter(pk=id_payment_ads).exists() == False:
+            return HttpResponse('Không tồn tại giao dịch!')
+        payment =  Purchase_Service_Ads.objects.get(pk=id_payment_ads).__dict__
+        del payment['_state']
+        merchant = Account.objects.filter(pk=payment['merchant_id_id']).values('name', 'email')[0]
+        #del merchant['_state']
+        service = Service_Ads.objects.get(pk=payment['service_ads_id_id']).__dict__
+        del service['_state']
+        payment['merchant'] = merchant
+        payment['service'] = service
+        return HttpResponse(json.dumps(payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
 
 def f(x):
     return {
@@ -1067,12 +1102,21 @@ def purchase_service_ads(request):
                 date_start=date_start,
             )
             purchase_service.save()
+            body = "Thông tin thanh toán quảng cáo"
+            content = "<html><head>"
+            content += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">'
+            content += "</head><body>"
+            content += "<table class='table'><thead><tr><th>Mã giao dịch</th><th>Mã dịch vụ</th><th>Người thanh toán</th><th>Tổng tiền</th></tr></thead>"
+            content += "<tbody><tr class='success'><td>"+purchase_name+"</td><td>"+Service_Ads.objects.get(pk=service_ads_id).service_name+"</td><td>"+merchant_id.name+"</td><td>"+amount+"</td></tr></tbody>"
+            content += "</table>"
+            content += "</body></html>"
+            send_email_notifile(merchant_id.email,body,content)
             return HttpResponse('Success!')
         except:
             return HttpResponse('Error!')
     return HttpResponse('Error Add Purchase!')
 
-
+ 
 @csrf_exempt
 def getAllAdsRunning(request):
     if check_rule(request) == 0:
@@ -1081,15 +1125,17 @@ def getAllAdsRunning(request):
     mer_id = merchant_id.id
     if request.method == 'GET':
         result = []
-        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=4,customer_id__id=mer_id):
+        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=3 or 4,customer_id__id=mer_id):
             post_dict = dict()
             post_dict['id'] = item.id
             post_dict['ads_name'] = "<a href='/merchant/manager_ads_running_detail/"+str(item.purchase_service_id.id)+"'>"+item.service_name+"</a>"
             post_dict['user'] = item.customer_id.name
             post_dict['date_start']=item.purchase_service_id.date_start.replace(tzinfo=None).strftime("%d/%m/%Y")
             post_dict['date_end'] = (item.purchase_service_id.date_start+timedelta(days=item.purchase_service_id.service_ads_id.day_limit)).replace(tzinfo=None).strftime("%d/%m/%Y")
-            if item.state == "2":
+            if item.state == "2" and item.purchase_service_id.state == "4":
                 post_dict['status'] = "<label class='label label-success'>Đang chạy</label>"
+            if item.state == "2" and item.purchase_service_id.state == "3":
+                post_dict['status'] = "<label class='label label-success'>Đã duyệt - Chưa chạy</label>"
             if item.state == "1":
                 post_dict['status'] = "<label class='label label-warning'>Đang duyệt</label>"
             if item.state == "-1":

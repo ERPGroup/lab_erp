@@ -13,7 +13,8 @@ Trang chi tiết người dùng
         <h1 class="page-header">
             Quản lý quảng cáo <small>Thêm mới</small>
             <div style="display:inline-block; text-align:left;float:right;">
-                <a href="/admin/manager_ads" class="btn btn-info"><i class="fa fa-arrow-left" style="padding-right:10px;"></i>Quay lại</a>
+                <a href="/admin/manager_ads" class="btn btn-info"><i class="fa fa-arrow-left" style="padding-right:10px;"></i>Quay
+                    lại</a>
             </div>
             {% if ads.id %}
             <div style="display:inline-block; text-align:right;float:right;">
@@ -32,11 +33,12 @@ Trang chi tiết người dùng
             {% if success == "success" %}
             <h5 class="alert alert-success" style="margin:0px;"><i class="fa fa-check"></i>Thành công</h5>
             {% endif %}
+            <div class="form-group">
+                <h3 style="text-align:center;">Thông tin quảng cáo</h3>
+                <hr>
+            </div>
             <div class="col-lg-6">
-                <div class="form-group">
-                    <h3>Thông tin quảng cáo</h3>
-                    <hr>
-                </div>
+
                 <div class="form-group">
                     <label>Mã quảng cáo:</label>
                     <input type="text" disabled="disabled" value="{% if ads is None %}{{ads_id}}{% else %}{{ads.id}}{%endif%}"
@@ -53,6 +55,9 @@ Trang chi tiết người dùng
                     <input name="inputPosition" type="text" value="{% if ads is None %}{% else %}{{ads.position}}{%endif%}"
                         class="form-control">
                 </div>
+
+            </div>
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label>Giá tiền:</label>
                     <input type="text" name="inputAmount" value="{% if ads is None %}{% else %}{{ads.amount|intcomma}}{%endif%}"
@@ -63,33 +68,12 @@ Trang chi tiết người dùng
                     <input name="inpuLimit" type="text" value="{% if ads is None %}{% else %}{{ads.day_limit}} Ngày{%endif%}"
                         class="form-control">
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <h3>Hình thức quảng cáo</h3>
-                    <hr>
-                </div>
-                <div class="form-group">
-                    <label>Loại quảng cáo</label>
-                    <input name="inputType" type="text" value="{% if ads is None %}{% else %}{{ads.type_service}}{%endif%}"
-                        class="form-control">
-                </div>
                 <div class="form-group" id="checkPassword">
                     <label>Trạng thái</label>
                     <select name="inputStatus" class="form-control">
                         <option {% if ads.is_active %}selected="selected" {%endif%}>Kích hoạt</option>
                         <option {% if ads.is_active %}{%else%}selected="selected" {%endif%}>Không kích hoạt</option>
                     </select>
-                </div>
-                <div class="form-group frm_tags">
-                    <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
-                    <input type="text" class="form-control" placeholder="Nhập tags cho gói tin">
-                    <ul>
-                        <li>
-                            <span>Demo test<a href="#"><i class="fa fa-remove"></i></a></span>
-                        </li>
-                        <li><span>Deme test<a href="#"><i class="fa fa-remove"></i></a></span></li>
-                    </ul>
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">

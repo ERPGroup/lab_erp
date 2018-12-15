@@ -60,6 +60,8 @@ urlpatterns = [
     path('count', cart.count, name='count'),
     
     #Ly Thanh
-    path('getAds',functions.getAds,name="get_ads_top")
+    path('getAds',functions.getAds,name="get_ads_top"),
+
+    path('product',views.product,name="product"),
 
 ]

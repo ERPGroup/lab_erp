@@ -2,6 +2,19 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from website.models import *
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
+from  passlib.hash import pbkdf2_sha256
+def role_user_session(account):
+    # account = Account.objects.get(email=email)
+    role = []
+    if account.is_admin:
+        role.append(0)
+    if account.activity_account:
+        role.append(1)
+    if account.activity_merchant:
+        role.append(2)
+    if account.activity_advertiser:
+        role.append(3)
+    return role
 
 def check_rule(request):
     if 'user' in request.session:
@@ -12,12 +25,37 @@ def check_rule(request):
             return 1
         return 0
     return 0
-
+def check_session(request):
+    if 'user' in request.session:
+        return 1
+    return 0
 # Create your views here.
 def login (request):
-    if check_rule(request) == 1:
-        return redirect('/admin/')
-    return render(request,'login/Login.html')
+    if check_session(request):
+        if check_rule(request) == 1:
+            return redirect('/admin/')
+        else:
+            return render(request, 'login/Login.html',{'error':"Bạn không có quyền truy cập"})
+    if request.method == 'POST':
+        email = request.POST.get('inputEmail')
+        password = request.POST.get('inputPassword')
+        try:
+            account = Account.objects.get(email=email)
+            if pbkdf2_sha256.verify(password, account.password):
+                if account.activity_account == True:
+                    request.session['user'] = {
+                        'id': account.id,
+                        'email': account.email,
+                        'role': role_user_session(account),
+                    }
+                    return redirect('/admin/') 
+                else:
+                    return HttpResponse('Vui lòng xác nhận email!')
+            return HttpResponse('Mật khẩu không đúng!')
+        except ObjectDoesNotExist:
+            return HttpResponse('Email không tồn tại!')
+        return
+    return render(request, 'login/Login.html')
 
 def index(request):
     if check_rule(request) == 0:

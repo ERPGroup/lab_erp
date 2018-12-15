@@ -350,4 +350,6 @@ def cart(request):
     else:
         messages.warning(request, message='Vui lòng đăng nhập để mua hàng', extra_tags='alert')
         return redirect('/')
-    
+
+def product(request):
+    return render(request,'website/product.html')

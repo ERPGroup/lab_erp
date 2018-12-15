@@ -1,12 +1,21 @@
 ﻿<!doctype html>
 <html>
 {% load staticfiles %}
+
 <head>
     <title>Đăng nhập quản trị</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Tablet Plaza" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script type="application/x-javascript">
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <!-- /fonts -->
@@ -21,21 +30,30 @@
     <h1 class="w3layouts agileits">Tablet Plaza</h1>
     <div class="content-w3ls agileits">
         <a href="/"><img src="{% static 'login/images/logo.png' %}" alt="" class="user-wthree"></a>
-        <fieldset>
-            <div class="form-group1-agile agile-info">
-                <input type="text" placeholder="Email" name="username" id="username">
-            </div>
-            <div class="form-group2-agile agile-info">
-                <input type="password" placeholder="Mật khẩu" name="password" id="password">
-            </div>
+        <form action="{{ request.path }}" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                {% if error is None %}
+                {% else %}
+                <div class="form-group-1-agile agile-info">
+                    <label class="alert alert-danger" style="color:red;">{{error}}</label>
+                </div>
+                {% endif %}
+                <div class="form-group1-agile agile-info">
+                    <input type="text" placeholder="Email" name="inputEmail" id="username">
+                </div>
+                <div class="form-group2-agile agile-info">
+                    <input type="password" placeholder="Mật khẩu" name="inputPassword" id="password">
+                </div>
 
-            <div class="form-group3-agile wthree">
-                <input type="checkbox" name="checked" id="brand">
-                <label for="brand"><span></span>Ghi nhớ đăng nhập</label>
-            </div>
-            <!-- Change this to a button or input when using this as a form -->
-            <input type="submit" value="ĐĂNG NHẬP">
-        </fieldset>
+                <div class="form-group3-agile wthree">
+                    <input type="checkbox" name="checked" id="brand">
+                    <label for="brand"><span></span>Ghi nhớ đăng nhập</label>
+                </div>
+                <!-- Change this to a button or input when using this as a form -->
+                <input type="submit" value="ĐĂNG NHẬP">
+            </fieldset>
+        </form>
     </div>
     <div class="footer-w3ls w3-agile">
         <p class="w3-agileits"> © 2018 Bản quyền thuộc về Tablet Plaza | Thiết kế bởi <a href="http://w3layouts.com/">IT_Team_DCT</a></p>

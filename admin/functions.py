@@ -774,6 +774,15 @@ def confirmPost(request):
         service_ads.update(state=3)
         post_ads = Service_Ads_Post.objects.filter(id=pid)
         post_ads.update(state=2)
+        body ="Thông báo duyệt nội dung quảng cáo"
+        content = "<html><body>"
+        content += "<h2 style='text-align:center;'>Nội dung quảng cáo của bạn đã được duyệt</h2>"
+        content += "<br><label style='font-size:14px'>Nội dung quảng cáo</label>"
+        content += "<img src='http://localhost/ads/"+post_ads[0].image_1+"'>"
+        content += " <br><br> <b>Nếu có thắc mắc, vui lòng liên hệ chúng tôi trong vòng 48h - kể từ lúc mail này được gửi."
+        content+=  "Mọi sự cố liên quan đến giao dịch quá thời hạn trên chúng tôi sẽ không giải quyết, xin cám ơn. </b> "
+        content+="</body></html>"
+        send_email_notifile(service_ads[0].merchant_id.email,body,content)
         return HttpResponse(1)
     return HttpResponse(-1)
 @csrf_exempt
@@ -787,6 +796,14 @@ def cancelPost(request):
         service_ads.update(state=1)
         post_ads = Service_Ads_Post.objects.filter(id=pid)
         post_ads.update(state=-1)
+        body ="Thông báo duyệt nội dung quảng cáo"
+        content = "<html><body>"
+        content += "<h2 style='text-align:center;'>Nội dung quảng cáo của bạn <b> không được duyệt </b></h2>"
+        content += "<br><label style='font-size:14px'>Nội dung quảng cáo</label>"
+        content += "<img src='http://localhost/ads/"+post_ads[0].image_1+"'>"
+        content += " <br><br> <b>Nếu có thắc mắc, vui lòng liên hệ chúng tôi. Hotline: 0978956043 - Mail: abc@gmail.com"
+        content+="</body></html>"
+        send_email_notifile(service_ads[0].merchant_id.email,body,content)
         return HttpResponse(1)
     return HttpResponse(-1)
 
@@ -1065,20 +1082,36 @@ def payment_ads(request):
     if request.method == 'GET':
         if request.GET.get('table') == 'true':
             list_payment = []
-            payment_all = Purchase_Service_Ads.objects.filter(merchant_id_id=request.session.get('user')['id'])
+            payment_all = Purchase_Service_Ads.objects.all()
             for item in payment_all:
                 payment_item = []
-                payment_item.append('<a>'+ item.purchase_name +'</a>')
+                payment_item.append('<a href="/admin/payment_ads_detail/'+ str(item.id) +'">'+ item.purchase_name +'</a>')
                 payment_item.append('<a href="/admin/user/see/'+ str(item.merchant_id.id) +'">'+ item.merchant_id.name +'</a>')
-                payment_item.append(str(item.amount) + ' $')
+                payment_item.append(str(item.amount) + ' VNĐ')
                 payment_item.append(str(item.success_at.replace(tzinfo=None)).split(' ')[0]+ ' ' +str(item.success_at.replace(tzinfo=None)).split(' ')[1].split('.')[0])
-                if item.state == 1:
+                if item.state != 0:
                     payment_item.append('<label class="label label-success">Thanh toán thành công</label>')
                 else:   
                     payment_item.append('<label class="label label-danger">Thanh toán thất bại</label>')
                 list_payment.append(payment_item)
             return HttpResponse(json.dumps(list_payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
         return HttpResponse('No data')
+def f_payment_ads_detail(request, id_payment_ads):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'GET':
+        if Purchase_Service_Ads.objects.filter(pk=id_payment_ads).exists() == False:
+            return HttpResponse('Không tồn tại giao dịch!')
+        payment =  Purchase_Service_Ads.objects.get(pk=id_payment_ads).__dict__
+        del payment['_state']
+        merchant = Account.objects.filter(pk=payment['merchant_id_id']).values('name', 'email')[0]
+        #del merchant['_state']
+        service = Service_Ads.objects.get(pk=payment['service_ads_id_id']).__dict__
+        del service['_state']
+        payment['merchant'] = merchant
+        payment['service'] = service
+        return HttpResponse(json.dumps(payment, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
+
 
 def send_email_notifile(email, body, content):
 
