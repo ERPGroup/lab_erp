@@ -16,7 +16,7 @@ def check_rule(request):
 # Create your views here.
 def login (request):
     if check_rule(request) == 1:
-        return redirect('/admin/index.html')
+        return redirect('/admin/')
     return render(request,'login/Login.html')
 
 def index(request):

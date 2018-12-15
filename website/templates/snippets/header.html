@@ -12,9 +12,9 @@
                 <i id="click_drop_menu_fixed" class="fa fa-align-justify"></i>
             </span>
             <div class="search  col-xs-8 col-sm-7 col-md-7 col-lg-7">
-                <form action="#" method="get">
-                    <input type="text" placeholder="Tìm kiếm ..." name="id">
-                    <button><i class="fa fa-search"></i></button>
+                <form action="/search" method="get">
+                    <input type="text" placeholder="Tìm kiếm ..." name="r">
+                    <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
             </div>
             <div class="margin_center col-xs-2 hidden-sm hidden-md hidden-lg">
@@ -109,9 +109,9 @@
             <a href="/index"><img src="{% static 'website/images/logo.png' %} "></a>
         </div>
         <div class="search  hidden-xs col-sm-7 col-md-7 col-lg-7">
-            <form action="#" method="get">
-                <input type="text" placeholder="Tìm kiếm ..." name="id">
-                <button><i class="fa fa-search"></i></button>
+            <form action="/search" method="get">
+                <input type="text" placeholder="Tìm kiếm ..." name="r">
+                <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
         <div class="cart hidden-xs col-sm-2 col-md-2 col-lg-2">
@@ -181,7 +181,7 @@
             </div>
             <div class="search col-xs-12 hidden-sm hidden-md hidden-lg">
                 <div>
-                    <input type="text" placeholder="Tìm kiếm ..." name="id">
+                    <input type="text" placeholder="Tìm kiếm ..." name="r">
                     <button><i class="fa fa-search"></i></button>
                 </div>
             </div>

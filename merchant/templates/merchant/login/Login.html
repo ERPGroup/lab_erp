@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html>
+{% load staticfiles %}
+<head>
+    <title>Đăng nhập quản trị</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Tablet Plaza" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <!-- /fonts -->
+    <!-- css -->
+    <link rel="shortcut icon" href="{% static 'admin/assets/img/favicon.ico' %} ">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'login/css/style.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'login/css/font-awesome.min.css' %} " />
+    <!-- /css -->
+</head>
+
+<body>
+    <h1 class="w3layouts agileits">Tablet Plaza</h1>
+    <div class="content-w3ls agileits">
+        <a href="/"><img src="{% static 'login/images/logo.png' %}" alt="" class="user-wthree"></a>
+        <from action="/merchant/login" method="post" style="display:block;" class="frm_register">
+            {% csrf_token %}
+            <div class="form-group1-agile agile-info">
+                <input type="text" placeholder="Email" name="username" id="inputEmail">
+            </div>
+            <div class="form-group2-agile agile-info">
+                <input type="password" placeholder="Mật khẩu" name="password" id="inputPassword">
+            </div>
+
+            <div class="form-group3-agile wthree">
+                <input type="checkbox" name="checked" id="brand">
+                <label for="brand"><span></span>Ghi nhớ đăng nhập</label>
+            </div>
+            <!-- Change this to a button or input when using this as a form -->
+            <input type="submit" value="ĐĂNG NHẬP">
+        </from>
+    </div>
+    <div class="footer-w3ls w3-agile">
+        <p class="w3-agileits"> © 2018 Bản quyền thuộc về Tablet Plaza | Thiết kế bởi <a href="http://w3layouts.com/">IT_Team_DCT</a></p>
+    </div>
+    <!-- js -->
+    <!-- /js -->
+</body>
+
+</html>

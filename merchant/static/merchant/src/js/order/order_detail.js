@@ -29,6 +29,7 @@ $(document).ready(function () {
             if (response.disable_rating == true){
                 $('#part_rating').removeClass('hidden');
                 $('#inputRatingCus').attr('disabled', true)
+                $('#inputRatingCus').val(response.value_rating)
             }
             else{
                 if(response.rate_cus  == true){

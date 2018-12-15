@@ -32,10 +32,10 @@ Chi tiết hóa đơn
                             <span class="col-lg-4">Trạng thái: </span><label>Đang xử lý</label>
                             {% endif %}
                             {% if order.state == '1' %}
-                            <span class="col-lg-4">Trạng thái: </span><label>Thành công</label>
+                            <span class="col-lg-4">Trạng thái: </span><label>Hoàn thành</label>
                             {% endif %}
                             {% if order.state == '0' %}
-                            <span class="col-lg-4">Trạng thái: </span><label>Thất bại</label>
+                            <span class="col-lg-4">Trạng thái: </span><label>Hủy bỏ</label>
                             {% endif %}
                             <div class="clearfix"></div>
                             <span class="col-lg-4">Tổng tiền: </span><label>{{ order.amount|intcomma }} VND</label>
@@ -68,7 +68,7 @@ Chi tiết hóa đơn
                             <span class="col-lg-4">Đánh giá:</span><label>{{ item.rating }}</label>
                             <div class="clearfix"></div>
                             {% if order.state == '1' or order.state == '0' %}
-                            <span class="col-lg-4"></span><label>Đánh giá người mua</label>
+                            <span class="col-lg-4"></span><label><a href="/shop/{{item.id}}">Đánh giá người mua</a></label>
                             <div class="clearfix"></div>
                             {% endif %}
                         </div>
@@ -99,7 +99,7 @@ Chi tiết hóa đơn
                                     <td class="hidden-xs">{{ item.quantity }}</td>
                                     <td class="hidden-xs">{{ item.merchant.name }}</td>
                                     <td><a href="#">{{ item.state_display }}</a></td>
-                                    {% if item.state != '1' and item.state != '0' %}
+                                    {% if item.state != '1' and item.state != '0' and order.state == '2' %}
                                     <td>   
                                         <button onclick="cancel_order_item({{item.id}})">Hủy bỏ</button>
                                     </td>

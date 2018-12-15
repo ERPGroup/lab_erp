@@ -24,7 +24,7 @@ def check_rule(request):
 def login (request):
     if check_rule(request) == 1:
         return redirect('/merchant/')
-    return render(request,'login/Login.html')
+    return redirect('/login')
 
 
 def index(request):

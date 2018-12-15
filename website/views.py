@@ -1,6 +1,7 @@
 import random
 from django.shortcuts import render, redirect
 from .models import *
+from django.db.models import Sum
 
 # Create your views here.
 from django.http import HttpResponse
@@ -209,24 +210,122 @@ def request_new_password(request, email, code):
 #     return render(request, 'website/request_merchant.html')
 
 
-def search(request, id_account):
-    return
-
-def shop(request, id_account):
-    return
-
 #Product - collection - detail 
 def detail_post(request, id_post):
     if Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).exists() == False:
-        messages.warning(request, message='Product khong ton tai', extra_tags='alert')
+        messages.warning(request, message='Tin dang khong ton tai', extra_tags='alert')
         return redirect('/')
-    return render(request,'website/product.html') 
+    post = Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).first()
+    view_old = post.views
+    post.views = view_old + 1
+    post.save()
+
+    rating = dict()
+    count_star = Rating.objects.filter(merchant_id=post.creator_id.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+    star_5 = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True, num_of_star=5).count()
+    star_4 = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True, num_of_star=4).count()
+    star_3 = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True, num_of_star=3).count()
+    star_2 = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True, num_of_star=2).count()
+    star_1 = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True, num_of_star=1).count()
+    if count_star == None:
+        count_star = 0
+    count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+    if count_person == 0:
+        rating['agv_rating'] = 0
+    else:
+        rating['agv_rating'] = float(count_star/count_person)
+    if count_person != 0:
+        rating['star_5'] = [star_5, (star_5/count_person) *100]
+        rating['star_4'] = [star_4, (star_4/count_person) *100]
+        rating['star_3'] = [star_3, (star_3/count_person) *100]
+        rating['star_2'] = [star_2, (star_2/count_person) *100]
+        rating['star_1'] = [star_1, (star_1/count_person) *100]
+
+        list_color = []
+        for i in range(0, int(count_star/count_person)):
+            list_color.append(1)
+        for j in range(0, 5 - int(count_star/count_person)):
+            list_color.append(0)
+
+        rating['list_color'] = list_color
+    # rating['star_g'] = 5 - int(count_star/count_person)
+    list_rating = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).order_by('-pk')
+    for item in list_rating:
+        if item.num_of_star == 1:
+            item.list_color = [1,0,0,0,0]
+        if item.num_of_star == 2:
+            item.list_color = [1,1,0,0,0]
+        if item.num_of_star == 3:
+            item.list_color = [1,1,1,0,0]
+        if item.num_of_star == 4:
+            item.list_color = [1,1,1,1,0]
+        if item.num_of_star == 5:
+            item.list_color = [1,1,1,1,1]
+    rating['list_rating'] = list_rating
+    
+    return render(request,'website/product.html', {'rating': rating}) 
  
 def collections(request, id_category): 
     if Category.objects.filter(pk=id_category).exists() == False:
         messages.warning(request, message='Category khong ton tai', extra_tags='alert')
         return redirect('/')
     return render(request,'website/collection.html')
+
+def search(request):
+    if 'r' not in request.GET:
+        messages.warning(request, message='Vui lòng nhập từ khóa!', extra_tags='alert')
+        return redirect('/')
+    return render(request, 'website/search.html')
+
+def shop(request, id_shop):
+    if Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).exists() == False:
+        messages.warning(request, message='Cửa hàng không tồn tại!', extra_tags='alert')
+        return redirect('/')
+    
+    account = Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).first()
+    rating = dict()
+    count_star = Rating.objects.filter(merchant_id=account.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
+    star_5 = Rating.objects.filter(merchant_id=account.id, is_activity=True, num_of_star=5).count()
+    star_4 = Rating.objects.filter(merchant_id=account.id, is_activity=True, num_of_star=4).count()
+    star_3 = Rating.objects.filter(merchant_id=account.id, is_activity=True, num_of_star=3).count()
+    star_2 = Rating.objects.filter(merchant_id=account.id, is_activity=True, num_of_star=2).count()
+    star_1 = Rating.objects.filter(merchant_id=account.id, is_activity=True, num_of_star=1).count()
+    if count_star == None:
+        count_star = 0
+    count_person = Rating.objects.filter(merchant_id=account.id, is_activity=True).count()
+    if count_person == 0:
+        rating['agv_rating'] = 0
+    else:
+        rating['agv_rating'] = float(count_star/count_person)
+    if count_person != 0:
+        rating['star_5'] = [star_5, (star_5/count_person) *100]
+        rating['star_4'] = [star_4, (star_4/count_person) *100]
+        rating['star_3'] = [star_3, (star_3/count_person) *100]
+        rating['star_2'] = [star_2, (star_2/count_person) *100]
+        rating['star_1'] = [star_1, (star_1/count_person) *100]
+
+        list_color = []
+        for i in range(0, int(count_star/count_person)):
+            list_color.append(1)
+        for j in range(0, 5 - int(count_star/count_person)):
+            list_color.append(0)
+
+        rating['list_color'] = list_color
+    # rating['star_g'] = 5 - int(count_star/count_person)
+    list_rating = Rating.objects.filter(merchant_id=account.id, is_activity=True).order_by('-pk')
+    for item in list_rating:
+        if item.num_of_star == 1:
+            item.list_color = [1,0,0,0,0]
+        if item.num_of_star == 2:
+            item.list_color = [1,1,0,0,0]
+        if item.num_of_star == 3:
+            item.list_color = [1,1,1,0,0]
+        if item.num_of_star == 4:
+            item.list_color = [1,1,1,1,0]
+        if item.num_of_star == 5:
+            item.list_color = [1,1,1,1,1]
+    rating['list_rating'] = list_rating
+    return render(request, 'website/shop.html', {'rating': rating})
  
 def checkout(request): 
     if 'user' in request.session:

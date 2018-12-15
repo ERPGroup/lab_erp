@@ -22,16 +22,28 @@ def success_order(request, id_order):
         if Order.objects.filter(pk=id_order, customer_id=request.session.get('user')['id']).exists() == False:
             return HttpResponse('Đơn hàng không tồn tại')
         order = Order.objects.get(pk=id_order, customer_id=request.session.get('user')['id'])
+        print(order)
         if order.state == '1':
             return HttpResponse('Lỗi! Đơn hàng đã hoàn thành trước đó')
-        order_items_check_state = Order_Detail.objects.filter(order_id=id_order).values_list('state')
+        order_items = Order_Detail.objects.filter(order_id=id_order)
+        order_items_check_state = []
+        all_cancel = True
+        for item in order_items:
+            order_items_check_state.append(item.state)
+            print(item.state)
+            if item.state != '0':
+                all_cancel = False
+
+        print(all_cancel)
         if '2' in order_items_check_state:
             return HttpResponse('Không được phép thay đổi')
         if '3' in order_items_check_state:
             return HttpResponse('Không được phép thay đổi')
         if '4' in order_items_check_state:
             return HttpResponse('Không được phép thay đổi')
-        order.state == '1'
+        if all_cancel == True:
+            return HttpResponse('Không được phép thay đổi')
+        order.state = '1'
         order.save()
         return HttpResponse(1)
 
@@ -42,20 +54,29 @@ def cancel_order(request, id_order):
         order = Order.objects.get(pk=id_order, customer_id=request.session.get('user')['id'])
         if order.state == '0':
             return HttpResponse('Lỗi! Đơn hàng đã bị hủy trước đó')
-        order_items_check_state = Order_Detail.objects.filter(order_id=id_order).values_list('state')
+
+        order_items = Order_Detail.objects.filter(order_id=id_order)
+        order_items_check_state = []
+
+        for item in order_items:
+            order_items_check_state.append(item.state)
+
         if '1' in order_items_check_state:
             return HttpResponse('Không được phép thay đổi')
-        
-        order_item = Order_Detail.objects.filter(order_id=id_order)
-        for item in order_item:
+        if '0' in order_items_check_state:
+            return HttpResponse('Không được phép thay đổi')
+
+        for item in order_items:
             post = Post_Product.objects.filter(pk=item.post.id).first()
             bought = post.bought
+            if bought < item.quantity:
+                return HttpResponse('Lỗi!')
             post.bought = bought - item.quantity
             if post.is_lock == True:
                 post.is_lock = False
             post.save()
 
-        order.state == '0'
+        order.state = '0'
         order.save()
         return HttpResponse(1)
 
@@ -68,10 +89,12 @@ def cancel_order_item(request, id_order_item):
             return HttpResponse('Lỗi! Món hàng đã bị hủy trước đó')
         quantity = order_detail.quantity
         order_detail.state = '0'
-        order_detail.canceler_id = Account.objects.get(pk=request.session.get('user')['id'])
+        order_detail.canceler_id = request.session.get('user')['id']
         order_detail.save()
         post = Post_Product.objects.filter(pk=order_detail.post.id).first()
         bought = post.bought
+        if bought < quantity:
+            return HttpResponse('Lỗi!')
         post.bought = bought - quantity
         if post.is_lock == True:
             post.is_lock = False

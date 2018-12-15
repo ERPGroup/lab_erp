@@ -21,7 +21,7 @@ from sender import Mail, Message
 
 
 from cart.cart import Cart
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from random import randint
 
 def get_avatar_product(request, id_product):
@@ -40,7 +40,6 @@ def product_by_category(request, id_category):
             list_product = Post_Product.objects.filter(product_id_id__in=list_pro_cat, is_lock=False, is_activity=True)
             x = serialize('json', [list_product[0].product_id])
             c = (list_product)
-            print((get_object_or_404(c)))
             return HttpResponse(x, content_type="application/json")
             # x = serialize('json', list_product[0].product_id)
             # print(type(list_product[0].product_id))
@@ -69,6 +68,7 @@ def payment(request):
 
         try:
             order = Order(
+                name=name,
                 customer=customer,
                 amount=cart.total,
                 email=customer.email,
@@ -101,11 +101,13 @@ def payment(request):
                 post = Post_Product.objects.filter(product_id_id=product_orgin).order_by('-id').first()
                 bought = post.bought
                 post.bought = bought + item.quantity
+                if (item.quantity + bought) >= post.quantity:
+                    post.is_lock = True
                 post.save()
         except:
             raise
         cart.clear()
-        send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="http://localhost:8000/customer/order/'+ str(order.id) +'"> đây</a>')
+        send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="http://localhost:8000/customer/bill_detail/'+ str(order.id) +'"> đây</a>')
         return HttpResponse(1)
 
     return HttpResponse('Lỗi hệ thống!')
@@ -127,14 +129,15 @@ def get_data(request):
     for item in list_service:
         dict_service = Service.objects.get(pk=item[0]).__dict__
         del dict_service['_state']
-        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item, creator_id__is_lock=False).order_by('-bought')[0:16]
+        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, post_type_id=item, creator_id__is_lock=False).order_by('-bought')
         array_post = [] 
+        index = 0
         for post in list_post:
+            if index == 16:
+                break
             if post.expire.replace(tzinfo=None) > datetime.now():
                 post_abort.append(post.id)
                 dict_post = post.__dict__
-                print(dict_post)
-                
                 count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
                 if count_star == None:
                     count_star = 0
@@ -154,6 +157,7 @@ def get_data(request):
                 dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
                 dict_post['product'] = dict_product
                 array_post.append(dict_post)
+                index = index + 1
         dict_service['posts'] = array_post
         array_service.append(dict_service)
     dict_data = {
@@ -249,6 +253,10 @@ def get_data_collection(request, list_post):
     array_post = []
     for item in danhsach:
         dict_post = item.__dict__
+        if item.expire.replace(tzinfo=None) > datetime.now() and item.post_type.visable_vip == True:
+            dict_post['vip'] = True
+        else:
+            dict_post['vip'] = False
         count_star = Rating.objects.filter(merchant_id=item.creator_id.id).aggregate(Sum('num_of_star'))['num_of_star__sum']
         if count_star == None:
             count_star = 0
@@ -303,16 +311,36 @@ def product_collection(request, id_category):
             else: 
                 list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('bought')
                 data = get_data_collection(request, list_post)
+                data['name'] = category.name_category
                 return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
 
         if 'pricest' in request.GET:
             if request.GET.get('pricest') == 'true':
                 list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-product_id__price')
                 data = get_data_collection(request, list_post)
+                data['name'] = category.name_category
                 return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
             else: 
                 list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('product_id__price')
                 data = get_data_collection(request, list_post)
+                data['name'] = category.name_category
+                return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
+        if 'filter' in request.GET:
+            if request.GET.get('filter') == 'true':
+                if 'min' in request.GET:
+                    min_price = int(request.GET.get('min'))
+                else:
+                    min_price = 0
+
+                if 'max' in request.GET:
+                    max_price = int(request.GET.get('max'))
+                else:
+                    max_price = 0
+                # print(list_poduct_avaliable)
+                list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__price__gte=min_price, product_id__price__lte=max_price).order_by('product_id__price')
+                data = get_data_collection(request, list_post)
+                data['name'] = category.name_category
                 return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
         
         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-created', '-bought')
@@ -322,6 +350,71 @@ def product_collection(request, id_category):
         return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
 
 def search(request):
+    if request.method == 'GET':
+        if 'r' in request.GET:
+            keyword = request.GET.get('r')
+
+            list_poduct_avaliable = Product_Category.objects.filter(archive=False).values_list('product_id_id')
+
+            if 'newest' in request.GET:
+                if request.GET.get('newest') == 'true':
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('-created')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+                else: 
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('created')
+                    data = data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
+            if 'buiest' in request.GET:
+                if request.GET.get('buiest') == 'true':
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('-bought')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+                else: 
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('bought')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
+            if 'pricest' in request.GET:
+                if request.GET.get('pricest') == 'true':
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('-product_id__price')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+                else: 
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('product_id__price')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
+            if 'filter' in request.GET:
+                if request.GET.get('filter') == 'true':
+                    if 'min' in request.GET:
+                        min_price = int(request.GET.get('min'))
+                    else:
+                        min_price = 0
+
+                    if 'max' in request.GET:
+                        max_price = int(request.GET.get('max'))
+                    else:
+                        max_price = 0
+                    # print(list_poduct_avaliable)
+                    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__price__gte=min_price, product_id__name__icontains=keyword, product_id__price__lte=max_price).order_by('product_id__price')
+                    data = get_data_collection(request, list_post)
+                    data['name'] = keyword
+                    return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
+
+            list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable, product_id__name__icontains=keyword).order_by('-created', '-bought')
+            data = get_data_collection(request, list_post)
+            data['name'] = keyword
+
+            return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
     return
 
 
@@ -379,7 +472,7 @@ def product(request, id_product):
 def post(request, id_post):
     if request.method == 'GET':
         if Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).exists() == False:
-            return HttpResponse('Bai dang khong ton tai')
+            return HttpResponse('Bài đăng không tồn tại')
 
         post = Post_Product.objects.get(pk=id_post, is_lock=False, is_activity=True).__dict__
         del post['_state']
@@ -441,18 +534,35 @@ def post(request, id_post):
 def get_data_hot_buy(request):
     if request.method == 'GET':
         list_post = Post_Product.objects.filter(is_lock=False, is_activity=True).order_by('-bought')[0:40]
+        print(list_post)
         list_random = []
-        while len(list_random) < 3:
+        while len(list_random) >= 3:
             x = randint(0, list_post.count() - 1)
             if x not in list_random:
                 list_random.append(x)
-        posts = [list_post[list_random[0]], list_post[list_random[1]], list_post[list_random[2]]]
-        print(posts)
+        if list_post.count() < 4:
+            posts = list_post
+        else:
+            posts = [list_post[list_random[0]], list_post[list_random[1]], list_post[list_random[2]]]
+        # print(posts)
         array_post = []
-        for item in posts:
-            dict_post = item.__dict__
+        for post in posts:
+            dict_post = post.__dict__
+
+            count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+            if count_star == None:
+                count_star = 0
+            count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+            if count_person == 0:
+                dict_post['rating'] = float(0)
+            else:
+                dict_post['rating'] = float(round(count_star/count_person, 1))
+
             del dict_post['_state']
-            dict_product = Product.objects.get(pk=item.product_id_id).__dict__
+            # if Product.objects.filter(pk=post.id).exists() == True:
+            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+            list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+            dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
             del dict_product['_state']
             image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
             dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
@@ -460,9 +570,48 @@ def get_data_hot_buy(request):
             array_post.append(dict_post)
         return HttpResponse(json.dumps({'datas': array_post}, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
 
-def get_data_related(request, id_post):
+def get_data_related(request, id_category):
     if request.method == 'GET':
-        return
+        if Category.objects.filter(pk=id_category).exists() == False:
+            return HttpResponse('Danh mục không tồn tại!')
+
+        category = Category.objects.get(pk = id_category)
+        list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=id_category).values_list('product_id_id')
+        list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:40]
+        list_random = []
+        while len(list_random) >= 4:
+            x = randint(0, list_post.count() - 1)
+            if x not in list_random:
+                list_random.append(x)
+        if list_post.count() < 5:
+            posts = list_post
+        else:
+            posts = [list_post[list_random[0]], list_post[list_random[1]], list_post[list_random[2]], list_post[list_random[3]]]
+        # print(posts)
+        array_post = []
+        for post in posts:
+            dict_post = post.__dict__
+            count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+            if count_star == None:
+                count_star = 0
+            count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+            if count_person == 0:
+                dict_post['rating'] = float(0)
+            else:
+                dict_post['rating'] = float(round(count_star/count_person, 1))
+
+            del dict_post['_state']
+            # if Product.objects.filter(pk=post.id).exists() == True:
+            dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+            list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+            dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
+            del dict_product['_state']
+            image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+            dict_post['product'] = dict_product
+            array_post.append(dict_post)
+        return HttpResponse(json.dumps({'datas': array_post}, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+
 
 def get_profile_payment(request):
     if request.method == 'GET':
@@ -585,6 +734,108 @@ def forgot_password(request):
         send_email_notifile(email, header, template)
         return HttpResponse(1)
     return HttpResponse(503)
+
+def get_product_shop(request, id_shop):
+    if request.method == 'GET':
+        if Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).exists() == False:
+            return HttpResponse('Lỗi! Shop không tồn tại')
+        account = Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).first()
+        posts = Post_Product.objects.filter(creator_id_id=account.id, is_lock=False, is_activity=True)
+        data = get_data_collection(request, posts)
+        data['name'] = account.name_shop
+        return HttpResponse(json.dumps(data, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
+    return HttpResponse(503)
+
+@csrf_exempt
+def rating_merchant_shop(request, id_shop):
+    if request.method == 'POST':
+        if 'user' not in request.session:
+            return HttpResponse('Vui lòng đăng nhập để đánh giá')
+        if Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).exists() == False:
+            return HttpResponse('Lỗi! Shop không tồn tại')
+        account = Account.objects.filter(pk=id_shop, activity_merchant=True, is_lock=False).first()
+        if Rating.objects.filter(customer_id=request.session.get('user')['id'], merchant_id=account.id).exists() == True:
+            return HttpResponse('Lỗi! Bạn đã đánh giá trước đó!')
+        num_star = request.POST.get('num_star')
+        comment = request.POST.get('comment')
+        customer_id = request.session.get('user')['id']
+        list_order = Order.objects.filter(customer_id=customer_id).values_list('id')
+        if Order_Detail.objects.filter(merchant_id=account.id, state=1, order_id__in=list_order).exists() == False:
+            return HttpResponse('Bạn chưa mua sản phẩm của người bán!')
+
+        Rating.objects.create(
+            merchant=account,
+            customer=Account.objects.get(pk=customer_id),
+            num_of_star=num_star,
+            comment=comment,
+            confirm_bought=True,
+            is_activity=True,
+        )
+
+        header = 'Bạn được người mua "'+ Account.objects.get(pk=customer_id).name +'" đánh giá!'
+        body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1>'
+        send_email_notifile(account.id.email, header, body)
+
+        rating_count = Rating.objects.filter(merchant_id=account.id, is_activity=True).count()
+        if rating_count == 0:
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(account.id.email, header, body)
+        rating_point = Rating.objects.filter(merchant_id=account.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if rating_point == None:
+            rating_point = 0
+        if (float(rating_point/rating_count) < 2):
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(account.id.email, header, body)
+        
+        return HttpResponse(1)
+
+@csrf_exempt
+def rating_merchant(request, id_post):
+    if request.method == 'POST':
+        if 'user' not in request.session:
+            return HttpResponse('Vui lòng đăng nhập để đánh giá')
+        if Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).exists() == False:
+            return HttpResponse('Lỗi! Tin đăng không tồn tại')
+        post = Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).first()
+        if Rating.objects.filter(customer_id=request.session.get('user')['id'], merchant_id=post.creator_id.id).exists() == True:
+            return HttpResponse('Lỗi! Bạn đã đánh giá trước đó!')
+        num_star = request.POST.get('num_star')
+        comment = request.POST.get('comment')
+        customer_id = request.session.get('user')['id']
+        list_order = Order.objects.filter(customer_id=customer_id).values_list('id')
+        if Order_Detail.objects.filter(merchant_id=post.creator_id.id, state=1, order_id__in=list_order).exists() == False:
+            return HttpResponse('Bạn chưa mua sản phẩm của người bán!')
+
+        Rating.objects.create(
+            merchant=post.creator_id,
+            customer=Account.objects.get(pk=customer_id),
+            num_of_star=num_star,
+            comment=comment,
+            confirm_bought=True,
+            is_activity=True,
+        )
+
+        header = 'Bạn được người mua "'+ Account.objects.get(pk=customer_id).name +'" đánh giá!'
+        body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1>'
+        send_email_notifile(post.creator_id.email, header, body)
+
+        rating_count = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+        if rating_count == 0:
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(post.creator_id.email, header, body)
+        rating_point = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if rating_point == None:
+            rating_point = 0
+        if (float(rating_point/rating_count) < 2):
+            header = 'Cảnh cáo!'
+            body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'
+            send_email_notifile(post.creator_id.email, header, body)
+        
+        return HttpResponse(1)
+
 
 def send_email_notifile(email, body, content):
 

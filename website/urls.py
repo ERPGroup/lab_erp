@@ -15,7 +15,7 @@ urlpatterns = [
     #path('forgot_password/', views.forgot_password, name='forgot_password'),
     #path('request_merchant/', views.request_merchant, name='request_merchant'),
 
-    path('shop/<id_account>', views.shop, name='shop'),
+    path('shop/<int:id_shop>', views.shop, name='shop'),
     path('search', views.search, name='search'),
 
     
@@ -42,9 +42,13 @@ urlpatterns = [
 
     path('post_data/<int:id_post>', functions.post, name='post'),
     path('get_data_hot_buy', functions.get_data_hot_buy, name="get_data_hot_buy"),
+    path('get_data_related/<int:id_category>', functions.get_data_related, name="get_data_related"),
 
     path('f_register', functions.register, name='f_register'),
-
+    path('f_search', functions.search, name='f_search'),
+    path('rating_merchant/<int:id_post>', functions.rating_merchant, name='rating_merchant'),
+    path('rating_merchant_shop/<int:id_shop>', functions.rating_merchant_shop, name='rating_merchant_shop'),
+    path('get_product_shop/<int:id_shop>', functions.get_product_shop, name='get_product_shop'),
     #cart
     path('add/<int:id_product>', cart.add, name='add'),
     path('add_qty/<int:id_product>/<int:qty>', cart.add_qty, name='add_qty'),

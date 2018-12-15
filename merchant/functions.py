@@ -224,9 +224,9 @@ def product_add(request):
             image.save()
 
         v = 1
-        agv_price = 0
+        min_price = []
         for i in range(int(count_product)):
-            agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
+            min_price.append(int(request.POST.get('inputVersion['+ str(i) +'][price]')))
             if count_product != 1:
                 name_type = name + ' .v' + str(v)
             else: 
@@ -260,7 +260,7 @@ def product_add(request):
                 index = index + 1 
             v = v + 1
 
-            product_config.price  = (agv_price/int(count_product))
+            product_config.price  = min(min_price)
             product_config.save()
 
         return HttpResponse(1)
@@ -433,9 +433,9 @@ def product(request, id_product):
         
         
         v = 1
-        agv_price = 0
+        min_price = []
         for i in range(int(count_product)):
-            agv_price = agv_price + int(request.POST.get('inputVersion['+ str(i) +'][price]'))
+            min_price.append(int(request.POST.get('inputVersion['+ str(i) +'][price]')))
             if int(count_product) != 1:
                 name_type = name + ' .v' + str(v)
             else: 
@@ -468,7 +468,7 @@ def product(request, id_product):
                 product_attr.save()
                 index = index + 1 
             v = v + 1
-        product.price  = (agv_price/int(count_product))
+        product.price  = min(min_price)
         product.save()
 
         return HttpResponse(1)
@@ -1178,7 +1178,7 @@ def change_state(request, id_order, state):
                 return HttpResponse('Đơn hàng bị từ chối trạng thái thành công')
             order_detail.update(state=1)
             header = 'Đơn hàng bạn đã mua thành công vào lúc '+ str(datetime.now()) +' !'
-            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi <a href="/shop/'+ str(request.session.get('user')['id']) +'">tại đây</a>!</p>'
             send_email_notifile(order.customer.email, header, body)
             return HttpResponse(1)            
 
@@ -1189,7 +1189,7 @@ def change_state(request, id_order, state):
             #for item in order_detail:
             order_detail.update(state=0, canceler_id=request.session.get('user')['id'])
             header = 'Đơn hàng bạn đã bị hủy vào lúc '+ str(datetime.now()) +' !'
-            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi <a href="/shop/'+ str(request.session.get('user')['id']) +'">tại đây</a>!</p>'
             send_email_notifile(order.customer.email, header, body)
             return HttpResponse(1)
 
@@ -1198,7 +1198,7 @@ def change_state(request, id_order, state):
                 return HttpResponse('Đơn hàng bị từ chối trạng thái gói hàng')
             order_detail.update(state=3)
             header = 'Đơn hàng bạn đang được đóng gói vào lúc '+ str(datetime.now()) +' !'
-            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi <a href="/shop/'+ str(request.session.get('user')['id']) +'">tại đây</a>!</p>'
             send_email_notifile(order.customer.email, header, body)
             return HttpResponse(1)  
 
@@ -1207,7 +1207,7 @@ def change_state(request, id_order, state):
                 return HttpResponse('Đơn hàng bị từ chối trạng thái vận chuyển')
             order_detail.update(state=4)
             header = 'Đơn hàng bạn đang được vận chuyển vào lúc '+ str(datetime.now()) +' !'
-            body = '<p>Vui lòng đánh giá người bán của chúng tôi tại đây!</p>'
+            body = '<p>Vui lòng đánh giá người bán của chúng tôi <a href="/shop/'+ str(request.session.get('user')['id']) +'">tại đây</a>!</p>'
             send_email_notifile(order.customer.email, header, body)
             return HttpResponse(1)  
     return HttpResponse('Xảy ra lỗi!')  
@@ -1234,8 +1234,9 @@ def order(request, id_order):
             order['rate_cus'] = True
         else:
             order['rate_cus'] = False
-
+        
         if Rating_Customer.objects.filter(merchant_id=request.session.get('user')['id'], customer_id=customer.id).exists() == True:
+            order['value_rating'] = Rating_Customer.objects.filter(merchant_id=request.session.get('user')['id'], customer_id=customer.id).first().num_of_star
             order['disable_rating'] = True
         else:
             order['disable_rating']  = False
@@ -1338,10 +1339,10 @@ def rating_customer(request):
             confirm_bought = True,
         )
         header = 'Bạn được người bán '+ merchant.name_shop +' đánh giá!'
-        body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1><p>Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</p><p>Đánh giá lại merchant tại đây!</p>'
+        body = '<h1>Bạn được đánh giá '+ num_star +' sao!</h1><p>Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</p><p>Đánh giá lại merchant <a href="/shop/'+ str(request.session.get('user')['id']) +'">tại đây</a>!</p>'
         send_email_notifile(customer.email, header, body)
 
-        rating_count = Rating_Customer.objects.filter(customer_id=order['customer_id'], is_activity=True).count()
+        rating_count = Rating_Customer.objects.filter(customer_id=customer_id, is_activity=True).count()
         if rating_count == 0:
             header = 'Cảnh cáo!'
             body = '<h1>Tài khoản của bạn có nguy cơ bị khóa!\n Vui lòng liên hệ với chúng tôi để biết thêm thông tin!</h1>'

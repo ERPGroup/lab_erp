@@ -18,9 +18,9 @@ $(document).ready(function(){
         })
     });
 
-    $('#success_order').click(function(){
+    $('#cancel_order').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/customer/success_order/' + id_order,
+            url: 'http://localhost:8000/customer/cancel_order/' + id_order,
             method: 'GET',
             success: function(response){
                 if (response == 1){

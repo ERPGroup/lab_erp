@@ -14,14 +14,25 @@ def history_order(request):
     if check_session(request)==False:
         messages.warning(request, message='Vui lòng đăng nhập !', extra_tags='alert')
         return redirect('/login')
-    order_all = Order.objects.filter(customer_id=request.session.get('user')['id'])
+    order_all = Order.objects.filter(customer_id=request.session.get('user')['id']).order_by('-pk')
     return render(request, 'website/history_order.html', {'data': order_all})
 
 def profile(request):
     if check_session(request)==False:
         messages.warning(request, message='Vui lòng đăng nhập !', extra_tags='alert')
         return redirect('/login')
-    return render(request,'website/profile.html')
+    
+    user = Account.objects.get(pk=request.session.get('user')['id'])
+    if user.activity_merchant == True:
+        account_role = 'Người bán'
+    if user.activity_advertiser == True:
+        account_role = 'Người chạy quảng cáo'
+    if user.activity_account and user.activity_merchant == False and user.activity_advertiser == False:
+        account_role = 'Người mua'
+    if user.is_admin == True:
+        account_role = 'Admin'
+    print(account_role)
+    return render(request, 'website/profile.html', {'account_role': account_role,})
     
 def bill_detail(request, id_order):
     if check_session(request)==False:
@@ -32,6 +43,7 @@ def bill_detail(request, id_order):
         return redirect('/')
     order = Order.objects.get(customer_id=request.session.get('user')['id'], pk=id_order)
     order_detail = Order_Detail.objects.filter(order_id=order.id)
+    print(order_detail)
     # success = True
     # cancel = False
     for item in order_detail:

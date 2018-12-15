@@ -1,7 +1,7 @@
 {% extends "website/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Danh sách sản phẩm
+Tìm kiếm sản phẩm
 {% endblock %}
 {% block content %}
 <div class="collection">
@@ -11,7 +11,7 @@ Danh sách sản phẩm
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <div class="title_collection">
                     <a href="/"><i class="fa fa-home"></i></a>
-                    <i class="fa fa-angle-right"></i><a href="#" id="name_category"> Ipad</a>
+                    <i class="fa fa-angle-right"></i><a href="#" id="name_category"> Tìm kiếm</a>
                     <span class="button_view_search"><i class="fa fa-list" onclick="clickShowSearch('left_category');"></i></span>
                 </div>
                 {% include "snippets/banner_collection.html" %}
@@ -45,5 +45,5 @@ Danh sách sản phẩm
 
 {% block custom_js %}
     <script src="{% static 'website/assets/currency.min.js' %}"></script>
-    <script src="{% static 'website/src/js/collection/index.js' %} "></script>
+    <script src="{% static 'website/src/js/search/index.js' %} "></script>
 {% endblock %}

@@ -49,7 +49,7 @@ $(document).ready(function(){
                             
                             // html += '<br class="hidden_desktop">'
                             // html += '<span class="disable_price">4.000.000 d</span>'
-                            html += '<span class="sales_percent">'+ posts[item].product.discount_percent +'%</span>'
+                            html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
                             html += '</div>'
                             html += '<div class="quick_view">'
                             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
@@ -132,7 +132,7 @@ $(document).ready(function(){
                             
                             // html += '<br class="hidden_desktop">'
                             // html += '<span class="disable_price">4.000.000 d</span>'
-                            html += '<span class="sales_percent">'+ posts[item].product.discount_percent +'%</span>'
+                            html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
                             html += '</div>'
                             html += '<div class="quick_view">'
                             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
@@ -240,8 +240,6 @@ function quick_view (id_post) {
             $('#merchant').append('<a href="">'+ response.merchant.name_shop +'</a>')
         }
     })
-
-    
 }
 
 function get_attr(item){

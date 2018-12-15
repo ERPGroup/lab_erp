@@ -1,13 +1,11 @@
 $(document).ready(function(){
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
 
     if(GetURLParameter('filter') == 'true'){
         $('#price_from').val(GetURLParameter('min'))
         $('#price_to').val(GetURLParameter('max'))
     }
 
-    url = 'http://localhost:8000/product_collection/' + id_category + '?';
+    url = 'http://localhost:8000/f_search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         if(GetURLParameter('newest') != undefined){
             url += 'newest=' + GetURLParameter('newest')
@@ -86,7 +84,7 @@ $(document).ready(function(){
 
                 $('#pagination').empty()
 
-                url_paginator = 'http://localhost:8000/collections/' + id_category + '?';
+                url_paginator = 'http://localhost:8000/f_search?' + GetURLParameter('r') + '&';;
                 if(GetURLParameter('newest') != undefined){
                     url_paginator += 'newest=' + GetURLParameter('newest') + '&'
                 }
@@ -161,14 +159,12 @@ function Newest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?newest=true&'
+        url += 'newest=true&'
     }
     else{
-        url += '?newest=true&' + 'page='+ GetURLParameter('page')
+        url += 'newest=true&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
@@ -178,14 +174,12 @@ function Newest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?newest=false&'
+        url += 'newest=false&'
     }
     else{
-        url += '?newest=false&' + 'page='+ GetURLParameter('page')
+        url += 'newest=false&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
@@ -196,14 +190,12 @@ function Buiest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?buiest=true&'
+        url += 'buiest=true&'
     }
     else{
-        url += '?buiest=true&' + 'page='+ GetURLParameter('page')
+        url += 'buiest=true&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
@@ -213,14 +205,12 @@ function Buiest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?buiest=false&'
+        url += 'buiest=false&'
     }
     else{
-        url += '?buiest=false&' + 'page='+ GetURLParameter('page')
+        url += 'buiest=false&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
@@ -231,14 +221,12 @@ function Pricest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?pricest=true&'
+        url += 'pricest=true&'
     }
     else{
-        url += '?pricest=true&' + 'page='+ GetURLParameter('page')
+        url += 'pricest=true&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
@@ -248,23 +236,19 @@ function Pricest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
-        url += '?pricest=false&'
+        url += 'pricest=false&'
     }
     else{
-        url += '?pricest=false&' + 'page='+ GetURLParameter('page')
+        url += 'pricest=false&' + 'page='+ GetURLParameter('page')
     }
     document.location = url;
 }
 
 
 function Filter_price() {
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     var price_from = $('#price_from').val()
     if (price_from == ''){
         alert('Vui lòng nhập giá!')
@@ -280,18 +264,16 @@ function Filter_price() {
         return
     }
     if (GetURLParameter('page') == undefined){
-        url += '?filter=true&min='+ price_from +'&max='+ price_to
+        url += 'filter=true&min='+ price_from +'&max='+ price_to
     }
     else{
-        url += '?filter=true&min='+ price_from +'&max='+ price_to + '&page='+ GetURLParameter('page')
+        url += 'filter=true&min='+ price_from +'&max='+ price_to + '&page='+ GetURLParameter('page')
     }
     document.location = url;
 }
 
 function Cancel_Filter(){
-    var check_url = $(location).attr('pathname').split('/');
-    var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
     document.location = url;
 }
 
