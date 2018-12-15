@@ -1,0 +1,49 @@
+{% extends "website/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Tìm kiếm sản phẩm
+{% endblock %}
+{% block content %}
+<div class="collection">
+    <div class="container">
+        <div class="row">
+            {% include "snippets/left_collections.html" %}
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="title_collection">
+                    <a href="/"><i class="fa fa-home"></i></a>
+                    <i class="fa fa-angle-right"></i><a href="#" id="name_category"> Tìm kiếm</a>
+                    <span class="button_view_search"><i class="fa fa-list" onclick="clickShowSearch('left_category');"></i></span>
+                </div>
+                {% include "snippets/banner_collection.html" %}
+                <div class="side_bar_collection">
+                    <span class="pull-left hidden_mobile" id="total_product">
+                        <p>Có <b>0</b> sản phẩm liên quan</p>
+                    </span>
+                    <span class="pull-right">
+                        <ul>
+                            <li id='newest'><a>Mới nhất <i class="fa fa-arrow-down"></i></a></li>
+                            <li id='pricest'><a>Giá bán<i class="fa fa-arrow-down"></i></a></li>
+                            <li id='buiest'><a >Bán chạy nhất<i class="fa fa-arrow-down"></i></a></li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="grid_collection_product" id='products'>
+                   
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="pull-right">
+                    <ul class="pagination" id="pagination">
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'website/assets/currency.min.js' %}"></script>
+    <script src="{% static 'website/src/js/search/index.js' %} "></script>
+{% endblock %}

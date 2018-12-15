@@ -2,14 +2,14 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
             <li>
-                <a class="active-menu" href="/admin"><i class="fa fa-dashboard"></i> Trang tổng quan</a>
+                <a {% if index %} class="active-menu" {% endif %}href="/admin"><i class="fa fa-dashboard"></i> Trang tổng quan</a>
             </li>
             <li>
-                <a href="/admin/manager_users"><i class="fa fa-users"></i> Quản lý tài khoản</a>
+                <a {% if active_user %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-users"></i> Quản lý tài khoản</a>
 
             </li>
             <li>
-                <a href="/admin/manager_services"><i class="fa fa-paper-plane-o"></i> Quản lý dịch vụ gói tin<span class="fa arrow"></span></a>
+                <a {% if active_post %} class="active-menu" {% endif %} href="/admin/manager_servies"><i class="fa fa-paper-plane-o"></i> Quản lý dịch vụ gói tin<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/admin/manager_services">Danh sách gói tin</a>              
@@ -18,9 +18,9 @@
                         <a href="/admin/manager_posted">Danh sách tin đăng</a>
                     </li>
                 </ul>
-            </li>
+            </li> 
             <li>
-                <a href="/admin/manager_users"><i class="fa fa-product-hunt"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
+                <a {% if active_product %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-product-hunt"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/admin/manager_product">Danh sách sản phẩm</a>
@@ -34,7 +34,7 @@
                 </ul>
             </li>
             <li>
-                <a href="/admin/manager_users"><i class="fa fa-file-o"></i> Quản lý dịch vụ quảng cáo<span class="fa arrow"></span></a>
+                <a {% if active_ads %} class="active-menu" {% endif %} href="#"><i class="fa fa-file-o"></i> Quản lý dịch vụ quảng cáo<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/admin/manager_ads">Danh sách quảng cáo</a>
@@ -42,14 +42,33 @@
                     <li>
                         <a href="/admin/manager_ads/register">Danh sách đăng ký</a>
                     </li>
+                    <li>
+                        <a href="/admin/manager_ads_running">Danh sách quảng cáo đang chạy</a>
+                    </li>
                 </ul>
             </li>
             <li>
-                <a href="/admin/manager_pay"><i class="fa fa-money"></i> Lịch sử giao dịch</a>
+                <a {% if active_order %} class="active-menu" {% endif %} href="/admin/manager_order"><i class="fa fa-truck"></i>Kiểm tra đơn hàng<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="/admin/manager_order">Đơn hàng</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a {% if active_history %} class="active-menu" {% endif %} href="/admin/manager_pay"><i class="fa fa-money"></i> Lịch sử giao dịch<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="/admin/manager_payment_post">Giao dịch tin đăng</a>
+                    </li>
+                    <li>
+                        <a href="/admin/manager_payment_ads">Giao dịch quảng cáo</a>
+                    </li>
+                </ul>
 
             </li>
             <li>
-                <a href="/admin/statistical"><i class="fa fa-bar-chart-o"></i> Thống kê và báo cáo<span class="fa arrow"></span></a>
+                <a {% if active_statistical %} class="active-menu" {% endif %} href="/admin/statistical"><i class="fa fa-bar-chart-o"></i> Thống kê và báo cáo<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/admin/statistical">Thống kê doanh thu</a>

@@ -8,7 +8,7 @@ Trang chủ
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_post="active" %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -50,17 +50,6 @@ Trang chủ
 
                                 <td>Bạch kim</td>
                             </tr>
-                            {% for i in "x"|rjust:"10" %}
-                            <tr>
-                                <td><a href="/admin/manager_posted_detail">TD0{{forloop.counter}}</a></td>
-                                <td>Demo{{forloop.counter}}</td>
-                                <td class="center">{{forloop.counter}}</td>
-                                <td>{{forloop.counter}}/12/2018</td>
-                                {% if forloop.counter > 6 %}<td>Bạc</td> {% else %}<td>Vàng</td> {% endif %}
-
-                                <td>Bạch kim</td>
-                            </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

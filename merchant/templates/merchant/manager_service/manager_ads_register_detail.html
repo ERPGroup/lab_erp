@@ -6,7 +6,11 @@ Trang chi tiết người dùng
 {% block side-bar %}
 {% include "snippets/side_bar_merchant.html" with active_service='active' %}
 {% endblock %}
+
 {% block content %}
+<script>
+    var list = new Array();
+</script>
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px; padding-top:15px;">
@@ -20,61 +24,65 @@ Trang chi tiết người dùng
 <div class="row">
     <div class="col-md-12">
         <form method="post" action="#" class="background_white" role="form">
+            <h3 style="text-align:center;">Hợp đồng quảng cáo</h3>
+            <hr>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <h3>Thông tin đăng ký</h3>
-                    <hr>
-                </div>
-                <div class="form-group">
-                    <label>Mã quảng cáo</label>
-                    <input type="text" class="form-control">
+                    <label>Quảng cáo</label>
+                    <select class="form-control" id="select_type">
+                        {% for item in list %}
+                        <option value="{{item.id}}">{{item.service_name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Mã khách hàng</label>
-                    <input type="text" class="form-control">
+                    <input value="{{user.username}}" readonly="readonly" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Họ tên khách hàng</label>
-                    <input type="text" class="form-control">
+                    <input value="{{user.name}}" readonly="readonly" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Vị trí đặt quảng cáo</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select class="form-control">
-                        <option>Đang xử lý</option>
-                        <option>Cho thuê</option>
-                        <option>Không cho thuê</option>
-                    </select>
+                    <input id="position" readonly="readonly" type="text" class="form-control">
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <h3>Nội dung quảng cáo</h3>
-                    <hr>
+                    <label>Giá tiền</label>
+                    <input id="amount" type="text" readonly="readonly" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Hình ảnh</label>
-                    <input type="file" class="form-control">
-                    <div class="thumb_img_ads">
-                        <img src="{% static 'admin/assets/img/banner-top.jpg' %}">
-                    </div>
+                    <label>Hạn sử dụng</label>
+                    <input id="day_limit" type="text" readonly="readonly" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Nội dung</label>
-                    <textarea class="form-control" rows="4"></textarea>
+                    <label>Ngày thuê</label>
+                    <select class="form-control" id="dateAvailable">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hình thức thanh toán</label>
+                    <select class="form-control">
+                        <option value="Paypal">Trực tuyến Paypal</option>
+                        <option disabled="disabled" value="Online">Chuyển khoản ngân hàng</option>
+                    </select>
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                    <button type="submit" class="btn btn-info">Đăng ký</button>
-                <button type="reset" class="btn btn-default">Khôi phục</button>
+                <label>Thanh toán: </label>
+                <div class="btn" id="paypal-button"></div>
             </div>
+
             <div class="clearfix"></div>
         </form>
     </div>
 </div>
 
 <div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="{% static 'merchant/src/js/service_ads/purchase_ads.js' %}"></script>
 {% endblock %}

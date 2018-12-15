@@ -5,23 +5,24 @@
         <div id="close_x" class="close_x">
             <i class="fa fa-close"></i>
         </div>
-        <div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 fotorama" data-arrows="true" data-click="true" data-swipe="true"
-            data-width="700" data-maxwidth="100%" data-ratio="16/9" data-allowfullscreen="true" data-nav="thumbs">
-            <a href="{% static 'website/images/product_1.jpg' %} "> <img src="{% static 'website/images/product_1.jpg' %} "></a>
-            <a href="{% static 'website/images/product_1.jpg' %} "> <img src="{% static 'website/images/product_1.jpg' %} "></a>
+        <div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 fotorama" id="list_images" data-arrows="true" data-click="true" data-swipe="true"
+            data-width="700" data-maxwidth="100%" data-ratio="16/9" data-allowfullscreen="true" data-auto="false" data-nav="thumbs">
+            
         </div>
         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 right_content">
-            <h2>Iphones 7S</h2>
-            <h3>3.359.000 đ<span>4.000.000 đ</span> </h3>
-            <p>Người bán: <a href="#">Tablet plaza </a>| Tình trạng: <a href="#">Còn hàng</a></p>
-            <p>Mô tả ngắn sản phẩm: <br>Sản phẩm còn zin 100%, hàng chính hãng, chất lượng cao</p>
-            <form class="form_quickview" action="#" method="post">
-                <input type="hidden" name="id_product" value="#">
-                <button class="button_add">-</button>
-                <input value="1" class="input_add" maxlength="3" size="1" name="quantity" id="quantity">
-                <button class="button_add">+</button>
-                <button type="submit" class="btn_buy">Mua hàng</button>
-            </form>
+            <h2 id="name_product"></h2>
+            Lựa chọn phiên bản: <select id="version" onchange="get_attr(this.value)">
+            </select>
+            <h3 id='price'></h3>
+            <ul id='attributes'>
+                <li>Coffee</li>
+                <li>Milk</li>
+            </ul>
+            <p>Người bán: <span id="merchant"></span> | Số lượng : <span id="quantity"></span></p>
+            
+            <div class="form_quickview" id="form_quickview">
+                
+            </div>
         </div>
     </div>
 </div>

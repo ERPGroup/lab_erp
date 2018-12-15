@@ -8,22 +8,16 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-            console.log((response));
 
             post = response[0]['fields']
-
             //Load Product
             $.ajax({
-                url: 'http://localhost:8000/merchant/products?posted=false&include=' + post.product_id ,
+                url: 'http://localhost:8000/merchant/product/' + post.product_id ,
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
-                    for (var i = 0; i < response.length; i++){
-                        if (post.product_id == response[i]['pk']){
-                            $('#products').append('<option value="'+ response[i]['pk'] +'" selected="selected">'+ response[i]['fields']['code'] + ' - ' + response[i]['fields']['name'] +'</option>')
-                            showProduct(response[i]['pk']);
-                        }
-                    }
+                    $('#products').append('<option value="'+ response.id +'" selected="selected">'+ response['code'] + ' - ' + response['name'] +'</option>')
+                    showProduct(response.id);
                 }
             }) 
 
@@ -36,8 +30,9 @@ $(document).ready(function(){
                 success: function(response){
 
                     for(var i = 0; i < response.length; i++)
-                        if(post.post_type == response[i]['service_id'])
+                        if(post.post_type == response[i]['service_id']){
                             $('#services').append('<option value="'+ response[i]['service_id'] +'" selected="selected">'+ response[i]['service_name'] + ' | ' + response[i]['remain'] +' tin' +'</option>');
+                        }
                 }
             })
 
@@ -59,6 +54,14 @@ $(document).ready(function(){
             $('#inputVisableVip').append(option_vip);
 
             $('#inputQuantity').val(post.quantity);
+
+            if (post.is_lock == true){
+                $('#inputQuantity').attr('disabled', true)
+            }
+
+            if(post.is_activity == 0){
+                $('#delete').addClass('hidden')
+            }
             
             option_activity = '';
             if(post.is_activity == true){
@@ -69,6 +72,11 @@ $(document).ready(function(){
                 option_activity += '<option value="0" selected >Không hiển thị</option>'
             }
             $('#inputIsActivity').append(option_activity)
+            if (post.is_lock == true){
+                $('#inputIsActivity').attr('disabled', true)
+            }
+
+            $('#edit').attr('disabled', true)
 
             // san bat truong hoop lock
         }
@@ -79,6 +87,12 @@ $(document).ready(function(){
     });
 
     $('#edit').click(function(){
+
+        if(parseInt($('#inputQuantity').val()) < 0){
+            alert('Số lượng không hợp lệ!')
+            return
+        }
+
         data = {
             'inputQuantity': $('#inputQuantity').val(),
             'inputIsActivity': $('#inputIsActivity').val(),
@@ -90,7 +104,13 @@ $(document).ready(function(){
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
-                alert(response)
+                if (response == 1){
+                    alert('Thực hiện thành công!');
+                    window.location.replace('/merchant/manager_post');
+                }
+                else{
+                    alert(response)
+                }
             }
         })
     });
@@ -101,26 +121,47 @@ $(document).ready(function(){
             method: 'DELETE',
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
-                alert(response)
+                if (response == 1){
+                    alert('Thực hiện thành công!\nTin đăng đã tắt hiển thị!');
+                    window.location.replace('/merchant/manager_post');
+                }
+                else{
+                    alert(response)
+                }
             }
         })
     });
+
+    $('#inputQuantity').change(function(){
+        $('#edit').attr('disabled', false)
+    })
+
+    $('#inputIsActivity').change(function(){
+        $('#edit').attr('disabled', false)
+    })
 })
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/merchant/product/'+ id_product,
+        url: 'http://localhost:8000/merchant/product/'+ id_product + '?posted=true',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-            console.log(response);
             item = ''
             item += '<tr>'
-            item += '<td><a href="/merchant/product/edit/'+ this.value +'">'+ response.code +'</a></td>'
+            item += '<td><a href="/merchant/product/edit/'+ id_product +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
-            item += '<td><div class="tbl_thumb_product"><img src="'+ response.list_image[0].image_link +'" alt="Product"></div></td>'
-            item += '<td>'+ response.price_origin +' VNĐ</td>'
-            item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
+            item += '<td><div class="tbl_thumb_product"><img src="/product/'+ response.images[0].image_link +'" alt="Product"></div></td>'
+            
+            if (response.price_max_min[0] == response.price_max_min[1])
+                item += '<td>'+ currency((response.price_max_min[0] * (100 - response.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            else
+                item += '<td>'+ currency((response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            
+            if (response.detail != '')
+                item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
+            else
+                item += '<td> </td>'
             item += '</tr>'
             $('#item').empty();
             $('#item').append(item)

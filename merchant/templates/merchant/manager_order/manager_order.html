@@ -1,0 +1,106 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Quản lý đơn hàng
+{% endblock %}
+{% block styles %}
+<style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      
+    }
+    
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+</style>
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_order='active'  %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý đơn hàng
+        </h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Advanced Tables -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách đơn hàng
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Người mua</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="/merchant/order_detail">HD001</a></td>
+                                <td>Demo1</td>
+                                <td>1.000.000 VNĐ</td>
+                                <td>12/10/2018</td>
+                                <td>Đã thanh toán</td>
+                            </tr>
+                            <tr>
+                                <td><a href="/merchant/order_detail">HD002</a></td>
+                                <td>Demo2</td>
+                                <td>500.000 VNĐ</td>
+                                <td>Đã thanh toán</td>
+                                <td>Đã thanh toán</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--End Advanced Tables -->
+    </div>
+</div>
+
+{% endblock content %}
+{% block data_table %}
+<div id="loader" style="display:none;" ></div>
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
+<script src="{% static '/merchant/src/js/order/manager_order.js' %}"></script>
+
+{% endblock %}

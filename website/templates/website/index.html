@@ -1,4 +1,5 @@
 {% extends "website/base.html" %}
+{% load staticfiles %}
 {% block title %}
 Trang chủ
 {% endblock %}
@@ -10,15 +11,22 @@ Trang chủ
             {% include "snippets/slider.html" %}
             {% include "snippets/right-banner.html" %}
             {% include "snippets/section_banner.html" %}
-            {% include "snippets/section_hotdeal.html" %}
-            {% include "snippets/section_sales.html" %}
-            {% include "snippets/section_buymore.html" %}
+            <div id="by_service">
+            </div>
+            
+            <div class="clearfix"></div>
             {% include "snippets/section_mainbanner.html" %}
-            {% include "snippets/section_category_phone.html" %}
-            {% include "snippets/section_categoryIpad.html" %}
-            {% include "snippets/section_categorylaptop.html" %}
+            <div class="clearfix"></div>
+            <div id="by_category">
+
+            </div>
+            <div class="clearfix"></div>
             {% include "snippets/section_brand.html" %}
         </div>
     </div>
 </div>
 {% endblock content %}
+{% block custom_js %}
+    <script src="{% static 'website/assets/currency.min.js' %}"></script>
+    <script src="{% static 'website/src/js/index/index.js' %} "></script>
+{% endblock %}

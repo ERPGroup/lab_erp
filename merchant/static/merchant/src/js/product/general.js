@@ -70,7 +70,7 @@ function load_vesion_product () {
     html += '<tr>'
     html += '<td><input type="checkbox" checked id="check_vesion_'+ i +'" class="form-check-input"></td>'
     html += '<td><span style="color:#d9534f">' + result[i] + '</span></td>'
-    html += '<td><input type="text" class="price_product" id="price_product_' + (i) + '" maxlength="10" value=""></td>'
+    html += '<td><input type="number" class="price_product" onchange="check_value(this)" min="1000" id="price_product_' + (i) + '" min="0" value=""></td>'
     html += '</tr>'
     x.innerHTML += html
   }
@@ -135,7 +135,7 @@ $(document).ready(function(){
         var new_value = 'this_value_' + count_value;
         var new_name = 'name_attribute_' + count_value;
         var attribute = ''
-        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\';  return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
+        attribute += '<div class="form-group"><div class="col-lg-4"><input id="' + new_name + '" data-id="'+ response[i].pk +'" type="text" readonly value="'+ response[i].fields.label +'"></div><div class="col-lg-8"><input class="count_value ' + new_value + '" type="text" onkeypress="if (event.keyCode==13) {addmore_att(this.value,\'' + new_value + '\'); this.value=\'\';  return false; }" placeholder="Giá trị" width="100%" style="width:100%"></div>'
         attribute += '<div class="clearfix"></div></div>'
         attribute += '<div class="form-group">'
         attribute += '<div class="col-lg-8 col-xs-offset-4" id="' + new_value + '"></div><div class="clearfix"></div>'
@@ -170,7 +170,7 @@ $(document).ready(function(){
       success: function(response){
         // alert(response);
         if (response == -3)
-          alert('Vui long dang nhap de them san pham');
+          alert('Vui lòng đăng nhập để thực hiện!');
         if (response > 0){
           var reader = new FileReader()
           reader.onload = function (e) {
@@ -189,13 +189,13 @@ $(document).ready(function(){
           reader.readAsDataURL(files[0]);
         }
         if (response == 0){
-          alert('Do khong phai file anh');
+          alert('Đó không phải file ảnh');
         }
         if (response == -2){
-          alert('Dung luong anh khong duoc vuot qua 2MB');
+          alert('Dung lượng ảnh không được vượt quá 2MB');
         }
         if (response == -1){
-          alert('Xay ra loi');
+          alert('Lỗi hệ thống!\nChúng tôi sẽ cải thiện chúng sớm!');
         }
       },
       error: function(jqXHR){
@@ -233,6 +233,22 @@ $(document).ready(function(){
     },  
   })
 });
+
+function load_category_autocomplete(keyword){
+  $("#list-category").empty()
+  $.ajax({
+    url: 'http://localhost:8000/merchant/categorys?keyword=' + keyword,
+    method: 'GET',
+    contentType: 'application/json',
+    success: function(response){
+      for (var item = 0; item < response.length; item++){
+        html = '<li><a href="#" data-id-category='+ response[item].pk +' onclick="clickcategory($(this).text(), $(this).attr(\'data-id-category\'));">'+ response[item].fields.name_category +'</a></li>'
+        $("#list-category").append(html)
+      }
+    },  
+  })
+}
+
 
 // Choose Category
 function clickcategory(name, id) {
@@ -283,3 +299,24 @@ function check_button_submit(){
   //     }
   //   })
   // }
+
+$(document).ready(function(){
+
+  $('#inputDiscount').change(function(){
+    discount = $('#inputDiscount').val()
+    console.log(discount)
+    if (discount > 100 || discount < 0){
+      $('#inputDiscount').val(0)
+    }
+  })
+
+  
+})
+
+
+function check_value(input){
+  if (parseInt(input.value) < 1000){
+    alert('Giá trị phải lớn hơn 1000!')
+    input.value = ''
+  }
+}

@@ -7,15 +7,14 @@ $(document).ready(function(){
         url: 'http://localhost:8000/admin/service/' + id_service,
         method: 'GET',
         contentType: 'application/json',
-        success: function(response){
-            console.log(response);
-            service = response[0]['fields']
+        success: function(service){
             $('#inputServiceName').val(service.service_name);
             $('#inputValue').val(service.value);
             $('#inputQuantityProduct').val(service.quantity_product);
             $('#inputDayLimit').val(service.day_limit);
             // $('#inputDayVisablePageHome').val(service.day_visable_page_home);
             $('#inputAmount').val(service.amount);
+            $('#inputCreator').val(service.account.email);
             var option_active = ''
             if(service.is_active == true){
                 option_active += '<option value="1" selected >Sử dụng</option>'
@@ -53,11 +52,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Da sua thanh cong!\nBan se duoc dieu huong den danh sach dich vu sau 3 giay!');
+                    alert('Đã sửa gói tin thành công!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi~')
             }
         })
     });
@@ -70,11 +69,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_services')", 3000);
-                    alert('Dich vu da ngung ban!\nBan se duoc dieu huong den danh sach dich vu sau 3 giay!');
+                    alert('Gói tin đã ngừng bán!');
+                    pageRedirect('/admin/manager_services')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi~')
             }
         })
     });

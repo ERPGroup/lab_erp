@@ -2,14 +2,7 @@
 # yarn lockfile v1
 
 
-jquery@>=1.7.0:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
-
-lightgallery@^1.6.11:
-  version "1.6.11"
-  resolved "https://registry.yarnpkg.com/lightgallery/-/lightgallery-1.6.11.tgz#01a15dab1bbad15ae727c495adbf80b59619183d"
-  integrity sha1-AaFdqxu60VrnJ8SVrb+AtZYZGD0=
-  dependencies:
-    jquery ">=1.7.0"
+nouislider@^12.1.0:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-12.1.0.tgz#a4416b4b3357e77e52217f8ecf060eb14a855f59"
+  integrity sha512-SAOabF6hBm8201c6LDbkVOVhgwY49+/ms72ZLUF2qkN5RCf7FfUvEh/hGZ7XcwZHU+I/grlicPmcSk1/rrMnOw==

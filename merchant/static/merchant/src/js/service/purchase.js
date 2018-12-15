@@ -8,8 +8,12 @@ $(document).ready(function(){
         url: 'http://localhost:8000/merchant/service/' + id_service,
         method: 'GET',
         contentType: 'application/json',
-        success: function(response){
-            service = response[0]['fields']
+        success: function(service){
+            console.log(service)
+            if (service == -1){
+                alert('Gói tin này không tồn tại!')
+                window.location.replace('/merchant/service_post')
+            }
 
             $('.title').text(service.service_name);
             $('.amount').text(service.amount);
@@ -36,6 +40,8 @@ $(document).ready(function(){
                 box +='<li>Hiển thị trên khu vực VIP</li>';
             else
                 box +='<li class="disable">Không hiển thị trên khu vực VIP</li>';
+
+            box +='<li>'+ service.usd.toFixed(2) +'$ dành cho thanh toán PayPal</li>';
             $('.pricing-content').append(box);
 
 
@@ -70,7 +76,7 @@ $(document).ready(function(){
                 // PayPal Client IDs - replace with your own
                 // Create a PayPal app: https://developer.paypal.com/developer/applications/create
                 client: {
-                sandbox: 'AX5ZfJh3e8pEhmipVMor3KMa5CxdG5a_SVNLeUhwVM9vjNo_kReF_2cdK54v9dN7Yseu1I8Y-I4BH5AZ',
+                sandbox: 'AV2N2LEhYoOJEwN2mxKLTLddeXuZOk7X5nELsm7xCq3sfn3qLS9o8ERIptw7fJDXYY3lvIl8Q1jefuAJ',
                 // production: 'AX5ZfJh3e8pEhmipVMor3KMa5CxdG5a_SVNLeUhwVM9vjNo_kReF_2cdK54v9dN7Yseu1I8Y-I4BH5AZ'
                 },
                 payment: function (data, actions) {
@@ -79,7 +85,7 @@ $(document).ready(function(){
                     transactions: [
                         {
                         amount: {
-                            total: service.amount,
+                            total: service.usd.toFixed(2),
                             currency: 'USD'
                         }
                         }
@@ -95,7 +101,7 @@ $(document).ready(function(){
                         data_info = {
                             'inputPurchaseName': data.paymentID,
                             'inputServiceId': id_service,
-                            'inputAmount': service.amount,
+                            'inputAmount': service.usd.toFixed(2),
                             'inputState': 1,
                         }
 
@@ -109,7 +115,7 @@ $(document).ready(function(){
                             }
                         })
 
-                    window.alert('Payment Complete!');
+                    window.alert('Thanh toán hoàn tất!');
                     console.log(data);
                     });
                 }

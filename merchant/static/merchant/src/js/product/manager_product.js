@@ -49,12 +49,13 @@ $(document).ready(function () {
     tool_bar += '<div class="col-xs-8 no_padding">';
     tool_bar += '<span>Trạng thái: </span>';
     tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
-    tool_bar += '<option>Đang xem xét</option>';
+    tool_bar += '<option>Đang hiển thị</option>';
     tool_bar += '<option>Tất cả</option>';
-    tool_bar += '<option>Được chấp thuận</option>';
-    tool_bar += '<option>Bị khóa</option>';
+    tool_bar += '<option>Không hiển thị</option>';
+    tool_bar += '<option>Chưa được đăng</option>';
     tool_bar += '</select>';
     tool_bar += '</div>';
+    table.api().columns(4).search('^Đang hiển thị$', true, false).draw();
     $("div.toolbar").html(tool_bar);
     $('#select_type').change(function () {
         regExSearch = '^' + this.value + '$';

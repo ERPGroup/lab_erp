@@ -1,0 +1,58 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Quản lý đăng ký
+{% endblock %}
+{% block styles %}
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_service='active' %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý đăng nội dung quảng cáo
+        </h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Advanced Tables -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Tên quảng cáo</th>
+                                <th>Người đăng</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--End Advanced Tables -->
+    </div>
+</div>
+{% endblock content %}
+{% block data_table %}
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
+<script src="{% static 'merchant/src/js/service_ads/service_ads_running.js' %}"></script>
+{% endblock %}

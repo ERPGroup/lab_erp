@@ -1,0 +1,33 @@
+Cau sua lai phan them sua khoa Attribute va Category. 
+
+To da sua lai phan du thua cua 2 bang Category va Attribute. Cau doc qua 1 lan de lam ro
+
+Yeu cau ve giao dien:
+    +Category khong can sua
+    +Attribute cau sua gion Category. chi co 2 filed: name va active; Khong cho phep xoa Attribute
+    sua thanh khoa Attribute. va cho phep mo khoa lai.
+
+Yeu cau ve logic:
+    +Category khi khoa: Cau can cap nhat lai bang Produc_Category. tim kiem cac record co 
+    category_id=<category_id_ma_cau_khoa> va archive=False. Sau do thay doi chung thanh 
+    archive=True, lock=True
+    
+    +Category khi mo khoa lai: Cau lay danh cac record thoa man category_id=<category_id_ma_cau_khoa>
+    va lock=True trong bang Produc_Category. Sau do cau cap nhat bang archive=False, lock=False
+
+    
+    
+    
+    
+    +Attribute khi duoc tao moi: Cau lay danh record (distict) thoa man attribute_id can tim
+    va archive=False trong bang Produc_Attribute lay ra danh sach bang ham .values_list('product_id_id')
+    (https://docs.djangoproject.com/en/2.1/ref/models/querysets/#values-list). voi moi product cau 
+    tim duoc; cau add record co thuoc tinh moi cho tung product voi value='chua cap nhat'
+    
+    
+    +Attribute khi khoa: Lam tuong tu nhu Category. Cau can cap nhat lai bang Produc_Attribute. tim kiem cac record co 
+    attrubte_id=<attribute_id_ma_cau_khoa> va archive=False. Sau do thay doi chung thanh 
+    archive=True, lock=True
+
+    +Attribute khi mo khoa lai: Cau lay danh cac record thoa man attrubte_id=<attribute_id_ma_cau_khoa>
+    va lock=True trong bang Produc_Attribute. Sau do cau cap nhat bang archive=False, lock=False

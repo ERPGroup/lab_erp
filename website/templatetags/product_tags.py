@@ -4,6 +4,7 @@ from website.models import *
 
 register = template.Library()
 
+# tag nay dung trong gio hang
 @register.simple_tag(takes_context=True)
 def get_image_product(context, id_product):
     product = Product.objects.get(id=id_product)
@@ -12,5 +13,9 @@ def get_image_product(context, id_product):
     else:
         id_origin_product = id_product
     image = Product_Image.objects.filter(product_id_id=id_origin_product).order_by('image_id_id').first()
-    return '/product/' + image.image_id.image_link.url
+    return '/product' + image.image_id.image_link.url
 
+
+@register.simple_tag(takes_context=True)
+def get_price_discount(context, price, discount):
+    return price * (100 - discount)/100

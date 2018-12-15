@@ -31,6 +31,7 @@ $(document).ready(function () {
             sUrl: "",
         },
         "dom": '<"toolbar">frtip',
+        "order": [[ 0, "desc" ]],
         "columnDefs": [
             { "type": 'formatted-num', targets: 0 },
             { "type": 'formatted-num', targets: 2 },
@@ -45,11 +46,26 @@ $(document).ready(function () {
     });
 
     var tool_bar = '';
-    tool_bar += '<div class="col-xs-8 no_padding">';
+    tool_bar += '<div class="col-xs-6 no_padding">';
     tool_bar += '<span>Loại tin: </span>';
     tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
     tool_bar += '</select>';
     tool_bar += '</div>';
+
+    tool_bar += '<div class="col-xs-6 no_padding">';
+    tool_bar += '<span>Trạng thái: </span>';
+    tool_bar += '<select style="width:50%;display:inline-block;" id="state" class="form-control">';
+    tool_bar += '<option>Đang hiển thị</option>';
+    tool_bar += '<option>Tất cả</option>';
+    tool_bar += '<option>Ngừng hiển thị</option>';
+    tool_bar += '<option>Hết hạn</option>';
+    tool_bar += '<option>Bị khóa</option>';
+    tool_bar += '</select>';
+    tool_bar += '</div>';
+
+    var keyword = 'Đang hiển thị'
+    table.api().columns(5).search(keyword, true, false).draw();
+
     $("div.toolbar").html(tool_bar);
 
     $('#select_type').change(function () {
@@ -59,6 +75,16 @@ $(document).ready(function () {
         }
         else {
             table.api().columns(4).search(regExSearch, true, false).draw();
+        }
+    });
+
+    $('#state').change(function () {
+        regExSearch = '^' + this.value + '$';
+        if (this.value == "Tất cả") {
+            table.api().columns(5).search('').draw();
+        }
+        else {
+            table.api().columns(5).search(regExSearch, true, false).draw();
         }
     });
 

@@ -8,7 +8,7 @@ Trang chủ
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_history='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load cart_tags %}
 {% include "snippets/quickview.html" %}
 <!--Fixed Menu-->
 <div class="fixed_menu_top" id="fixed_menu_top" style="display:none;">
@@ -11,23 +12,24 @@
                 <i id="click_drop_menu_fixed" class="fa fa-align-justify"></i>
             </span>
             <div class="search  col-xs-8 col-sm-7 col-md-7 col-lg-7">
-                <form action="#" method="get">
-                    <input type="text" placeholder="Tìm kiếm ..." name="id">
-                    <button><i class="fa fa-search"></i></button>
+                <form action="/search" method="get">
+                    <input type="text" placeholder="Tìm kiếm ..." name="r">
+                    <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
             </div>
             <div class="margin_center col-xs-2 hidden-sm hidden-md hidden-lg">
                 <div class="pull-right">
                     <a href="/cart">
-                        <span class="quantity">0</span>
+                        <span class="quantity" id="desktop_cart">{{ cart.count }}</span>
                         <i style="color:white" class="fa fa-cart-plus"></i>
                     </a>
                 </div>
             </div>
+            {% get_cart as cart %}
             <div class="cart hidden-xs col-sm-2 col-md-2 col-lg-2">
                 <span class="icon">
                     <i class="fa fa-cart-plus"></i>
-                    <a class="hidden-mobile" href="/cart"> (0) sản phẩm</a>
+                    <a class="hidden-mobile" id="cart_mobi" href="/cart"> ({{ cart.count }}) sản phẩm</a>
                 </span>
             </div>
         </div>
@@ -38,7 +40,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 no_padding thumb_top_adtivers ">
-                <a href="#" alt=""><img src="{% static 'website/images/adtivers_1.png' %} " max-height="100%;" alt="banner-top" /></a>
+                <a id="ads_url_top" href="#" alt="">
+                    <img id="ads_top" src="{% static 'website/images/adtivers_1.png' %}" max-height="100%;" alt="banner-top" />
+                </a>
             </div>
         </div>
     </div>
@@ -72,7 +76,7 @@
                         <img src="{% static 'website/images/avatar.png' %} " alt="">
                         {% if 'user' in request.session %}
                         <a id="profile" href="/">Tài khoản</a> |
-                        <a href="/logout/">Đăng xuất</a>
+                        <a href="/logout">Đăng xuất</a>
                         <ul id="hidden_profile">
                             <li>
                                 <i class="fa fa-arrow-right"></i> <a href="/customer/profile">Thông tin cá nhân</a>
@@ -89,8 +93,8 @@
                             })
                         </script>
                         {% else %}
-                        <a href="/register/">Đăng ký</a> |
-                        <a href="/login/">Đăng nhập</a>
+                        <a href="/register">Đăng ký</a> |
+                        <a href="/login">Đăng nhập</a>
                         {% endif %}
                     </li>
                 </ul>
@@ -105,15 +109,15 @@
             <a href="/index"><img src="{% static 'website/images/logo.png' %} "></a>
         </div>
         <div class="search  hidden-xs col-sm-7 col-md-7 col-lg-7">
-            <form action="#" method="get">
-                <input type="text" placeholder="Tìm kiếm ..." name="id">
-                <button><i class="fa fa-search"></i></button>
+            <form action="/search" method="get">
+                <input type="text" placeholder="Tìm kiếm ..." name="r">
+                <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
         <div class="cart hidden-xs col-sm-2 col-md-2 col-lg-2">
             <span class="icon">
                 <i class="fa fa-cart-plus"></i>
-                <a class="hidden-mobile" href="/cart"> (0) sản phẩm</a>
+                <a class="hidden-mobile" id="cart_desk" href="/cart"> ({{ cart.count }}) sản phẩm</a>
             </span>
         </div>
     </div>
@@ -136,11 +140,11 @@
                     <div style="text-align:center;padding:10px 0;">
                         {% if 'user' in request.session %}
                         <a href="/">Tài khoản</a> |
-                        <a href="/logout/">Đăng xuất</a>
+                        <a href="/logout">Đăng xuất</a>
 
                         {% else %}
-                        <a href="/register/">Đăng ký</a> |
-                        <a href="/login/">Đăng nhập</a>
+                        <a href="/register">Đăng ký</a> |
+                        <a href="/login">Đăng nhập</a>
                         {% endif %}
                     </div>
                     <ul>
@@ -170,16 +174,16 @@
             <div class="padding-10 col-xs-2 hidden-sm hidden-md hidden-lg">
                 <div class="pull-right">
                     <a href="/cart">
-                        <span class="quantity">0</span>
+                        <span class="quantity" id="mobile_cart">{{ cart.count }}</span>
                         <i style="color:rgb(24, 53, 68);" class="fa fa-cart-plus"></i>
                     </a>
                 </div>
             </div>
             <div class="search col-xs-12 hidden-sm hidden-md hidden-lg">
-                <form action="#" method="get">
-                    <input type="text" placeholder="Tìm kiếm ..." name="id">
+                <div>
+                    <input type="text" placeholder="Tìm kiếm ..." name="r">
                     <button><i class="fa fa-search"></i></button>
-                </form>
+                </div>
             </div>
         </div>
     </div>

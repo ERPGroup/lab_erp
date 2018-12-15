@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Thanh toán gói tin
+{% endblock %}
+{% block styles %}
+<!-- TABLE STYLES-->
+<link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_payment='active'  %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            Quản lý thanh toán gói tin
+        </h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Advanced Tables -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách thanh toán gói tin
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Nội dung</th>
+                                <th>Tin đăng</th>
+                                <th>Số tiền</th>
+                                <th>Ngày thực hiện</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--End Advanced Tables -->
+    </div>
+</div>
+{% endblock content %}
+{% block data_table %}
+<!-- DATA TABLE SCRIPTS -->
+<script src="{% static '/admin/assets/js/dataTables/jquery.dataTables.js' %} "></script>
+<script src="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.js' %} "></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-eu.js"></script>
+<script src="{% static '/merchant/src/js/payment/manager_payment.js' %}"></script>
+
+{% endblock %}

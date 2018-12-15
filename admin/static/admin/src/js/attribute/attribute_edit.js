@@ -10,28 +10,18 @@ $(document).ready(function(){
         success: function(response){
             console.log(response);
             attribute = response[0]['fields']
-            $('#inputCode').val(attribute.code);
-            $('#inputLabel').val(attribute.label);
-            $('#inputType').val(attribute.type_attr);
-            var option_required = ''
-            if(attribute.is_required == true){
-                option_required += '<option value="1" selected >Có</option>'
-                option_required += '<option value="0">Không</option>'
-            }else{
-                option_required += '<option value="1">Có</option>'
-                option_required += '<option value="0" selected >Không</option>'
-            }
-            $('#inputIsRequired').append(option_required)
 
-            var option_unique = ''
-            if(attribute.is_unique == true){
-                option_unique += '<option value="1" selected >Có</option>'
-                option_unique += '<option value="0">Không</option>'
+            $('#inputLabel').val(attribute.label);
+            var option_active = ''
+            if(attribute.is_active == true){
+                option_active += '<option value="1" selected >Kích hoạt</option>'
+                option_active += '<option value="0">Đang khoá</option>'
             }else{
-                option_unique += '<option value="1">Có</option>'
-                option_unique += '<option value="0" selected >Không</option>'
+                option_active += '<option value="1">Kích hoạt</option>'
+                option_active += '<option value="0" selected >Đang khoá</option>'
             }
-            $('#inputIsUnique').append(option_unique)
+            $('#inputIsActive').append(option_active)
+            
         }
     })
 
@@ -39,11 +29,8 @@ $(document).ready(function(){
 
     $('#edit').click(function(){
         data = {
-            'inputCode': $('#inputCode').val(),
             'inputLabel': $('#inputLabel').val(),
-            'inputType': $('#inputType').val(),  
-            'inputIsRequired': $('#inputIsRequired').val(),    
-            'inputIsUnique': $('#inputIsUnique').val(),      
+            'inputIsActive': $('#inputIsActive').val(),   
         }
 
         $.ajax({
@@ -54,11 +41,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_attribute')", 3000);
-                    alert('Da sua thanh cong!\nBan se duoc dieu huong den danh sach thuoc tinh sau 3 giay!');
+                    alert('Đã sửa thuộc tính thành công!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi!')
             }
         })
     });
@@ -70,11 +57,11 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("pageRedirect('/admin/manager_attribute')", 3000);
-                    alert('Thuoc tinh da bi xoa!\nBan se duoc dieu huong den danh sach thuoc tinh sau 3 giay!');
+                    alert('Thuộc tính đã dừng sử dụng!');
+                    pageRedirect('/admin/manager_attribute')
                 }
                 else
-                    alert('ERROR')
+                    alert('Xảy ra lỗi!')
             }
         })
     });

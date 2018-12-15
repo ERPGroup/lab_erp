@@ -4,16 +4,14 @@
 Trang chi tiết người dùng
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_post="active" %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
             Quản lý tin đăng
-            <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa tin</a>
-            </div>
+            
         </h1>
     </div>
 </div>
@@ -61,13 +59,13 @@ Trang chi tiết người dùng
         
                 <div class="form-group" id="re_inputValue">
                     <label>Số lượng sản phẩm:</label>
-                    <input type="number" onkeyup="checkNumber('inputValue');" id="inputValue" class="form-control" min="1" >
+                    <input type="number" onkeyup="checkNumber('inputValue');" id="inputValue" disabled="disabled" class="form-control" min="1" >
                 </div>
 
 
                 <div class="form-group">
                     <label>Trang thái</label>
-                    <select class="form-control" id="inputIsActivity">
+                    <select class="form-control" id="inputIsActivity" disabled="disabled">
                     </select>
                 </div>
             </div>
@@ -98,8 +96,7 @@ Trang chi tiết người dùng
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
-                <button type="reset" class="btn btn-default">Trở lại</button>
+                <a href="/admin/manager_posted" class="btn btn-default">Trở về</a>
             </div>
             <div class="clearfix"></div>
         </form>

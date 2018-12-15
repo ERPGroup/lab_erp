@@ -4,72 +4,88 @@
 Trang chi tiết người dùng
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_ads='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header" style="margin:0px; padding-top:15px;">
-            Quản lý đăng ký quảng cáo
-            <div style="display:inline-block; text-align:right;float:right;">
-                <a href="/admin/manager_users/add" class="btn btn-danger">Xóa đăng ký</a>
-            </div>
+            Quản lý đăng nội dung quảng cáo
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <form method="post" action="#" class="background_white" role="form">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <h3>Thông tin đăng ký</h3>
-                    <hr>
-                </div>
-                <div class="form-group">
-                    <label>Mã quảng cáo</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Mã khách hàng</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Họ tên khách hàng</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Vị trí đặt quảng cáo</label>
-                    <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select class="form-control">
-                        <option>Đang xử lý</option>
-                        <option>Cho thuê</option>
-                        <option>Không cho thuê</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <h3 style="text-align:center;">Thông tin quảng cáo</h3>
+                <hr>
             </div>
             <div class="col-lg-6">
+                <input type="hidden" id="pid" value="{{result.id}}">
+                <div class="form-group">
+                    <label>Tên quảng cáo</label>
+                    <input value="{{result.service_ads_id.service_name}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Vị trí</label>
+                    <input value="{{result.service_ads_id.position}}" id="position" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Ngày bắt đầu</label>
+                    <input value="{{result.date_start|date:'d-m-Y H:i'}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Hạn sử dụng</label>
+                    <input value="{{result.service_ads_id.day_limit}} Ngày" type="text" class="form-control">
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Họ tên khách hàng</label>
+                    <input value="{{result.merchant_id.name}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input value="{{result.merchant_id.address}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input value="{{result.merchant_id.phone}}" type="text" class="form-control">
+                </div>
+
+            </div>
+            <div class="col-lg-12">
                 <div class="form-group">
                     <h3>Nội dung quảng cáo</h3>
                     <hr>
                 </div>
-                <div class="form-group">
-                    <label>Hình ảnh</label>
-                    <input type="file" class="form-control">
-                    <div class="thumb_img_ads">
-                        <img src="{% static 'admin/assets/img/banner-top.jpg' %}">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>No.1</th>
+                                        <th>Đường dẫn URL</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Nội dung</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl">
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Nội dung</label>
-                    <textarea class="form-control" rows="4"></textarea>
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                    <button type="submit" class="btn btn-info"><i class=" fa fa-refresh "></i> Chỉnh sửa</button>
-                <button type="reset" class="btn btn-default">Khôi phục</button>
+                <div id="post_id" type="hidden" value=""></div>
+                <a href="#" id="submit" type="submit" class="btn btn-info"><i class=" fa fa-check "></i>
+                    Xác nhận nội dung</a>
+                <a href="#" id="cancel" type="reset" class="btn btn-danger">Khóa nội dung</a>
             </div>
             <div class="clearfix"></div>
         </form>
@@ -77,4 +93,7 @@ Trang chi tiết người dùng
 </div>
 
 <div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<script src="{% static 'admin/src/js/service_ads/service_ads_post.js' %}"></script>
 {% endblock %}

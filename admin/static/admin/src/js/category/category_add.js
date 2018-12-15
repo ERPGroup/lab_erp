@@ -2,8 +2,7 @@
 $(document).ready(function(){
     $('#submit').click(function(){
         data = {
-            'inputName': $('#inputName').val(),
-            'inputIsActive': $('#inputIsActive').val(),         
+            'inputName': $('#inputName').val(),      
         }
         $.ajax({
             url: 'http://localhost:8000/admin/category',
@@ -12,11 +11,11 @@ $(document).ready(function(){
             data: data,
             success: function(response){
                 if(response == 1){   
-                    setTimeout("pageRedirect('/admin/manager_category')", 3000);
-                    alert('Da them thanh cong!\nBan se duoc dieu huong den danh muc san pham sau 3 giay!');
+                    alert('Đã thêm danh mục thành công!');
+                    pageRedirect('/admin/manager_category')
                 }
                 else
-                    alert('ERROR!');        
+                    alert('Xảy ra lỗi!');        
             }
         })
     });

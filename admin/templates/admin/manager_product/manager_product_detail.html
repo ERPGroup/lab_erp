@@ -11,7 +11,7 @@ Trang chi tiết sản phẩm
 {% endblock %}
 
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_product='active' %}
 {% endblock %}
 
 {% block content %}
@@ -34,12 +34,12 @@ Trang chi tiết sản phẩm
             <div class="col-lg-12 background_white" style="padding-top:15px;margin:0px">
                 <div class="col-lg-8">
                     <div class="form-group">
-                        <label>Mã sản phẩm:</label>
-                        <input type="text" id="inputCode" disabled='disabled' class="form-control">
-                    </div>
-                    <div class="form-group">
                         <label>Tên sản phẩm:</label>
                         <input type="text" id="inputName" disabled='disabled' class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mã SKU:</label>
+                        <input type="text" id="inputCode" disabled='disabled' class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Mô tả ngắn:</label>
@@ -47,14 +47,6 @@ Trang chi tiết sản phẩm
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group" id="re_number3">
-                        <label>Giá :</label>
-                        <input type="text" id="inputPrice"  disabled='disabled' maxlength="11" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Nguồn gốc :</label>
-                        <input type="text" id="inputOrigin" disabled='disabled' class="form-control">
-                    </div>
                     <div class="form-group" style="position:relative;">
                         <label>Danh mục sản phẩm:</label>
                         <input data-toggle="dropdown" type="text"  disabled='disabled' autocomplete="" style="padding-left:35px;" class="form-control dropdown-toggle">
@@ -63,7 +55,25 @@ Trang chi tiết sản phẩm
                         </ul>
                         <div id="value_category"></div>
                     </div>
+                    <div class="form-group">
+                        <label>Nguồn gốc :</label>
+                        <input type="text" id="inputOrigin" disabled='disabled' class="form-control">
+                    </div>
+                    <div class="form-group" id="re_number3">
+                        <label>Giảm giá :</label>
+                        <input type="text" id="inputDiscount"  disabled='disabled' maxlength="11" class="form-control">
+                    </div>
                     
+                    <div class="form-group frm_tags">
+                        <label>Tags:<a style="position:absolute;right:20px;" href="#">Xem toàn bộ tags</a></label>
+                        <input disabled='disabled' onkeypress="if (event.keyCode==13) {addmore_tags(this.value); this.value=''; return false; }"
+                            type="text" class="form-control" placeholder="Nhập tags cho gói tin">
+                        <ul>
+                            <div id="tags_add">
+
+                            </div>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -99,7 +109,7 @@ Trang chi tiết sản phẩm
                     </div>
                     <div class="form-group ">
                         <div class="col-lg-6">
-                            <a onclick="addmore_attribute(); return false;" class="btn btn-default">Thêm thuộc tính
+                            <a onclick="alert('Chức năng này chưa được hỗ trợ!')" class="btn btn-default">Thêm thuộc tính
                                 khác</a>
                         </div>
                         <div class="clearfix"></div>
@@ -129,7 +139,6 @@ Trang chi tiết sản phẩm
                 </div>
             </div>
             <div class="col-lg-12 pull-right" style="text-align:right; padding:15px;border-top:1px solid #C7D1DD;">
-                <button type="submit" id="accept" class="btn btn-info">Cho phép bán</button>
                 <a href="/admin/manager_product" class="btn btn-default">Trở về</a>
             </div>
             <div class="clearfix"></div>

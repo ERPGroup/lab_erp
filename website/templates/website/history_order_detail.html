@@ -1,0 +1,152 @@
+{% load staticfiles %}
+{% load cart_tags %}
+{% load humanize %}
+{% load product_tags %}
+{% get_cart as cart %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Thanh toán</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/bootstrap-theme.min.css' %} " />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/payment.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'website/assets/font-awesome.min.css' %}" />
+    <script type="text/javascript" src="{% static 'website/assets/jquery-2.2.4.min.js' %} "></script>
+</head>
+
+<body>
+    <div class="payment">
+        <div class="container">
+            <div class="row">
+                <div class="logo col-xs-12">
+                    <img src="{% static 'website/images/logo.png' %}" alt="/index">
+                </div>
+                <div class="frmPayment">
+                    <div class="bill_payment col-xs-12 col-md-4 pull_right_desktop">
+                        <div class="col-xs-12 a_left border_top_bottom">
+                            <div class="col-xs-6">
+                                <h4>Đơn hàng ({{ cart.count }})</h4>
+                            </div>
+                            <div class="col-xs-6 a_right">
+                                <a class="hidden-sm hidden-md hidden-lg" onclick="clickShowFooter('detail_order')" href="#">Xem chi tiết ></a>
+                            </div>
+                            <div class="col-xs-12 no_padding border_top" id="detail_order" style="padding: 0px 0px;">
+                                {% for item in cart.items %}
+                                <div style="margin-top: 15px;">
+                                    <div class="img_payment col-xs-3">
+                                        {% get_image_product item.product.id as image  %}
+                                        <img src="{{ image }}">
+                                    </div>
+                                    <div class="col-xs-5 name_payment no_padding">
+                                        <div> {{ item.product.name }} <b style="color:red;">x({{ item.quantity }})</b></div>
+                                    </div>
+                                    <div class="col-xs-4 price_payment no_padding">
+                                        <div> {{ item.price|intcomma }} đ</div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 border_bottom" style="padding: 15px;">
+                            <div class="col-xs-6 a_left">
+                                Tạm tính:
+                            </div>
+                            <div class="col-xs-6 a_right">
+                                <label> {{ cart.total|intcomma }} đ</label>
+                            </div>
+                            <div class="col-xs-6 a_left">
+                                Phí vận chuyển:
+                            </div>
+                            <div class="col-xs-6 a_right">
+                                <label> 0 đ</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 ">
+                            <div class="col-xs-6 a_left">
+                                <h4>Tổng cộng:</h4>
+                            </div>
+                            <div class="col-xs-6 a_right">
+                                <h4> {{ cart.total|intcomma }} đ</h4>
+                            </div>
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-12 col-lg-12 btn_payment border_top" style="margin-bottom:15px;">
+                            <button class="btn btn-info" style="width:100%" id='sub_destop' type="submit">Mua hàng</button>
+                            <a href="/cart">&lt; Quay lại giỏ hàng</a>
+                        </div>
+                    </div>
+                    <div class="information_payment col-xs-12 col-md-4">
+                        <div class="col-xs-12 border_top">
+                            <h4><b><i class="fa fa-id-card-o" style="padding-right:5px;"></i>Thông tin mua hàng</b></h4>
+                            {% if not request.session %}
+                            <h5><a href="/login"><i class="fa fa-user" style="padding-right:5px;"></i>Đăng nhập</a></h5>
+                            {% else%}
+                            <h5><button class="btn btn-info" id="update_profile"><i class="fa fa-user" style="padding-right:5px;"></i>Cập nhật thông tin tài khoản</button></h5>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-xs-12">
+                            <input name="BillingAddress.LastName" type="text" class="field__input form-control"
+                                placeholder="Họ và tên" id="_billing_address_last_name" value="" data-error="Vui lòng nhập họ tên"
+                                required="">
+                            <input name="BillingAddress.Phone" bind-event-change="saveAbandoned()" type="tel" value=""
+                                bind-event-focus="handleFocus(this)" bind-event-blur="handleFieldBlur(this)" class="field__input form-control"
+                                id="_billing_address_phone" placeholder="Số điện thoại" data-error="Vui lòng nhập số điện thoại"
+                                pattern="^([0-9,\+,\-,\(,\),\.]{8,20})$" bind="billing_address.phone">
+                            <input name="BillingAddress.Address1" class="field__input form-control" value="" placeholder="Địa chỉ"
+                                id="_billing_address_address1">
+                            
+                            <textarea name="note" bind-event-change="saveAbandoned()" id='inputNote' value="" class="field__input form-control m0"
+                                placeholder="Ghi chú"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="ship_payment col-xs-12 col-md-4">
+                        <div class="col-xs-12">
+                            <h4><b><i class="fa fa-truck fa-lg" style="padding-right:5px;"></i>Vận chuyển</b></h4>
+                            <input style="height:13px;" checked="checked" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                value="option2">
+                            <label>
+                                Giao hàng tận nơi
+                            </label>
+                            <span class="pull-right" style="text-align:right"><b>0 đ</b></span>
+                        </div>
+                        <div class="col-xs-12 border_top">
+                            <h4><b><i class="fa fa-credit-card fa-lg" style="padding-right:5px;"></i>Thanh toán</b></h4>
+
+                            <input style="height:13px;" checked="checked" type="radio" name="payment" id="payment"
+                                value="COD">
+                            <label>
+                                Thanh toán khi giao hàng COD
+                            </label>
+                            <span class="pull-right" style="text-align:right"><i class="fa fa-money fa-lg"></i></span>
+                            <div class="clearfix"></div>
+                            <input style="height:13px;" type="radio" name="payment" id="payment" value="Paypal" onclick="alert('Hệ thống đang nâng cấp'); return false;">
+                            <label>
+                                Thanh toán trực tuyến
+                            </label>
+                            <span class="pull-right" style="text-align:right"><i class="fa fa-money fa-lg"></i></span>
+                            <br>
+                            <br>
+                            <label>Chú ý: Khi chọn COD bạn chỉ phải thanh toán khi nhận hàng</label>
+                        </div>
+                        <div class="col-xs-12 hidden-md hidden-lg btn_payment border_top" style="margin-bottom:15px;">
+                            <button class="btn btn-info" style="width:100%" id='sub_mobile' type="submit">Mua hàng</button>
+                            <a href="cart/">&lt; Quay lại giỏ hàng</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'website/assets/payment.js' %} "></script>
+    <script type="text/javascript" src="{% static 'website/src/js/payment/index.js' %} "></script>
+</body>
+
+</html>

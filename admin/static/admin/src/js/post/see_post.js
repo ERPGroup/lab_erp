@@ -14,16 +14,12 @@ $(document).ready(function(){
 
             //Load Product
             $.ajax({
-                url: 'http://localhost:8000/merchant/products?posted=false&include=' + post.product_id ,
+                url: 'http://localhost:8000/merchant/product/' + post.product_id ,
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
-                    for (var i = 0; i < response.length; i++){
-                        if (post.product_id == response[i]['pk']){
-                            $('#products').append('<option value="'+ response[i]['pk'] +'" selected="selected">'+ response[i]['fields']['code'] + ' - ' + response[i]['fields']['name'] +'</option>')
-                            showProduct(response[i]['pk']);
-                        }
-                    }
+                    $('#products').append('<option value="'+ response.id +'" selected="selected">'+ response['code'] + ' - ' + response['name'] +'</option>')
+                    showProduct(response.id);
                 }
             }) 
 
@@ -62,38 +58,55 @@ $(document).ready(function(){
             $('#inputValue').attr('max', post.quantity);
             
             option_activity = '';
-            if(post.is_activity == true){
-                option_activity += '<option value="1" selected >Hiển thị</option>'
-                option_activity += '<option value="0">Không hiển thị</option>'
-            }else{
-                option_activity += '<option value="1">Hiển thị</option>'
-                option_activity += '<option value="0" selected >Không hiển thị</option>'
+            if (post.is_lock == false){
+                if(post.is_activity == true){
+                    option_activity += '<option value="1" selected >Hiển thị</option>'
+                    option_activity += '<option value="0">Không hiển thị</option>'
+                }else{
+                    option_activity += '<option value="1">Hiển thị</option>'
+                    option_activity += '<option value="0" selected >Không hiển thị</option>'
+                }
             }
+            else
+            {
+                option_activity += '<option value="1">Bị khóa</option>'
+            }
+            
             $('#inputIsActivity').append(option_activity)
 
             // san bat truong hoop lock
         }
     })
-
-    $('#products').change(function(){
-        showProduct(this.value);
-    });
 })
+
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/merchant/product/'+ id_product,
+        url: 'http://localhost:8000/admin/product/'+ id_product,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
-            console.log(response);
             item = ''
             item += '<tr>'
-            item += '<td><a href="/merchant/product/edit/'+ this.value +'">'+ response.code +'</a></td>'
+            item += '<td><a href="/admin/product/see/'+ id_product +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
-            item += '<td><div class="tbl_thumb_product"><img src="'+ response.list_image[0].image_link +'" alt="Product"></div></td>'
-            item += '<td>'+ response.price_origin +' VNĐ</td>'
-            item += '<td>Đây là sản phẩm demo cho mọi người xem thôi, chứ khong6 có gì đâu</td>'
+            item += '<td><div class="tbl_thumb_product"><img src="/product/'+ response.images[0].image_link +'" alt="Product"></div></td>'
+            if (response.discount_percent != 0){
+                if (response.price_max_min[0] == response.price_max_min[1])
+                    item += '<td>'+ (response.price_max_min[0] * (100 - response.discount_percent))/100 +' VNĐ</td>'
+                else
+                    item += '<td>'+ (response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100 +' VNĐ</td>'
+            }
+            else{
+                if (response.price_max_min[0] == response.price_max_min[1])
+                    item += '<td>'+ response.price_max_min[0] +' VNĐ</td>'
+                else
+                    item += '<td>'+ response.price_max_min[1] + ' - ' + response.price_max_min[0] +' VNĐ</td>'
+            }
+            if (response.detail != '')
+                item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
+            else
+                item += '<td> </td>'
             item += '</tr>'
             $('#item').empty();
             $('#item').append(item)

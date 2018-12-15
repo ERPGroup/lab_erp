@@ -17,7 +17,7 @@ Chi tiết sản phẩm
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                 <div class="title_collection">
                     <a href="/"><i class="fa fa-home"></i></a>
-                    <i class="fa fa-angle-right"></i><a href="#"> Ipad</a>
+                    <i class="fa fa-angle-right"></i><a id="product_title"> </a>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -26,7 +26,7 @@ Chi tiết sản phẩm
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 left_content">
                             <div class="product__view__image--list">
-                                <ul class="bxslider">
+                                <ul class="bxslider" id="bxslider">
                                     <li>
                                         <div class="thumb_image_quickview">
                                             <img class="cloudzoom" id="zoom1" data-cloudzoom="zoomSizeMode:'image',zoomPosition:'3', zoomOffsetX:0"
@@ -40,7 +40,7 @@ Chi tiết sản phẩm
                                         </div>
                                     </li>
                                 </ul>
-                                <div id="bx-pager" class="bx-pager owl-carousel" data-lg-items="4" data-nav="true" data-md-items="3" data-sm-items="4" data-xs-items="2" data-xss-items="2" data-margin="0">
+                                <div id="bx-pager" class="bx-pager owl-carousel not-aweowl" data-lg-items="4" data-nav="true" data-md-items="3" data-sm-items="4" data-xs-items="2" data-xss-items="2" data-margin="0">
                                     <a data-slide-index="0" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
                                             class="img-responsive" /></a>
                                     <a data-slide-index="1" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
@@ -49,128 +49,224 @@ Chi tiết sản phẩm
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 right_content">
-                            <h2 class="title">Iphones 7S</h2>
+                            <h2 class="title" id="name_product"></h2>
                             <div class="information_product col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                                <form class="form_quickview" action="#" method="post">
-                                    <input type="hidden" name="id_product" value="#">
-                                    <span class="col-xs-4">Màu sắc: </span>
-                                    <select class="form-control choose_product">
-                                        <option>Xanh</option>
-                                        <option>Đỏ </option>
-                                        <option>Tím</option>
+                                <div class="form_quickview">
+                                    <input type="hidden" id="id_product" value="#">
+                                    <span class="col-xs-4">Phiên bản: </span>
+                                    <select class="form-control choose_product" onchange="get_version(this.value)" id="version">
                                     </select>
                                     <div class="clearfix"></div>
-                                    <span class="col-xs-4">Dung lượng bộ nhớ: </span>
-                                    <select class="form-control choose_product">
-                                        <option>12gb</option>
-                                        <option>24gb </option>
-                                        <option>36gb</option>
-                                    </select>
-                                    <div class="clearfix"></div>
-                                    <span class="col-xs-4">
-                                        Số lượng:
-                                    </span>
-                                    <button class="button_add">-</button>
-                                    <input value="1" class="input_add" maxlength="3" size="5" name="quantity" id="quantity">
-                                    <button class="button_add">+</button>
-                                    <div class="clearfix"></div>
-                                    <span class="col-xs-4">
+                                    <!-- <span class="col-xs-4">
                                         Giá gốc:
                                     </span>
                                     <h3 class="price_disable line_throught">4.000.000 đ</h3>
-                                    <div class="clearfix"></div>
-                                    <span class="col-xs-4">
+                                    <div class="clearfix"></div> -->
+                                    <!-- <span class="col-xs-4">
                                         Tiết kiệm:
                                     </span>
                                     <h3 class="price_disable">359.000 đ</h3>
+                                    <div class="clearfix"></div> -->
+                                    <span class="col-xs-4">Giá:</span>
+                                    <h3 style="color:#f70302" id="price_product">3.359.000 đ</h3>
                                     <div class="clearfix"></div>
-                                    <span class="col-xs-4">
-                                        Giá:
-                                    </span>
-                                    <h3 style="color:#f70302">3.359.000 đ</h3>
+                                    <div id="quantity_choice">
+                                        
+                                    </div>
                                     <div class="clearfix"></div>
                                     <span class="col-xs-4">
                                         Tình trạng:
                                     </span>
-                                    <span><b>Còn hàng (10 sản phẩm có sẵn)</b></span>
+                                    <span><b id="qty_avaliable"></b></span>
                                     <div class="clearfix"></div>
                                     <div class="submit_div">
-                                        <button type="submit" class="btn_buy">Mua hàng</button>
+                                        <button onclick="buy_product()" class="btn_buy">Mua hàng</button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                            <div class="information_seller col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                <h2>Thông tin người bán: </h2>
-                                <p>Tên định danh: <a href="#">Tablet plaza </a></p>
-                                <p>Đánh giá: <span class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </span>
-                                </p>
-                                <p style="color:#f58634;">Cấp bậc: <b>Vàng <i class="fa fa-trophy"></i></b></p>
-                                <hr>
-                                <a href="#">Ghé thăm gian hàng</a>
-                                <br>
-                                <a href="#">Liên hệ người bán</a>
+                            <div class="information_seller col-xs-12 col-sm-4 col-md-4 col-lg-4" id="merchant">
+                                
                             </div>
                         </div>
                         <div class="information_product col-xs-12 col-sm-12 col-md-12 col-lg-12 no_padding">
                             <div class="detail_product col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
-                                <h4>Đặc điểm nổi bật của iPhone 7 Plus 128GB Đỏ</h4>
-                                <p>
-                                    iPhone 7 Plus Red 128GB là phiên bản iPhone 7 Plus mới được Apple giới thiệu
-                                    với màu
-                                    sắc mới là màu Red nhằm kỉ niệm 10 năm hợp tác giữa Apple và (RED) – một tổ
-                                    chức gây
-                                    quỹ hỗ trợ phòng chống AIDS.
-                                    <img src="{% static 'website/images/detail_product.jpg' %}">
-                                </p>
+                                <h4>Chi tiết sản phẩm</h4>
+                                <div class="row">
+                                    <div id="detail_product">
+
+                                    </div>
+                                </div>
+                                
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="rating-block" id="agv_rating">
+                                            <h4>Trung bình đánh giá</h4>
+                                            <h2 class="bold padding-bottom-7">{{ rating.agv_rating }} <small>/ 5</small></h2>
+                                            {% for x in rating.list_color %}
+                                            {% if x == 1 %}
+                                            <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            {% endif %}
+                                            {% if x == 0 %}
+                                            <button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <h4>Số lượng đánh giá</h4>
+                                        <div class="pull-left">
+                                            <div class="pull-left" style="width:35px; line-height:1;">
+                                                <div style="height:9px; margin:5px 0;">5 <span class="glyphicon glyphicon-star"></span></div>
+                                            </div>
+                                            <div class="pull-left" style="width:180px;">
+                                                <div class="progress" style="height:9px; margin:8px 0;">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style="width: {{ rating.star_5.1 }}%">
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pull-right" style="margin-left:10px;">{{ rating.star_5.0 }}</div>
+                                        </div>
+                                        <div class="pull-left">
+                                            <div class="pull-left" style="width:35px; line-height:1;">
+                                                <div style="height:9px; margin:5px 0;">4 <span class="glyphicon glyphicon-star"></span></div>
+                                            </div>
+                                            <div class="pull-left" style="width:180px;">
+                                                <div class="progress" style="height:9px; margin:8px 0;">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="width: {{ rating.star_4.1 }}%">
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pull-right" style="margin-left:10px;">{{ rating.star_4.0 }}</div>
+                                        </div>
+                                        <div class="pull-left">
+                                            <div class="pull-left" style="width:35px; line-height:1;">
+                                                <div style="height:9px; margin:5px 0;">3 <span class="glyphicon glyphicon-star"></span></div>
+                                            </div>
+                                            <div class="pull-left" style="width:180px;">
+                                                <div class="progress" style="height:9px; margin:8px 0;">
+                                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5" style="width: {{ rating.star_3.1 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pull-right" style="margin-left:10px;">{{ rating.star_3.0 }}</div>
+                                        </div>
+                                        <div class="pull-left">
+                                            <div class="pull-left" style="width:35px; line-height:1;">
+                                                <div style="height:9px; margin:5px 0;">2 <span class="glyphicon glyphicon-star"></span></div>
+                                            </div>
+                                            <div class="pull-left" style="width:180px;">
+                                                <div class="progress" style="height:9px; margin:8px 0;">
+                                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5" style="width: {{ rating.star_2.1 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pull-right" style="margin-left:10px;">{{ rating.star_2.0 }}</div>
+                                        </div>
+                                        <div class="pull-left">
+                                            <div class="pull-left" style="width:35px; line-height:1;">
+                                                <div style="height:9px; margin:5px 0;">1 <span class="glyphicon glyphicon-star"></span></div>
+                                            </div>
+                                            <div class="pull-left" style="width:180px;">
+                                                <div class="progress" style="height:9px; margin:8px 0;">
+                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="5" style="width: {{ rating.star_1.1 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pull-right" style="margin-left:10px;">{{ rating.star_1.0 }}</div>
+                                        </div>
+                                    </div>			
+                                </div>			
+                                <div class="row">
+                                    <div>
+                                        <div class="form-group">
+                                            <label>Nhận xét:    </label>
+                                            <textarea class="form-control" rows="3" id="comment_text"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Đánh giá:</label>
+                                            <select class="form-control" id="num_star">
+                                                <option value="5">5 sao</option>
+                                                <option value="4">4 sao</option>
+                                                <option value="3">3 sao</option>
+                                                <option value="2">2 sao</option>
+                                                <option value="1">1 sao</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button class="btn btn-info" onclick="rating_merchant()">Đánh giá</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <hr/>
+                                        <div class="review-block">
+                                            {% for item in rating.list_rating %}
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <img src="{% static '/website/images/user.png' %}" class="img-rounded">
+                                                    <div class="review-block-name"><a >{{ item.customer.name }}</a></div>
+                                                    <div class="review-block-date">Đã mua hàng</div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="review-block-rate">
+                                                        {% for x in item.list_color %}
+                                                            {% if x == 1 %}
+                                                                <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+                                                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                                </button>
+                                                            {% endif %}
+                                                            {% if x == 0 %}
+                                                                <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
+                                                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                                </button>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="review-block-title">Nhận xét:</div>
+                                                    <div class="review-block-description">{{ item.comment }}</div>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 no_padding">
-                                <table class="tbl_product">
-                                    <tr>
-                                        <th colspan="2" class="text-center">Thông số kỹ thuật</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Màn hình:
-                                        </td>
-                                        <td> LED-backlit IPS LCD, 5.5", Retina HD</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Màn hình:
-                                        </td>
-                                        <td> LED-backlit IPS LCD, 5.5", Retina HD</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Màn hình:
-                                        </td>
-                                        <td> LED-backlit IPS LCD, 5.5", Retina HD</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Màn hình:
-                                        </td>
-                                        <td> LED-backlit IPS LCD, 5.5", Retina HD</td>
-                                    </tr>
+                                <table class="tbl_product" id="tbl_product">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Thông số kỹ thuật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl_product">
+
+                                    </tbody>
                                 </table>
                                 <div clas="clearfix"></div>
                                 <h3>Có thế bạn thích</h3>
                                 <div clas="clearfix"></div>
-                                {% for i in "x"|rjust:"3" %}
-                                {% include "snippets/product-grid-item.html" %}
-                                {% endfor %}
+                                <div id="like_product">
+
+                                </div>
+                            
                             </div>
                         </div>
                         <div class="clearfix" style="margin: 10px 0px;"></div>
                         <div class="product_relate col-xs-12 col-sm-12 col-md-12 col-lg-12 no_padding">
                             <h2>Sản phẩm liên quan</h2>
-                            <div class="owl-product-relate owl-carousel owl-theme">
+                            <div class="owl-product-relate owl-carousel owl-theme" id="related">
                                 {% for i in "x"|rjust:"4" %}
                                 <div class="item">
                                     {% include "snippets/product-grid-item.html" %}
@@ -188,8 +284,10 @@ Chi tiết sản phẩm
 {% endblock %}
 {% block zoom_img_js %}
 <!--Zoom image-->
+<script src="{% static 'website/assets/currency.min.js' %}"></script>
 <script src="{% static 'website/assets/jquery.bxslider.min.js' %} "></script>
 <script src="{% static 'website/assets/cloudzoom.js' %} "></script>
 <script src="{% static 'website/assets/product_script.js' %} "></script>
+<script src="{% static 'website/src/js/post/index.js' %} "></script>
 <!--End zoom-->
 {% endblock %}

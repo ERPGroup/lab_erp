@@ -2,13 +2,16 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
             <li>
-                <a href="/merchant"><i class="fa fa-dashboard"></i> Trang tổng quan</a>
+                <a {% if index %}class="active-menu" {% endif %} href="/merchant"><i class="fa fa-dashboard"></i> Trang
+                    tổng quan</a>
             </li>
             <li>
-                <a {% if active_product %} class="active-menu" {% endif %} href="/merchant/manager_product"><i class="fa fa-product-hunt"></i> Quản lý sản phẩm</a>
-            </li>        
+                <a {% if active_product %} class="active-menu" {% endif %} href="/merchant/manager_product"><i class="fa fa-product-hunt"></i>
+                    Quản lý sản phẩm</a>
+            </li>
             <li>
-                <a {% if active_posted %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-file-text-o"></i> Quản lý gói tin<span class="fa arrow"></span></a>
+                <a {% if active_posted %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-file-text-o"></i>
+                    Quản lý gói tin<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/merchant/statistial_post">Thống kê số lượng tin</a>
@@ -19,7 +22,8 @@
                 </ul>
             </li>
             <li>
-                <a {% if active_service %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-support"></i>Dịch vụ hỗ trợ<span class="fa arrow"></span></a>
+                <a {% if active_service %} class="active-menu" {% endif %} href="/admin/manager_users"><i class="fa fa-support"></i>Dịch
+                    vụ hỗ trợ<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="/merchant/service_post">Mua gói tin</a>
@@ -27,23 +31,29 @@
                     <li>
                         <a href="/merchant/service_ads">Mua quảng cáo</a>
                     </li>
+                    <li>
+                        <a href="/merchant/post_ads/">Đăng quảng cáo</a>
+                    </li>
+                    <li>
+                        <a href="/merchant/manager_ads_running">Quảng cáo đã đăng</a>
+                    </li>
                 </ul>
             </li>
             <li>
-                <a {% if active_order %} class="active-menu" {% endif %} href="/merchant/order"><i class="fa fa-truck"></i>Quản lý đơn hàng<span class="fa arrow"></span></a>
+                <a {% if active_order %} class="active-menu" {% endif %} href="/merchant/order"><i class="fa fa-truck"></i>Quản
+                    lý đơn hàng<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="/merchant/order">Đơn hàng chưa giao</a>
+                        <a href="/merchant/order">Đơn hàng</a>
                     </li>
                     <li>
-                        <a href="/merchant/order">Đơn hàng hủy</a>
+                        <a href="/merchant/rating">Đánh giá</a>
                     </li>
                 </ul>
-               
             </li>
             <li>
-                <a  href="/merchant/order"><i class="fa fa-money"></i> Lịch sử giao dịch</a>
-               
+                <a {% if active_payment %} class="active-menu" {% endif %} href="/merchant/payment"><i class="fa fa-money"></i> Lịch sử giao dịch</a>
+
             </li>
             <li>
                 <a href="/admin/manager_users"><i class="fa fa-bar-chart-o"></i> Thống kê và báo cáo<span class="fa arrow"></span></a>

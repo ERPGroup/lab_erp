@@ -38,6 +38,22 @@ $(document).ready(function(){
     });
 
     $('#submit').click(function(){
+        if($('#products').val() == ''){
+            alert('Vui lòng lựa chọn sản phẩm')
+            return
+        }
+
+        if($('#services').val() == ''){
+            alert('Vui lòng lựa chọn tin đăng')
+            return
+        }
+
+        if(parseInt($('#inputQuantity').val()) < 0 || parseInt($('#inputQuantity').attr('max')) < parseInt($('#inputQuantity').val())){
+            alert('Số lượng không hợp lệ!')
+            return
+        }
+
+
         data = {
             'inputProduct': $('#products').val(),
             'inputService': $('#services').val(),
@@ -50,7 +66,17 @@ $(document).ready(function(){
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
-                alert(response)
+                if (response == 1){
+                    alert('Sản phẩm đã được đăng!');
+                    window.location.replace('/merchant/manager_post');
+                }
+                else if (response == -4){
+                    alert('Vui lòng kết nối tài khoản giao hàng tiết kiệm!');
+                    window.location.replace('/setup/ghtk')
+                }
+                else{
+                    alert(response);
+                }
             }
         })
     });
@@ -64,11 +90,20 @@ function showProduct(id_product){
         success: function(response){
             item = ''
             item += '<tr>'
-            item += '<td><a href="/merchant/product/edit/'+ this.value +'">'+ response.code +'</a></td>'
+            item += '<td><a href="/merchant/product/edit/'+ id_product +'">'+ response.code +'</a></td>'
             item += '<td>'+ response.code +'</td>'
-            item += '<td><div class="tbl_thumb_product"><img src="'+ response.list_image[0].image_link +'" alt="Product"></div></td>'
-            item += '<td>'+ response.price_origin +' VNĐ</td>'
-            item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
+            item += '<td><div class="tbl_thumb_product"><img src="/product/'+ response.images[0].image_link +'" alt="Product"></div></td>'
+            
+            if (response.price_max_min[0] == response.price_max_min[1])
+                item += '<td>'+ currency((response.price_max_min[0] * (100 - response.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            else
+                item += '<td>'+ currency((response.price_max_min[1] * (100 - response.discount_percent))/100 + ' - ' + (response.price_max_min[0] * response.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VNĐ</td>'
+            
+            if (response.detail != '')
+                item += '<td>' + (response.detail).substr(0, 50).split('>')[1] + '</td>'
+            else
+                item += '<td> </td>'
+                
             item += '</tr>'
             $('#item').empty();
             $('#item').append(item)
@@ -78,12 +113,10 @@ function showProduct(id_product){
 
 function showPost(id_service){
     $.ajax({
-        url: 'http://localhost:8000/merchant/service/'+ id_service,
+        url: 'http://localhost:8000/merchant/service/'+ id_service + '?posted=true',
         method: 'GET',
         contentType: 'application/json',
-        success: function(response){
-            console.log(response);
-            service = response[0]['fields']
+        success: function(service){
             
             $('#inputDayLimit').val(service['day_limit']);
             option_vip = '';

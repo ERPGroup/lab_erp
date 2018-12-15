@@ -25,19 +25,79 @@ $(document).ready(function(){
       list_image.push(values_image[item].id)
     }
 
+    list_tag = new Array();
+    value_tag = $('.value_tags')
+    for (item = 0; item < value_tag.length; item++){
+      list_tag.push(value_tag[item].textContent)
+    }
+
+    // Check
+
+
+    if (list_version.length < 1 || list_version.length > 10){
+      alert('Số lượng phiên bản không nhỏ hơn 1 hoặc lớn hơn 10');
+      return
+    }
+
+    for(item = 0; item < list_version.length; item++){
+      if (list_version[item]['price'] == ''){
+        alert('Giá phiên bản không hợp lệ');
+        return
+      }
+      
+    }
+
+    if (list_category.length < 1 || list_category.length > 2){
+      alert('Số lượng thư mục không nhỏ hơn 1 hoặc lớn hơn 2');
+      return
+    }
+
+    if (values_image.length < 1){
+      alert('Số lượng hình ảnh không nhỏ hơn 1 ');
+      return
+    }
+
+    if (list_tag.length > 3){
+      alert('Số lượng tag không lớn hơn 3 ');
+      return
+    }
+
+    if ($("#inputCode").val() == ''){
+      alert('Mã SKU không được để trống');
+      return
+    }
+
+    if ($("#inputName").val() == ''){
+      alert('Tên sản phẩm không được để trống');
+      return
+    }
+
+    if ($("#inputDiscount").val() == ''){
+      alert('Giảm giá không được để trống');
+      return
+    }
+
+    if ($("#inputOrigin").val() == ''){
+      alert('Nguồn gốc không được để trống');
+      return
+    }
+
     var data = {
       'inputCode': $("#inputCode").val(),
       'inputName': $('#inputName').val(),
       'inputDetail': CKEDITOR.instances['inputDetail'].getData(),
-      'inputPrice': $('#inputPrice').val(),
+      'inputDiscount': $('#inputDiscount').val(),
       'inputOrigin': $('#inputOrigin').val(),
       'inputCategory': Object.assign({}, list_category),
+      'inputTag': Object.assign({}, list_tag),
       'inputCountCategory': list_category.length,
+      'inputCountTag': list_tag.length,
       'inputImage': Object.assign({}, list_image),
       'inputCountImage': list_image.length,
       'inputVersion': Object.assign({}, list_version),
       'inputCountProduct': list_version.length,
     }
+
     console.log(data)
     $.ajax({
       url: 'http://localhost:8000/merchant/product',
@@ -47,8 +107,11 @@ $(document).ready(function(){
       success: function(response){
         console.log(response);
         if(response == 1){
-          alert('da them san pham');
+          alert('Sản phẩm đã được tạo');
+          window.location.replace('/merchant/manager_product')
         }
+        else
+          alert(response)
       },
     });
   });

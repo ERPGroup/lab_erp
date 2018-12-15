@@ -1,20 +1,20 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% block title %}
-Trang chủ
+Quản lý thanh toán quảng cáo
 {% endblock %}
 {% block styles %}
 <!-- TABLE STYLES-->
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets/side_bar_merchant.html" with active_order='active'  %}
+{% include "snippets_admin/side_bar.html" with active_history='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            Lịch sử giao dịch
+            Quản lý thanh toán quảng cáo
         </h1>
 
     </div>
@@ -31,28 +31,15 @@ Trang chủ
                     <table class="tbl_manager_users table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th>Mã hóa đơn</th>
-                                <th>Mã người mua</th>
+                                <th>Nội dung</th>
+                                <th>Người bán</th>
                                 <th>Tổng tiền</th>
-                                <th>Ngày lập</th>
+                                <th>Ngày thực hiện</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="/merchant/order_detail">HD001</a></td>
-                                <td>Demo1</td>
-                                <td>1.000.000 VNĐ</td>
-                                <td>12/10/2018</td>
-                                <td>Đã thanh toán</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/merchant/order_detail">HD002</a></td>
-                                <td>Demo2</td>
-                                <td>500.000 VNĐ</td>
-                                <td>12/10/2018</td>
-                                <td>Đã thanh toán</td>
-                            </tr>
+                           
                         </tbody>
                     </table>
                 </div>
@@ -106,16 +93,21 @@ Trang chủ
                 { "type": 'formatted-num', targets: 0 },
                 { "type": 'formatted-num', targets: 2 },
                 { "type": 'date-eu', targets: 3 }
-            ]
+            ],
+            "processing": true,
+            "ajax": {
+                "processing": true,
+                "url": "http://localhost:8000/admin/payment_ads?table=true",
+                "dataSrc": ""
+            },
         });
         var tool_bar = '';
         tool_bar += '<div class="col-xs-8 no_padding">';
         tool_bar += '<span>Trạng thái: </span>';
         tool_bar += '<select style="width:50%;display:inline-block;" id="select_type" class="form-control">';
         tool_bar += '<option>Tất cả</option>';
-        tool_bar += '<option>Đã thanh toán</option>';
-        tool_bar += '<option>Đang xử lý</option>';
-        tool_bar += '<option>Không duyệt</option>';
+        tool_bar += '<option>Thanh toán thành công</option>';
+        tool_bar += '<option>Thanh toán thất bại</option>';
         tool_bar += '</select>';
         tool_bar += '</div>';
         $("div.toolbar").html(tool_bar);

@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+{% load staticfiles %}
+{% block title %}
+Trang chi tiết người dùng
+{% endblock %}
+{% block side-bar %}
+{% include "snippets/side_bar_merchant.html" with active_service='active' %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header" style="margin:0px; padding-top:15px;">
+            Quản lý đăng nội dung quảng cáo
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="#" class="background_white" role="form">
+            <div class="form-group">
+                <h3 style="text-align:center;">Thông tin quảng cáo</h3>
+                <hr>
+            </div>
+            <div class="col-lg-6">
+                <input type="hidden" id="pid" value="{{result.id}}">
+                <div class="form-group">
+                    <label>Tên quảng cáo</label>
+                    <input readonly="readonly" value="{{result.service_ads_id.service_name}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Vị trí</label>
+                    <input readonly="readonly" value="{{result.service_ads_id.position}}" id="position" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Ngày bắt đầu</label>
+                    <input readonly="readonly"  value="{{result.date_start|date:'d-m-Y H:i'}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Hạn sử dụng</label>
+                    <input readonly="readonly" value="{{result.service_ads_id.day_limit}} Ngày" type="text" class="form-control">
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Họ tên khách hàng</label>
+                    <input readonly="readonly" value="{{result.merchant_id.name}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input readonly="readonly"  value="{{result.merchant_id.address}}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input readonly="readonly" value="{{result.merchant_id.phone}}" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <h3>Nội dung quảng cáo</h3>
+                    <hr>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="tbl_manager_product table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>No.1</th>
+                                        <th>Đường dẫn URL</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Nội dung</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+{% endblock %}
+{% block data_table %}
+<script src="{% static 'admin/src/js/service_ads/service_ads_running_detail.js' %}"></script>
+{% endblock %}

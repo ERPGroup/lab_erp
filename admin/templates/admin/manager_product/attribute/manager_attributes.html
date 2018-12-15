@@ -8,7 +8,7 @@ Quản lý thuộc tính
 <link href="{% static '/admin/assets/js/dataTables/dataTables.bootstrap.css' %} " rel="stylesheet" />
 {% endblock %}
 {% block side-bar %}
-{% include "snippets_admin/side_bar.html" %}
+{% include "snippets_admin/side_bar.html" with active_product='active' %}
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -33,11 +33,8 @@ Quản lý thuộc tính
                     <table class="tbl_manager_product table table-striped table-bordered table-hover" id="tbl_manager_attributes">
                         <thead>
                             <tr>
-                                <th>Mã thuộc tính</th>
                                 <th>Tên thuộc tính</th>
-                                <th>Loại (Kiễu dữ liệu)</th>
-                                <th>Bắt buộc nhập</th>
-                                <th>Duy nhất</th>
+                                <th>Kích hoạt</th>
                             </tr>
                         </thead>
                         <tbody id="content_table">                       
