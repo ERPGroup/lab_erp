@@ -36,6 +36,7 @@ urlpatterns = [
 
     path('post_data/<int:id_post>', functions.post, name='post'),
     path('get_data_hot_buy', functions.get_data_hot_buy, name="get_data_hot_buy"),
+    path('get_data_related/<int:id_post>', functions.get_data_related, name="get_data_related"),
 
     #cart
     path('add/<int:id_product>', cart.add, name='add'),

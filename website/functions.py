@@ -428,8 +428,40 @@ def get_data_hot_buy(request):
 
 def get_data_related(request, id_post):
     if request.method == 'GET':
-        return
+        post = Post_Product.objects.get(pk=id_post, is_lock=False, is_activity=True).__dict__
+        del post['_state']
+        product = Product.objects.get(pk=post['product_id_id']).__dict__
+        del product['_state']
+        product_category = Product_Category.objects.filter(product_id=product['id'], archive=False).values_list('category_id')  
+        list_id = Product_Category.objects.filter(category_id__in=product_category).values_list('product_id').distinct()
+        
+        list_post = Post_Product.objects.filter(product_id__in=list_id,is_lock=False, is_activity=True)  
+        list_random = []
+        while len(list_random) < 4:
+            x = randint(0, list_post.count() - 1)
+            if x not in list_random:
+                list_random.append(x)
+        posts = [
+            list_post[list_random[0]], 
+            list_post[list_random[1]], 
+            list_post[list_random[2]],
+            list_post[list_random[3]]
+            ]
+        print(posts)
+        array_post = []
+        for item in posts:
+            dict_post = item.__dict__
+            del dict_post['_state']
+            dict_product = Product.objects.get(pk=item.product_id_id).__dict__
+            del dict_product['_state']
+            image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+            dict_post['product'] = dict_product
+            array_post.append(dict_post)
+        return HttpResponse(json.dumps({'datas': array_post}, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
 
+        
+        
 def get_profile_payment(request):
     if request.method == 'GET':
         if 'user' not in request.session:

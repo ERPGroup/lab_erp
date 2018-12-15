@@ -1,7 +1,6 @@
 $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
-    var id_post = check_url[check_url.length - 1]
-
+    var id_post = check_url[check_url.length - 1]    
     $.ajax({
         url: 'http://localhost:8000/post_data/' + id_post,
         method: 'GET',
@@ -11,7 +10,6 @@ $(document).ready(function(){
             $('h2[id=name_product]').append(response.product.name)
             $('#product_title').append(response.product.name)
             $('#detail_product').append(response.product.detail)
-
             $('#bxslider').empty()
             $('#bx-pager').empty()
             html_zoom = ''
@@ -64,7 +62,7 @@ $(document).ready(function(){
             $('select[id=version]').append(html_option);
             // setup first version
             get_version(0);
-
+            
             merchant_html = ''
             merchant_html += '<h2>Thông tin người bán: </h2>'
             merchant_html += '<p>Tên cửa hàng: <a href="">'+ response.merchant.name_shop +'</a></p>'
@@ -87,8 +85,10 @@ $(document).ready(function(){
             $('#quantity_choice').append(html_choice_qty)
 
             $('b[id=qty_avaliable]').append('Còn hàng ('+ (response.quantity - response.bought) +' sản phẩm có sẵn)')
+            get_related();
+            get_hot_buy()
         }
-    })
+    }) 
 });
 
 
@@ -129,4 +129,91 @@ function add_product(qty_aval){
     var qty = parseInt($('input[id=quantity]').val()); 
     if (qty >= qty_aval) return
     $('input[id=quantity]').val(qty + 1);
+}
+
+function get_related(){
+    var check_url = $(location).attr('pathname').split('/');
+    var id_post = check_url[check_url.length - 1]
+
+    $.ajax({
+        url: 'http://localhost:8000/get_data_related/' + id_post,
+        method: 'GET',
+        contentType: 'application/json',
+        success: function(response){
+            console.log(response)
+            $('.item').empty()
+            for( var i = 0 ; i < response.datas.length; i++){
+                html = '<div class="product_box">'
+                html += '<div class="title_box">'
+                html += '<a href="#">'
+                html += '<p class="name_product">Tablet Plaza</p>'
+                html += '</a>'
+                html += '<p class="poster_product">3 An Dương Vương, P3, Q5</p>'
+                html += '<p class="square_rating">8.0</p>'
+                html += '</div>'
+
+                html += '<div class="thumb_image_product">'
+                html += '<a href="/product"><img src="'+ response.datas[i].product.image +'"></a>'
+                html += '</div>'
+
+                html += '<div class="info_box">'
+                html += '<a href="/product/'+ response.datas[i].product.id +'" class="detail_product">'
+                html += '<p>'+ response.datas[i].product.name +'</p>'
+                html += '</a>'
+                html += '<span class="price">'+ response.datas[i].product.price +' VND</span>'
+                html += '</div>'
+
+                html += '<div class="quick_view">'
+                html += '<button type="submit" class="btn_buy">Mua hàng</button>'
+                html += '<a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i class="fa fa-search"></i></button></a>'
+                html += '</div>'
+                html += '</div>'
+                element=
+                $('.item').eq(i).append(html)
+            }     
+        }
+    })
+}
+function get_hot_buy(){
+    var check_url = $(location).attr('pathname').split('/');
+    var id_post = check_url[check_url.length - 1]
+
+    $.ajax({
+        url: 'http://localhost:8000/get_data_hot_buy',
+        method: 'GET',
+        contentType: 'application/json',
+        success: function(response){
+            console.log(response)
+            $('.hot_buy').empty()
+            for( var i = 0 ; i < response.datas.length; i++){
+                html = '<div class="product_box">'
+                html += '<div class="title_box">'
+                html += '<a href="#">'
+                html += '<p class="name_product">Tablet Plaza</p>'
+                html += '</a>'
+                html += '<p class="poster_product">3 An Dương Vương, P3, Q5</p>'
+                html += '<p class="square_rating">8.0</p>'
+                html += '</div>'
+
+                html += '<div class="thumb_image_product">'
+                html += '<a href="/product"><img src="'+ response.datas[i].product.image +'"></a>'
+                html += '</div>'
+
+                html += '<div class="info_box">'
+                html += '<a href="/product/'+ response.datas[i].product.id +'" class="detail_product">'
+                html += '<p>'+ response.datas[i].product.name +'</p>'
+                html += '</a>'
+                html += '<span class="price">'+ response.datas[i].product.price +' VND</span>'
+                html += '</div>'
+
+                html += '<div class="quick_view">'
+                html += '<button type="submit" class="btn_buy">Mua hàng</button>'
+                html += '<a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i class="fa fa-search"></i></button></a>'
+                html += '</div>'
+                html += '</div>'
+                element=
+                $('.hot_buy').eq(i).append(html)
+            }     
+        }
+    })
 }

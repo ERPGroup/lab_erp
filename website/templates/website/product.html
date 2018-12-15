@@ -104,11 +104,13 @@ Chi tiết sản phẩm
 
                                     </tbody>
                                 </table>
-                                <div clas="clearfix"></div>
+                                <div class="clearfix"></div>
                                 <h3>Có thế bạn thích</h3>
-                                <div clas="clearfix"></div>
+                                <div class="clearfix"></div>
                                 {% for i in "x"|rjust:"3" %}
+                                <div class="hot_buy">
                                 {% include "snippets/product-grid-item.html" %}
+                                </div>
                                 {% endfor %}
                             </div>
                         </div>
