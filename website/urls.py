@@ -14,7 +14,7 @@ urlpatterns = [
     path('activity_ad/<email>/<code>/', views.activity_ad, name='activity_ad'),
     #path('forgot_password/', views.forgot_password, name='forgot_password'),
     #path('request_merchant/', views.request_merchant, name='request_merchant'),
-
+    
     path('shop/<id_account>', views.shop, name='shop'),
     path('search', views.search, name='search'),
 
@@ -56,6 +56,8 @@ urlpatterns = [
     path('count', cart.count, name='count'),
     
     #Ly Thanh
-    path('getAds',functions.getAds,name="get_ads_top")
+    path('getAds',functions.getAds,name="get_ads_top"),
+
+    path('product',views.product,name="product"),
 
 ]

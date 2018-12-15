@@ -80,6 +80,12 @@ urlpatterns = [
     path('payments', functions.payments, name='payments'),
 
     ### Ly Thanh 
+    path('manager_payment_ads', views.manager_payment_ads, name='manager_payment_ad'),
+    path('payment_ads_detail/<int:id_payment>', views.payment_ads_detail, name='payment_ads_detail'),
+
+    path('payment_ads', functions.payment_ads, name="payment_ads"),
+    path('f_payment_ads_detail/<int:id_payment_ads>', functions.f_payment_ads_detail, name='f_payment_ads_detail'),
+
     path('getAllAdsRunning',functions.getAllAdsRunning,name="getAllPost"),
     path('manager_ads_running',views.ads_running,name="Adsrunning"),
     path('getDetailRunning',functions.getDetailRunning,name="get"),

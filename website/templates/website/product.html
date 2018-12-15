@@ -4,6 +4,43 @@
 <!--Zoom {% static 'website/images-->
 <link rel="stylesheet" href="{% static 'website/assets/cloudzoom.css' %} ">
 <link rel="stylesheet" href="{% static 'website/assets/jquery.bxslider.css' %} ">
+<style>
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+          }
+          
+          /* Style the buttons inside the tab */
+          .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+          }
+          
+          /* Change background color of buttons on hover */
+          .tab button:hover {
+            background-color: #ddd;
+          }
+          
+          /* Create an active/current tablink class */
+          .tab button.active {
+            background-color: #ccc;
+          }
+          
+          /* Style the tab content */
+          .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+          }
+</style>
 <!--End zoom-->
 {%endblock%}
 {% block title %}
@@ -40,11 +77,13 @@ Chi tiết sản phẩm
                                         </div>
                                     </li>
                                 </ul>
-                                <div id="bx-pager" class="bx-pager owl-carousel not-aweowl" data-lg-items="4" data-nav="true" data-md-items="3" data-sm-items="4" data-xs-items="2" data-xss-items="2" data-margin="0">
-                                    <a data-slide-index="0" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
-                                            class="img-responsive" /></a>
-                                    <a data-slide-index="1" href=""><img src="{% static 'website/images/product_1.jpg' %}" alt="#"
-                                            class="img-responsive" /></a>
+                                <div id="bx-pager" class="bx-pager owl-carousel not-aweowl" data-lg-items="4" data-nav="true"
+                                    data-md-items="3" data-sm-items="4" data-xs-items="2" data-xss-items="2"
+                                    data-margin="0">
+                                    <a data-slide-index="0" href=""><img src="{% static 'website/images/product_1.jpg' %}"
+                                            alt="#" class="img-responsive" /></a>
+                                    <a data-slide-index="1" href=""><img src="{% static 'website/images/product_1.jpg' %}"
+                                            alt="#" class="img-responsive" /></a>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +110,7 @@ Chi tiết sản phẩm
                                     <h3 style="color:#f70302" id="price_product">3.359.000 đ</h3>
                                     <div class="clearfix"></div>
                                     <div id="quantity_choice">
-                                        
+
                                     </div>
                                     <div class="clearfix"></div>
                                     <span class="col-xs-4">
@@ -85,13 +124,40 @@ Chi tiết sản phẩm
                                 </div>
                             </div>
                             <div class="information_seller col-xs-12 col-sm-4 col-md-4 col-lg-4" id="merchant">
-                                
+
                             </div>
                         </div>
                         <div class="information_product col-xs-12 col-sm-12 col-md-12 col-lg-12 no_padding">
                             <div class="detail_product col-xs-12 col-sm-8 col-md-8 col-lg-8 " id="detail_product">
-                                <h4>Chi tiết sản phẩm</h4>
-                                
+                                <div class="tab">
+                                    <button class="tablinks active" onclick="openCity(event, 'Detail')">Chi tiết sản phẩm</button>
+                                    <button class="tablinks" onclick="openCity(event, 'Rating')">Đánh giá - nhận xét</button>
+                                </div>
+
+                                <div id="Detail" class="tabcontent" style="display:block">
+                                    <h3>London</h3>
+                                    <p>London is the capital city of England.</p>
+                                </div>
+
+                                <div id="Rating" class="tabcontent">
+                                    <h3>Paris</h3>
+                                    <p>Paris is the capital of France.</p>
+                                </div>
+                                <script>
+                                    function openCity(evt, cityName) {
+                                        var i, tabcontent, tablinks;
+                                        tabcontent = document.getElementsByClassName("tabcontent");
+                                        for (i = 0; i < tabcontent.length; i++) {
+                                            tabcontent[i].style.display = "none";
+                                        }
+                                        tablinks = document.getElementsByClassName("tablinks");
+                                        for (i = 0; i < tablinks.length; i++) {
+                                            tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                        }
+                                        document.getElementById(cityName).style.display = "block";
+                                        evt.currentTarget.className += " active";
+                                    }
+                                </script>
                             </div>
                             <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 no_padding">
                                 <table class="tbl_product" id="tbl_product">

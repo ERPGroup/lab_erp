@@ -6,10 +6,22 @@ from django.http import HttpResponse
 from website.models import *
 
 from django.contrib import messages
-
+from  passlib.hash import pbkdf2_sha256
 from . import functions
 
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
+def role_user_session(account):
+    # account = Account.objects.get(email=email)
+    role = []
+    if account.is_admin:
+        role.append(0)
+    if account.activity_account:
+        role.append(1)
+    if account.activity_merchant:
+        role.append(2)
+    if account.activity_advertiser:
+        role.append(3)
+    return role
 
 def check_rule(request):
     if 'user' in request.session:
@@ -20,12 +32,36 @@ def check_rule(request):
             return 1
         return 0
     return 0
-
+def check_session(request):
+    if 'user' in request.session:
+        return 1
+    return 0
 def login (request):
-    if check_rule(request) == 1:
-        return redirect('/merchant/')
-    return render(request,'login/Login.html')
-
+    if check_session(request):
+        if check_rule(request) == 1:
+            return redirect('/merchant/')
+        else:
+            return render(request, 'login/Login.html',{'error':"Bạn không có quyền truy cập"})
+    if request.method == 'POST':
+        email = request.POST.get('inputEmail')
+        password = request.POST.get('inputPassword')
+        try:
+            account = Account.objects.get(email=email)
+            if pbkdf2_sha256.verify(password, account.password):
+                if account.activity_account == True:
+                    request.session['user'] = {
+                        'id': account.id,
+                        'email': account.email,
+                        'role': role_user_session(account),
+                    }
+                    return redirect('/merchant/') 
+                else:
+                    return HttpResponse('Vui lòng xác nhận email!')
+            return HttpResponse('Mật khẩu không đúng!')
+        except ObjectDoesNotExist:
+            return HttpResponse('Email không tồn tại!')
+        return
+    return render(request, 'login/Login.html')
 
 def index(request):
     if check_rule(request) == 0:
@@ -170,6 +206,18 @@ def ads_running_detail(request,id):
         post_ads = Purchase_Service_Ads.objects.filter(id=id).first()
         return render(request,'merchant/manager_service/manager_ads_running_detail.html',{'result':post_ads})
 
+def payment_ads_detail(request, id_payment):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    if Purchase_Service_Ads.objects.filter(pk=id_payment).count() == 0:
+        messages.warning(request, message='Không tồn tại giao dịch', extra_tags='alert')
+        return redirect('/admin/')
+    return render(request, 'merchant/manager_payment/payment_ads_detail.html')
+
+def manager_payment_ads(request):
+    if check_rule(request) == 0:         
+        return redirect('/admin/login')
+    return render(request, 'merchant/manager_payment/manager_payment_ads.html')
 
 
 

@@ -76,7 +76,11 @@ $(document).ready(function () {
                         contentType: 'application/x-www-form-urlencoded',
                         data: data_info,
                         success: function (response) {
-                            alert('Payment complete');
+                            if (response == "Success!")
+                                alert('Payment complete');
+                            else {
+                                alert('Error System ');
+                            }
                         },
                         error: function (e) {
                             alert('Failed ');

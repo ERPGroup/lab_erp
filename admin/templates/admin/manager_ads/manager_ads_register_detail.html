@@ -25,34 +25,34 @@ Trang chi tiết người dùng
                 <input type="hidden" id="pid" value="{{result.id}}">
                 <div class="form-group">
                     <label>Tên quảng cáo</label>
-                    <input value="{{result.service_ads_id.service_name}}" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.service_ads_id.service_name}}" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Vị trí</label>
-                    <input value="{{result.service_ads_id.position}}" id="position" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.service_ads_id.position}}" id="position" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Ngày bắt đầu</label>
-                    <input value="{{result.date_start|date:'d-m-Y H:i'}}" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.date_start|date:'d-m-Y H:i'}}" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Hạn sử dụng</label>
-                    <input value="{{result.service_ads_id.day_limit}} Ngày" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.service_ads_id.day_limit}} Ngày" type="text" class="form-control">
                 </div>
 
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
                     <label>Họ tên khách hàng</label>
-                    <input value="{{result.merchant_id.name}}" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.merchant_id.name}}" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
-                    <input value="{{result.merchant_id.address}}" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.merchant_id.address}}" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Số điện thoại</label>
-                    <input value="{{result.merchant_id.phone}}" type="text" class="form-control">
+                    <input readonly="readonly" value="{{result.merchant_id.phone}}" type="text" class="form-control">
                 </div>
 
             </div>
