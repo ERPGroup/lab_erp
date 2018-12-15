@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from website.models import *
 # 0 Admin, 1 Customer, 2 Merchant, 3 Advertiser
 from  passlib.hash import pbkdf2_sha256
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+
 def role_user_session(account):
     # account = Account.objects.get(email=email)
     role = []
@@ -31,11 +34,10 @@ def check_session(request):
     return 0
 # Create your views here.
 def login (request):
-    if check_session(request):
-        if check_rule(request) == 1:
-            return redirect('/admin/')
-        else:
-            return render(request, 'login/Login.html',{'error':"Bạn không có quyền truy cập"})
+    if check_rule(request) == 1:
+        messages.error(request, message='Quyền truy cập bị từ chối!', extra_tags='alert')
+        return redirect('/admin/')
+            
     if request.method == 'POST':
         email = request.POST.get('inputEmail')
         password = request.POST.get('inputPassword')
@@ -43,6 +45,8 @@ def login (request):
             account = Account.objects.get(email=email)
             if pbkdf2_sha256.verify(password, account.password):
                 if account.activity_account == True:
+                    if check_session(request):
+                        del request.session['user']
                     request.session['user'] = {
                         'id': account.id,
                         'email': account.email,
@@ -50,12 +54,15 @@ def login (request):
                     }
                     return redirect('/admin/') 
                 else:
-                    return HttpResponse('Vui lòng xác nhận email!')
-            return HttpResponse('Mật khẩu không đúng!')
+                    messages.warning(request, message='Vui lòng xác nhận email!', extra_tags='alert')
+                    return redirect('/merchant/login')
+            messages.warning(request, message='Mật khẩu không đúng!', extra_tags='alert')
+            return redirect('/merchant/login')
         except ObjectDoesNotExist:
-            return HttpResponse('Email không tồn tại!')
+            messages.warning(request, message='Email không tồn tại!', extra_tags='alert')
+            return redirect('/admin/login')
         return
-    return render(request, 'login/Login.html')
+    return render(request, 'admin/login/login.html')
 
 def index(request):
     if check_rule(request) == 0:
