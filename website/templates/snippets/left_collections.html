@@ -11,9 +11,9 @@
             <a href="#">Liên hệ</a>
         </li>
         <li>
-            <a href="/collection">Sản phẩm hot</a>
+            <a href="/collections/1">Sản phẩm hot</a>
         </li>
-        <li><a href="/collection">Sản phẩm VIP</a></li>
+        <li><a href="/collections/2">Sản phẩm VIP</a></li>
     </ul>
     <div class="clearfix"></div>
     <div id="goto_move" class="advanced_search">
@@ -28,7 +28,9 @@
                 <input max-length="11" size="12" placeholder="99.000.000 VNĐ" name="price_to" id="price_to">
             </li>
         </ul>
-        <button onclick="Filter_price()" class="btn btn-default">Lọc sản phẩm</button>
-        <button onclick="Cancel_Filter()" class="btn btn-warning">Hủy lọc</button>
+        <div style="padding: 0 15px;">
+            <button onclick="Filter_price()" class="btn btn-warning">Lọc sản phẩm</button>
+            <button onclick="Cancel_Filter()" class="btn btn-danger">Hủy lọc</button>
+        </div>
     </div>
 </div>

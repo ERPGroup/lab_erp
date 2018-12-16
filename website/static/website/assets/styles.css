@@ -896,8 +896,7 @@ footer .copyrights a {
   background-color: rgba(0, 175, 242, 0.9);
 }
 
-.suntory-alo-phone.suntory-alo-green.suntory-alo-hover
-.suntory-alo-ph-circle-fill,
+.suntory-alo-phone.suntory-alo-green.suntory-alo-hover .suntory-alo-ph-circle-fill,
 .suntory-alo-phone.suntory-alo-green:hover .suntory-alo-ph-circle-fill {
   background-color: #f58634;
 }
@@ -911,8 +910,7 @@ footer .copyrights a {
   background-color: #00aff2;
 }
 
-.suntory-alo-phone.suntory-alo-green.suntory-alo-hover
-.suntory-alo-ph-img-circle,
+.suntory-alo-phone.suntory-alo-green.suntory-alo-hover .suntory-alo-ph-img-circle,
 .suntory-alo-phone.suntory-alo-green:hover .suntory-alo-ph-img-circle {
   background-color: #f58634;
 }
@@ -1735,11 +1733,13 @@ footer .copyrights a {
 .side_bar_collection ul li a:hover {
   color: #f58634;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .side_bar_collection ul li a:hover i {
   color: #f70302;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .collection {
@@ -2359,5 +2359,9 @@ footer .copyrights a {
   border: 10px solid transparent;
   -o-border-image: url(frame.png) 9 round;
   border-image: url(frame.png) 9 round;
+}
+
+#pagination li a:hover {
+  cursor: pointer;
 }
 /*# sourceMappingURL=styles.css.map */

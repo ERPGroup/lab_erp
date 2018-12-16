@@ -1135,3 +1135,36 @@ def send_email_notifile(email, body, content):
     msg.mail_options = []
     msg.rcpt_options = []
     mail.send(msg)
+
+## Ly Thanh - thong ke
+@csrf_exempt
+def getStatistical(request):
+    if check_rule(request) == 0:
+        return HttpResponse('Quyền truy cập bị từ chối')
+    if request.method == 'POST':
+        print(request.POST)
+        typeget = int(request.POST.get('inputType'))
+        date_start = datetime.strptime(request.POST.get('inputStart'), '%Y-%m-%d')
+        date_end = datetime.strptime(request.POST.get('inputEnd'), '%Y-%m-%d')
+        result = []
+        if typeget == 1:
+            _sum = 0
+            for item in Purchase_Service.objects.filter(state=1,success_at__gte=date_start,success_at__lte=date_end):
+                dict_service = dict()
+                dict_service['label']=item.success_at.strftime("%d/%m/%Y")
+                dict_service['value']=round(item.amount*22000,2)
+                result.append(dict_service)
+                _sum+=item.amount
+            for item in Purchase_Service_Ads.objects.filter(state__gte=0,success_at__gte=date_start,success_at__lte=date_end):
+                _sum+=item.amount
+                dict_service = dict()
+                dict_service['label']=item.success_at.strftime("%d/%m/%Y")
+                dict_service['value']=item.amount
+                result.append(dict_service)
+            return HttpResponse(json.dumps({'result':result,'total':_sum}), content_type="application/json")
+    return -1
+
+
+
+
+

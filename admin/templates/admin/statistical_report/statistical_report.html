@@ -36,10 +36,10 @@ Báo cáo thống kê
                 <div class="col-xs-4 no_padding">
                     <span>Loại thống kê</span>
                     <select style="width:50%;display:inline-block;" id="select_position" class="form-control">
-                        <option>Doanh thu</option>
-                        <option>Lượng truy cập</option>
-                        <option>Người bán</option>
-                        <option>Người mua</option>
+                        <option value='1'>Doanh thu</option>
+                        <option value='2'>Lượng truy cập</option>
+                        <option value='3'>Người bán</option>
+                        <option value='4'>Người mua</option>
                     </select>
                 </div>
                 <div class="col-xs-1">
@@ -63,6 +63,16 @@ Báo cáo thống kê
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-xs-2">
+                        <span style="line-height:68px;">Tổng doanh thu</span>
+                </div>
+                <div class="col-xs-6" style="padding:0 15px;padding-top:15px;">
+                    <input type="text" class="form-control"readonly="readonly"id="total">
+                </div>
+                <div class="col-xs-4 pull-right" style="float:right;text-align:right;padding:0 15px;padding-top:15px;">
+                    <a id="btn_statistical" style="padding: 10px 100px" href="#" class="btn btn-success">Thống kê</a>
                 </div>
             </div>
         </div>
@@ -95,19 +105,19 @@ Báo cáo thống kê
     $(function () {
         $('#idStart').datetimepicker({
             locale: 'vi',
-            format: 'DD/MM/YYYY',
+            format: 'YYYY-MM-DD',
             maxDate: new Date(),
             date: new Date(),
-            minDate: new Date('01/01/2000')
+            minDate: new Date('2000-01-01')
         });
     });
     $(function () {
         $('#idEnd').datetimepicker({
             locale: 'vi',
-            format: 'DD/MM/YYYY',
+            format: 'YYYY-MM-DD',
             maxDate: new Date(),
             date: new Date(),
-            minDate: new Date('01/01/2000')
+            minDate: new Date('2000-01-01')
         });
     });
 </script>
@@ -115,4 +125,51 @@ Báo cáo thống kê
 <script src="{% static 'admin/assets/js/morris/morris.js' %}"></script>
 <script src="{% static 'admin/assets/js/morris/raphael-2.1.0.min.js' %}"></script>
 <script src="{% static 'admin/assets/js/chart_custom.js' %}"></script>
+<script>
+    function DrawGraph(type, start, end) {
+        var data = {
+            'inputType': type,
+            'inputStart': start,
+            'inputEnd': end,
+        }
+        $.ajax({
+            url: 'http://localhost:8000/admin/getStatistical',
+            method: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            success: function (response) {
+                if (response == -1) {
+                    alert('Hệ thống đang nâng cấp')
+                } else {
+                    if (response.result.length == 0) {
+                        alert('Không có dữ liệu')
+                    } else {
+                        $('#total').val(response['total'])
+                        $("#morris-area-chart").empty();
+                        graphArea2 = Morris.Bar({
+                            element: 'morris-area-chart',
+                            data: response['result'],
+                            xkey: 'label',
+                            ykeys: ['value'],
+                            labels: ['Tổng thu nhập'],
+                            pointSize: 2,
+                            hideHover: 'auto',
+                            resize: true
+                        });
+                    }
+                }
+            }
+        })
+    }
+    $(document).ready(function () {
+        $('#btn_statistical').click(function (e) {
+            e.preventDefault();
+            date_start = $('#idStart input').val()
+            date_end = $('#idEnd input').val()
+            _type = $('#select_position').val()
+            DrawGraph(_type, date_start, date_end)
+        })
+
+    })
+</script>
 {% endblock %}
