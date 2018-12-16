@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var x = $('#pid').val()
     $.ajax({
-      url: 'http://localhost:8000/admin/getDetailRunning',
+      url: 'https://laberp.pythonanywhere.com/admin/getDetailRunning',
       data: {
         inputID: x
       },
@@ -44,7 +44,7 @@ $(document).ready(function () {
     var post_id = $('#post_id').val()
     var service_id = $('#pid').val()
     $.ajax({
-      url: 'http://localhost:8000/admin/cancelPost',
+      url: 'https://laberp.pythonanywhere.com/admin/cancelPost',
       data: {
         inputSID: service_id,
         inputPID: post_id

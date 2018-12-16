@@ -92,7 +92,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: 'http://localhost:8000/f_register',
+            url: 'https://laberp.pythonanywhere.com/f_register',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

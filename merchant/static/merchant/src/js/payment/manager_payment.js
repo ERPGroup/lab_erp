@@ -39,7 +39,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/payments?table=true",
+            "url": "https://laberp.pythonanywhere.com/merchant/payments?table=true",
             "dataSrc": ""
         },
     });

@@ -2,7 +2,7 @@ $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
     var id_payment = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/admin/f_payment_ads_detail/' + id_payment,
+        url: 'https://laberp.pythonanywhere.com/admin/f_payment_ads_detail/' + id_payment,
         method: 'GET',
         success: function(response){
             $('#inputName').val(response.merchant.name);

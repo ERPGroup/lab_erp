@@ -38,7 +38,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/getAllPost",
+            "url": "https://laberp.pythonanywhere.com/admin/getAllPost",
             "dataSrc": ""
         },
         "columns": [{

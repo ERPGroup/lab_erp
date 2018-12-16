@@ -126,7 +126,7 @@ function addmore_attribute () {
 // list attributes
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/merchant/attributes',
+    url: 'https://laberp.pythonanywhere.com/merchant/attributes',
     method: 'GET',
     contentType: 'application/json',
     success: function(response){
@@ -155,7 +155,7 @@ function scrollto (id) {
 // List Categorys
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/merchant/categorys',
+    url: 'https://laberp.pythonanywhere.com/merchant/categorys',
     method: 'GET',
     contentType: 'application/json',
     success: function(response){

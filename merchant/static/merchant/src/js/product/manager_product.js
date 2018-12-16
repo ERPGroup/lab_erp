@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/products?table=true",
+            "url": "https://laberp.pythonanywhere.com/merchant/products?table=true",
             "dataSrc": ""
         },
 

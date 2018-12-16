@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/orders?table=true",
+            "url": "https://laberp.pythonanywhere.com/merchant/orders?table=true",
             "dataSrc": ""
         },
     });
@@ -72,7 +72,7 @@ function change_state(order_id, state){
     $("#wrapper").css("display","none");
     $("#loader").css("display","block");
     $.ajax({
-        url: 'http://localhost:8000/merchant/change_state/' + order_id + '/' + state,
+        url: 'https://laberp.pythonanywhere.com/merchant/change_state/' + order_id + '/' + state,
         method: 'GET',
         success: function(response){
             if (response == 1){

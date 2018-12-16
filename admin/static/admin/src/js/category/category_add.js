@@ -5,7 +5,7 @@ $(document).ready(function(){
             'inputName': $('#inputName').val(),      
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/category',
+            url: 'https://laberp.pythonanywhere.com/admin/category',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

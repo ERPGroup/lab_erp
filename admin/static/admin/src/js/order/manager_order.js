@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/orders?table=true",
+            "url": "https://laberp.pythonanywhere.com/admin/orders?table=true",
             "dataSrc": ""
         },
     });

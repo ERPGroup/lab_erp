@@ -1,7 +1,7 @@
 $(document).ready(function(){
     // Load data 
     $.ajax({
-        url: 'http://localhost:8000/customer/user',
+        url: 'https://laberp.pythonanywhere.com/customer/user',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -44,14 +44,14 @@ $(document).ready(function(){
             'inputPassword': $('#inputPassword').val()   
         }
         $.ajax({
-            url: 'http://localhost:8000/customer/password',
+            url: 'https://laberp.pythonanywhere.com/customer/password',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("location.href = 'http://localhost:8000/customer/profile';",0);
+                    setTimeout("location.href = 'https://laberp.pythonanywhere.com/customer/profile';",0);
                     alert('Da doi mat khau thanh cong!');
                 }
                 else
@@ -88,14 +88,14 @@ $(document).ready(function(){
         }
         console.log(data)
         $.ajax({
-            url: 'http://localhost:8000/customer/info',
+            url: 'https://laberp.pythonanywhere.com/customer/info',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("location.href = 'http://localhost:8000/customer/profile';",0);
+                    setTimeout("location.href = 'https://laberp.pythonanywhere.com/customer/profile';",0);
                     alert('Cap nhat thong tin ca nhan thanh cong!');
                 }
                 else

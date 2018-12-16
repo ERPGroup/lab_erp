@@ -4,7 +4,7 @@ $(document).ready(function(){
             'inputEmail': $('#forgot_email').val(),
         }
         $.ajax({
-            url: 'http://localhost:8000/forgot_password',
+            url: 'https://laberp.pythonanywhere.com/forgot_password',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

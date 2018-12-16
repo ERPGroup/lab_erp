@@ -24,13 +24,13 @@ $(document).ready(function (){
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/services?table=true",
+            "url": "https://laberp.pythonanywhere.com/admin/services?table=true",
             "dataSrc": ""
         },
     });
 
     // $.ajax({
-    //     url: 'http://localhost:8000/admin/services',
+    //     url: 'https://laberp.pythonanywhere.com/admin/services',
     //     method: 'GET',
     //     contentType: 'application/json',
     //     success: function(response){

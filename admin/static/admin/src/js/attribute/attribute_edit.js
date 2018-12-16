@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     // Load data in attribute
     $.ajax({
-        url: 'http://localhost:8000/admin/attribute/' + id_attribute,
+        url: 'https://laberp.pythonanywhere.com/admin/attribute/' + id_attribute,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -34,7 +34,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'http://localhost:8000/admin/attribute/' + id_attribute,
+            url: 'https://laberp.pythonanywhere.com/admin/attribute/' + id_attribute,
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
     $('#delete').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/admin/attribute/' + id_attribute,
+            url: 'https://laberp.pythonanywhere.com/admin/attribute/' + id_attribute,
             method: 'DETELE',
             success: function(response){
                 console.log(response);

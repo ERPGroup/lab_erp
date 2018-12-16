@@ -37,7 +37,7 @@ $(document).ready(function(){
             'inputVisableVip': $('#inputVisableVip').val(),
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/service',
+            url: 'https://laberp.pythonanywhere.com/admin/service',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

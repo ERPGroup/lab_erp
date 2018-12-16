@@ -47,7 +47,7 @@
             ],
             "ajax": {
                 "processing": true,
-                "url": "http://localhost:8000/admin/users?table=true",
+                "url": "https://laberp.pythonanywhere.com/admin/users?table=true",
                 "dataSrc": ""
             },
         });

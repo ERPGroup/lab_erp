@@ -5,7 +5,7 @@ $(document).ready(function(){
     var id_product = check_url[check_url.length - 1]
     if($.inArray('edit', check_url)){
       $.ajax({
-        url: 'http://localhost:8000/admin/product/' + id_product,
+        url: 'https://laberp.pythonanywhere.com/admin/product/' + id_product,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -44,7 +44,7 @@ $(document).ready(function(){
 
     $('#ignore').click(function(){
       $.ajax({
-        url: 'http://localhost:8000/admin/product/' + id_product,
+        url: 'https://laberp.pythonanywhere.com/admin/product/' + id_product,
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
@@ -82,7 +82,7 @@ $(document).ready(function(){
           console.log(xhr.response);
           reader.readAsDataURL(xhr.response);
       }.bind(image_id);
-      xhr.open('GET', 'http://localhost:8000' + image_link);
+      xhr.open('GET', 'https://laberp.pythonanywhere.com' + image_link);
       xhr.responseType = 'blob';
       xhr.send();
   }

@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var x = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/merchant/getDetailRunning',
+    url: 'https://laberp.pythonanywhere.com/merchant/getDetailRunning',
     data: {
       inputID: x
     },

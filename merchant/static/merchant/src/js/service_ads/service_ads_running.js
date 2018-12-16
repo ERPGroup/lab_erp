@@ -37,7 +37,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/getAllAdsRunning",
+            "url": "https://laberp.pythonanywhere.com/merchant/getAllAdsRunning",
             "dataSrc": ""
         },
         "columns": [{

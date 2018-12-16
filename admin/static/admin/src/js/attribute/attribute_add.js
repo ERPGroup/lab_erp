@@ -4,7 +4,7 @@ $(document).ready(function(){
             'inputLabel': $('#inputLabel').val(),       
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/attribute',
+            url: 'https://laberp.pythonanywhere.com/admin/attribute',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

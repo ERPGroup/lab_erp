@@ -100,7 +100,7 @@ $(document).ready(function(){
 
     console.log(data)
     $.ajax({
-      url: 'http://localhost:8000/merchant/product',
+      url: 'https://laberp.pythonanywhere.com/merchant/product',
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       data: data,

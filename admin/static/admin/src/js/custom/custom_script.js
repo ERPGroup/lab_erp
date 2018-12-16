@@ -122,7 +122,7 @@ function addmore_tags (a) {
 //       if (a.slice(0, 5) == "start") {
 //         inputID = a.substr(6, 10);
 //         $.ajax({
-//           url: 'http://localhost:8000/admin/enable_ads',
+//           url: 'https://laberp.pythonanywhere.com/admin/enable_ads',
 //           data: {
 //             inputID: inputID
 //           },
@@ -135,7 +135,7 @@ function addmore_tags (a) {
 //     } else {
 //       inputID = a;
 //       $.ajax({
-//         url: 'http://localhost:8000/admin/disable_ads',
+//         url: 'https://laberp.pythonanywhere.com/admin/disable_ads',
 //         data: {
 //           inputID: inputID
 //         },
@@ -222,7 +222,7 @@ function addmore_tags (a) {
 //   function load() {
 //     $('#result').html('')
 //     $.ajax({
-//       url: 'http://localhost:8000/admin/getAllAdsActiving',
+//       url: 'https://laberp.pythonanywhere.com/admin/getAllAdsActiving',
 //       type: 'GET',
 //       async: false,
 //       success: function (data) {

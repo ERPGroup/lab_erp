@@ -111,7 +111,7 @@ def payment(request):
         except:
             raise
         cart.clear()
-        send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="http://localhost:8000/customer/bill_detail/'+ str(order.id) +'"> đây</a>')
+        send_email_notifile(customer.email, 'Sản phẩm đặt mua thành công', 'Bạn có thể xem thông tin đơn hàng tại <a href="https://laberp.pythonanywhere.com/customer/bill_detail/'+ str(order.id) +'"> đây</a>')
         return HttpResponse(1)
 
     return HttpResponse('Lỗi hệ thống!')
@@ -158,7 +158,7 @@ def get_data(request):
                 list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
                 dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
                 image = Product_Image.objects.filter(product_id_id=dict_product['id'], archive=False).order_by('image_id_id').first()
-                dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+                dict_product['image'] = 'https://laberp.pythonanywhere.com/product' + image.image_id.image_link.url
                 dict_post['product'] = dict_product
                 array_post.append(dict_post)
                 index = index + 1
@@ -200,7 +200,7 @@ def get_data(request):
                 dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
                 del dict_product['_state']
                 image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-                dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+                dict_product['image'] = 'https://laberp.pythonanywhere.com/product' + image.image_id.image_link.url
                 dict_post['product'] = dict_product
                 array_post.append(dict_post)
         dict_category['posts'] = array_post
@@ -275,7 +275,7 @@ def get_data_collection(request, list_post):
         list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
         dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
         image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-        dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+        dict_product['image'] = 'https://laberp.pythonanywhere.com/product' + image.image_id.image_link.url
         dict_post['product'] = dict_product
         array_post.append(dict_post)
     return {
@@ -573,7 +573,7 @@ def get_data_hot_buy(request):
             dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
             del dict_product['_state']
             image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+            dict_product['image'] = 'https://laberp.pythonanywhere.com/product' + image.image_id.image_link.url
             dict_post['product'] = dict_product
             array_post.append(dict_post)
         return HttpResponse(json.dumps({'datas': array_post}, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
@@ -615,7 +615,7 @@ def get_data_related(request, id_category):
             dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
             del dict_product['_state']
             image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-            dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+            dict_product['image'] = 'https://laberp.pythonanywhere.com/product' + image.image_id.image_link.url
             dict_post['product'] = dict_product
             array_post.append(dict_post)
         return HttpResponse(json.dumps({'datas': array_post}, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json" )
@@ -1000,7 +1000,7 @@ def template_register(name, action, link):
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="wrapper">
                     <tr>
                         <td align="center" valign="top" style="padding: 15px 0;" class="logo">
-                            <a href="http://localhost:8000" target="_blank">
+                            <a href="https://laberp.pythonanywhere.com" target="_blank">
                                 <span style="font-size:38px; display: block; font-family: Helvetica, Arial, sans-serif; color: red;" border="0">Tablet Plaza</span>
                             </a>
                         </td>
@@ -1049,7 +1049,7 @@ def template_register(name, action, link):
                                                 <td align="center" style="padding-top: 25px;" class="padding">
                                                     <table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container">
                                                         <tr>
-                                                            <td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="http://localhost:8000/{}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Kích hoạt &rarr;</a></td>
+                                                            <td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="https://laberp.pythonanywhere.com/{}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Kích hoạt &rarr;</a></td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -1075,7 +1075,7 @@ def template_register(name, action, link):
                         <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">
                             56 Nguyễn Trải, Phường 3, Quận 5, Tp. HCM
                             <br>
-                            <a href="http://localhost:8000" target="_blank" style="color: #666666; text-decoration: none;">Trang chủ</a>
+                            <a href="https://laberp.pythonanywhere.com" target="_blank" style="color: #666666; text-decoration: none;">Trang chủ</a>
                         </td>
                     </tr>
                 </table>

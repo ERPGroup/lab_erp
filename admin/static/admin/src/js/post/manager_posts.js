@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/posts",
+            "url": "https://laberp.pythonanywhere.com/admin/posts",
             "dataSrc": ""
         },
     });
@@ -89,7 +89,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: 'http://localhost:8000/admin/services',
+        url: 'https://laberp.pythonanywhere.com/admin/services',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

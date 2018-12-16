@@ -533,7 +533,7 @@ def products(request):
             return HttpResponse(json.dumps(products), content_type="application/json")
         if request.GET.get('posted') == 'false':
             if 'include' in request.GET: 
-                # http://localhost:8000/merchant/products?posted=false&include=id_product
+                # https://laberp.pythonanywhere.com/merchant/products?posted=false&include=id_product
                 # lay danh sach san chua dang san pham do
                 list_id = Post_Product.objects.values_list('product_id__id').filter(is_activity=True, is_lock=False).exclude(product_id__id=request.GET.get('include'))
                 return HttpResponse(serialize('json', Product.objects.exclude(pk__in=list_id).filter(type_product=True)), content_type="application/json")

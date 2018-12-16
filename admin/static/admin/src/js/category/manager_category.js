@@ -24,7 +24,7 @@ $(document).ready(function (){
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/categories",
+            "url": "https://laberp.pythonanywhere.com/admin/categories",
             "dataSrc": ""
         },
     });

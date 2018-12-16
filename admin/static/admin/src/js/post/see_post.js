@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/post/' + id_post,
+        url: 'https://laberp.pythonanywhere.com/merchant/post/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -14,7 +14,7 @@ $(document).ready(function(){
 
             //Load Product
             $.ajax({
-                url: 'http://localhost:8000/merchant/product/' + post.product_id ,
+                url: 'https://laberp.pythonanywhere.com/merchant/product/' + post.product_id ,
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
@@ -26,7 +26,7 @@ $(document).ready(function(){
 
             // load Service
             $.ajax({
-                url: 'http://localhost:8000/merchant/account_services?service=available',
+                url: 'https://laberp.pythonanywhere.com/merchant/account_services?service=available',
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
@@ -82,7 +82,7 @@ $(document).ready(function(){
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/admin/product/'+ id_product,
+        url: 'https://laberp.pythonanywhere.com/admin/product/'+ id_product,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

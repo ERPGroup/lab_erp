@@ -5,7 +5,7 @@ $(document).ready(function(){
   var id_product = check_url[check_url.length - 1]
   if($.inArray('edit', check_url)){
     $.ajax({
-      url: 'http://localhost:8000/merchant/product/' + id_product,
+      url: 'https://laberp.pythonanywhere.com/merchant/product/' + id_product,
       method: 'GET',
       contentType: 'application/json',
       success: function(response){
@@ -144,7 +144,7 @@ $(document).ready(function(){
 
 
     $.ajax({
-      url: 'http://localhost:8000/merchant/product/' + id_product,
+      url: 'https://laberp.pythonanywhere.com/merchant/product/' + id_product,
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       data: data,
@@ -162,7 +162,7 @@ $(document).ready(function(){
 
   $('#delete').click(function(){
     $.ajax({
-      url: 'http://localhost:8000/merchant/product/' + id_product,
+      url: 'https://laberp.pythonanywhere.com/merchant/product/' + id_product,
       method: 'DELETE',
       success: function(response){
         if(response == 1){
@@ -187,7 +187,7 @@ function get_blob(image_link, id_image, callback){
       }
       reader.readAsDataURL(xhr.response);
     }
-    xhr.open('GET', 'http://localhost:8000' + image_link);
+    xhr.open('GET', 'https://laberp.pythonanywhere.com' + image_link);
     xhr.responseType = 'blob';
     xhr.send();
 }
@@ -216,7 +216,7 @@ function Showimage(image_link, image_id){
         console.log(xhr.response);
         reader.readAsDataURL(xhr.response);
     }
-    xhr.open('GET', 'http://localhost:8000' + image_link);
+    xhr.open('GET', 'https://laberp.pythonanywhere.com' + image_link);
     xhr.responseType = 'blob';
     xhr.send();
 }

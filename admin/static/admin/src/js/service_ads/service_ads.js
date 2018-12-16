@@ -23,7 +23,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/getAllAds",
+            "url": "https://laberp.pythonanywhere.com/admin/getAllAds",
             "dataSrc": ""
         },
         "columns": [{

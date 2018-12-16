@@ -126,7 +126,7 @@ function addmore_attribute () {
 // list attributes
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/merchant/attributes',
+    url: 'https://laberp.pythonanywhere.com/merchant/attributes',
     method: 'GET',
     contentType: 'application/json',
     success: function(response){
@@ -162,7 +162,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: 'http://localhost:8000/merchant/upload_image',
+      url: 'https://laberp.pythonanywhere.com/merchant/upload_image',
       method: 'POST',
       contentType: false,
       processData: false,
@@ -208,7 +208,7 @@ $(document).ready(function(){
 
 function delete_image(id_image){
   $.ajax({
-    url: 'http://localhost:8000/merchant/delete_image/' + id_image,
+    url: 'https://laberp.pythonanywhere.com/merchant/delete_image/' + id_image,
     method: 'DELETE',
     success: function(response){
       $('#upload_photo').val(''); 
@@ -220,7 +220,7 @@ function delete_image(id_image){
 // List Categorys
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/merchant/categorys',
+    url: 'https://laberp.pythonanywhere.com/merchant/categorys',
     method: 'GET',
     contentType: 'application/json',
     success: function(response){
@@ -237,7 +237,7 @@ $(document).ready(function(){
 function load_category_autocomplete(keyword){
   $("#list-category").empty()
   $.ajax({
-    url: 'http://localhost:8000/merchant/categorys?keyword=' + keyword,
+    url: 'https://laberp.pythonanywhere.com/merchant/categorys?keyword=' + keyword,
     method: 'GET',
     contentType: 'application/json',
     success: function(response){
@@ -290,7 +290,7 @@ function check_button_submit(){
   //   var check_url = $(location).attr('pathname').split('/');
   //   var id_product = check_url[check_url.length - 1]
   //   $.ajax({
-  //     url: 'http://localhost:8000/merchant/product/' + id_product,
+  //     url: 'https://laberp.pythonanywhere.com/merchant/product/' + id_product,
   //     method: 'GET',
   //     contentType: 'application/json',
   //     success: function(response){

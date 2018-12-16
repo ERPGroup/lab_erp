@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: 'http://localhost:8000/getAds',
+        url: 'https://laberp.pythonanywhere.com/getAds',
         type: 'POST',
         success: function (data) {
             if (data == -1) {
