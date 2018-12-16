@@ -64,7 +64,7 @@ $(document).ready(function(){
                     html += '<span class="price">'+ currency(((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                 }
                 else{
-                    html += '<span class="price">'+ currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent))/100 + ' - ' + (response.data[i].product.range_price[0] * response.data[i].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
+                    html += '<span class="price">'+ currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'
                 }
                 
                 // html += '<span class="price">'+ response.data[i].product.price +' VND</span>'

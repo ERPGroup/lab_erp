@@ -1,5 +1,6 @@
 {% extends "website/base.html" %}
 {% load staticfiles %}
+{% load humanize %}
 {%block zoom_img%}
 <!--Zoom {% static 'website/images-->
 <link rel="stylesheet" href="{% static 'website/assets/cloudzoom.css' %} ">
@@ -335,10 +336,36 @@ Chi tiết sản phẩm
                         <div class="clearfix" style="margin: 10px 0px;"></div>
                         <div class="product_relate col-xs-12 col-sm-12 col-md-12 col-lg-12 no_padding">
                             <h2>Sản phẩm liên quan</h2>
-                            <div class="owl-product-relate owl-carousel owl-theme" id="related">
-                                {% for i in "x"|rjust:"4" %}
+                            <div class="owl-product-relate owl-carousel owl-theme">
+                                {% for item in array_post %}
                                 <div class="item">
-                                    {% include "snippets/product-grid-item.html" %}
+                                    <div class="product_box">
+                                        <div class="title_box">
+                                            <p class="name_shop text-center">Đề xuất</p>
+                                            <p class="square_rating">{{ item.rating}}</p>
+                                        </div>
+                                        <div class="thumb_image_product">
+                                            <a href="/product"><img src="{{item.product.image}}"></a>
+                                        </div>
+                                        <div class="info_box">
+                                            <a href="/post/{{ item.id }}" class="detail_product">
+                                                <p> {{ item.product.name}}</p>
+                                            </a>
+                                            {% if item.product.range_price.0 == item.product.range_price.1 %}
+                                                <span class="price"> {{ item.product.range_price.0  }} VND </span>
+                                            {% else %}
+                                                <span class="price">{{ item.product.range_price.1 }} - {{ item.product.range_price.0 }} VND </span>'
+                                            {% endif %}
+                                            <span class="sales_percent">
+                                                -{{ item.product.discount_percent}}
+                                            </span>
+                                        </div>
+                                        <div class="quick_view">
+                                                <a href="/post/{{ item.id }}" class="btn_buy btn">
+                                                    Mua hàng
+                                                </a>
+                                        </div>
+                                    </div>
                                 </div>
                                 {% endfor %}
                             </div>

@@ -67,11 +67,11 @@ $(document).ready(function () {
                                     nav: true
                                 },
                                 600: {
-                                    items: 3,
+                                    items: 2,
                                     nav: false
                                 },
                                 1000: {
-                                    items: 5,
+                                    items: 4,
                                     nav: true,
                                     loop: false
                                 }
@@ -140,11 +140,11 @@ $(document).ready(function () {
                                     nav: true
                                 },
                                 600: {
-                                    items: 3,
+                                    items: 2,
                                     nav: false
                                 },
                                 1000: {
-                                    items: 5,
+                                    items: 4,
                                     nav: true,
                                     loop: false
                                 }

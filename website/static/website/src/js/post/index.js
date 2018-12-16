@@ -27,21 +27,11 @@ $(document).ready(function(){
                         html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
                         html += '<p>'+ posts[item].product.name +'</p>'
                         html += '</a>'
-                        if( posts[item].product.discount_percent != 0){
-                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                            else{
-                                html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
+                        if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                            html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                         }
                         else{
-                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                            else{
-                                html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
+                            html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'
                         }
                         
                         // html += '<br class="hidden_desktop">'
@@ -57,58 +47,58 @@ $(document).ready(function(){
                 }
             })
 
-            $.ajax({
-                url: 'http://localhost:8000/get_data_related/' + response.product.categories[0].id,
-                method: 'GET',
-                success: function(response){
-                    var html = ''
-                    posts = response.datas
-                    for(var item=0; item < response.datas.length; item++){
-                        html += '<div class="item">'
-                        html += '<div class="product_box">'
-                        html += '<div class="title_box">'
-                        html += '<a ><p class="name_shop text-center">Sản phẩm liên quan</p></a>'
-                        html += '<p class="square_rating">'+ posts[item].rating +'</p>'
-                        html += '</div>'
-                        html += '<div class="thumb_image_product">'
-                        html += '<a><img src="'+ posts[item].product.image +'"></a>'
-                        html += '</div>'
-                        html += '<div class="info_box">'
-                        html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
-                        html += '<p>'+ posts[item].product.name +'</p>'
-                        html += '</a>'
-                        if( posts[item].product.discount_percent != 0){
-                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                            else{
-                                html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                        }
-                        else{
-                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                            else{
-                                html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                            }
-                        }
+            // $.ajax({
+            //     url: 'http://localhost:8000/get_data_related/' + response.product.categories[0].id,
+            //     method: 'GET',
+            //     success: function(response){
+            //         var html = ''
+            //         posts = response.datas
+            //         for(var item=0; item < response.datas.length; item++){
+            //             html += '<div class="item">'
+            //             html += '<div class="product_box">'
+            //             html += '<div class="title_box">'
+            //             html += '<a ><p class="name_shop text-center">Sản phẩm liên quan</p></a>'
+            //             html += '<p class="square_rating">'+ posts[item].rating +'</p>'
+            //             html += '</div>'
+            //             html += '<div class="thumb_image_product">'
+            //             html += '<a><img src="'+ posts[item].product.image +'"></a>'
+            //             html += '</div>'
+            //             html += '<div class="info_box">'
+            //             html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
+            //             html += '<p>'+ posts[item].product.name +'</p>'
+            //             html += '</a>'
+            //             if( posts[item].product.discount_percent != 0){
+            //                 if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+            //                     html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
+            //                 }
+            //                 else{
+            //                     html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
+            //                 }
+            //             }
+            //             else{
+            //                 if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+            //                     html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+            //                 }
+            //                 else{
+            //                     html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
+            //                 }
+            //             }
                         
-                        // html += '<br class="hidden_desktop">'
-                        // html += '<span class="disable_price">4.000.000 d</span>'
-                        html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
-                        html += '</div>'
-                        html += '<div class="quick_view">'
-                        html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
-                        html += '</div>'
-                        html += '</div>'
-                        html += '</div>'
-                    }
-                    $('#related').html('');
-                    $('#related').append(html);
-                    dl_owl('.owl-product-relate');
-                }
-            })
+            //             // html += '<br class="hidden_desktop">'
+            //             // html += '<span class="disable_price">4.000.000 d</span>'
+            //             html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
+            //             html += '</div>'
+            //             html += '<div class="quick_view">'
+            //             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
+            //             html += '</div>'
+            //             html += '</div>'
+            //             html += '</div>'
+            //         }
+            //         $('#related').html('');
+            //         $('#related').append(html);
+            //         dl_owl('.owl-product-relate');
+            //     }
+            // })
             
             console.log(response)
             $('h2[id=name_product]').append(response.product.name)

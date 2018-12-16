@@ -61,16 +61,8 @@ $(document).ready(function () {
                 html += '<a href="/product/' + response.data[i].product.id + '" class="detail_product">'
                 html += '<p>' + response.data[i].product.name + '</p>'
                 html += '</a>'
-                if (response.data[i].product.range_price[0] == response.data[i].product.range_price[1]) {
-                    html += '<span class="price">' + currency(((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent)) / 100), {
-                        precision: 0,
-                        separator: ','
-                    }).format() + ' VND </span>'
-                } else {
-                    html += '<span class="price">' + currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent)) / 100 + ' - ' + (response.data[i].product.range_price[0] * response.data[i].product.discount_percent) / 100, {
-                        precision: 0,
-                        separator: ','
-                    }).format() + ' VND </span>'
+                if (response.data[i].product.range_price[0] == response.data[i].product.range_price[1]){
+                    html += '<span class="price">'+ currency(((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                 }
                 else{
                     html += '<span class="price">'+ currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'

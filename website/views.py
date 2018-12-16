@@ -46,18 +46,24 @@ def login (request):
             account = Account.objects.get(email=email)
             if pbkdf2_sha256.verify(password, account.password):
                 if account.activity_account == True:
+                    if account.activity_merchant == True or account.activity_advertiser == True or account.is_admin == True:
+                        messages.warning(request, message='Tài khoản không tồn tại!', extra_tags='alert')
+                        return redirect('/login')
                     request.session['user'] = {
                         'id': account.id,
                         'email': account.email,
                         'role': role_user_session(account),
                     }
                     messages.success(request, message='Đăng nhập thành công!', extra_tags='alert')
-                    return redirect('/') 
+                    return redirect('/customer/profile') 
                 else:
-                    return HttpResponse('Vui lòng xác nhận email!')
-            return HttpResponse('Mật khẩu không đúng!')
+                    messages.warning(request, message='Vui lòng xác nhận email!', extra_tags='alert')
+                    return redirect('/login')
+            messages.warning(request, message='Mật khẩu không đúng!', extra_tags='alert')
+            return redirect('/login')
         except ObjectDoesNotExist:
-            return HttpResponse('Email không tồn tại!')
+            messages.warning(request, message='Email không tồn tại!', extra_tags='alert')
+            return redirect('/login')
         return
     return render(request, 'website/login.html')
 
@@ -215,6 +221,10 @@ def detail_post(request, id_post):
     if Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).exists() == False:
         messages.warning(request, message='Tin dang khong ton tai', extra_tags='alert')
         return redirect('/')
+
+    
+
+    
     post = Post_Product.objects.filter(pk=id_post, is_lock=False, is_activity=True).first()
     view_old = post.views
     post.views = view_old + 1
@@ -262,8 +272,45 @@ def detail_post(request, id_post):
         if item.num_of_star == 5:
             item.list_color = [1,1,1,1,1]
     rating['list_rating'] = list_rating
+
+    product_category = Product_Category.objects.filter(product_id=post.product_id.id, archive=False).first()
+    category = product_category.category_id
+    list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=category.id).values_list('product_id_id')
+    list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:40]
+    list_random = []
+    while len(list_random) >= 4:
+        x = randint(0, list_post.count() - 1)
+        if x not in list_random:
+            list_random.append(x)
+    if list_post.count() < 5:
+        posts = list_post
+    else:
+        posts = [list_post[list_random[0]], list_post[list_random[1]], list_post[list_random[2]], list_post[list_random[3]]]
+    # print(posts)
+    array_post = []
+    for post in posts:
+        dict_post = post.__dict__
+        count_star = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).aggregate(Sum('num_of_star'))['num_of_star__sum']
+        if count_star == None:
+            count_star = 0
+        count_person = Rating.objects.filter(merchant_id=post.creator_id.id, is_activity=True).count()
+        if count_person == 0:
+            dict_post['rating'] = float(0)
+        else:
+            dict_post['rating'] = float(round(count_star/count_person, 1))
+
+        del dict_post['_state']
+        # if Product.objects.filter(pk=post.id).exists() == True:
+        dict_product = Product.objects.get(pk=post.product_id_id).__dict__
+        list_price = Link_Type.objects.filter(parent_product=dict_product['id'], product_id__archive=False).values_list('product_id__price')
+        dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
+        del dict_product['_state']
+        image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
+        dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+        dict_post['product'] = dict_product
+        array_post.append(dict_post)
     
-    return render(request,'website/product.html', {'rating': rating}) 
+    return render(request,'website/product.html', {'rating': rating, 'array_post': array_post}) 
  
 def collections(request, id_category): 
     if Category.objects.filter(pk=id_category).exists() == False:

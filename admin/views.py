@@ -35,7 +35,6 @@ def check_session(request):
 # Create your views here.
 def login (request):
     if check_rule(request) == 1:
-        messages.error(request, message='Quyền truy cập bị từ chối!', extra_tags='alert')
         return redirect('/admin/')
             
     if request.method == 'POST':
@@ -44,7 +43,7 @@ def login (request):
         try:
             account = Account.objects.get(email=email)
             if pbkdf2_sha256.verify(password, account.password):
-                if account.activity_account == True:
+                if account.is_admin == True:
                     if check_session(request):
                         del request.session['user']
                     request.session['user'] = {
@@ -54,10 +53,10 @@ def login (request):
                     }
                     return redirect('/admin/') 
                 else:
-                    messages.warning(request, message='Vui lòng xác nhận email!', extra_tags='alert')
-                    return redirect('/merchant/login')
+                    messages.warning(request, message='Tài khoản không được phép truy cập!', extra_tags='alert')
+                    return redirect('/admin/login')
             messages.warning(request, message='Mật khẩu không đúng!', extra_tags='alert')
-            return redirect('/merchant/login')
+            return redirect('/admin/login')
         except ObjectDoesNotExist:
             messages.warning(request, message='Email không tồn tại!', extra_tags='alert')
             return redirect('/admin/login')

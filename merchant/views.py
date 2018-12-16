@@ -39,17 +39,15 @@ def check_session(request):
         return 1
     return 0
 def login (request):
-    if check_session(request):
-        if check_rule(request) == 1:
-            messages.warning(request, message='Quyền truy cập bị từ chối!', extra_tags='alert')
-            return redirect('/merchant/')
+    if check_rule(request) == 1:
+        return redirect('/merchant/')
     if request.method == 'POST':
         email = request.POST.get('inputEmail')
         password = request.POST.get('inputPassword')
         try:
             account = Account.objects.get(email=email)
             if pbkdf2_sha256.verify(password, account.password):
-                if account.activity_account == True:
+                if account.activity_merchant == True or account.activity_advertiser == True:
                     if check_session(request):
                         del request.session['user']
                     request.session['user'] = {
@@ -59,7 +57,7 @@ def login (request):
                     }
                     return redirect('/merchant/login') 
                 else:
-                    messages.warning(request, message='Vui lòng xác nhận email!', extra_tags='alert')
+                    messages.warning(request, message='Tài khoản không được phép truy cập!', extra_tags='alert')
                     return redirect('/merchant/login')
             messages.warning(request, message='Mật khẩu không đúng!', extra_tags='alert')
             return redirect('/merchant/login')

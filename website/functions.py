@@ -544,7 +544,7 @@ def get_data_hot_buy(request):
             posts = list_post
         else:
             posts = [list_post[list_random[0]], list_post[list_random[1]], list_post[list_random[2]]]
-        # print(posts)
+        print(posts)
         array_post = []
         for post in posts:
             dict_post = post.__dict__
