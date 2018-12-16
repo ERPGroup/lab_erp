@@ -239,7 +239,7 @@ def getAds(request):
   
 
 def get_data_collection(request, list_post):
-    paginator = Paginator(list_post, 1)
+    paginator = Paginator(list_post, 12)
     if 'page' in request.GET:
         page = request.GET.get('page')
     else:

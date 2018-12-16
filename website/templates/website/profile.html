@@ -25,6 +25,9 @@ Thông tin cá nhân
                 </div>
             </div>
             <div class="clearfix"></div>
+            {% if account_role == 'Người chạy quảng cáo' %}
+            <a href="/merchant" class="btn btn-info">Khu vực chạy quảng cáo</a>
+            {% endif %}
             {% if account_role == 'Người bán' %}
             <a href="/merchant" class="btn btn-info">Khu vực bán hàng</a>
             {% endif %}

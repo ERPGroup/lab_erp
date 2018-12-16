@@ -30,21 +30,11 @@ $(document).ready(function(){
                             html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
                             html += '<p>'+ posts[item].product.name +'</p>'
                             html += '</a>'
-                            if( posts[item].product.discount_percent != 0){
-                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                    html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
-                                else{
-                                    html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
+                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                             }
                             else{
-                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                    html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
-                                else{
-                                    html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
+                                html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'
                             }
                             
                             // html += '<br class="hidden_desktop">'
@@ -113,23 +103,12 @@ $(document).ready(function(){
                             html += '<a href="/post/'+ posts[item].id +'" class="detail_product">'
                             html += '<p>'+ posts[item].product.name +'</p>'
                             html += '</a>'
-                            if( posts[item].product.discount_percent != 0){
-                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                    html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
-                                else{
-                                    html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100 + ' - ' + (posts[item].product.range_price[0] * posts[item].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
+                            if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
+                                html += '<span class="price">'+ currency(((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                             }
                             else{
-                                if (posts[item].product.range_price[0] == posts[item].product.range_price[1]){
-                                    html += '<span class="price">'+ currency(posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
-                                else{
-                                    html += '<span class="price">'+ currency(posts[item].product.range_price[1]+ ' - ' + posts[item].product.range_price[0], { precision: 0, separator: ',' }).format() +' VND </span>'
-                                }
+                                html += '<span class="price">'+ currency((posts[item].product.range_price[1] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((posts[item].product.range_price[0] * (100 - posts[item].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'
                             }
-                            
                             // html += '<br class="hidden_desktop">'
                             // html += '<span class="disable_price">4.000.000 d</span>'
                             html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
@@ -258,7 +237,7 @@ function get_attr(item){
             attributes_html += '<li><a href="/post/'+ id_post +'">Xem thêm</a><li>'
             $('#attributes').append(attributes_html);
             $('#price').empty()
-            $('#price').append(response.product.version[item].price + ' VND')
+            $('#price').append(currency(((response.product.version[item].price * (100 - response.product.discount_percent))/100), { precision: 0, separator: ',' }).format() + ' VND')
             
             $('#version_product').val(response.product.version[item].id_product)
         }

@@ -1,2 +1,4 @@
 Sản phẩm chi tiết  ( Sản phẩm liên quan)
 Menu ở website
+
+Khong cho phep tai khoan merchant ads, admin mua hang

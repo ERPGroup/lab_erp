@@ -66,7 +66,7 @@ $(document).ready(function(){
                     html += '<span class="price">'+ currency(((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100), { precision: 0, separator: ',' }).format() +' VND </span>'
                 }
                 else{
-                    html += '<span class="price">'+ currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent))/100 + ' - ' + (response.data[i].product.range_price[0] * response.data[i].product.discount_percent)/100, { precision: 0, separator: ',' }).format() +' VND </span>'
+                    html += '<span class="price">'+ currency((response.data[i].product.range_price[1] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() + ' - ' +  currency((response.data[i].product.range_price[0] * (100 - response.data[i].product.discount_percent))/100, { precision: 0, separator: ',' }).format() +' VND </span>'
                 }
                 
                 // html += '<span class="price">'+ response.data[i].product.price +' VND</span>'
@@ -369,6 +369,43 @@ function quick_view (id_post) {
             $('#merchant').append('<a href="/shop/'+ response.merchant.id +'">'+ response.merchant.name_shop +'</a>')
         }
     })
+}
+
+
+function sub_product(){
+    var qty = parseInt($('#input_quantity').val());
+    if (qty <= 1) return
+    $('#input_quantity').val(qty -1);
+}
+  
+function add_product(qty_aval){
+    var qty = parseInt($('#input_quantity').val()); 
+    if (qty >= qty_aval) return
+    $('#input_quantity').val(qty + 1);
+}
+
+
+function get_attr(item){
+    var id_post = $('#version').attr('data-post')
+    $.ajax({
+        url: 'http://localhost:8000/post_data/' + id_post,
+        method: 'GET',
+        contentType: 'application/json',
+        success: function(response){
+            $('#attributes').empty()
+            attributes_html = ''
+            for(var i = 0; i < response.product.version[item].attributes.length; i++){
+                if (i == 5) break;
+                attributes_html += response.product.version[item].attributes[i].label + ' : ' + response.product.version[item].attributes[i].value + '<br />'
+            }
+            attributes_html += '<li><a href="/post/'+ id_post +'">Xem thêm</a><li>'
+            $('#attributes').append(attributes_html);
+            $('#price').empty()
+            $('#price').append(currency(((response.product.version[item].price * (100 - response.product.discount_percent))/100), { precision: 0, separator: ',' }).format() + ' VND')
+            
+            $('#version_product').val(response.product.version[item].id_product)
+        }
+    });
 }
 
 
