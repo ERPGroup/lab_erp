@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var x = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/admin/getDetailRegister',
+    url: 'http://localhost:8000/merchant/getDetailRunning',
     data: {
       inputID: x
     },
@@ -34,40 +34,6 @@ $(document).ready(function () {
         html += '<td>' + data['content_1'] + '</td></tr>'
         $('#tbl').html(html)
       }
-      document.getElementById('post_id').value = data['id']
-    }
-
-  })
-})
-$('#submit').click(function (e) {
-  e.preventDefault()
-  var post_id = $('#post_id').val()
-  var service_id = $('#pid').val()
-  $.ajax({
-    url: 'http://localhost:8000/admin/submitPost',
-    data: {
-      inputSID: service_id,
-      inputPID: post_id
-    },
-    type: 'POST',
-    success: function (data) {
-      $('#this_result').html('<label class="alert alert-success">Xác nhận thành công</label>')
-    }
-  })
-})
-$('#cancel').click(function (e) {
-  e.preventDefault()
-  var post_id = $('#post_id').val()
-  var service_id = $('#pid').val()
-  $.ajax({
-    url: 'http://localhost:8000/admin/cancelPost',
-    data: {
-      inputSID: service_id,
-      inputPID: post_id
-    },
-    type: 'POST',
-    success: function (data) {
-      $('#this_result').html('<label class="alert alert-danger">Hủy thành công</label>')
     }
   })
 })

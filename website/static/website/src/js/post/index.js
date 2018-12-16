@@ -67,7 +67,7 @@ $(document).ready(function(){
                         html += '<div class="item">'
                         html += '<div class="product_box">'
                         html += '<div class="title_box">'
-                        html += '<a ><p class="name_shop text-center">Đề xuất</p></a>'
+                        html += '<a ><p class="name_shop text-center">Sản phẩm liên quan</p></a>'
                         html += '<p class="square_rating">'+ posts[item].rating +'</p>'
                         html += '</div>'
                         html += '<div class="thumb_image_product">'
@@ -104,8 +104,8 @@ $(document).ready(function(){
                         html += '</div>'
                         html += '</div>'
                     }
-                    $('#related').append(html)
-
+                    $('#related').html('');
+                    $('#related').append(html);
                     dl_owl('.owl-product-relate');
                 }
             })

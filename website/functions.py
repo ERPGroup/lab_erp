@@ -681,6 +681,12 @@ def register(request):
                 name_shop=store,
             )
             new_account.save()
+            # Them Gift khi merchant duoc tao
+            new_gift = Account_Gift(
+                account = Account.objects.get(username=username)
+            )
+            new_gift.save()
+            # end gift
             link = 'activity_merchant/%s/%s/' % (email, code_act_merchant)
             action = 'Vui lòng bấm nút bên dưới để kích hoạt'
             template = template_register(name, action, link)
