@@ -143,4 +143,6 @@ urlpatterns = [
     path('getAllAdsActiving',functions.getAllAdsActiving,name="getads"),
     path('enable_ads',functions.enable_ads,name="enable"),
     path('disable_ads',functions.disable_ads,name="enable"),
+
+    path('getStatistical',functions.getStatistical,name="get Statistical")
 ]

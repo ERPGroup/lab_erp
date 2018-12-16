@@ -5,20 +5,23 @@ Trang chủ
 {% endblock %}
 {% block content %}
 <div class="main_slider">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            {% include "snippets/left-category.html" %}
-            {% include "snippets/slider.html" %}
-            {% include "snippets/right-banner.html" %}
-            {% include "snippets/section_banner.html" %}
+            <div class="container">
+                <div class="row">
+                    {% include "snippets/left-category.html" %}
+                    {% include "snippets/slider.html" %}
+                    {% include "snippets/right-banner.html" %}
+                    {% include "snippets/section_banner.html" %}
+                </div>
+            </div>
             <div id="by_service">
             </div>
-            
+
             <div class="clearfix"></div>
             {% include "snippets/section_mainbanner.html" %}
             <div class="clearfix"></div>
             <div id="by_category">
-
             </div>
             <div class="clearfix"></div>
             {% include "snippets/section_brand.html" %}
@@ -27,6 +30,6 @@ Trang chủ
 </div>
 {% endblock content %}
 {% block custom_js %}
-    <script src="{% static 'website/assets/currency.min.js' %}"></script>
-    <script src="{% static 'website/src/js/index/index.js' %} "></script>
+<script src="{% static 'website/assets/currency.min.js' %}"></script>
+<script src="{% static 'website/src/js/index/index.js' %} "></script>
 {% endblock %}
