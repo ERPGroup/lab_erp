@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     $('#success_order').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/customer/success_order/' + id_order,
+            url: 'http://13.67.105.209:8000/customer/success_order/' + id_order,
             method: 'GET',
             success: function(response){
                 if (response == 1){
@@ -20,7 +20,7 @@ $(document).ready(function(){
 
     $('#cancel_order').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/customer/cancel_order/' + id_order,
+            url: 'http://13.67.105.209:8000/customer/cancel_order/' + id_order,
             method: 'GET',
             success: function(response){
                 if (response == 1){
@@ -37,7 +37,7 @@ $(document).ready(function(){
 
 function cancel_order_item(id_order_item){
     $.ajax({
-        url: 'http://localhost:8000/customer/cancel_order_item/' + id_order_item,
+        url: 'http://13.67.105.209:8000/customer/cancel_order_item/' + id_order_item,
         method: 'GET',
         success: function(response){
             if (response == 1){

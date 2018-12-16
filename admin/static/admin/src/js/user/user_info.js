@@ -2,7 +2,7 @@ $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
     var id_user = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/admin/user/' + id_user,
+        url: 'http://13.67.105.209:8000/admin/user/' + id_user,
         method:  'GET',
         contentType: 'application/json',
         success: function(response){
@@ -61,7 +61,7 @@ $(document).ready(function(){
             if (response.role == 2){
                 $('#service').removeClass('hidden');
                 $.ajax({
-                    url: 'http://localhost:8000/admin/account_services?service=available',
+                    url: 'http://13.67.105.209:8000/admin/account_services?service=available',
                     method: 'GET',
                     contentType: 'application/json',
                     success: function(services){
@@ -80,7 +80,7 @@ $(document).ready(function(){
 
     $('#lock').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/admin/user/' + id_user,
+            url: 'http://13.67.105.209:8000/admin/user/' + id_user,
             method: 'POST',
             data: {},
             contentType: 'application/x-www-form-urlencoded',
@@ -97,7 +97,7 @@ $(document).ready(function(){
 
     $('#unlock').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/admin/user/' + id_user,
+            url: 'http://13.67.105.209:8000/admin/user/' + id_user,
             method: 'DELETE',
             data: {},
             contentType: 'application/x-www-form-urlencoded',

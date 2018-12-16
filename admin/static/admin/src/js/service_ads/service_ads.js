@@ -23,7 +23,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/getAllAds",
+            "url": "http://13.67.105.209:8000/admin/getAllAds",
             "dataSrc": ""
         },
         "columns": [{

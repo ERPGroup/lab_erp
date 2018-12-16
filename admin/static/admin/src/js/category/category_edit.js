@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     // Load data in category
     $.ajax({
-        url: 'http://localhost:8000/admin/category/' + id_category,
+        url: 'http://13.67.105.209:8000/admin/category/' + id_category,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -33,7 +33,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'http://localhost:8000/admin/category/' + id_category,
+            url: 'http://13.67.105.209:8000/admin/category/' + id_category,
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -51,7 +51,7 @@ $(document).ready(function(){
 
     $('#delete').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/admin/category/' + id_category,
+            url: 'http://13.67.105.209:8000/admin/category/' + id_category,
             method: 'DETELE',
             success: function(response){
                 console.log(response);

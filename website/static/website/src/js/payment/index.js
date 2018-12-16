@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $('#update_profile').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/get_profile_payment',
+            url: 'http://13.67.105.209:8000/get_profile_payment',
             method: 'GET',
             success: function(response){
                 $('#_billing_address_last_name').val(response.name)
@@ -44,7 +44,7 @@ $(document).ready(function(){
         document.getElementById("loader").style.display = "block";
         document.getElementById("html_payment").style.display = "none";
         $.ajax({
-            url: 'http://localhost:8000/payment',
+            url: 'http://13.67.105.209:8000/payment',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -95,7 +95,7 @@ $(document).ready(function(){
         document.getElementById("loader").style.display = "block";
         document.getElementById("html_payment").style.display = "none";
         $.ajax({
-            url: 'http://localhost:8000/payment',
+            url: 'http://13.67.105.209:8000/payment',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $.ajax({
-        url: 'http://localhost:8000/merchant/services',
+        url: 'http://13.67.105.209:8000/merchant/services',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

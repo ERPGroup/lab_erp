@@ -3,7 +3,7 @@ $(document).ready(function () {
     var check_url = $(location).attr('pathname').split('/');
     var id_order = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/merchant/order/' + id_order,
+        url: 'http://13.67.105.209:8000/merchant/order/' + id_order,
         method: 'GET',
         success: function(response){
             $('#inputIdCus').val(response.customer_id);
@@ -98,7 +98,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/orders_detail/" + id_order,
+            "url": "http://13.67.105.209:8000/merchant/orders_detail/" + id_order,
             "dataSrc": ""
         },
 
@@ -116,7 +116,7 @@ function rating_customer(id_order){
     }
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/rating_customer',
+        url: 'http://13.67.105.209:8000/merchant/rating_customer',
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: data,
@@ -141,7 +141,7 @@ function change_state(order_id, state){
     $("#wrapper").css("display","none");
     $("#loader").css("display","block");
     $.ajax({
-        url: 'http://localhost:8000/merchant/change_state/' + order_id + '/' + state,
+        url: 'http://13.67.105.209:8000/merchant/change_state/' + order_id + '/' + state,
         method: 'GET',
         success: function(response){
             if (response == 1){

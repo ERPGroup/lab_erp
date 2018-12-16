@@ -100,7 +100,7 @@ $(document).ready(function(){
 
     console.log(data)
     $.ajax({
-      url: 'http://localhost:8000/merchant/product',
+      url: 'http://13.67.105.209:8000/merchant/product',
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       data: data,

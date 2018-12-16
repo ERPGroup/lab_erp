@@ -170,7 +170,7 @@ function isEmail(emailStr)
 
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/categorys',
+    url: 'http://13.67.105.209:8000/categorys',
     method: 'GET',
     success: function(response){
       html = ''

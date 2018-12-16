@@ -1,7 +1,7 @@
 
 function add_product(id_product){
     $.ajax({
-        url: 'http://localhost:8000/add/' + id_product,
+        url: 'http://13.67.105.209:8000/add/' + id_product,
         method: 'GET',
         success: function(response){
             if(response == 1){
@@ -27,7 +27,7 @@ function add_product(id_product){
 
 function sub_product(id_product){
     $.ajax({
-        url: 'http://localhost:8000/sub/' + id_product,
+        url: 'http://13.67.105.209:8000/sub/' + id_product,
         method: 'GET',
         success: function(response){
             if(response == 1){
@@ -53,7 +53,7 @@ function sub_product(id_product){
 
 function set_qty(id_product, qty){
     $.ajax({
-        url: 'http://localhost:8000/set_qty/' + id_product + '/' + qty,
+        url: 'http://13.67.105.209:8000/set_qty/' + id_product + '/' + qty,
         method: 'GET',
         success: function(response){
             if(response == 1){
@@ -69,7 +69,7 @@ function set_qty(id_product, qty){
 
 function remove(id_product){
     $.ajax({
-        url: 'http://localhost:8000/remove/' + id_product,
+        url: 'http://13.67.105.209:8000/remove/' + id_product,
         method: 'GET',
         success: function(response){
             alert(response);

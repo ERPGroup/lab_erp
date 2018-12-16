@@ -37,7 +37,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/getAllAdsRunning",
+            "url": "http://13.67.105.209:8000/merchant/getAllAdsRunning",
             "dataSrc": ""
         },
         "columns": [{

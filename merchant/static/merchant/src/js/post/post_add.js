@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $.ajax({
-        url: 'http://localhost:8000/merchant/products?posted=false',
+        url: 'http://13.67.105.209:8000/merchant/products?posted=false',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -16,7 +16,7 @@ $(document).ready(function(){
     }) 
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/account_services?service=available',
+        url: 'http://13.67.105.209:8000/merchant/account_services?service=available',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -61,7 +61,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'http://localhost:8000/merchant/post',
+            url: 'http://13.67.105.209:8000/merchant/post',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -84,7 +84,7 @@ $(document).ready(function(){
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/merchant/product/'+ id_product,
+        url: 'http://13.67.105.209:8000/merchant/product/'+ id_product,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -113,7 +113,7 @@ function showProduct(id_product){
 
 function showPost(id_service){
     $.ajax({
-        url: 'http://localhost:8000/merchant/service/'+ id_service + '?posted=true',
+        url: 'http://13.67.105.209:8000/merchant/service/'+ id_service + '?posted=true',
         method: 'GET',
         contentType: 'application/json',
         success: function(service){

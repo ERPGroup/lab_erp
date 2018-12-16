@@ -24,7 +24,7 @@ $(document).ready(function (){
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/attributes",
+            "url": "http://13.67.105.209:8000/admin/attributes",
             "dataSrc": ""
         },
     });

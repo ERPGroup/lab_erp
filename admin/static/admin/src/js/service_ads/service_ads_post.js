@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var x = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/admin/getDetailRegister',
+    url: 'http://13.67.105.209:8000/admin/getDetailRegister',
     data: {
       inputID: x
     },
@@ -44,7 +44,7 @@ $('#submit').click(function (e) {
   var post_id = $('#post_id').val()
   var service_id = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/admin/submitPost',
+    url: 'http://13.67.105.209:8000/admin/submitPost',
     data: {
       inputSID: service_id,
       inputPID: post_id
@@ -60,7 +60,7 @@ $('#cancel').click(function (e) {
   var post_id = $('#post_id').val()
   var service_id = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/admin/cancelPost',
+    url: 'http://13.67.105.209:8000/admin/cancelPost',
     data: {
       inputSID: service_id,
       inputPID: post_id

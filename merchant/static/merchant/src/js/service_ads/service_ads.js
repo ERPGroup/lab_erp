@@ -26,7 +26,7 @@ $(document).ready(function () {
             data.append('photo', files[0]);
         }
         $.ajax({
-            url: 'http://localhost:8000/merchant/upload_image_ads/',
+            url: 'http://13.67.105.209:8000/merchant/upload_image_ads/',
             method: 'POST',
             contentType: false,
             processData: false,

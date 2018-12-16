@@ -92,7 +92,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: 'http://localhost:8000/f_register',
+            url: 'http://13.67.105.209:8000/f_register',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

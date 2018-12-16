@@ -4,7 +4,7 @@ $(document).ready(function(){
             'inputLabel': $('#inputLabel').val(),       
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/attribute',
+            url: 'http://13.67.105.209:8000/admin/attribute',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

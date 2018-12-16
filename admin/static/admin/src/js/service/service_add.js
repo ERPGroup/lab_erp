@@ -37,7 +37,7 @@ $(document).ready(function(){
             'inputVisableVip': $('#inputVisableVip').val(),
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/service',
+            url: 'http://13.67.105.209:8000/admin/service',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

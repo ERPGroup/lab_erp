@@ -778,7 +778,7 @@ def confirmPost(request):
         content = "<html><body>"
         content += "<h2 style='text-align:center;'>Nội dung quảng cáo của bạn đã được duyệt</h2>"
         content += "<br><label style='font-size:14px'>Nội dung quảng cáo</label>"
-        content += "<img src='http://localhost:8000/ads/"+post_ads[0].image_1+"'>"
+        content += "<img src='http://13.67.105.209:8000/ads/"+post_ads[0].image_1+"'>"
         content += "<br><br> <b>Nếu có thắc mắc, vui lòng liên hệ chúng tôi trong vòng 48h - kể từ lúc mail này được gửi."
         content+=  "Mọi sự cố liên quan đến giao dịch quá thời hạn trên chúng tôi sẽ không giải quyết, xin cám ơn. </b> "
         content+="</body></html>"
@@ -800,7 +800,7 @@ def cancelPost(request):
         content = "<html><body>"
         content += "<h2 style='text-align:center;'>Nội dung quảng cáo của bạn <b> không được duyệt </b></h2>"
         content += "<br><label style='font-size:14px'>Nội dung quảng cáo</label>"
-        content += "<img src='http://localhost:8000/ads/"+post_ads[0].image_1+"'>"
+        content += "<img src='http://13.67.105.209:8000/ads/"+post_ads[0].image_1+"'>"
         content += " <br><br> <b>Nếu có thắc mắc, vui lòng liên hệ chúng tôi. Hotline: 0978956043 - Mail: abc@gmail.com"
         content+="</body></html>"
         send_email_notifile(service_ads[0].merchant_id.email,body,content)

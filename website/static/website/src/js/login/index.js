@@ -4,7 +4,7 @@ $(document).ready(function(){
             'inputEmail': $('#forgot_email').val(),
         }
         $.ajax({
-            url: 'http://localhost:8000/forgot_password',
+            url: 'http://13.67.105.209:8000/forgot_password',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

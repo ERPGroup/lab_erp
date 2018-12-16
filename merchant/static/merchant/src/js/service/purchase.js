@@ -5,7 +5,7 @@ $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
     var id_service = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/merchant/service/' + id_service,
+        url: 'http://13.67.105.209:8000/merchant/service/' + id_service,
         method: 'GET',
         contentType: 'application/json',
         success: function(service){
@@ -106,7 +106,7 @@ $(document).ready(function(){
                         }
 
                         $.ajax({
-                            url: 'http://localhost:8000/merchant/purchase_service',
+                            url: 'http://13.67.105.209:8000/merchant/purchase_service',
                             method: 'POST',
                             contentType: 'application/x-www-form-urlencoded',
                             data: data_info,

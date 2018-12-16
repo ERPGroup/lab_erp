@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/posts",
+            "url": "http://13.67.105.209:8000/admin/posts",
             "dataSrc": ""
         },
     });
@@ -89,7 +89,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: 'http://localhost:8000/admin/services',
+        url: 'http://13.67.105.209:8000/admin/services',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

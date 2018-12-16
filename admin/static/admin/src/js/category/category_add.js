@@ -5,7 +5,7 @@ $(document).ready(function(){
             'inputName': $('#inputName').val(),      
         }
         $.ajax({
-            url: 'http://localhost:8000/admin/category',
+            url: 'http://13.67.105.209:8000/admin/category',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,

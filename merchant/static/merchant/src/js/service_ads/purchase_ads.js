@@ -71,7 +71,7 @@ $(document).ready(function () {
                         'inputStart_date': $('#dateAvailable').val(),
                     }
                     $.ajax({
-                        url: 'http://localhost:8000/merchant/purchase_service_ads',
+                        url: 'http://13.67.105.209:8000/merchant/purchase_service_ads',
                         method: 'POST',
                         contentType: 'application/x-www-form-urlencoded',
                         data: data_info,
@@ -98,7 +98,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/getListAds/',
+        url: 'http://13.67.105.209:8000/merchant/getListAds/',
         type: 'GET',
         dataType: 'json',
         async: false,
@@ -128,7 +128,7 @@ $('#select_type').change(function () {
             document.getElementById('position').value = arr[i].position;
             document.getElementById('amount').value = arr[i].amount;
             $.ajax({
-                url: 'http://localhost:8000/merchant/getDateAvailable/' + arr[i].position + '&' +
+                url: 'http://13.67.105.209:8000/merchant/getDateAvailable/' + arr[i].position + '&' +
                     arr[i].id,
                 type: 'GET',
                 dateType: 'json',
