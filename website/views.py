@@ -1,6 +1,8 @@
 import random
 from django.shortcuts import render, redirect
 from .models import *
+import random
+from random import randint
 from django.db.models import Sum
 
 # Create your views here.
@@ -278,10 +280,14 @@ def detail_post(request, id_post):
     list_poduct_avaliable = Product_Category.objects.filter(archive=False, category_id_id=category.id).values_list('product_id_id')
     list_post = Post_Product.objects.filter(is_lock=False, is_activity=True, product_id_id__in=list_poduct_avaliable).order_by('-bought')[0:40]
     list_random = []
-    while len(list_random) >= 4:
-        x = randint(0, list_post.count() - 1)
+    count = list_post.count()
+    while len(list_random) < 4:
+        x = randint(0, count - 1)
         if x not in list_random:
             list_random.append(x)
+        if len(list_random) == count:
+            break
+        
     if list_post.count() < 5:
         posts = list_post
     else:
