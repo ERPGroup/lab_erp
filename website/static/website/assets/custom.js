@@ -167,3 +167,20 @@ function isEmail(emailStr)
   // If we've gotten this far, everything's valid!
   return true;
 }
+
+$(document).ready(function(){
+  $.ajax({
+    url: 'http://localhost:8000/categorys',
+    method: 'GET',
+    success: function(response){
+      html = ''
+      for (var i = 0; i < response.length; i++){
+        html += '<li><a href="/collections/'+ response[i].pk +'">'+ response[i].fields.name_category +'</a></li>'
+      }
+      $('#menu_collection').append(html)
+      $('#menu_show').append(html)
+      $('#menu_collection_mobie').append(html)
+      $('#menu_collection_2').append(html)
+    }
+  })
+})
