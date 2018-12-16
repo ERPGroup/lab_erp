@@ -28,6 +28,7 @@ urlpatterns = [
     #function
 
     path('forgot_password', functions.forgot_password, name='forgot_password'),
+    path('categorys', functions.categorys, name='categorys'),
 
     path('get_profile_payment', functions.get_profile_payment, name='get_profile_payment'),
     path('product_by_category/<int:id_category>', functions.product_by_category, name='product_by_category'),

@@ -45,6 +45,10 @@ def product_by_category(request, id_category):
             # print(type(list_product[0].product_id))
             # return HttpResponse(serialize('json', list_product))
 
+def categorys(request):
+    if request.method  == 'GET':
+        return HttpResponse(serialize('json', Category.objects.all()), content_type="application/json")
+
 @csrf_exempt       
 def payment(request):
     ''' Tạo đơn hàng '''
