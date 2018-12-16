@@ -1007,7 +1007,7 @@ def post_ads(request):
 
         Purchase_Service_Ads.objects.filter(id=inputAds_id).update(state=2)
 
-        return HttpResponse(1)
+        return redirect('/merchant/manager_ads_running')
 
     return HttpResponse(-1)
 
@@ -1125,7 +1125,7 @@ def getAllAdsRunning(request):
     mer_id = merchant_id.id
     if request.method == 'GET':
         result = []
-        for item in Service_Ads_Post.objects.filter(purchase_service_id__state=3 or 4,customer_id__id=mer_id):
+        for item in Service_Ads_Post.objects.filter(customer_id__id=mer_id):
             post_dict = dict()
             post_dict['id'] = item.id
             post_dict['ads_name'] = "<a href='/merchant/manager_ads_running_detail/"+str(item.purchase_service_id.id)+"'>"+item.service_name+"</a>"
@@ -1153,7 +1153,7 @@ def getDetailRunning(request):
         return HttpResponse('Quyền truy cập bị từ chối')
     if request.method == 'POST':
         id = request.POST['inputID']
-        post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id,state=2,purchase_service_id__state=4).first()
+        post_ads = Service_Ads_Post.objects.filter(purchase_service_id__id=id).first()
         if post_ads:
             post_dict = dict()
             post_dict['id']=post_ads.id

@@ -423,6 +423,7 @@ img {
   height: 280px;
   position: relative;
   border: 1px solid #ebebeb;
+
   @media screen and (max-width: 500px) {
     height: 300px;
   }
@@ -1473,6 +1474,7 @@ footer {
       margin: 15px 0px;
       border: 1px solid #ebebeb;
       padding: 15px;
+      height:382px;
       position: relative;
       .thumb_image_quickview {
         height: 300px;
@@ -1496,6 +1498,7 @@ footer {
       padding: 15px;
       margin: 15px 0px;
       border: 1px solid #ebebeb;
+      height:382px;
       @media screen and (min-width: 320px) and (max-width: 568px) {
         margin: 0px;
       }
@@ -1618,6 +1621,7 @@ footer {
         border: 1px solid #ebebeb;
         margin: 10px 0px;
         font-size: 14px;
+        margin-top:0px;
         tr {
           border: 1px solid #ebebeb;
           th {
@@ -1892,4 +1896,17 @@ footer {
     margin: auto;
   }
 }
-
+.is_palatinum
+{
+  border: 10px solid transparent;
+    -webkit-border-image: url(frame_2.png) 9 round;
+    -o-border-image: url(frame_2.png) 9 round;
+    border-image: url(frame_2.png) 9 round;
+}
+.is_gold
+{
+    border: 10px solid transparent;
+    -webkit-border-image: url(frame.png) 9 round;
+    -o-border-image: url(frame.png) 9 round;
+    border-image: url(frame.png) 9 round;
+}

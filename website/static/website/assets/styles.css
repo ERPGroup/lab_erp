@@ -1847,6 +1847,7 @@ footer .copyrights a {
   margin: 15px 0px;
   border: 1px solid #ebebeb;
   padding: 15px;
+  height: 382px;
   position: relative;
 }
 
@@ -1876,6 +1877,7 @@ footer .copyrights a {
   padding: 15px;
   margin: 15px 0px;
   border: 1px solid #ebebeb;
+  height: 382px;
 }
 
 @media screen and (min-width: 320px) and (max-width: 568px) {
@@ -2028,6 +2030,7 @@ footer .copyrights a {
   border: 1px solid #ebebeb;
   margin: 10px 0px;
   font-size: 14px;
+  margin-top: 0px;
 }
 
 .product .content_product .information_product .tbl_product tr {
@@ -2344,5 +2347,17 @@ footer .copyrights a {
   left: 0;
   right: 0;
   margin: auto;
+}
+
+.is_palatinum {
+  border: 10px solid transparent;
+  -o-border-image: url(frame_2.png) 9 round;
+  border-image: url(frame_2.png) 9 round;
+}
+
+.is_gold {
+  border: 10px solid transparent;
+  -o-border-image: url(frame.png) 9 round;
+  border-image: url(frame.png) 9 round;
 }
 /*# sourceMappingURL=styles.css.map */

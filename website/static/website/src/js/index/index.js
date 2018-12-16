@@ -18,9 +18,9 @@ $(document).ready(function(){
                         
                         for (var item = 0; item < posts.length; item++){
                             html += '<div class="item">'
-                            html += '<div class="product_box">'
+                            html += '<div class="product_box is_palatinum">'
                             html += '<div class="title_box">'
-                            html += '<a ><p class="name_shop text-center">Tin Vip</p></a>'
+                            html += '<a ><p class="name_shop text-center">'+posts[item].product.code+'</p></a>'
                             html += '<p class="square_rating">'+ posts[item].rating +'</p>'
                             html += '</div>'
                             html += '<div class="thumb_image_product">'
@@ -101,7 +101,7 @@ $(document).ready(function(){
                         
                         for (var item = 0; item < posts.length; item++){
                             html += '<div class="item">'
-                            html += '<div class="product_box">'
+                            html += '<div class="product_box is_gold">'
                             html += '<div class="title_box">'
                             html += '<a ><p class="name_shop text-center">Tin Vip</p></a>'
                             html += '<p class="square_rating">'+ posts[item].rating +'</p>'

@@ -116,7 +116,7 @@ class Post_Product (models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     post_type = models.ForeignKey('Service', on_delete=models.CASCADE)
     creator_id = models.ForeignKey('Account', on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField() 
     expire = models.DateTimeField()
     visable_vip = models.BooleanField()
     created = models.DateTimeField(auto_now=True)
@@ -239,7 +239,7 @@ class Service_Ads_Post(models.Model):
     image_3 = models.CharField(max_length=200,blank=True,null=True)
     image_3_url = models.CharField(max_length=200,blank=True,null=True)
     image_3_content = models.CharField(max_length=200,blank=True,null=True)
-    CHOICES_STATE = (('1','IsPosting'),('2','IsConfirm'),('-1','Cancel'))
+    CHOICES_STATE = (('1','IsPosting'),('2','IsConfirm'),('0','Cancel'))
     state = models.CharField(max_length=1, choices=CHOICES_STATE)
 
 
@@ -254,3 +254,12 @@ class Purchase_Service_Ads(models.Model):
     success_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     archive = models.BooleanField(default=False)
+
+#Hau mai khach hang
+class Account_Gift(models.Model):
+    account = models.ForeignKey('Account', on_delete=models.CASCADE)
+    is_10 = models.BooleanField(default=False)
+    is_50 = models.BooleanField(default=False)
+    is_100 = models.BooleanField(default=False)
+    is_daily_7 = models.BooleanField(default=False)
+    is_daily_15 = models.BooleanField(default=False)
