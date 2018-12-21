@@ -47,7 +47,7 @@
             ],
             "ajax": {
                 "processing": true,
-                "url": "http://localhost:8000/admin/users?table=true",
+                "url": "http://54.213.242.175:8000/admin/users?table=true",
                 "dataSrc": ""
             },
         });

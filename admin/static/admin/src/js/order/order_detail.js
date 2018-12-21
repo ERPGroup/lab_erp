@@ -3,7 +3,7 @@ $(document).ready(function () {
     var check_url = $(location).attr('pathname').split('/');
     var id_order = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/admin/order/' + id_order,
+        url: 'http://54.213.242.175:8000/admin/order/' + id_order,
         method: 'GET',
         success: function(response){
             $('#inputIdCus').val(response.customer_id);
@@ -73,7 +73,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/orders_detail/" + id_order,
+            "url": "http://54.213.242.175:8000/admin/orders_detail/" + id_order,
             "dataSrc": ""
         },
 

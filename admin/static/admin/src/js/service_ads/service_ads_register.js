@@ -38,7 +38,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/getAllPost",
+            "url": "http://54.213.242.175:8000/admin/getAllPost",
             "dataSrc": ""
         },
         "columns": [{

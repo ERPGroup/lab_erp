@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var x = $('#pid').val()
   $.ajax({
-    url: 'http://localhost:8000/merchant/getDetailRunning',
+    url: 'http://54.213.242.175:8000/merchant/getDetailRunning',
     data: {
       inputID: x
     },

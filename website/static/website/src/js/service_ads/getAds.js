@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: 'http://localhost:8000/getAds',
+        url: 'http://54.213.242.175:8000/getAds',
         type: 'POST',
         success: function (data) {
             if (data == -1) {

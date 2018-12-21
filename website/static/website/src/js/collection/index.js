@@ -7,7 +7,7 @@ $(document).ready(function () {
         $('#price_to').val(GetURLParameter('max'))
     }
 
-    url = 'http://localhost:8000/product_collection/' + id_category + '?';
+    url = 'http://54.213.242.175:8000/product_collection/' + id_category + '?';
     if (GetURLParameter('page') == undefined) {
         if (GetURLParameter('newest') != undefined) {
             url += 'newest=' + GetURLParameter('newest')
@@ -76,7 +76,7 @@ $(document).ready(function () {
                 }
                 html += '</div>'
                 html += '<div class="quick_view">'
-                html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/' + response.data[i].id + '\';">Xem thêm</button>'
+                html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/' + response.data[i].id + '\';">Xem thêm</button>'
                 html += '<button onclick="quick_view(' + response.data[i].id + ');" class="btn_quickview"><i class="fa fa-shopping-cart"></i></button>'
                 // html += '<button type="submit" class="btn_buy">Mua hàng</button>'
                 // html += '<a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i class="fa fa-search"></i></button></a>'
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
                 $('#pagination').empty()
 
-                url_paginator = 'http://localhost:8000/collections/' + id_category + '?';
+                url_paginator = 'http://54.213.242.175:8000/collections/' + id_category + '?';
                 if (GetURLParameter('newest') != undefined) {
                     url_paginator += 'newest=' + GetURLParameter('newest') + '&'
                 }
@@ -161,7 +161,7 @@ function Newest_down() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?newest=true&'
     } else {
@@ -177,7 +177,7 @@ function Newest_up() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?newest=false&'
     } else {
@@ -194,7 +194,7 @@ function Buiest_down() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?buiest=true&'
     } else {
@@ -210,7 +210,7 @@ function Buiest_up() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?buiest=false&'
     } else {
@@ -227,7 +227,7 @@ function Pricest_down() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?pricest=true&'
     } else {
@@ -243,7 +243,7 @@ function Pricest_up() {
     }
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     if (GetURLParameter('page') == undefined) {
         url += '?pricest=false&'
     } else {
@@ -256,7 +256,7 @@ function Pricest_up() {
 function Filter_price() {
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     var price_from = $('#price_from').val()
     if (price_from == '') {
         alert('Vui lòng nhập giá!')
@@ -282,7 +282,7 @@ function Filter_price() {
 function Cancel_Filter() {
     var check_url = $(location).attr('pathname').split('/');
     var id_category = check_url[check_url.length - 1]
-    url = 'http://localhost:8000/collections/' + id_category;
+    url = 'http://54.213.242.175:8000/collections/' + id_category;
     document.location = url;
 }
 
@@ -305,7 +305,7 @@ function quick_view(id_post) {
     $('#over').fadeIn(300)
 
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function (response) {
@@ -385,7 +385,7 @@ function add_product(qty_aval){
 function get_attr(item){
     var id_post = $('#version').attr('data-post')
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -410,7 +410,7 @@ function buy_product(){
     var quantity = $('#input_quantity').val()
     var product = $('#version_product').val()
     $.ajax({
-        url: 'http://localhost:8000/add_qty/' + product + '/' + quantity,
+        url: 'http://54.213.242.175:8000/add_qty/' + product + '/' + quantity,
         method: 'GET',
         success: function (response) {
             if (response == -2) {
@@ -428,7 +428,7 @@ function buy_product(){
                     popup.style.display = 'none'
                     $('#over').remove()
                     $.ajax({
-                        url: 'http://localhost:8000/count',
+                        url: 'http://54.213.242.175:8000/count',
                         method: 'GET',
                         success: function (response) {
                             $('#cart_mobi').empty()

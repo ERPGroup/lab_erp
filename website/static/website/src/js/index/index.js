@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: 'http://localhost:8000/data',
+        url: 'http://54.213.242.175:8000/data',
         method: 'GET',
         contentType: 'application/json',
         success: function (response) {
@@ -44,7 +44,7 @@ $(document).ready(function () {
                             }
                             html += '</div>'
                             html += '<div class="quick_view">'
-                            html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/' + posts[item].id + '\';">Xem thêm</button>'
+                            html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/' + posts[item].id + '\';">Xem thêm</button>'
                             html += '<button onclick="quick_view(' + posts[item].id + ');" class="btn_quickview"><i class="fa fa-shopping-cart"></i></button>'
                             html += '</div>'
                             html += '</div>'
@@ -118,7 +118,7 @@ $(document).ready(function () {
                             }
                             html += '</div>'
                             html += '<div class="quick_view">'
-                            html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/' + posts[item].id + '\';">Xem thêm</button>'
+                            html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/' + posts[item].id + '\';">Xem thêm</button>'
                             html += '<button onclick="quick_view(' + posts[item].id + ');" class="btn_quickview"><i class="fa fa-shopping-cart"></i></button>'
                             html += '</div>'
                             html += '</div>'
@@ -168,7 +168,7 @@ function quick_view(id_post) {
     $('#over').fadeIn(300)
 
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function (response) {
@@ -234,7 +234,7 @@ function quick_view(id_post) {
 function get_attr(item) {
     var id_post = $('#version').attr('data-post')
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function (response) {
@@ -272,7 +272,7 @@ function buy_product() {
     var quantity = $('#input_quantity').val()
     var product = $('#version_product').val()
     $.ajax({
-        url: 'http://localhost:8000/add_qty/' + product + '/' + quantity,
+        url: 'http://54.213.242.175:8000/add_qty/' + product + '/' + quantity,
         method: 'GET',
         success: function (response) {
             if (response == -2) {
@@ -290,7 +290,7 @@ function buy_product() {
                     popup.style.display = 'none'
                     $('#over').remove()
                     $.ajax({
-                        url: 'http://localhost:8000/count',
+                        url: 'http://54.213.242.175:8000/count',
                         method: 'GET',
                         success: function (response) {
                             $('#cart_mobi').empty()

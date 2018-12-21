@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/post/' + id_post,
+        url: 'http://54.213.242.175:8000/merchant/post/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -12,7 +12,7 @@ $(document).ready(function(){
             post = response[0]['fields']
             //Load Product
             $.ajax({
-                url: 'http://localhost:8000/merchant/product/' + post.product_id ,
+                url: 'http://54.213.242.175:8000/merchant/product/' + post.product_id ,
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
@@ -24,7 +24,7 @@ $(document).ready(function(){
 
             // load Service
             $.ajax({
-                url: 'http://localhost:8000/merchant/account_services?service=available',
+                url: 'http://54.213.242.175:8000/merchant/account_services?service=available',
                 method: 'GET',
                 contentType: 'application/json',
                 success: function(response){
@@ -99,7 +99,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'http://localhost:8000/merchant/post/' + id_post,
+            url: 'http://54.213.242.175:8000/merchant/post/' + id_post,
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -117,7 +117,7 @@ $(document).ready(function(){
 
     $('#delete').click(function(){
         $.ajax({
-            url: 'http://localhost:8000/merchant/post/' + id_post,
+            url: 'http://54.213.242.175:8000/merchant/post/' + id_post,
             method: 'DELETE',
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
@@ -143,7 +143,7 @@ $(document).ready(function(){
 
 function showProduct(id_product){
     $.ajax({
-        url: 'http://localhost:8000/merchant/product/'+ id_product + '?posted=true',
+        url: 'http://54.213.242.175:8000/merchant/product/'+ id_product + '?posted=true',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/posts",
+            "url": "http://54.213.242.175:8000/merchant/posts",
             "dataSrc": ""
         },
 
@@ -88,7 +88,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: 'http://localhost:8000/merchant/services?table=true',
+        url: 'http://54.213.242.175:8000/merchant/services?table=true',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){

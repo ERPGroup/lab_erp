@@ -127,7 +127,7 @@ function addmore_attribute () {
 // list attributes
 $(document).ready(function(){
   $.ajax({
-    url: 'http://localhost:8000/merchant/attributes',
+    url: 'http://54.213.242.175:8000/merchant/attributes',
     method: 'GET',
     contentType: 'application/json',
     success: function(response){
@@ -163,7 +163,7 @@ $(document).ready(function(){
       data.append('photo', files[0]);
     }
     $.ajax({
-      url: 'http://localhost:8000/merchant/upload_image',
+      url: 'http://54.213.242.175:8000/merchant/upload_image',
       method: 'POST',
       contentType: false,
       processData: false,

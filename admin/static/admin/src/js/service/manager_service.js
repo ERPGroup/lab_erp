@@ -24,13 +24,13 @@ $(document).ready(function (){
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/services?table=true",
+            "url": "http://54.213.242.175:8000/admin/services?table=true",
             "dataSrc": ""
         },
     });
 
     // $.ajax({
-    //     url: 'http://localhost:8000/admin/services',
+    //     url: 'http://54.213.242.175:8000/admin/services',
     //     method: 'GET',
     //     contentType: 'application/json',
     //     success: function(response){

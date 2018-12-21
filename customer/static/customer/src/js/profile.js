@@ -1,7 +1,7 @@
 $(document).ready(function(){
     // Load data 
     $.ajax({
-        url: 'http://localhost:8000/customer/user',
+        url: 'http://54.213.242.175:8000/customer/user',
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -44,14 +44,14 @@ $(document).ready(function(){
             'inputPassword': $('#inputPassword').val()   
         }
         $.ajax({
-            url: 'http://localhost:8000/customer/password',
+            url: 'http://54.213.242.175:8000/customer/password',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("location.href = 'http://localhost:8000/customer/profile';",0);
+                    setTimeout("location.href = 'http://54.213.242.175:8000/customer/profile';",0);
                     alert('Da doi mat khau thanh cong!');
                 }
                 else
@@ -88,14 +88,14 @@ $(document).ready(function(){
         }
         console.log(data)
         $.ajax({
-            url: 'http://localhost:8000/customer/info',
+            url: 'http://54.213.242.175:8000/customer/info',
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(response){
                 console.log(response);
                 if(response == 1){
-                    setTimeout("location.href = 'http://localhost:8000/customer/profile';",0);
+                    setTimeout("location.href = 'http://54.213.242.175:8000/customer/profile';",0);
                     alert('Cap nhat thong tin ca nhan thanh cong!');
                 }
                 else

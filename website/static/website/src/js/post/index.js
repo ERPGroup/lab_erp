@@ -3,13 +3,13 @@ $(document).ready(function(){
     var id_post = check_url[check_url.length - 1]
 
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
 
             $.ajax({
-                url: 'http://localhost:8000/get_data_hot_buy',
+                url: 'http://54.213.242.175:8000/get_data_hot_buy',
                 method: 'GET',
                 success: function(response){
                     var html = ''
@@ -39,7 +39,7 @@ $(document).ready(function(){
                         html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
                         html += '</div>'
                         html += '<div class="quick_view">'
-                        html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
+                        html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
                         html += '</div>'
                         html += '</div>'
                     }
@@ -48,7 +48,7 @@ $(document).ready(function(){
             })
 
             // $.ajax({
-            //     url: 'http://localhost:8000/get_data_related/' + response.product.categories[0].id,
+            //     url: 'http://54.213.242.175:8000/get_data_related/' + response.product.categories[0].id,
             //     method: 'GET',
             //     success: function(response){
             //         var html = ''
@@ -89,7 +89,7 @@ $(document).ready(function(){
             //             html += '<span class="sales_percent">-'+ posts[item].product.discount_percent +'%</span>'
             //             html += '</div>'
             //             html += '<div class="quick_view">'
-            //             html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
+            //             html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/'+ posts[item].id +'\';">Xem thêm</button>'
             //             html += '</div>'
             //             html += '</div>'
             //             html += '</div>'
@@ -193,7 +193,7 @@ function rating_merchant(){
         'comment': $('#comment_text').val(),
     }
     $.ajax({
-        url: 'http://localhost:8000/rating_merchant/' + id_post,
+        url: 'http://54.213.242.175:8000/rating_merchant/' + id_post,
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: data,
@@ -213,7 +213,7 @@ function get_version(item){
     var check_url = $(location).attr('pathname').split('/');
     var id_post = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -255,7 +255,7 @@ function buy_product(){
     var quantity = $('input[id=quantity]').val()
     var product = $('#id_product').val()
     $.ajax({
-        url: 'http://localhost:8000/add_qty/' + product + '/' + quantity,
+        url: 'http://54.213.242.175:8000/add_qty/' + product + '/' + quantity,
         method: 'GET',
         success: function(response){
             if(response == -2){
@@ -277,7 +277,7 @@ function buy_product(){
                     popup.style.display = 'none'
                     $('#over').remove()
                     $.ajax({
-                        url: 'http://localhost:8000/count',
+                        url: 'http://54.213.242.175:8000/count',
                         method: 'GET',
                         success: function(response){
                             $('#cart_mobi').empty()

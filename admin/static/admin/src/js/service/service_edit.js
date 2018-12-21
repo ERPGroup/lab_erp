@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     // Load data in service
     $.ajax({
-        url: 'http://localhost:8000/admin/service/' + id_service,
+        url: 'http://54.213.242.175:8000/admin/service/' + id_service,
         method: 'GET',
         contentType: 'application/json',
         success: function(service){
@@ -45,7 +45,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: 'http://localhost:8000/admin/service/' + id_service,
+            url: 'http://54.213.242.175:8000/admin/service/' + id_service,
             method: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
@@ -64,7 +64,7 @@ $(document).ready(function(){
     $('#delete').click(function(){
 
         $.ajax({
-            url: 'http://localhost:8000/admin/service/' + id_service,
+            url: 'http://54.213.242.175:8000/admin/service/' + id_service,
             method: 'DETELE',
             success: function(response){
                 console.log(response);

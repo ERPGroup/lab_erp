@@ -2,7 +2,7 @@ $(document).ready(function(){
     var check_url = $(location).attr('pathname').split('/');
     var id_shop = check_url[check_url.length - 1]
     $.ajax({
-        url: 'http://localhost:8000/get_product_shop/' + id_shop,
+        url: 'http://54.213.242.175:8000/get_product_shop/' + id_shop,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -37,7 +37,7 @@ $(document).ready(function(){
                 // html += '<span class="sales_percent">-15%</span>'
                 html += '</div>'
                 html += '<div class="quick_view">'
-                html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ response.data[i].id +'\';">Xem thêm</button>'
+                html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/'+ response.data[i].id +'\';">Xem thêm</button>'
                 //html += '<button onclick="quick_view('+ response.data[i].id +');" class="btn_quickview"><i class="fa fa-shopping-cart"></i></button>'
                 // html += '<button type="submit" class="btn_buy">Mua hàng</button>'
                 // html += '<a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i class="fa fa-search"></i></button></a>'
@@ -50,11 +50,11 @@ $(document).ready(function(){
 
                 paginator = ''
                 if (response.has_previous == true)
-                    paginator += '<li><a href="http://localhost:8000/shop/'+ id_shop +'?page='+ (response.page - 1) +'">&laquo;</a></li>'
+                    paginator += '<li><a href="http://54.213.242.175:8000/shop/'+ id_shop +'?page='+ (response.page - 1) +'">&laquo;</a></li>'
 
                 paginator += '<li><a>'+ response.page +'</a></li>'
                 if (response.has_next == true)
-                    paginator += '<li><a href="http://localhost:8000/shop/'+ id_shop +'?page='+ (response.page + 1) +'">&raquo;</a></li>'
+                    paginator += '<li><a href="http://54.213.242.175:8000/shop/'+ id_shop +'?page='+ (response.page + 1) +'">&raquo;</a></li>'
                 $('#pagination').append(paginator)
 
                 $('#total_product').empty()
@@ -78,7 +78,7 @@ function rating_merchant(){
         'comment': $('#comment_text').val(),
     }
     $.ajax({
-        url: 'http://localhost:8000/rating_merchant_shop/' + id_shop,
+        url: 'http://54.213.242.175:8000/rating_merchant_shop/' + id_shop,
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: data,

@@ -44,7 +44,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/admin/rating_cus/"+ id_account +"?table=true",
+            "url": "http://54.213.242.175:8000/admin/rating_cus/"+ id_account +"?table=true",
             "dataSrc": ""
         },
     });
@@ -52,7 +52,7 @@ $(document).ready(function () {
     $('#back').attr('href', '/admin/user/see/' + id_account)
     
     $.ajax({
-        url: 'http://localhost:8000/admin/user/' + id_account,
+        url: 'http://54.213.242.175:8000/admin/user/' + id_account,
         method:  'GET',
         contentType: 'application/json',
         success: function(response){
@@ -73,7 +73,7 @@ function update_rating_cus(id_rating, action){
     }
 
     $.ajax({
-        url: 'http://localhost:8000/admin/update_rating_customer',
+        url: 'http://54.213.242.175:8000/admin/update_rating_customer',
         method: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: data,

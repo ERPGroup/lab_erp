@@ -39,7 +39,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/payments?table=true",
+            "url": "http://54.213.242.175:8000/merchant/payments?table=true",
             "dataSrc": ""
         },
     });

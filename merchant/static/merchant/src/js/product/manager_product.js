@@ -40,7 +40,7 @@ $(document).ready(function () {
         "processing": true,
         "ajax": {
             "processing": true,
-            "url": "http://localhost:8000/merchant/products?table=true",
+            "url": "http://54.213.242.175:8000/merchant/products?table=true",
             "dataSrc": ""
         },
 

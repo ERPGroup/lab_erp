@@ -312,7 +312,7 @@ def detail_post(request, id_post):
         dict_product['range_price'] = [max(list_price)[0], min(list_price)[0]]
         del dict_product['_state']
         image = Product_Image.objects.filter(product_id_id=dict_product['id']).order_by('image_id_id').first()
-        dict_product['image'] = 'http://localhost:8000/product' + image.image_id.image_link.url
+        dict_product['image'] = 'http://54.213.242.175:8000/product' + image.image_id.image_link.url
         dict_post['product'] = dict_product
         array_post.append(dict_post)
     

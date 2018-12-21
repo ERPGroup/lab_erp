@@ -5,7 +5,7 @@ $(document).ready(function(){
         $('#price_to').val(GetURLParameter('max'))
     }
 
-    url = 'http://localhost:8000/f_search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/f_search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         if(GetURLParameter('newest') != undefined){
             url += 'newest=' + GetURLParameter('newest')
@@ -73,7 +73,7 @@ $(document).ready(function(){
                 html += '<span class="sales_percent">-'+ response.data[i].product.discount_percent +'%</span>'
                 html += '</div>'
                 html += '<div class="quick_view">'
-                html += '<button class="btn_buy" onclick="location.href=\'http://localhost:8000/post/'+ response.data[i].id +'\';">Xem thêm</button>'
+                html += '<button class="btn_buy" onclick="location.href=\'http://54.213.242.175:8000/post/'+ response.data[i].id +'\';">Xem thêm</button>'
                 html += '<button onclick="quick_view('+ response.data[i].id +');" class="btn_quickview"><i class="fa fa-shopping-cart"></i></button>'
                 // html += '<button type="submit" class="btn_buy">Mua hàng</button>'
                 // html += '<a onclick="quick_view();" href=""> <button onclick="return false;" class="btn_quickview"><i class="fa fa-search"></i></button></a>'
@@ -84,7 +84,7 @@ $(document).ready(function(){
 
                 $('#pagination').empty()
 
-                url_paginator = 'http://localhost:8000/search?' + GetURLParameter('r') + '&';;
+                url_paginator = 'http://54.213.242.175:8000/search?' + GetURLParameter('r') + '&';;
                 if(GetURLParameter('newest') != undefined){
                     url_paginator += 'newest=' + GetURLParameter('newest') + '&'
                 }
@@ -159,7 +159,7 @@ function Newest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'newest=true&'
     }
@@ -174,7 +174,7 @@ function Newest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'newest=false&'
     }
@@ -190,7 +190,7 @@ function Buiest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'buiest=true&'
     }
@@ -205,7 +205,7 @@ function Buiest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'buiest=false&'
     }
@@ -221,7 +221,7 @@ function Pricest_down() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'pricest=true&'
     }
@@ -236,7 +236,7 @@ function Pricest_up() {
         alert('Xin lỗi!\nChúng tôi chưa hỗ trợ chức năng này cho lọc giá!')
         return
     }
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     if (GetURLParameter('page') == undefined){
         url += 'pricest=false&'
     }
@@ -248,7 +248,7 @@ function Pricest_up() {
 
 
 function Filter_price() {
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     var price_from = $('#price_from').val()
     if (price_from == ''){
         alert('Vui lòng nhập giá!')
@@ -273,7 +273,7 @@ function Filter_price() {
 }
 
 function Cancel_Filter(){
-    url = 'http://localhost:8000/search?r=' + GetURLParameter('r') + '&';
+    url = 'http://54.213.242.175:8000/search?r=' + GetURLParameter('r') + '&';
     document.location = url;
 }
 
@@ -296,7 +296,7 @@ function quick_view (id_post) {
     $('#over').fadeIn(300)
 
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -371,7 +371,7 @@ function add_product(qty_aval){
 function get_attr(item){
     var id_post = $('#version').attr('data-post')
     $.ajax({
-        url: 'http://localhost:8000/post_data/' + id_post,
+        url: 'http://54.213.242.175:8000/post_data/' + id_post,
         method: 'GET',
         contentType: 'application/json',
         success: function(response){
@@ -396,7 +396,7 @@ function buy_product(){
     var quantity = $('#input_quantity').val()
     var product = $('#version_product').val()
     $.ajax({
-        url: 'http://localhost:8000/add_qty/' + product + '/' + quantity,
+        url: 'http://54.213.242.175:8000/add_qty/' + product + '/' + quantity,
         method: 'GET',
         success: function(response){
             if(response == -2){
@@ -418,7 +418,7 @@ function buy_product(){
                     popup.style.display = 'none'
                     $('#over').remove()
                     $.ajax({
-                        url: 'http://localhost:8000/count',
+                        url: 'http://54.213.242.175:8000/count',
                         method: 'GET',
                         success: function(response){
                             $('#cart_mobi').empty()
