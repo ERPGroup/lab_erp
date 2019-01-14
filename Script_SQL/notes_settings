@@ -1,0 +1,26 @@
+Các script chạy hằng ngày: 
+setting 00:00:00 - 
+	+ CheckAds.sql
+	+ CheckExpried.sql
+
+Script 1 tuần chạy 1 lần
+
+setting vào các ngày 8 - 15 - 22 00:00:00 -
+	+ Daily_7.sql
+
+Script 2 tuần chạy 1 lần
+
+setting vào ngày 15 00:00:00 
+	+ Daily_15.sql
+
+Script 1 tháng chạy 1 lần
+
+Settings vào ngày 01 00:00:00
+	+ Daily_7.sql
+	+ Daily_15.sql
+	+ Daily_30.sql
+	+ Reset_Daily.sql
+	+ OneTimeGift.sql
+
+
+
