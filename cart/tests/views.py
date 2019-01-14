@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
-from carton.cart import Cart
-from carton.tests.models import Product
+from cart.cart import Cart
+from cart.tests.models import Product
 
 
 def show(request):

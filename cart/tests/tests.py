@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from carton.tests.models import Product
+from cart.tests.models import Product
 
 try:
     from django.test import override_settings
@@ -13,12 +13,12 @@ class CartTests(TestCase):
     def setUp(self):
         self.deer = Product.objects.create(name='deer', price=10.0, custom_id=1)
         self.moose = Product.objects.create(name='moose', price=20.0, custom_id=2)
-        self.url_add = reverse('carton-tests-add')
-        self.url_show = reverse('carton-tests-show')
-        self.url_remove = reverse('carton-tests-remove')
-        self.url_remove_single = reverse('carton-tests-remove-single')
-        self.url_quantity = reverse('carton-tests-set-quantity')
-        self.url_clear = reverse('carton-tests-clear')
+        self.url_add = reverse('cart-tests-add')
+        self.url_show = reverse('cart-tests-show')
+        self.url_remove = reverse('cart-tests-remove')
+        self.url_remove_single = reverse('cart-tests-remove-single')
+        self.url_quantity = reverse('cart-tests-set-quantity')
+        self.url_clear = reverse('cart-tests-clear')
         self.deer_data = {'product_id': self.deer.pk}
         self.moose_data = {'product_id': self.moose.pk}
 

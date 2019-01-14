@@ -3,15 +3,15 @@ SITE_ID = 1
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'carton-tests.db',
+        'NAME': 'cart-tests.db',
     }
 }
 
 INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
-    'carton',
-    'carton.tests',
+    'cart',
+    'cart.tests',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -19,8 +19,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
 )
 
-ROOT_URLCONF = 'carton.tests.urls'
+ROOT_URLCONF = 'cart.tests.urls'
 
 SECRET_KEY = 'any-key'
 
-CART_PRODUCT_MODEL = 'carton.tests.models.Product'
+CART_PRODUCT_MODEL = 'cart.tests.models.Product'
