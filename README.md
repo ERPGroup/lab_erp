@@ -31,6 +31,8 @@
 * Hệ thống website do bộ phận kinh doanh, bộ phận quản lý sử dụng trực tiếp tại công ty.
 
 #### 2. Sơ đồ tổ chức doanh nghiệp
+> Sơ đồ tổ chức dựa trên mô phỏng sau:
+![sodotochuc](https://github.com/ERPGroup/lab_erp/blob/master/document/image/sodotochuc.png "sodotochuc")
 
 #### 3. Mục đích
 * Xây dựng HTTT để làm gì? Phục vụ cho bộ phận nào của doanh nghiệp? HTTT mang lại lợi ích gì cho doanh nghiệp
@@ -50,50 +52,50 @@ Hệ thống được xây dựng nhằm mục đích, cung cấp môi trường
 #### 2. Chức năng yêu cầu của hệ thống
 > **2.1 Quản lý Mua hàng:** 
 * Chức năng tìm kiếm:
-⋅⋅⋅+ Tìm kiếm cơ bản: tìm theo từ khóa có thể là tên sản phẩm, mã sản phẩm, loại, ...
-⋅⋅⋅+ Tìm kiếm nâng cao: tìm sản phẩm và lọc theo những điều kiện cụ thể như khoảng giá, màu sắc, loại, tên, …
+    * Tìm kiếm cơ bản: tìm theo từ khóa có thể là tên sản phẩm, mã sản phẩm, loại, ...
+    * Tìm kiếm nâng cao: tìm sản phẩm và lọc theo những điều kiện cụ thể như khoảng giá, màu sắc, loại, tên, …
 * Liệt kê danh sách sản phẩm.
 * Hiển thị chi tiết sản phẩm.
 * Quản lý giỏ hàng: 
-⋅⋅⋅+ Xem lại thông tin sản phẩm đã chọn. 
-⋅⋅⋅+ Cập nhập số lượng.
+    * Xem lại thông tin sản phẩm đã chọn. 
+    * Cập nhập số lượng.
 * Đăng ký, đăng nhập:
-⋅⋅⋅+ Đăng ký và xác thực thông qua gmail.
-⋅⋅⋅+ Đăng nhập: kiểm tra thông tin tài khoản.
+    * Đăng ký và xác thực thông qua gmail.
+    * Đăng nhập: kiểm tra thông tin tài khoản.
 * Thanh toán:
-⋅⋅⋅+ Yêu cầu phải đăng nhập mới được thanh toán.
-⋅⋅⋅+ Thanh toán: COD hoặc Trực tuyến thông qua Paypal. 
+    * Yêu cầu phải đăng nhập mới được thanh toán.
+    * Thanh toán: COD hoặc Trực tuyến thông qua Paypal. 
 * Nhận xét, đánh giá: khi hóa đơn hoàn tất, cho phép người mua đánh giá người bán. 
 * Quản lý đơn hàng: 
-⋅⋅⋅+ Xem tình trạng đơn hàng.
-⋅⋅⋅+ Xem lịch sử thanh toán.
+    * Xem tình trạng đơn hàng.
+    * Xem lịch sử thanh toán.
 > **2.2 Quản lý Bán hàng:**
 * Đăng ký bán hàng, đăng nhập
-⋅⋅⋅+ Đăng ký và xác thực bằng Gmail.
-⋅⋅⋅+ Đăng nhập: kiểm tra thông tin tài khoản.
+    * Đăng ký và xác thực bằng Gmail.
+    * Đăng nhập: kiểm tra thông tin tài khoản.
 * Quản lý gói tin
-⋅⋅⋅+ Xem thông tin gói tin đang có.
-⋅⋅⋅+ Mua thêm gói tin.
-⋅⋅⋅+ Thanh toán: trực tuyến thông qua Paypal. 
+    * Xem thông tin gói tin đang có.
+    * Mua thêm gói tin.
+    * Thanh toán: trực tuyến thông qua Paypal. 
 * Đăng tin
-⋅⋅⋅+ Kiểm tra số lượng tin tồn.
-⋅⋅⋅+ Tự động cập nhập số lượng tin khi đăng tin.
+    * Kiểm tra số lượng tin tồn.
+    * Tự động cập nhập số lượng tin khi đăng tin.
 * Quản lý đơn hàng
-⋅⋅⋅+ Xác nhận và cập nhập đơn hàng.
-⋅⋅⋅+ Đánh giá và nhận xét khi đơn hàng hoàn tất.
-⋅⋅⋅+ Xem lịch sử giao dịch.
+    * Xác nhận và cập nhập đơn hàng.
+    * Đánh giá và nhận xét khi đơn hàng hoàn tất.
+    * Xem lịch sử giao dịch.
 * Thông kê, báo cáo.
 > **2.3 Quản lý Quảng cáo:**
 * Đăng ký, đăng nhập
-⋅⋅⋅+ Đăng ký: sẽ được cấp tài khoản dành riêng cho thuê quảng cáo.
-⋅⋅⋅+ Đăng nhập: Kiểm tra thông tin tài khoản.
+    * Đăng ký: sẽ được cấp tài khoản dành riêng cho thuê quảng cáo.
+    * Đăng nhập: Kiểm tra thông tin tài khoản.
 * Đăng ký quảng cáo
-⋅⋅⋅+ Lựa chọn quảng cáo ( Vị trí, thời gian, giá tiền ).
-⋅⋅⋅+ Thực hiện thanh toán trực tuyến thông qua Paypal.
+    * Lựa chọn quảng cáo ( Vị trí, thời gian, giá tiền ).
+    * Thực hiện thanh toán trực tuyến thông qua Paypal.
 * Quản lý hợp đồng: ( Quản trị viên )
-⋅⋅⋅+ Kiểm tra và xác nhận hợp đồng.
-⋅⋅⋅+ Xem lịch sử giao dịch hợp đồng.
-⋅⋅⋅+ Thanh khoản hợp đồng.
+    * Kiểm tra và xác nhận hợp đồng.
+    * Xem lịch sử giao dịch hợp đồng.
+    * Thanh khoản hợp đồng.
 * Thông kê: thực hiện thống kê quảng cáo đang chạy. 
 > **2.4 Quản lý Thống kê báo cáo:**
 * Thống kê doanh thu
@@ -112,19 +114,52 @@ Hệ thống được xây dựng nhằm mục đích, cung cấp môi trường
 * Quản trị viên: 2-5 người.
 
 #### 4. Rằng buộc tổng thể
-a) Phần cứng: 1 - 5 server để sử dụng quản lý hệ thống. 
-* Cấu hình máy: Phần cứng RAM 8GB, CPU Intel Core i5 5200U, HDD 1TB
-* Thiết bị: Máy in, Scan.  
-b) Phần mềm: Hệ điều hành: Win 7 64bit, Win 10 64bit.
-c) Dữ liệu: Dữ liệu được lưu trữ trong hệ QTCSDL Postgresql 9.6
-d) Mạng: Viettel – 100Mbp - Băng thông quốc tế 2.0 Mbp. 
-e) Con người: Độ tuổi 18-35 tuổi. Có bộ phận chuyên về IT.
+* a. Phần cứng: 1 - 5 server để sử dụng quản lý hệ thống
+    * Cấu hình máy: Phần cứng RAM 8GB, CPU Intel Core i5 5200U, HDD 1TB
+    * Thiết bị: Máy in, Scan
+* b. Phần mềm: Hệ điều hành: Win 7 64bit, Win 10 64bit
+* c. Dữ liệu: Dữ liệu được lưu trữ trong hệ QTCSDL Postgresql 9.6
+* d. Mạng: Viettel – 100Mbp - Băng thông quốc tế 2.0 Mbp
+* e. Con người: Độ tuổi 18-35 tuổi. Có bộ phận chuyên về IT
 
 #### 5. Yêu cầu về giao diện (cho các đối tượng người dùng)
+> Giao diện website
+![Giao dien 1](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien1.png "Giao dien 1")
+![Giao dien 2](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien2.png "Giao dien 2")
+![Giao dien 3](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien3.png "Giao dien 3")
+![Giao dien 4](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien4.png "Giao dien 4")
+![Giao dien 5](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien5.png "Giao dien 5")
+![Giao dien 6](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien6.png "Giao dien 6")
+![Giao dien 7](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien7.png "Giao dien 7")
+![Giao dien 8](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien8.png "Giao dien 8")
+
+> Giao diện người mua (Customer)
+![Giao dien 9](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien9.png "Giao dien 9")
+![Giao dien 10](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien10.png "Giao dien 10")
+
+> Giao diện người bán (Merchant)
+![Giao dien 14](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien14.png "Giao dien 14")
+![Giao dien 12](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien12.png "Giao dien 12")
+![Giao dien 17](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien17.png "Giao dien 17")
+![Giao dien 15](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien15.png "Giao dien 15")
+![Giao dien 16](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien16.png "Giao dien 16")
+![Giao dien 13](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien13.png "Giao dien 13")
+
+> Giao diện người quảng cáo (Advertiser)
+![Giao dien 18](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien18.png "Giao dien 18")
+![Giao dien 19](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien19.png "Giao dien 19")
+![Giao dien 20](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien17.png "Giao dien 20")
+![Giao dien 13](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien13.png "Giao dien 13")
+
+> Giao diện người quản lý (Admin)
+**Kết thừa 2 giao diện Merchant và Advertiver**
 
 #### 6. Sơ đồ UseCase
+![UseCase](https://github.com/ERPGroup/lab_erp/blob/master/document/image/usecase.png "UseCase")
 
 #### 7. Thiết kế cơ sở dữ liệu
+> Bản thiết kế cuối cùng
+![Database](https://github.com/ERPGroup/lab_erp/blob/master/document/image/Database.png "Database")
 
 ## Hướng dẫn cài đặt
 ***
@@ -273,7 +308,7 @@ Certbot sẽ tự động tạo mới private key trên hệ thống và các th
 * Có các tính năng bảo mật mã hoá thông tin, xác nhận mail, lập lịch quảng cáo theo yêu cầu, tự động hoá quảng cáo.
 * Có xây dựng thêm chatbot hỗ trợ trong hệ thống cho customer.
 #### 2. Những vấn đề chưa làm được
-> Dự án đã hoàn thiện, tuy nhiên do thời gian không đủ để kiểm thử tất cả các chức nên có thể sẽ có một vài lỗi phát sinh trong quá trình sử dụng.
+> Important: Dự án đã hoàn thiện, tuy nhiên do thời gian không đủ để kiểm thử tất cả các chức nên có thể sẽ có một vài lỗi phát sinh trong quá trình sử dụng.
 #### 3. Đề xuất cho hệ thống trong tương lai
 * Nâng cấp thêm chức năng thanh toán Online bằng thẻ ngân hàng.
 * Nâng cấp thêm chatbot AI – hỗ trợ như một hệ thống CRM. 
