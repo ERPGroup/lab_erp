@@ -214,7 +214,7 @@ def get_data(request):
 
 @csrf_exempt
 def getAds(request):
-    input = Service_Ads_Post.objects.filter(state=2,purchase_service_id__is_active=True, purchase_service_id__state=4)
+    input = Service_Ads_Post.objects.filter(state=2, purchase_service_id__state=4)
     result = []
     for item in input:
         if item.purchase_service_id.service_ads_id.position == "Slide":
