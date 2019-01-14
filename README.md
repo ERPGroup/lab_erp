@@ -123,36 +123,53 @@ Hệ thống được xây dựng nhằm mục đích, cung cấp môi trường
 * e. Con người: Độ tuổi 18-35 tuổi. Có bộ phận chuyên về IT
 
 #### 5. Yêu cầu về giao diện (cho các đối tượng người dùng)
-> Giao diện website
+> **Giao diện website**
 ![Giao dien 1](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien1.png "Giao dien 1")
+
 ![Giao dien 2](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien2.png "Giao dien 2")
+
 ![Giao dien 3](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien3.png "Giao dien 3")
+
 ![Giao dien 4](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien4.png "Giao dien 4")
+
 ![Giao dien 5](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien5.png "Giao dien 5")
+
 ![Giao dien 6](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien6.png "Giao dien 6")
+
 ![Giao dien 7](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien7.png "Giao dien 7")
+
 ![Giao dien 8](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien8.png "Giao dien 8")
 
-> Giao diện người mua (Customer)
+
+> **Giao diện người mua (Customer)**
 ![Giao dien 9](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien9.png "Giao dien 9")
+
 ![Giao dien 10](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien10.png "Giao dien 10")
 
-> Giao diện người bán (Merchant)
+> **Giao diện người bán (Merchant)**
 ![Giao dien 14](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien14.png "Giao dien 14")
+
 ![Giao dien 12](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien12.png "Giao dien 12")
+
 ![Giao dien 17](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien17.png "Giao dien 17")
+
 ![Giao dien 15](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien15.png "Giao dien 15")
+
 ![Giao dien 16](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien16.png "Giao dien 16")
+
 ![Giao dien 13](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien13.png "Giao dien 13")
 
-> Giao diện người quảng cáo (Advertiser)
+
+> **Giao diện người quảng cáo (Advertiser)**
 ![Giao dien 18](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien18.png "Giao dien 18")
+
 ![Giao dien 19](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien19.png "Giao dien 19")
+
 ![Giao dien 20](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien17.png "Giao dien 20")
+
 ![Giao dien 13](https://github.com/ERPGroup/lab_erp/blob/master/document/image/giaodien13.png "Giao dien 13")
 
-> Giao diện người quản lý (Admin)
-**Kết thừa 2 giao diện Merchant và Advertiver**
+> **Giao diện người quản lý (Admin): Kết thừa 2 giao diện Merchant và Advertiver**
 
 #### 6. Sơ đồ UseCase
 ![UseCase](https://github.com/ERPGroup/lab_erp/blob/master/document/image/usecase.png "UseCase")
@@ -313,4 +330,4 @@ Certbot sẽ tự động tạo mới private key trên hệ thống và các th
 * Nâng cấp thêm chức năng thanh toán Online bằng thẻ ngân hàng.
 * Nâng cấp thêm chatbot AI – hỗ trợ như một hệ thống CRM. 
 * Nâng cấp hệ thống quản lý quảng cáo – cho thuê vị trí quảng cáo theo hình thức mới – một vị trí cho nhiều người thuê cùng một lúc – tăng lợi nhuận.
-* Xây dựng thêm hệ thống shipper ( nếu có thể ) tang thêm lợi nhuận
+* Xây dựng thêm hệ thống shipper ( nếu có thể ) tăng thêm lợi nhuận
